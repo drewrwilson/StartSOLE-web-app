@@ -1,0 +1,30 @@
+body {background-color: #f4f4f4}
+
+body > header > nav {
+    border-bottom: 1px solid lightgrey;
+}
+
+.brand-logo {
+    padding-right: 10px !important;
+    font-size: 20px !important;
+}
+
+.app-download-links {
+    width:100%;
+    text-align: center;
+    padding-top: 15px;
+}
+
+.app-download-links > a > img {
+    width: 115px;
+}
+
+header, main, footer {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}

@@ -50,6 +50,11 @@ router.get('/howto', function(req, res) {
   res.render('howto');
 });
 
+// static route for History of SOLE
+router.get('/resources', function(req, res) {
+  res.render('resources');
+});
+
 // on routes that end in /soles
 // ----------------------------------------------------
 router.route('/soles')

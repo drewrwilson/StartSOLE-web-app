@@ -34,26 +34,30 @@ var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
 
 // home route
-router.get('/', function(req, res) {
-  var homeData = Controllers.Home.getHomeData();
-  res.render('home', homeData);
-});
+router.route('/')
+  .get(function(req, res) {
+    var homeData = Controllers.Home.getHomeData();
+    res.render('home', homeData);
+  });
 
 
 // static route for History of SOLE
-router.get('/history', function(req, res) {
-  res.render('history');
-});
+router.route('/history')
+  .get(function(req, res) {
+    res.render('history');
+  });
 
 // static route for History of SOLE
-router.get('/howto', function(req, res) {
-  res.render('howto');
-});
+router.route('/howto')
+  .get(function(req, res) {
+    res.render('howto');
+  });
 
 // static route for History of SOLE
-router.get('/resources', function(req, res) {
-  res.render('resources');
-});
+router.route('/resources')
+  .get(function(req, res) {
+    res.render('resources');
+  });
 
 // on routes that end in /soles
 // ----------------------------------------------------
@@ -74,7 +78,7 @@ router.route('/soles')
         res.json(singleSole);
       });
 
-  // on routes that end in /soles
+  // on routes that end in /questions
   // ----------------------------------------------------
   router.route('/questions')
 
@@ -84,14 +88,19 @@ router.route('/soles')
       res.json(allQuestions);
     });
 
-    // on routes that end in /soles/:sole_id
+    //add a question
+    router.route('/questions/add')
+      .get(function(req, res) {
+        res.render('questions-add');
+      });
+    // on routes that end in /questions/:id
     // ----------------------------------------------------
     router.route('/questions/:id')
-        // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
-        .get(function(req, res) {
-          const singleQuestion = {name: 'What is up?', author: 'Drew', id: req.params.id};
-          res.json(singleQuestion);
-        });
+      // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
+      .get(function(req, res) {
+        const singleQuestion = {name: 'What is up?', author: 'Drew', id: req.params.id};
+        res.json(singleQuestion);
+      });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api

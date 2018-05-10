@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080;        // set our port
 
-// ROUTES FOR OUR API
+// ROUTES FOR APP
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
@@ -113,10 +113,10 @@ router.route('/soles')
     // on routes that end in /questions/:id
     // ----------------------------------------------------
     router.route('/questions/:id')
-      // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
+      // get the question data with a given id
       .get(function(req, res) {
-        const singleQuestion = {name: 'What is up?', author: 'Drew', id: req.params.id};
-        res.json(singleQuestion);
+        var questionData = Controllers.Question.getByID(req.params.id);
+        res.render('questions-single', questionData);
       });
 
 // REGISTER OUR ROUTES -------------------------------

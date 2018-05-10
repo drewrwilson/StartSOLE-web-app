@@ -3,11 +3,27 @@
 <hr>
 
 <h2>SOLEs</h2>
+<h3>Upcoming</h3>
+{{#if soles.upcoming }}
 <ul>
-{{#each soles}}
+{{#each soles.upcoming}}
   <li>{{text}} by {{author}}</li>
 {{/each}}
 </ul>
+{{else}}
+No upcoming SOLEs yet
+{{/if}}
+
+<h3>Completed</h3>
+{{#if soles.completed }}
+<ul>
+{{#each soles.completed}}
+  <li>{{text}} by {{author}}</li>
+{{/each}}
+</ul>
+{{else}}
+No completed SOLEs yet
+{{/if}}
 
 <hr>
 

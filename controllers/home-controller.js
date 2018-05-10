@@ -10,21 +10,21 @@ Home.getHomeData = function getHomeData() {
     questions: {
       mine: [
         {
-          name: 'Where does language come from?',
+          text: 'Where does language come from?',
           id: '1'
         },
         {
-          name: 'Do bugs feel?',
+          text: 'Do bugs feel?',
           id: '2'
         }
       ],
       favorites: [
         {
-          name: 'How do new species appear?',
+          text: 'How do new species appear?',
           id: '3'
         },
         {
-          name: 'What causes storms?',
+          text: 'What causes storms?',
           id: '4'
         }]
     }

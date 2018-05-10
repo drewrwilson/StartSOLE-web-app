@@ -1,1 +1,36 @@
 <h1>Add a question!</h1>
+
+
+<hr>
+
+
+<div class="row" style="padding-top:50px;">
+    <div class="col s12 offset-m1 m10 offset-l3 l6">
+        <div class="card-panel">
+            <div class="valign-wrapper">
+                <div class="valign center" style="width: 100%;">
+                    <img class="circle z-depth-1 white" src="/images/question.png" style="top: -50px; position: relative; margin:-25px;">
+                </div>
+            </div>
+            <div class="row">
+                <form ng-submit="Submit.save()">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea ng-model="Submit.text" id="submit-question" class="materialize-textarea"
+                                      placeholder="Enter your question here"></textarea>
+                        </div>
+                    </div>
+                    <standard-picker tags="Submit.tags"></standard-picker>
+                    <div class="row">
+                        <div class="input-field col s12 center">
+                            <button class="btn waves-effect waves-light">
+                                Submit <span ng-show="Submit.submitted_one">Another</span> Question
+                            </button>
+                        </div>
+                    </div>
+                    <div id="error" class="red-text">{{ errorText }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

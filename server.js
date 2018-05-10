@@ -33,13 +33,22 @@ var port = process.env.PORT || 8080;        // set our port
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+// home route
 router.get('/', function(req, res) {
   var homeData = Controllers.Home.getHomeData();
   res.render('home', homeData);
 });
 
-// more routes for our API will happen here
+
+// static route for History of SOLE
+router.get('/history', function(req, res) {
+  res.render('history');
+});
+
+// static route for History of SOLE
+router.get('/howto', function(req, res) {
+  res.render('howto');
+});
 
 // on routes that end in /soles
 // ----------------------------------------------------

@@ -1,15 +1,27 @@
-<h1>home page!</h1>
+<h1>StartSOLE Home Page!</h1>
 
-<h2>All soles</h2>
+<hr>
+
+<h2>SOLEs</h2>
 <ul>
 {{#each soles}}
   <li>{{name}} by {{author}}</li>
 {{/each}}
 </ul>
 
-<h2>all questions</h2>
+<hr>
+
+<h2>Questions</h2>
+<h3>My questions:</h3>
 <ul>
-{{#each questions}}
-  <li>{{name}} by {{author}}</li>
+{{#each questions.mine}}
+  <li>{{name}}</li>
+{{/each}}
+</ul>
+
+<h3>My favorite questions:</h3>
+<ul>
+{{#each questions.favorites}}
+  <li>{{name}}</li>
 {{/each}}
 </ul>

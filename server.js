@@ -9,6 +9,7 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var hbs        = require('express-hbs');
 var path       = require('path');
+var Controllers       = require('./controllers/controllers.js');
 
 // set the view engine
 app.set('view engine', 'hbs');
@@ -34,8 +35,8 @@ var router = express.Router();              // get an instance of the express Ro
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-  var allSoles = {soles:[{name: 'hey this is a name',  author: 'drew'}]}
-  res.render('home', allSoles);
+  var homeData = Controllers.Home.getHomeData();
+  res.render('home', homeData);
 });
 
 // more routes for our API will happen here

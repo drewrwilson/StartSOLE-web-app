@@ -59,6 +59,13 @@ router.route('/resources')
     res.render('resources');
   });
 
+// static route for History of SOLE
+router.route('/map')
+  .get(function(req, res) {
+    res.render('map');
+  });
+
+
 // on routes that end in /soles
 // ----------------------------------------------------
 router.route('/soles')
@@ -84,8 +91,7 @@ router.route('/soles')
 
     // get all the soles (accessed at GET http://localhost:8080/api/soles)
     .get(function(req, res) {
-      const allQuestions = [{name: 'question name',  author: 'drew'}]
-      res.json(allQuestions);
+      res.render('questions');
     });
 
     //add a question

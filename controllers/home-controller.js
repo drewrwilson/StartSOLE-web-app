@@ -27,8 +27,7 @@ Home.getHomeData = function getHomeData() {
           name: 'What causes storms?',
           id: '4'
         }]
-    },
-    user: {}
+    }
   };
 
   return homeData;

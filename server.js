@@ -65,6 +65,16 @@ router.route('/map')
     res.render('map');
   });
 
+  // on routes that end in /soles
+  // ----------------------------------------------------
+  router.route('/profile')
+
+    // get all the soles (accessed at GET http://localhost:8080/api/soles)
+    .get(function(req, res) {
+      var profileData = Controllers.User.getProfileData();
+      res.render('profile', profileData);
+    });
+
 
 // on routes that end in /soles
 // ----------------------------------------------------

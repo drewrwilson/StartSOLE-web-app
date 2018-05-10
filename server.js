@@ -7,6 +7,7 @@
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
+var path = require('path');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -67,6 +68,9 @@ router.route('/soles')
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
+
+// serve static content
+app.use(express.static(path.join(__dirname, 'public')));
 
 // START THE SERVER
 // =============================================================================

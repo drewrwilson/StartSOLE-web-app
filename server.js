@@ -101,7 +101,8 @@ router.route('/soles')
 
     // get all the soles (accessed at GET http://localhost:8080/api/soles)
     .get(function(req, res) {
-      res.render('questions');
+      var recentQuestions = Controllers.Question.getRecent();
+      res.render('questions', recentQuestions);
     });
 
     //add a question

@@ -48,7 +48,7 @@ router.route('/history')
   });
 
 // static route for History of SOLE
-router.route('/howto')
+router.route('/how')
   .get(function(req, res) {
     res.render('howto');
   });

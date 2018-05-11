@@ -87,6 +87,8 @@ router.route('/soles')
     res.json(allSoles);
   });
 
+
+
   // on routes that end in /soles/:sole_id
   // ----------------------------------------------------
   router.route('/soles/:id')
@@ -94,6 +96,14 @@ router.route('/soles')
       .get(function(req, res) {
         const singleSole = {id: req.params.id};
         res.json(singleSole);
+      });
+
+  // on routes that end in /soles/add/
+  // ----------------------------------------------------
+  router.route('/sole-create')
+      // view for adding a new sole
+      .get(function(req, res) {
+        res.render('soles-add');
       });
 
   // on routes that end in /questions

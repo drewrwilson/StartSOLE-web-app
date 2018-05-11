@@ -11,20 +11,19 @@
                     <div class="input-field col s12 m6 l8">
                         <input id="question" name="question" type="text" required
                                class="validate"
-                               ng-model="LessonPlan.formData.question">
+                               value="{{sole.question.text}}">
                         <label for="question">What is your big question?</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
                         <input id="planned_date" name="planned_date" type="text"
                                class="datepicker" required
-                               ng-model="LessonPlan.formData.planned_date"
-                               ng-change="LessonPlan.markValid()">
+                               value="{{sole.planned_date}}">
                         <label for="planned_date">When will you complete this SOLE?</label>
                     </div>
 
                     <div class="input-field col s12 m6">
                         <select name="grade" class="browser-default validate" required
-                                ng-model="LessonPlan.formData.grade">
+                                value="{{sole.grade}}">
                             <option value="" disabled>What grade is the class?</option>
                             <option ng-repeat="(key, value) in LessonPlan.grades" value="{{key}}">
                                 {{value}}
@@ -33,7 +32,7 @@
                     </div>
                     <div class="input-field col s12 m6">
                         <select name="subject" class="browser-default validate" required
-                                ng-model="LessonPlan.formData.subject">
+                                value="{{sole.subject}}">
                             <option value="" disabled>What subject is the class?</option>
                             <option ng-repeat="subject in LessonPlan.subjects" value="{{subject}}">
                                 {{subject}}
@@ -44,7 +43,7 @@
                 <div class="row">
                     <div class="input-field col s12 m12 l4">
                         <select name="num_students" class="browser-default validate" required
-                                ng-model="LessonPlan.formData.num_students">
+                                value="{{sole.num_students}}">
                             <option value="" disabled>How many students are in your class?</option>
                             <option value="9">Less than 10 students</option>
                             <option value="10">10 students</option>
@@ -78,7 +77,7 @@
                     </div>
                     <div class="input-field col s12 m12 l4">
                         <select name="num_groups" class="browser-default validate" required
-                                ng-model="LessonPlan.formData.num_devices">
+                                value="{{sole.num_devices}}">
                             <option value="" disabled>How many internet-enabled devices are available?</option>
                             <option value="2">2 devices</option>
                             <option value="3">3 devices</option>
@@ -95,14 +94,14 @@
                     <div class="input-field col s12 m12 l4">
                         <input id="time" name="time" type="number" required
                                class="validate"
-                               ng-model="LessonPlan.formData.duration">
+                               value="{{sole.duration}}">
                         <label for="time" data-error="please enter a number">How many minutes is your class?</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <select name="sole_goal" class="browser-default validate" required
-                                ng-model="LessonPlan.formData.sole_goal">
+                                value="{{sole.sole_goal}}">
                             <option value="" disabled>Which of these content knowledge objectives
                                 best describes your goal for this SOLE?
                             </option>
@@ -135,13 +134,13 @@
                             <p>
                                 <input name="own_groups" type="radio" id="own_groups_yes"
                                        value="1"
-                                       ng-model="LessonPlan.formData.own_groups" required/>
+                                       value="{{sole.own_groups}}" required/>
                                 <label for="own_groups_yes">Yes</label>
                             </p>
                             <p>
                                 <input name="own_groups" type="radio" id="own_groups_no"
                                        value="0"
-                                       ng-model="LessonPlan.formData.own_groups" required/>
+                                       value="{{sole.own_groups}}" required/>
                                 <label for="own_groups_no">No</label>
                             </p>
                         </div>
@@ -150,13 +149,13 @@
                             <p>
                                 <input name="group_sharing" type="radio" id="group_sharing_yes"
                                        value="1"
-                                       ng-model="LessonPlan.formData.groups_sharing" required/>
+                                       value="{{sole.groups_sharing}}" required/>
                                 <label for="group_sharing_yes">Yes</label>
                             </p>
                             <p>
                                 <input name="group_sharing" type="radio" id="group_sharing_no"
                                        value="0"
-                                       ng-model="LessonPlan.formData.groups_sharing" required/>
+                                       value="{{sole.groups_sharing}}" required/>
                                 <label for="group_sharing_no">No</label>
                             </p>
                         </div>
@@ -165,13 +164,13 @@
                             <p>
                                 <input name="self_assessment" type="radio" id="self_assessment_yes"
                                        value="1"
-                                       ng-model="LessonPlan.formData.self_assessment" required/>
+                                       value="{{sole.self_assessment}}" required/>
                                 <label for="self_assessment_yes">Yes</label>
                             </p>
                             <p>
                                 <input name="self_assessment" type="radio" id="self_assessment_no"
                                        value="0"
-                                       ng-model="LessonPlan.formData.self_assessment" required/>
+                                       value="{{sole.self_assessment}}" required/>
                                 <label for="self_assessment_no">No</label>
                             </p>
                         </div>
@@ -186,7 +185,7 @@
 
                                 <div class="input-field center-align lp-input">
                                     <input id="groups" type="number" class="center-align"
-                                           ng-model="LessonPlan.formData.num_groups">
+                                           value="{{sole.num_groups}}">
                                     <label for="groups" data-error="wrong" data-success="right" class="center-align"></label>
                                 </div> groups with <span ng-bind="LessonPlan.group_size"></span> students each.
                                 <br><br>
@@ -194,20 +193,20 @@
 
                                 <div class="input-field lp-input">
                                     <input type="number" class="center-align"
-                                           ng-model="LessonPlan.formData.question_length">
+                                           value="{{sole.question_length}}">
                                     <!--<label for="groups" data-error="wrong" data-success="right" class="center-align"></label>-->
                                 </div> minutes to introduce the question to the class.
                                 <br>
 
                                 <div class="input-field lp-input">
                                     <input type="number" class="center-align"
-                                           ng-model="LessonPlan.formData.investigation_length">
+                                           value="{{sole.investigation_length}}">
                                     <!--<label for="groups" data-error="wrong" data-success="right" class="center-align"></label>-->
                                 </div> minutes for students to research.
                                 <br>
 
                                 <div class="input-field lp-input"
-                                     ng-model="LessonPlan.formData.review_length">
+                                     value="{{sole.review_length}}">
                                     <input type="number" class="center-align">
                                     <!--<label for="groups" data-error="wrong" data-success="right" class="center-align"></label>-->
                                 </div> minutes for groups to present their findings to the class.

@@ -34,6 +34,9 @@ var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
 
 // home route
+// NOTE: this is where we can add in some welcome content. eg on first load
+//       redirect to a intro screen. Or after completing your 5 SOLE, give some
+//       nice encouraging message, etc etc
 router.route('/')
   .get(function(req, res) {
     var homeData = Controllers.Home.getHomeData();
@@ -53,20 +56,20 @@ router.route('/how')
     res.render('how-to-sole');
   });
 
-// static route for History of SOLE
+// routes for resources
 router.route('/resources')
   .get(function(req, res) {
     var resources = Controllers.Resource.getAll();
     res.render('resources', {resources: resources});
   });
 
-// static route for History of SOLE
+// static route for community map
 router.route('/map')
   .get(function(req, res) {
     res.render('map');
   });
 
-// on routes that end in /soles
+// routes for profile
 // ----------------------------------------------------
 router.route('/profile')
 
@@ -77,7 +80,7 @@ router.route('/profile')
   });
 
 
-// on routes that end in /soles
+// routes for soles
 // ----------------------------------------------------
 router.route('/soles')
 
@@ -96,6 +99,14 @@ router.route('/soles')
       .get(function(req, res) {
         var singleSole = Controllers.Sole.getByID(req.params.id);
         res.render('soles-single', singleSole);
+      });
+  // on routes that end in /soles/:sole_id
+  // ----------------------------------------------------
+  router.route('/soles/:id/edit')
+      // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
+      .get(function(req, res) {
+        var singleSole = Controllers.Sole.getByID(req.params.id);
+        res.render('soles-add', singleSole);
       });
 
   // on routes that end in /soles/add/

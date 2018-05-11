@@ -6,7 +6,7 @@
 
 <div class="row" style="padding-top:20px;">
 	<div class="col offset-s10 s2 offset-m9 m3 offset-l8 l4">
-		<a ui-sref="question-submit" class="btn-floating btn-large waves-effect waves-light red">
+		<a href="/questions/add" class="btn-floating btn-large waves-effect waves-light red">
 			<i class="material-icons">add</i>
 		</a>
 	</div>
@@ -20,12 +20,7 @@
 					<div class="input-field">
 						<input id="search" type="search"
                                class="keep-bottom"
-                               placeholder="Search by keyword"
-                               ng-model="Search.term"
-                               ng-model-options="{ debounce: 500 }"
-                               ng-focus="typing = true"
-                               ng-blur="typing = false;timeoutReached = false;"
-                               ng-change="Search.searchChanged()">
+                               placeholder="Search by keyword">
                         <label class="no-transform" for="search"><i class="material-icons">search</i></label>
 					</div>
 
@@ -43,7 +38,7 @@
 			<div class="alert alert-danger">{{ errorText }}</div>
 
 			<div class="row">
-				<div class="row" ng-hide="searching || executedSearch">
+				<div class="row" >
 					<h5 class="center-align">What are Big Questions?</h5>
 
 					<p>Big questions do not have an easy answer, and often lead to more questions.

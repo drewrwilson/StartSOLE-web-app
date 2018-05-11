@@ -94,8 +94,8 @@ router.route('/soles')
   router.route('/soles/:id')
       // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
       .get(function(req, res) {
-        const singleSole = {id: req.params.id};
-        res.json(singleSole);
+        var singleSole = Controllers.Sole.getByID(req.params.id);
+        res.render('soles-single', singleSole);
       });
 
   // on routes that end in /soles/add/

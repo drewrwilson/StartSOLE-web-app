@@ -1,0 +1,27 @@
+<h1>Soles page!</h1>
+
+<hr>
+
+
+{{#if soles}}
+<h3>You have {{soles.length}} SOLEs:</h3>
+<table>
+
+	<tr>
+		<th>Planned Date</th>
+		<th>Question</th>
+		<th>Status</th>
+	</tr>
+	{{#each soles}}
+
+		<tr>
+			<td>{{planned_date}}</td>
+			<td><a href="/soles/{{id}}">{{question.text}}</a></td>
+			<td>{{state}}</td>
+		</tr>
+	{{/each}}
+</table>
+
+{{else}}
+No SOLEs yet!
+{{/if}}

@@ -83,8 +83,8 @@ router.route('/soles')
 
   // get all the soles (accessed at GET http://localhost:8080/api/soles)
   .get(function(req, res) {
-    const allSoles = [{name: 'sole name',  author: 'drew'}]
-    res.json(allSoles);
+    var recentSoles = Controllers.Sole.getRecent();
+    res.render('soles', recentSoles);
   });
 
 

@@ -56,7 +56,8 @@ router.route('/howto')
 // static route for History of SOLE
 router.route('/resources')
   .get(function(req, res) {
-    res.render('resources');
+    var resources = Controllers.Resource.getAll();
+    res.render('resources', {resources: resources});
   });
 
 // static route for History of SOLE
@@ -65,15 +66,15 @@ router.route('/map')
     res.render('map');
   });
 
-  // on routes that end in /soles
-  // ----------------------------------------------------
-  router.route('/profile')
+// on routes that end in /soles
+// ----------------------------------------------------
+router.route('/profile')
 
-    // get all the soles (accessed at GET http://localhost:8080/api/soles)
-    .get(function(req, res) {
-      var profileData = Controllers.User.getProfileData();
-      res.render('profile', profileData);
-    });
+  // profile view
+  .get(function(req, res) {
+    var profileData = Controllers.User.getProfileData();
+    res.render('profile', profileData);
+  });
 
 
 // on routes that end in /soles

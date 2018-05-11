@@ -2,6 +2,96 @@
 
 <hr>
 
-{{#each questions}}
-  <li>{{text}} (<a href="#">Copy</a> | <a href="#">Favorite</a>)</li>
-{{/each}}
+
+
+<div class="row" style="padding-top:20px;">
+	<div class="col offset-s10 s2 offset-m9 m3 offset-l8 l4">
+		<a ui-sref="question-submit" class="btn-floating btn-large waves-effect waves-light red">
+			<i class="material-icons">add</i>
+		</a>
+	</div>
+	<div class="col s12 offset-m1 m10 offset-l3 l6">
+		<div class="card-panel" style="padding-bottom:inherit;margin-top: -30px;">
+
+			<form>
+				<div class="row">
+					<h5 class="center-align" style="margin-bottom: 1em;">Explore Our Questions</h5>
+
+					<div class="input-field">
+						<input id="search" type="search"
+                               class="keep-bottom"
+                               placeholder="Search by keyword"
+                               ng-model="Search.term"
+                               ng-model-options="{ debounce: 500 }"
+                               ng-focus="typing = true"
+                               ng-blur="typing = false;timeoutReached = false;"
+                               ng-change="Search.searchChanged()">
+                        <label class="no-transform" for="search"><i class="material-icons">search</i></label>
+					</div>
+
+
+
+					<standard-picker tags="Search.tags" onupdate="Search.searchChanged"></standard-picker>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col s12 offset-l1 l10">
+		<div class="card-panel">
+			<div class="alert alert-danger">{{ errorText }}</div>
+
+			<div class="row">
+				<div class="row" ng-hide="searching || executedSearch">
+					<h5 class="center-align">What are Big Questions?</h5>
+
+					<p>Big questions do not have an easy answer, and often lead to more questions.
+						They inspire deep conversations and encourage children to offer theories, work collaboratively,
+						use reason and think critically.  Big questions vary; they often tie in with what children are
+						learning at school, come from their every day experiences, or maybe even something completely new.
+						They typically connect more than one subject area.</p>
+            <p>Here are a few examples of big questions:</p>
+          {{#if questions}}
+          {{#each questions}}
+          <div class="col m12 l4 animated fadeIn"
+						 style="-webkit-animation-duration:300ms;">
+						<div class="card blue lighten-1">
+							<div class="question-card card-content center-align">
+								<div class="card-title white-text">{{text}}</div>
+
+							</div>
+						</div>
+					</div>
+          {{/each}}
+
+
+          {{else}}
+          <!-- No results -->
+          <div class="row" >
+            <div class="col s12 m8 offset-m2 l6 offset-l3" ui-sref="question-submit">
+              <div class="card red lighten-1">
+                <div class="question-card card-content center-align">
+                  <p class="card-title white-text text-darken-4 center-align valign">Nothing here...yet</p>
+                  <p class="flow-text white-text text-darken-4 center-align valign"
+                     style="margin:10px">
+                    Share your own questions with the SOLE community.<br>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End No results -->
+          {{/if}}
+
+				</div>
+
+
+			</div>
+
+
+
+
+		</div>
+	</div>
+</div>

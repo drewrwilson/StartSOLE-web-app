@@ -50,7 +50,7 @@ router.route('/history')
 // static route for History of SOLE
 router.route('/how')
   .get(function(req, res) {
-    res.render('howto');
+    res.render('how-to-sole');
   });
 
 // static route for History of SOLE

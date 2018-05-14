@@ -56,6 +56,12 @@ router.route('/how')
     res.render('how-to-sole');
   });
 
+// static route for History of SOLE
+router.route('/terms-of-use')
+  .get(function(req, res) {
+    res.render('terms-of-use');
+  });
+
 // routes for resources
 router.route('/resources')
   .get(function(req, res) {

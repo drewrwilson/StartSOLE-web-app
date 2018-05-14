@@ -1,7 +1,8 @@
 var User = module.exports = {};
 
 //example function that returns data for the home view
-User.getProfileData = function getProfileData() {
+User.getProfileData = new Promise((resolve, reject) => {
+
   var profileData = {
     firstName: 'Drew',
     lastName: 'Wilson',
@@ -10,5 +11,6 @@ User.getProfileData = function getProfileData() {
     ceusEarned: 0
   };
 
-  return profileData;
-}
+  resolve(profileData);
+
+});

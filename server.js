@@ -62,6 +62,12 @@ router.route('/terms-of-use')
     res.render('terms-of-use');
   });
 
+// static route for History of SOLE
+router.route('/privacy')
+  .get(function(req, res) {
+    res.render('privacy');
+  });
+
 // routes for resources
 router.route('/resources')
   .get(function(req, res) {

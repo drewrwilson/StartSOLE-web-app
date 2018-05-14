@@ -9,10 +9,9 @@ This uses the following tools:
  * Express 4
  * Handlebars for templating
 
-
 # Tips
 
-Install Supervisor so you don't have to relaunch the server everytime you make
+Install Supervisor so you don't have to relaunch the server every time you make
 a change.
 
 `npm install supervisor -g`
@@ -20,3 +19,10 @@ a change.
 Then you can run the app from the terminal:
 
 `supervisor server.js`
+
+Then open your browser and point it to `http:\\localhost:8080` to see the page
+
+# Things we want to do in the future
+
+ * Use SASS to keep styles well structured and clean
+ * Use React for some frontend views

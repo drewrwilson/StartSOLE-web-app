@@ -88,6 +88,14 @@ router.route('/register')
     res.render('register');
   });
 
+  // routes for user registration
+  // ----------------------------------------------------
+  router.route('/login')
+
+    // profile view
+    .get(function(req, res) {
+      res.render('login');
+    });
 
 // routes for soles
 // ----------------------------------------------------

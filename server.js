@@ -79,6 +79,15 @@ router.route('/profile')
     res.render('profile', profileData);
   });
 
+// routes for user registration
+// ----------------------------------------------------
+router.route('/register')
+
+  // profile view
+  .get(function(req, res) {
+    res.render('register');
+  });
+
 
 // routes for soles
 // ----------------------------------------------------

@@ -132,7 +132,11 @@ Sole.getRecent = function (limit) {
         {
           id: "11111",
           state: "completed",
-          planned_date: "20180428182142",
+          planned_date:  {
+            day: "8",
+            month: "November",
+            year: "1897"
+          },
           question: {
             id: "bD086jgL9D",
             text: "What is up with the weather?"
@@ -143,7 +147,11 @@ Sole.getRecent = function (limit) {
         {
           id: "22222",
           state: "completed",
-          planned_date: "20180428182142",
+          planned_date:  {
+            day: "2",
+            month: "October",
+            year: "1869"
+          },
           question: {
             text: 'Where does language come from?',
             id: '1'
@@ -154,7 +162,11 @@ Sole.getRecent = function (limit) {
         {
           id: "33333",
           state: "completed",
-          planned_date: "20180428182142",
+          planned_date:  {
+            day: "21",
+            month: "January",
+            year: "1929"
+          },
           question: {
             text: 'Do bugs feel?',
             id: '2'
@@ -165,7 +177,11 @@ Sole.getRecent = function (limit) {
         {
           id: "444444",
           state: "completed",
-          planned_date: "20180428182142",
+          planned_date:  {
+            day: "31",
+            month: "May",
+            year: "1963"
+          },
           question: {
             text: 'How do new species appear?',
             id: '3'

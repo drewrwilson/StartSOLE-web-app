@@ -15,7 +15,7 @@
                     {{#each soles}}
 
                         <div class="col s12">
-                                <div class="completed-sole border_upcoming_sole">
+                                <div class="card-panel completed-sole border_upcoming_sole">
                                     <img src="images/logos/sole-card-logo.jpg"
                                          class="avatar-image hide-on-small-and-down">
                                     <div class="card-title completed-sole">
@@ -24,12 +24,12 @@
                                     </div>
                                     <div class="completed-sole-date">
                                         <span class="sole-day">
-                                            30
+                                            {{planned_date.day}}
                                         </span>
                                         <span class="sole-month-year">
-                                            May
+                                            {{planned_date.month}}
                                             <br>
-                                            1985
+                                            {{planned_date.year}}
                                         </span>
                                     </div>
                                 </div>

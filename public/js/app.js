@@ -11,3 +11,8 @@ function initScrollSpy() {
         M.ScrollSpy.init(elems, {});
     });
 }
+
+function initTabs() {
+    var el = document.querySelectorAll('.tabs');
+    M.Tabs.init(el, {});
+}

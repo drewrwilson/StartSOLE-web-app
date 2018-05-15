@@ -4,6 +4,9 @@ body > header > nav {
     border-bottom: 1px solid lightgrey;
 }
 
+.sidenav span.badge {
+    position: absolute;
+}
 .brand-logo {
     padding-right: 10px !important;
     font-size: 20px !important;

@@ -11,30 +11,32 @@
                         <li class="tab col s4 disabled"><a href="#completed">Completed</a></li>
                     </ul>
                 </div>
-                <div id="planned" class="col s12">
+                <div id="planned">
                     {{#each soles}}
 
                         <div class="col s12">
-                                <div class="card-panel completed-sole border_upcoming_sole">
-                                    <img src="images/logos/sole-card-logo.jpg"
-                                         class="avatar-image hide-on-small-and-down">
-                                    <div class="card-title completed-sole">
-                                        {{question.text}}
-                                        <p>Class 7C</p>
-                                    </div>
-                                    <div class="completed-sole-date">
-                                        <span class="sole-day">
-                                            {{planned_date.day}}
-                                        </span>
-                                        <span class="sole-month-year">
-                                            {{planned_date.month}}
-                                            <br>
-                                            {{planned_date.year}}
-                                        </span>
-                                    </div>
+                            <div class="card-panel sole-card border_upcoming_sole">
+                                <img src="images/logos/sole-card-logo.jpg"
+                                     class="avatar-image hide-on-small-and-down">
+                                <div class="question-text">
+                                    {{question.text}}
+                                </div>
+                                <p class="sole-tag">
+                                    Class 7C
+                                </p>
+                                <div class="sole-card-date">
+                                    <span class="sole-day">
+                                        {{planned_date.day}}
+                                    </span>
+                                    <span class="sole-month-year">
+                                        {{planned_date.month}}
+                                        <br>
+                                        {{planned_date.year}}
+                                    </span>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <div class="col s12 plan_download_container right-align">
                             <a class="waves-effect waves-light green btn">
                                 Download Plan

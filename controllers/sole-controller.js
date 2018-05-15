@@ -134,7 +134,7 @@ Sole.getRecent = function (limit) {
           state: "completed",
           planned_date:  {
             day: "8",
-            month: "November",
+            month: "Nov",
             year: "1897"
           },
           question: {
@@ -149,7 +149,7 @@ Sole.getRecent = function (limit) {
           state: "completed",
           planned_date:  {
             day: "2",
-            month: "October",
+            month: "Oct",
             year: "1869"
           },
           question: {
@@ -164,7 +164,7 @@ Sole.getRecent = function (limit) {
           state: "completed",
           planned_date:  {
             day: "21",
-            month: "January",
+            month: "Jan",
             year: "1929"
           },
           question: {

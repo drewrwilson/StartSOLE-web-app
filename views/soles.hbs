@@ -6,8 +6,8 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
-                        <li class="tab col s4"><a href="#planned">Planned</a></li>
-                        <li class="tab col s4"><a class="active" href="#reflect">Reflect</a></li>
+                        <li class="tab col s4"><a class="active" href="#planned">Planned</a></li>
+                        <li class="tab col s4"><a href="#reflect">Reflect</a></li>
                         <li class="tab col s4 disabled"><a href="#completed">Completed</a></li>
                     </ul>
                 </div>
@@ -15,7 +15,7 @@
                     {{#each soles}}
 
                         <div class="col s12">
-                            <div class="card-panel sole-card border_upcoming_sole">
+                            <div class="card-panel sole-card">
                                 <img src="images/logos/sole-card-logo.jpg"
                                      class="avatar-image hide-on-small-and-down">
                                 <div class="question-text">
@@ -34,20 +34,23 @@
                                         {{planned_date.year}}
                                     </span>
                                 </div>
+                                <div class="sole-action-buttons">
+                                    <a class="waves-effect waves-light green btn">
+                                        Download Plan
+                                    </a>
+                                    <a class="waves-effect waves-light red btn">
+                                        Reflect
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
-                    </div>
+
                         <div class="col s12 plan_download_container right-align">
-                            <a class="waves-effect waves-light green btn">
-                                Download Plan
-                            </a>
+
                         </div>
 
                     {{/each}}
-
-
-
-
 
                 </div>
                 <div id="reflect" class="col s12">Test 2</div>

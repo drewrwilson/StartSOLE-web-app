@@ -153,7 +153,8 @@ Sole.getRecent = function (limit) {
             year: "1869"
           },
           question: {
-            text: 'Where does language come from?',
+            text: 'Where does language come from?  Here is a super long question about the very thing that we are' +
+            ' asking about that is super long and very long so it is long.',
             id: '1'
           },
           completed: true,

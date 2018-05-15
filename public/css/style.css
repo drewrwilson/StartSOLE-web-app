@@ -35,31 +35,38 @@ header, main, footer {
 /*SOLE plan cards*/
 .sole-card {
     min-height: 124px;
-    /*!*padding-left: 114px;*!*/
     position: relative;
 }
 
 .sole-card>.question-text {
     margin-left:80px;
+    margin-right:70px;
     font-size: 18px;
 }
 
 .sole-card>.sole-tag {
-    margin: 0px 0px 0px 80px;
+    margin: 0 0 0 80px;
     color: #777;
     font-size: 16px;
 }
 
-/*.question-text.sole-card {*/
-    /*font-size: 18px;*/
-    /*margin-right: 90px;*/
-/*}*/
+.sole-card>.sole-action-buttons {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
 
-/*@media screen and (max-width: 600px) {*/
-/*.sole-card {*/
-        /*padding-left: 18px;*/
-    /*}*/
-/*}*/
+@media screen and (max-width: 600px) {
+
+    .sole-card>.question-text {
+        margin-left:0;
+    }
+
+    .sole-card>.sole-tag {
+        margin: 0;
+    }
+
+}
 
 .sole-card-date {
     position: absolute !important;
@@ -69,32 +76,15 @@ header, main, footer {
     padding-top: 5px;
     padding-bottom: 5px;
 }
-/*.sole-card p {*/
-    /*color: rgba(0, 0, 0, 0.71);*/
-    /*margin-top: 0px;*/
-/*}*/
-
-/*.sole-card .sole_card_button{*/
-    /*float: right;*/
-    /*margin-right: 10px;*/
-    /*margin-top: 15px;*/
-/*}*/
 
 .avatar-image {
     position: absolute;
-    /*!*width: 84px;*!*/
-    /*!*height: 84px;*!*/
-    /*!*overflow: hidden;*!*/
-    /*!*left: 15px;*!*/
-    /*display: inline-block;*/
-    /*vertical-align: middle;*/
 }
 
 .sole-day {
     float: left;
     font-size: 36px;
     line-height: 30px;
-    /*padding-top: 8px;*/
     padding-right: 4px;
     padding-left: 3px;
     font-weight: 300;
@@ -104,7 +94,6 @@ header, main, footer {
     float: right;
     font-size: 14px;
     line-height: 16px;
-    /*padding-top: 2px;*/
     padding-right: 7px;
     font-weight: 200;
 }

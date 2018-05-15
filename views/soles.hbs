@@ -16,14 +16,20 @@
 
                         <div class="col s12">
                             <div class="card-panel sole-card">
-                                <img src="images/logos/sole-card-logo.jpg"
-                                     class="avatar-image hide-on-small-and-down">
+                                <a href="/soles/{{id}}">
+                                    <img src="images/logos/sole-card-logo.jpg"
+                                         class="avatar-image hide-on-small-and-down">
+                                </a>
                                 <div class="question-text">
-                                    {{question.text}}
+                                    <a href="/soles/{{id}}" class="black-text">
+                                        {{question.text}}
+                                    </a>
                                 </div>
-                                <p class="sole-tag">
-                                    Class 7C
-                                </p>
+                                {{#if tag}}
+                                    <p class="sole-tag">
+                                        Class 7C
+                                    </p>
+                                {{/if}}
                                 <div class="sole-card-date">
                                     <span class="sole-day">
                                         {{planned_date.day}}
@@ -46,9 +52,6 @@
                             </div>
                         </div>
 
-                        <div class="col s12 plan_download_container right-align">
-
-                        </div>
 
                     {{/each}}
 

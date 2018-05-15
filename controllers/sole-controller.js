@@ -141,6 +141,7 @@ Sole.getRecent = function (limit) {
             id: "bD086jgL9D",
             text: "What is up with the weather?"
           },
+          tag: 'Math 7C',
           completed: true,
           reflected: true
         },
@@ -157,6 +158,7 @@ Sole.getRecent = function (limit) {
             ' asking about that is super long and very long so it is long.',
             id: '1'
           },
+          tag: 'ELA 2B',
           completed: true,
           reflected: true
         },

@@ -6,86 +6,35 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
-                        <li class="tab col s4"><a class="active" href="#planned">Planned</a></li>
-                        <li class="tab col s4"><a href="#reflect">Reflect</a></li>
-                        <li class="tab col s4 disabled"><a href="#completed">Completed</a></li>
+                        <li class="tab col s4">
+                            <a class="active" href="#planned">Planned{{#if planned}} ({{planned.length}}){{/if}}</a>
+                        </li>
+                        <li class="tab col s4 {{#unless reflect}}disabled{{/unless}}">
+                            <a href="#reflect">Reflect{{#if reflect}} ({{reflect.length}}){{/if}}</a>
+                        </li>
+                        <li class="tab col s4 {{#unless completed}}disabled{{/unless}}">
+                            <a href="#completed">Completed{{#if completed}} ({{completed.length}}){{/if}}</a>
+                        </li>
                     </ul>
                 </div>
-                <div id="planned">
-                    {{#each soles}}
-
-                        <div class="col s12">
-                            <div class="card-panel sole-card">
-                                <a href="/soles/{{id}}">
-                                    <img src="images/logos/sole-card-logo.jpg"
-                                         class="avatar-image hide-on-small-and-down">
-                                </a>
-                                <div class="question-text">
-                                    <a href="/soles/{{id}}" class="black-text">
-                                        {{question.text}}
-                                    </a>
-                                </div>
-                                {{#if tag}}
-                                    <p class="sole-tag">
-                                        Class 7C
-                                    </p>
-                                {{/if}}
-                                <div class="sole-card-date">
-                                    <span class="sole-day">
-                                        {{planned_date.day}}
-                                    </span>
-                                    <span class="sole-month-year">
-                                        {{planned_date.month}}
-                                        <br>
-                                        {{planned_date.year}}
-                                    </span>
-                                </div>
-                                <div class="sole-action-buttons">
-                                    <a class="waves-effect waves-light green btn">
-                                        Download Plan
-                                    </a>
-                                    <a class="waves-effect waves-light red btn">
-                                        Reflect
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                    {{/each}}
-
+                <div id="planned" class="col s12">
+                    {{#if planned}}
+                        {{#each planned}}
+                            {{> sole-card}}
+                        {{/each}}
+                    {{/if}}
                 </div>
-                <div id="reflect" class="col s12">Test 2</div>
-                <div id="completed" class="col s12">Test 3</div>
+                <div id="reflect" class="col s12">
+                    {{#each reflect}}
+                        {{> sole-card}}
+                    {{/each}}
+                </div>
+                <div id="completed" class="col s12">
+                    {{#each completed}}
+                        {{> sole-card}}
+                    {{/each}}
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-
-{{#if soles}}
-<h3>You have {{soles.length}} SOLEs:</h3>
-<table class="responsive-table">
-
-	<tr>
-		<th>Planned Date</th>
-		<th>Question</th>
-		<th>Status</th>
-	</tr>
-	{{#each soles}}
-
-		<tr>
-			<td>{{planned_date}}</td>
-			<td><a href="/soles/{{id}}">{{question.text}}</a></td>
-			<td>{{state}}</td>
-		</tr>
-	{{/each}}
-</table>
-
-{{else}}
-No SOLEs yet!
-{{/if}}

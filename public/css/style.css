@@ -32,6 +32,11 @@ header, main, footer {
     }
 }
 
+/*Helper classes*/
+.handy {
+    cursor: pointer;
+}
+
 /*SOLE plan cards*/
 .sole-card {
     min-height: 124px;

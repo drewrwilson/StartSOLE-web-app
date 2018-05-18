@@ -128,7 +128,119 @@ Sole.getByID = function (id) {
 Sole.getRecent = function (limit) {
   return new Promise((resolve, reject) => {
     var soles = {
-      soles: [
+      planned: [
+        {
+          id: "11111",
+          state: "planned",
+          planned_date:  {
+            day: "8",
+            month: "Nov",
+            year: "1897"
+          },
+          question: {
+            id: "bD086jgL9D",
+            text: "What is up with the weather?"
+          },
+          tag: 'Math 7C'
+        },
+        {
+          id: "22222",
+          state: "in_planning",
+          planned_date:  {
+            day: "2",
+            month: "Oct",
+            year: "1869"
+          },
+          question: {
+            text: 'Where does language come from?  Here is a super long question about the very thing that we are' +
+            ' asking about that is super long and very long so it is long.',
+            id: '1'
+          },
+          tag: 'ELA 2B'
+        },
+        {
+          id: "33333",
+          state: "in_planning",
+          planned_date:  {
+            day: "21",
+            month: "Jan",
+            year: "1929"
+          },
+          question: {
+            text: 'Do bugs feel?',
+            id: '2'
+          }
+        },
+        {
+          id: "444444",
+          state: "planned",
+          planned_date:  {
+            day: "31",
+            month: "May",
+            year: "1963"
+          },
+          question: {
+            text: 'How do new species appear?',
+            id: '3'
+          }
+        }],
+      reflect: [
+        {
+          id: "11111",
+          state: "in_facilitation",
+          planned_date:  {
+            day: "8",
+            month: "Nov",
+            year: "1897"
+          },
+          question: {
+            id: "bD086jgL9D",
+            text: "Would you trust a robot to drop an atomic bomb?"
+          },
+          tag: 'Math 7C'
+        },
+        {
+          id: "22222",
+          state: "facilitated",
+          planned_date:  {
+            day: "2",
+            month: "Oct",
+            year: "1869"
+          },
+          question: {
+            text: 'Where does language come from?  Here is a super long question about the very thing that we are' +
+            ' asking about that is super long and very long so it is long.',
+            id: '1'
+          },
+          tag: 'ELA 2B'
+        },
+        {
+          id: "33333",
+          state: "facilitate",
+          planned_date:  {
+            day: "21",
+            month: "Jan",
+            year: "1929"
+          },
+          question: {
+            text: 'Could you hear if your ears were square?',
+            id: '2'
+          }
+        },
+        {
+          id: "444444",
+          state: "reflect",
+          planned_date:  {
+            day: "31",
+            month: "May",
+            year: "1963"
+          },
+          question: {
+            text: 'What is the future of teaching?',
+            id: '3'
+          }
+        }],
+      completed: [
         {
           id: "11111",
           state: "completed",
@@ -141,58 +253,10 @@ Sole.getRecent = function (limit) {
             id: "bD086jgL9D",
             text: "What is up with the weather?"
           },
-          tag: 'Math 7C',
-          completed: true,
-          reflected: true
-        },
-        {
-          id: "22222",
-          state: "completed",
-          planned_date:  {
-            day: "2",
-            month: "Oct",
-            year: "1869"
-          },
-          question: {
-            text: 'Where does language come from?  Here is a super long question about the very thing that we are' +
-            ' asking about that is super long and very long so it is long.',
-            id: '1'
-          },
-          tag: 'ELA 2B',
-          completed: true,
-          reflected: true
-        },
-        {
-          id: "33333",
-          state: "completed",
-          planned_date:  {
-            day: "21",
-            month: "Jan",
-            year: "1929"
-          },
-          question: {
-            text: 'Do bugs feel?',
-            id: '2'
-          },
-          completed: true,
-          reflected: true
-        },
-        {
-          id: "444444",
-          state: "completed",
-          planned_date:  {
-            day: "31",
-            month: "May",
-            year: "1963"
-          },
-          question: {
-            text: 'How do new species appear?',
-            id: '3'
-          },
-          completed: true,
-          reflected: true
-        }]
-      };
+          tag: 'Math 7C'
+        }
+      ]
+    };
 
     resolve(soles);
   })

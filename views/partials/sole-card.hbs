@@ -1,0 +1,35 @@
+<div class="card-panel sole-card">
+    <a href="/soles/{{id}}">
+        <img src="images/logos/sole-card-logo.jpg"
+             class="avatar-image hide-on-small-and-down">
+    </a>
+    <div class="question-text">
+        <a href="/soles/{{id}}" class="black-text">
+            {{question.text}}
+        </a>
+    </div>
+    {{#if tag}}
+        <p class="sole-tag">
+            Class 7C
+        </p>
+    {{/if}}
+    <div class="sole-card-date">
+        <span class="sole-day">
+            {{planned_date.day}}
+        </span>
+        <span class="sole-month-year">
+            {{planned_date.month}}
+            <br>
+            {{planned_date.year}}
+        </span>
+    </div>
+    <div class="sole-action-buttons">
+        <a class="waves-effect waves-light green btn">
+            Download Plan
+        </a>
+        <a class="waves-effect waves-light red btn">
+            Reflect
+        </a>
+    </div>
+
+</div>

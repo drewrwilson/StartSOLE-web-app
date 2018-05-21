@@ -4,12 +4,37 @@
 // =============================================================================
 
 // call the packages we need
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
-var bodyParser = require('body-parser');
-var hbs        = require('express-hbs');
-var path       = require('path');
-var Controllers       = require('./controllers/controllers.js');
+var express     = require('express');        // call express
+var app         = express();                 // define our app using express
+var bodyParser  = require('body-parser');
+var hbs         = require('express-hbs');
+var path        = require('path');
+var Controllers = require('./controllers/controllers.js');
+
+var Parse       =  require('parse/node');
+var soleConfig = require('./sole-config.js');
+
+// connect to parse server
+Parse.initialize(soleConfig.appId);
+Parse.serverURL = soleConfig.serverUrl;
+
+const username = process.argv[2]; //1st parameter after node test-parse.js USERNAME PASSWORD
+const password = process.argv[3]; //2nd parameter after node test-parse.js USERNAME PASSWORD
+//note username is email address
+
+var sessionToken = null;
+Parse.User.enableUnsafeCurrentUser();
+Parse.User.logIn(username, password)
+  .done((user)=>{
+    console.log('Logged in!');
+    console.log('---');
+		sessionToken = Parse.User.current().getSessionToken();
+		console.log('current user token: ', sessionToken);
+		console.log('---');
+  })
+  .catch((err)=>{
+    console.log('error logging in', err);
+  })
 
 // set the view engine
 app.set('view engine', 'hbs');
@@ -39,9 +64,37 @@ var router = express.Router();              // get an instance of the express Ro
 //       nice encouraging message, etc etc
 router.route('/')
   .get((req, res) => {
-    Controllers.Home.getHomeData().then((homeData)=> {
-      res.render('home', homeData);
-    });
+
+    Controllers.Home.getHomeData()
+      .then((homeData)=> {
+        Controllers.Question.getAll(sessionToken.r)
+          .then((questions)=>{
+            console.log('got all questions:');
+            console.log(questions);
+            console.log('---');
+            homeData.questions.mine = questions.questions;
+
+            Controllers.Question.getFavorites(sessionToken.r)
+              .then((favoriteQuestions)=>{
+                console.log('got fav questions:');
+                console.log(favoriteQuestions);
+                console.log('---');
+                homeData.questions.favorites = favoriteQuestions;
+
+                res.render('home', homeData); //display view with question data
+              })
+              .catch((err)=>{
+                console.log('error getting fav questions!', err);
+              })
+          })
+          .catch((err)=>{
+            console.log('error getting questions!', err);
+          })
+      })
+      .catch((err)=>{
+        console.log('error!', err);
+      })
+
 
   });
 
@@ -156,10 +209,10 @@ router.route('/soles')
   // on routes that end in /questions
   // ----------------------------------------------------
   router.route('/questions')
-    // get all the soles (accessed at GET http://localhost:8080/api/soles)
+    // get all the soles (accessed at GET http://localhost:8080/questions)
     .get(function(req, res) {
-      Controllers.Question.getRecent().then((recentQuestions)=>{
-        res.render('questions', recentQuestions);
+      Controllers.Question.getAll().then((allQuestions)=>{
+        res.render('questions', allQuestions);
       });
     });
 

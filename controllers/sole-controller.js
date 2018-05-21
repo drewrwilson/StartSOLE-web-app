@@ -1,263 +1,31 @@
 var Sole = module.exports = {};
+var Parse       =  require('parse/node');
+var soleConfig = require('../sole-config.js');
+
+// connect to parse server
+Parse.initialize(soleConfig.appId);
+Parse.serverURL = soleConfig.serverUrl;
 
 //returns data for a question with a given ID
-Sole.getByID = function (id) {
-  return new Promise((resolve, reject) => {
-    var soleData = {
-      sole: {
-        id: "otebnN8GZS",
-        state: "completed",
-        subject: "top.lifeskills",
-        grade: "edu.12",
-        tag: "World History",
-        question: {
-          id: "bD086jgL9D",
-          text: "What is up with the weather?"
-        },
-        quickstart: true,
-        planned_date: "20180428182142",
-        planned_duration: 60.0,
-        num_groups: 5,
-        plan_state: 6,
-        target_observations: [
-          "session.observation.collaborating",
-          "session.observation.technology",
-          "session.observation.respectful"
-        ],
-        materials: [
-          "material.poster_paper",
-          "material.physical",
-          "material.other"
-        ],
-        num_students: 20,
-        num_devices: 5,
-        group_organization: true,
-        group_sharing: false,
-        why_not_share: "kids are cray",
-        "self-assessment": true,
-        content_objective: "objective.content.deepen",
-        group_formation: 3,
-        use_app: true,
-        facilitation : {
-          phase : "close",
-          timer: {
-            question: {
-              "passed":15.813686013221741,
-              "adjustment":0,
-              "startTime":1524932592.1023932,
-              "duration":120,
-              "isRunning":false
-            },
-            investigate: {
-              "passed":-61.706183910369873,
-              "adjustment":104.18631398677826,
-              "startTime":1524932608.014133,
-              "duration":2280,
-              "isRunning":false
-            },
-            review: {
-              "passed":0,
-              "adjustment":0,
-              "startTime":1524932690.752615,
-              "duration":120,
-              "isRunning":false
-            },
-            close: {
-              "passed":-2928.7478069067001,
-              "adjustment":2941.7061839103699,
-              "startTime":1524932714.1467371,
-              "duration":600,
-              "isRunning":false
-            }
-          },
-          question: {
-            "secondsPassedDoneParts":0,
-            "inheritedTimerAdjustment":0,
-            "userTimerAdjustment":0,
-            "currentPart":0
-          },
-          investigate: {
-            "secondsPassedDoneParts":0,
-            "inheritedTimerAdjustment":104.18631398677826,
-            "userTimerAdjustment":0,
-            "currentPart":0
-          },
-          close : {
-            "secondsPassedDoneParts":0,
-            "inheritedTimerAdjustment":2941.7061839103699,
-            "userTimerAdjustment":0,
-            "currentPart":0
-          },
-          review : {
-            "secondsPassedDoneParts":11.508228063583374,
-            "inheritedTimerAdjustment":-0,
-            "userTimerAdjustment":0,
-            "currentPart":4
-          }
-
-        },
-        reflection : {
-          state: 16,
-          need_help: true,
-          help_text: "I need help with getting students into groups",
-          form_groups: true,
-          group_sharing: true,
-          ground_rules: true,
-          self_assess: true,
-          communication: 75,
-          communication_notes: "some notes about communication",
-          technology: 85,
-          technology_notes: "some notes about technology",
-          collaboration: 95,
-          collaboration_notes: "some notes about collaboration",
-          type_of_thinking: "reflection.type_of_thinking.recall",
-          type_of_thinking_notes: "they generally copied info that they found",
-          content_objective_achieved: "reflect.agree.agree",
-          content_objective_notes: "they understood basic concepts",
-          notes: "students were often off task"
-        }
-      }
-    };
-
-    resolve(soleData);
-  })
+Sole.getByID = function (id, sessionToken) {
+  return Parse.User.become(sessionToken)
+    .then((user)=>{
+      return Parse.Cloud.run('sole.webappGetSoleByID', {
+        id: id,
+        sessionToken: sessionToken
+      })
+    })
 }
 
 // returns an array of recent approved soles. defaults to limit 10.
 // optional: limit is the number of soles to return
-Sole.getRecent = function (limit) {
-  return new Promise((resolve, reject) => {
-    var soles = {
-      planned: [
-        {
-          id: "11111",
-          state: "planned",
-          planned_date:  {
-            day: "8",
-            month: "Nov",
-            year: "1897"
-          },
-          question: {
-            id: "bD086jgL9D",
-            text: "What is up with the weather?"
-          },
-          tag: 'Math 7C'
-        },
-        {
-          id: "22222",
-          state: "in_planning",
-          planned_date:  {
-            day: "2",
-            month: "Oct",
-            year: "1869"
-          },
-          question: {
-            text: 'Where does language come from?  Here is a super long question about the very thing that we are' +
-            ' asking about that is super long and very long so it is long.',
-            id: '1'
-          },
-          tag: 'ELA 2B'
-        },
-        {
-          id: "33333",
-          state: "in_planning",
-          planned_date:  {
-            day: "21",
-            month: "Jan",
-            year: "1929"
-          },
-          question: {
-            text: 'Do bugs feel?',
-            id: '2'
-          }
-        },
-        {
-          id: "444444",
-          state: "planned",
-          planned_date:  {
-            day: "31",
-            month: "May",
-            year: "1963"
-          },
-          question: {
-            text: 'How do new species appear?',
-            id: '3'
-          }
-        }],
-      reflect: [
-        {
-          id: "11111",
-          state: "in_facilitation",
-          planned_date:  {
-            day: "8",
-            month: "Nov",
-            year: "1897"
-          },
-          question: {
-            id: "bD086jgL9D",
-            text: "Would you trust a robot to drop an atomic bomb?"
-          },
-          tag: 'Math 7C'
-        },
-        {
-          id: "22222",
-          state: "facilitated",
-          planned_date:  {
-            day: "2",
-            month: "Oct",
-            year: "1869"
-          },
-          question: {
-            text: 'Where does language come from?  Here is a super long question about the very thing that we are' +
-            ' asking about that is super long and very long so it is long.',
-            id: '1'
-          },
-          tag: 'ELA 2B'
-        },
-        {
-          id: "33333",
-          state: "facilitate",
-          planned_date:  {
-            day: "21",
-            month: "Jan",
-            year: "1929"
-          },
-          question: {
-            text: 'Could you hear if your ears were square?',
-            id: '2'
-          }
-        },
-        {
-          id: "444444",
-          state: "reflect",
-          planned_date:  {
-            day: "31",
-            month: "May",
-            year: "1963"
-          },
-          question: {
-            text: 'What is the future of teaching?',
-            id: '3'
-          }
-        }],
-      completed: [
-        {
-          id: "11111",
-          state: "completed",
-          planned_date:  {
-            day: "8",
-            month: "Nov",
-            year: "1897"
-          },
-          question: {
-            id: "bD086jgL9D",
-            text: "What is up with the weather?"
-          },
-          tag: 'Math 7C'
-        }
-      ]
-    };
-
-    resolve(soles);
-  })
+Sole.getAll = function (sessionToken) {
+  return Parse.User.become(sessionToken)
+    .then((user)=>{
+      return Parse.Cloud.run('sole.webappGetAllSoles', {
+        offset: 0,
+        limit: 100,
+    		sessionToken: sessionToken
+    	})
+    })
 }

@@ -1,16 +1,18 @@
 var User = module.exports = {};
+var Parse       =  require('parse/node');
+var soleConfig = require('../sole-config.js');
+
+// connect to parse server
+Parse.initialize(soleConfig.appId);
+Parse.serverURL = soleConfig.serverUrl;
 
 //example function that returns data for the home view
-User.getProfileData = new Promise((resolve, reject) => {
-
-  var profileData = {
-    firstName: 'Drew',
-    lastName: 'Wilson',
-    schoolName: 'My Highschool',
-    pointsEarned: 1337,
-    ceusEarned: 0
-  };
-
-  resolve(profileData);
-
-});
+User.getProfileData = function (sessionToken) {
+  return Parse.User.become(sessionToken)
+    .then((user)=>{
+      return Parse.Cloud.run('user.getProfile', {
+        email: 'example@example.com',
+        sessionToken: sessionToken
+      })
+    })
+};

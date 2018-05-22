@@ -10,7 +10,7 @@ Parse.serverURL = soleConfig.serverUrl;
 User.getProfileData = function (sessionToken) {
   return Parse.User.become(sessionToken)
     .then((user)=>{
-      return Parse.Cloud.run('user.getProfile', {
+      return Parse.Cloud.run('webapp.getProfile', {
         email: 'example@example.com',
         sessionToken: sessionToken
       })

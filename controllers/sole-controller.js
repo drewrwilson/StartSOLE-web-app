@@ -10,7 +10,7 @@ Parse.serverURL = soleConfig.serverUrl;
 Sole.getByID = function (id, sessionToken) {
   return Parse.User.become(sessionToken)
     .then((user)=>{
-      return Parse.Cloud.run('sole.webappGetSoleByID', {
+      return Parse.Cloud.run('webapp.getSoleByID', {
         id: id,
         sessionToken: sessionToken
       })
@@ -22,7 +22,7 @@ Sole.getByID = function (id, sessionToken) {
 Sole.getAll = function (sessionToken) {
   return Parse.User.become(sessionToken)
     .then((user)=>{
-      return Parse.Cloud.run('sole.webappGetAllSoles', {
+      return Parse.Cloud.run('webapp.getAllMySoles', {
         offset: 0,
         limit: 100,
     		sessionToken: sessionToken

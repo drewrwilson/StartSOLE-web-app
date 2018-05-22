@@ -10,31 +10,31 @@ Parse.serverURL = soleConfig.serverUrl;
 //returns data for a question with a given ID
 Question.getByID =  (id, sessionToken) => {
 
-  return Parse.User.become(sessionToken)
-    .then(user => {
-      return Parse.Cloud.run('question.webappFindByID', {
+  // return Parse.User.become(sessionToken)
+  //   .then(user => {
+      return Parse.Cloud.run('webapp.getQuestionByID', {
         id: id,
     		sessionToken: sessionToken
     	})
-    })
-    .catch((err)=>{
-      console.log(err);
-    })
+    // })
+    // .catch((err)=>{
+    //   console.log(err);
+    // })
 
 }
 Question.getFavorites = function (sessionToken) {
 
-  return Parse.User.become(sessionToken)
-    .then(user => {
-      return Parse.Cloud.run('question.webappFavs', {
+  // return Parse.User.become(sessionToken)
+  //   .then(user => {
+      return Parse.Cloud.run('webapp.getMyFavoriteQuestions', {
         offset: 0,
         limit: 100,
     		sessionToken: sessionToken
     	})
-    })
-    .catch(err=>{
-      console.log(err);
-    })
+    // })
+    // .catch(err=>{
+    //   console.log(err);
+    // })
 }
 
 // returns an array of recent approved questions. defaults to limit 10.
@@ -44,7 +44,7 @@ Question.getAll = function (sessionToken) {
   return Parse.User.become(sessionToken)
     .then(user => {
       const sessionToken = Parse.User.current().getSessionToken();
-      return Parse.Cloud.run('question.webappAllMine', {
+      return Parse.Cloud.run('webapp.getAllMyQuestions', {
         offset: 0,
         limit: 100,
         sessionToken: sessionToken

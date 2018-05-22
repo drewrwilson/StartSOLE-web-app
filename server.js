@@ -195,6 +195,7 @@ router.route('/soles')
       .get(function(req, res) {
         Controllers.Sole.getByID(req.params.id, sessionToken)
           .then((singleSole) => {
+            console.log(singleSole);
             res.render('soles-single', singleSole);
           })
           .catch((err)=>{console.log('error!', err);})
@@ -238,6 +239,7 @@ router.route('/soles')
       // get the question data with a given id
       .get(function(req, res) {
         Controllers.Question.getByID(req.params.id).then((questionData) => {
+          console.log(JSON.stringify(questionData));
           res.render('questions-single', questionData);
         });
       });

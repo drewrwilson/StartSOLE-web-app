@@ -32,13 +32,13 @@ No completed SOLEs yet
 <h3>My questions:</h3>
 <ul>
 {{#each questions.mine}}
-  <li>{{text}}</li>
+  <li> <a href="/questions/{{id}}">{{text}}</a> </li>
 {{/each}}
 </ul>
 
 <h3>My favorite questions:</h3>
 <ul>
 {{#each questions.favorites}}
-  <li>{{text}}</li>
+  <li><a href="/questions/{{id}}">{{text}}</a></li>
 {{/each}}
 </ul>

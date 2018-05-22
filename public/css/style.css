@@ -1,7 +1,11 @@
 body {background-color: #f4f4f4}
 
-body > header > nav {
+nav {
     border-bottom: 1px solid lightgrey;
+}
+
+nav .brand-logo {
+    position:fixed;
 }
 
 .sidenav span.badge {

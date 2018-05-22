@@ -1,6 +1,12 @@
 <a href="/">Home</a> > <a href="/">Questions</a> > <strong>{{text}}</strong><br>
 
-<h1>{{text}}</h1>
+{{#if question}}
+<h1>{{question.text}}</h1>
 
-<a href="/questions/{{id}}/favorite">Favorite this question</a> |
-<a href="/questions/{{id}}/copy">Copy this question</a>
+<a href="/questions/{{question.id}}/favorite">Favorite this question</a> |
+<a href="/questions/{{question.id}}/copy">Copy this question</a>
+
+{{else}}
+<h2>No question with that ID.</h2>
+
+{{/if}}

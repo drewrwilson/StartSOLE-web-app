@@ -36,6 +36,16 @@ Parse.User.logIn(username, password)
     console.log('error logging in', err);
   })
 
+hbs.registerHelper('ifEquals',
+    function(a, b, opts) {
+        if (a == b) {
+            return opts.fn(this)
+        } else {
+            return opts.inverse(this)
+        }
+    }
+);
+
 // set the view engine
 app.set('view engine', 'hbs');
 

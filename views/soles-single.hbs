@@ -1,5 +1,7 @@
 <a href="/">Home</a> > <a href="/soles">Your SOLEs</a> > <strong>{{sole.question.text}}</strong><br>
 
+{{#if sole.sole}}
+
 <h1>{{sole.question.text}}</h1>
 
 
@@ -13,3 +15,6 @@
   {{/each}}
 
 </table>
+{{else}}
+  <h2>No SOLE found with that ID</h2>
+{{/if}}

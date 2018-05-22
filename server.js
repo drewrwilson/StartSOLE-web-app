@@ -79,6 +79,7 @@ router.route('/')
 
     Controllers.Question.getAll(sessionToken.r)
       .then((questions)=>{
+        console.log('questions', questions);
         console.log('got all questions:');
         console.log(questions);
         console.log('---');
@@ -195,7 +196,7 @@ router.route('/soles')
       .get(function(req, res) {
         Controllers.Sole.getByID(req.params.id, sessionToken)
           .then((singleSole) => {
-            console.log(singleSole);
+            //in case the id of the sole is invalid
             res.render('soles-single', singleSole);
           })
           .catch((err)=>{console.log('error!', err);})

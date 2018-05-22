@@ -31,6 +31,13 @@ function getAllMyQuestions(sessionToken) {
 	});
 }
 
+function getQuestionByID(id, sessionToken) {
+	return Parse.Cloud.run('question.webappFindByID', {
+		id: id,
+		sessionToken: sessionToken
+	});
+}
+
 //do a test login
 Parse.User.enableUnsafeCurrentUser();
 Parse.User.logIn(username, password)
@@ -40,16 +47,38 @@ Parse.User.logIn(username, password)
 		const currentUserToken = Parse.User.current().getSessionToken();
 		console.log('current user token: ', currentUserToken);
 		console.log('---');
-		getAllMyQuestions(currentUserToken).then((questions)=>{
-			console.log('got questions:');
-			console.log(questions);
-			console.log('---');
-		}).fail((err)=>{
-			console.log('error getting questions!', err);
-		})
-  }).fail((err)=> {
-    console.log('Error logging in!', err);
-  });
+		getAllMyQuestions(currentUserToken)
+			.then((questions)=>{
+				console.log('got all questions:');
+				console.log(questions);
+				console.log('---');
+				getFavQuestions(currentUserToken)
+					.then((questions)=>{
+						console.log('got fav questions:');
+						console.log(questions);
+						console.log('---');
+						console.log('going to try getting this question as a single now:', questions[0].id);
+						getQuestionByID(questions[0].id)
+							.then((question)=>{
+								console.log('got a single question:');
+								console.log('---');
+								console.log(JSON.stringify(question));
+							})
+							.fail((err)=>{
+								console.log('oops!');
+								console.log('error getting single question!', err);
+							})
+					})
+					.fail((err)=>{
+						console.log('error getting fav questions!', err);
+					})
+			})
+			.fail((err)=>{
+				console.log('error getting questions!', err);
+			})
+	  }).fail((err)=> {
+	    console.log('Error logging in!', err);
+	  });
 
 //   function getAndProcessDownloads(){
 //     return Parse.Cloud.run('report.getDownloads', {

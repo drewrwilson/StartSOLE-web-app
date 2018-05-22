@@ -65,36 +65,31 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
   .get((req, res) => {
 
-    Controllers.Home.getHomeData()
-      .then((homeData)=> {
-        Controllers.Question.getAll(sessionToken.r)
-          .then((questions)=>{
-            console.log('got all questions:');
-            console.log(questions);
+    var homeData = {soles: [],questions:[]};
+
+    Controllers.Question.getAll(sessionToken.r)
+      .then((questions)=>{
+        console.log('got all questions:');
+        console.log(questions);
+        console.log('---');
+        homeData.questions.mine = questions.questions;
+
+        Controllers.Question.getFavorites(sessionToken.r)
+          .then((favoriteQuestions)=>{
+            console.log('got fav questions:');
+            console.log(favoriteQuestions);
             console.log('---');
-            homeData.questions.mine = questions.questions;
+            homeData.questions.favorites = favoriteQuestions;
 
-            Controllers.Question.getFavorites(sessionToken.r)
-              .then((favoriteQuestions)=>{
-                console.log('got fav questions:');
-                console.log(favoriteQuestions);
-                console.log('---');
-                homeData.questions.favorites = favoriteQuestions;
-
-                res.render('home', homeData); //display view with question data
-              })
-              .catch((err)=>{
-                console.log('error getting fav questions!', err);
-              })
+            res.render('home', homeData); //display view with question data
           })
           .catch((err)=>{
-            console.log('error getting questions!', err);
+            console.log('error getting fav questions!', err);
           })
       })
       .catch((err)=>{
-        console.log('error!', err);
-      })
-
+        console.log('error getting questions!', err);
+      });
 
   });
 
@@ -142,7 +137,7 @@ router.route('/profile')
 
   // profile view
   .get((req, res) => {
-    Controllers.User.getProfileData
+    Controllers.User.getProfileData(sessionToken)
       .then((profileData) => {
         res.render('profile', profileData);
       });
@@ -173,9 +168,13 @@ router.route('/soles')
 
   // get all the soles (accessed at GET http://localhost:8080/api/soles)
   .get(function(req, res) {
-    Controllers.Sole.getRecent().then((recentSoles)=>{
-      res.render('soles', recentSoles);
-    });
+    Controllers.Sole.getAll(sessionToken)
+      .then(soles=>{
+        res.render('soles', soles);
+      })
+      .catch(err=>{
+        console.log('oops! error!', err);
+      })
 
   });
 
@@ -184,9 +183,11 @@ router.route('/soles')
   router.route('/soles/:id')
       // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
       .get(function(req, res) {
-        Controllers.Sole.getByID(req.params.id).then((singleSole) => {
-          res.render('soles-single', singleSole);
-        });
+        Controllers.Sole.getByID(req.params.id, sessionToken)
+          .then((singleSole) => {
+            res.render('soles-single', singleSole);
+          })
+          .catch((err)=>{console.log('error!', err);})
       });
   // on routes that end in /soles/:sole_id
   // ----------------------------------------------------

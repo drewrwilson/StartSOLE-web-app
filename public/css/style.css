@@ -5,7 +5,7 @@ nav {
 }
 
 nav .brand-logo {
-    position:fixed;
+    margin-top:5px;
 }
 
 .sidenav span.badge {
@@ -13,10 +13,30 @@ nav .brand-logo {
 }
 
 .breadcrumb-wrapper{
+    display: -webkit-inline-box;
     position: fixed;
     top: 21px;
     margin-left: 20px;
     z-index: 998;
+}
+
+@media only screen and (max-width: 600px){
+    .breadcrumb-wrapper{
+        top: 15px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .breadcrumb-wrapper{
+        margin-left: 60px;
+    }
+    .truncate-question {
+        width: calc(100vw - 297px) !important;
+    }
+}
+
+.truncate-question {
+    width: calc(100vw - 517px);
 }
 
 a.breadcrumb {

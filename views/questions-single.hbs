@@ -2,7 +2,7 @@
     <a href="/" class="breadcrumb">Home</a>
     <a href="/questions" class="breadcrumb">Questions</a>
     {{#if question}}
-        <a class="breadcrumb">{{question.text}}</a>
+        <a class="truncate truncate-question breadcrumb">{{question.text}}</a>
     {{/if}}
 </div>
 
@@ -17,11 +17,15 @@
     <div class="row">
         <div class="col s12 m6 offset-m3">
             <div class="card-panel">
-                <h4 class="">Whoops!</h4>
+                <div class="row center-align">
+                    <h4>Whoops!</h4>
+                </div>
                 <div class="row">
-                    <span class="">Looks like there is no question here with that ID.  Try searching for your next great
-                    SOLE question by clicking the button below:
-                    </span>
+                    <div class="col m12 l10 offset-l1">
+                        <span>Looks like there is no question here with that ID.  Try searching for your next great
+                        SOLE question by clicking the button below:
+                        </span>
+                    </div>
                 </div>
                 <div class="row center-align">
                     <a class="waves-effect waves-light btn">Explore Questions</a>

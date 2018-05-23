@@ -38,6 +38,9 @@
 
 			<div class="row">
 				<div class="row" >
+          {{#if searchText}}
+          <h2>You searched for "<strong>{{searchText}}</strong>"</h2>
+          {{else}}
 					<h5 class="center-align">What are Big Questions?</h5>
 
 					<p>Big questions do not have an easy answer, and often lead to more questions.
@@ -46,6 +49,7 @@
 						learning at school, come from their every day experiences, or maybe even something completely new.
 						They typically connect more than one subject area.</p>
             <p>Here are a few examples of big questions:</p>
+          {{/if}}
           {{#if questions}}
           {{#each questions}}
           <div class="col m12 l4 animated fadeIn"

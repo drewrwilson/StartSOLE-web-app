@@ -14,10 +14,18 @@ Question.getByID =  (id, sessionToken) => {
   		sessionToken: sessionToken
   	})
 }
+//returns a user's fav'ed questions
 Question.getFavorites = function (sessionToken) {
   return Parse.Cloud.run('webapp.getMyFavoriteQuestions', {
     offset: 0,
     limit: 100,
+		sessionToken: sessionToken
+	})
+}
+
+Question.findByText = function (searchText, sessionToken) {
+  return Parse.Cloud.run('webapp.findQuestionByText', {
+    searchText: searchText,
 		sessionToken: sessionToken
 	})
 }

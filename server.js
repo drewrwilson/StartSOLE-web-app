@@ -181,6 +181,7 @@ router.route('/soles')
   .get(function(req, res) {
     Controllers.Sole.getAll(sessionToken)
       .then(soles=>{
+        console.log('All soles', JSON.stringify(soles));
         res.render('soles', soles);
       })
       .catch(err=>{
@@ -206,7 +207,7 @@ router.route('/soles')
   router.route('/soles/:id/edit')
       // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
       .get(function(req, res) {
-        Controllers.Sole.getByID(req.params.id).then((singleSole) => {
+        Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
           res.render('soles-add', singleSole);
         });
       });
@@ -224,7 +225,7 @@ router.route('/soles')
   router.route('/questions')
     // get all the soles (accessed at GET http://localhost:8080/questions)
     .get(function(req, res) {
-      Controllers.Question.getAll().then((allQuestions)=>{
+      Controllers.Question.getAll(sessionToken).then((allQuestions)=>{
         res.render('questions', allQuestions);
       });
     });
@@ -242,6 +243,14 @@ router.route('/soles')
         Controllers.Question.getByID(req.params.id).then((questionData) => {
           console.log(JSON.stringify(questionData));
           res.render('questions-single', questionData);
+        });
+      });
+    router.route('/questions/search/:text')
+      // get the question data with a given id
+      .get(function(req, res) {
+        Controllers.Question.findByText(req.params.text).then((foundQuestions) => {
+          console.log(JSON.stringify(foundQuestions));
+          res.render('questions', foundQuestions);
         });
       });
 

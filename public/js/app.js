@@ -1,18 +1,24 @@
+function initSideNav() {
+    var elems = document.querySelectorAll('.sidenav');
+    M.Sidenav.init(elems);
+}
+
 function initPushPin() {
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('#pushpin-wrapper');
-        M.Pushpin.init(elems, { top: 141.5, offset: 74});
-    });
+    var elems = document.querySelectorAll('#pushpin-wrapper');
+    M.Pushpin.init(elems, { top: 141.5, offset: 74});
 }
 
 function initScrollSpy() {
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('.scrollspy');
-        M.ScrollSpy.init(elems, {});
-    });
+    var elems = document.querySelectorAll('.scrollspy');
+    M.ScrollSpy.init(elems, {});
 }
 
 function initTabs() {
-    var el = document.querySelectorAll('.tabs');
-    M.Tabs.init(el, {});
+    var elems = document.querySelectorAll('.tabs');
+    M.Tabs.init(elems, {});
+}
+
+function initDatePicker() {
+    var elems = document.querySelectorAll('.datepicker');
+    M.Datepicker.init(elems, {});
 }

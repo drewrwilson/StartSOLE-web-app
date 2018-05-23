@@ -1,4 +1,10 @@
-<a href="/">Home</a> > <a href="/">Questions</a> > <strong>{{text}}</strong><br>
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">Home</a>
+    <a href="/questions" class="breadcrumb">Questions</a>
+    {{#if question}}
+        <a class="breadcrumb">{{question.text}}</a>
+    {{/if}}
+</div>
 
 {{#if question}}
 <h1>{{question.text}}</h1>
@@ -7,6 +13,23 @@
 <a href="/questions/{{question.id}}/copy">Copy this question</a>
 
 {{else}}
-<h2>No question with that ID.</h2>
+    <br><br><br>
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <div class="card-panel">
+                <h4 class="">Whoops!</h4>
+                <div class="row">
+                    <span class="">Looks like there is no question here with that ID.  Try searching for your next great
+                    SOLE question by clicking the button below:
+                    </span>
+                </div>
+                <div class="row center-align">
+                    <a class="waves-effect waves-light btn">Explore Questions</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 
 {{/if}}

@@ -27,3 +27,8 @@ function initTimePicker() {
     var elems = document.querySelectorAll('.timepicker');
     M.Timepicker.init(elems, {});
 }
+
+function initSelect() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, {});
+}

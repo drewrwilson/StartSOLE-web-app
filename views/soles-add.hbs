@@ -15,7 +15,8 @@
         <div class="card-panel">
             <form name="step1" class="body" novalidate>
                 <div class="row">
-                    <div class="input-field col s12 m6 l12 xl8 offset-xl2">
+                    <!--question-->
+                    <div class="input-field col s12 m10 offset-m1">
                         <input id="question"
                                name="question"
                                type="text"
@@ -24,7 +25,8 @@
                                value="{{sole.question.text}}">
                         <label for="question">What is your big question?</label>
                     </div>
-                    <div class="input-field col s12 m6 l4">
+                    <!--planned date-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
                         <input id="planned_date"
                                name="planned_date"
                                type="text"
@@ -33,7 +35,8 @@
                                value="{{sole.planned_date}}">
                         <label for="planned_date">What is the planned date?</label>
                     </div>
-                    <div class="input-field col s12 m6 l4">
+                    <!--planned time-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
                         <input id="planned_time"
                                name="planned_time"
                                type="text"
@@ -42,7 +45,8 @@
                                value="{{sole.planned_time}}">
                         <label for="planned_time">What is the planned time?</label>
                     </div>
-                    <div class="input-field col s12 m12 l4">
+                    <!--duration-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
                         <input id="duration"
                                name="time"
                                type="number"
@@ -53,89 +57,126 @@
                         <label for="duration">How many minutes is your class?</label>
                         <span class="helper-text" data-error="SOLEs should be at least 30 minutes"></span>
                     </div>
-
-
-
-
-
-                    <div class="input-field col s12 m6">
-                        <select name="grade" class="browser-default validate" required
-                                value="{{sole.grade}}">
-                            <option value="" disabled>What grade is the class?</option>
-                            <option ng-repeat="(key, value) in LessonPlan.grades" value="{{key}}">
-                                {{value}}
-                            </option>
+                    <!--grade-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
+                        <select id="grade" required>
+                            <option value="" disabled selected>Choose a grade</option>
+                            <option value="edu.pre-k">Preschool</option>
+                            <option value="edu.k">Kindergarten</option>
+                            <option value="edu.1">First Grade</option>
+                            <option value="edu.2">Second Grade</option>
+                            <option value="edu.3">Third Grade</option>
+                            <option value="edu.4">Fourth Grade</option>
+                            <option value="edu.5">Fifth Grade</option>
+                            <option value="edu.6">Sixth Grade</option>
+                            <option value="edu.7">Seventh Grade</option>
+                            <option value="edu.8">Eighth Grade</option>
+                            <option value="edu.9">Ninth Grade</option>
+                            <option value="edu.10">Tenth Grade</option>
+                            <option value="edu.11">Eleventh Grade</option>
+                            <option value="edu.12">Twelfth Grade</option>
                         </select>
+                        <label>What grade is your class?</label>
                     </div>
-                    <div class="input-field col s12 m6">
-                        <select name="subject" class="browser-default validate" required
-                                value="{{sole.subject}}">
-                            <option value="" disabled>What subject is the class?</option>
-                            <option ng-repeat="subject in LessonPlan.subjects" value="{{subject}}">
-                                {{subject}}
-                            </option>
+                    <!--subject-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
+                        <select id="subject" required>
+                            <option value="" disabled selected>Choose a subject</option>
+                            <option value="top.careereducation">Career Education</option>
+                            <option value="top.engineering">Engineering</option>
+                            <option value="top.english">English</option>
+                            <option value="top.englishlanguagedevelopment">English Language Development</option>
+                            <option value="top.financialliteracy">Financial Literacy</option>
+                            <option value="top.foreignlanguage">Foreign Language</option>
+                            <option value="top.health">Health</option>
+                            <option value="top.libmedia-infolit">Library Media / Information Literacy</option>
+                            <option value="top.lifeskills">Life Skills</option>
+                            <option value="top.math">Math</option>
+                            <option value="top.physicaleducation">Physical Education</option>
+                            <option value="top.science">Science</option>
+                            <option value="top.socialstudies">Social Studies</option>
+                            <option value="top.thearts">The Arts</option>
                         </select>
+                        <label>What subject is your class?</label>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12 m12 l4">
-                        <select name="num_students" class="browser-default validate" required
-                                value="{{sole.num_students}}">
-                            <option value="" disabled>How many students are in your class?</option>
-                            <option value="9">Less than 10 students</option>
-                            <option value="10">10 students</option>
-                            <option value="11">11 students</option>
-                            <option value="12">12 students</option>
-                            <option value="13">13 students</option>
-                            <option value="14">14 students</option>
-                            <option value="15">15 students</option>
-                            <option value="16">16 students</option>
-                            <option value="17">17 students</option>
-                            <option value="18">18 students</option>
-                            <option value="19">19 students</option>
-                            <option value="20">20 students</option>
-                            <option value="21">21 students</option>
-                            <option value="22">22 students</option>
-                            <option value="23">23 students</option>
-                            <option value="24">24 students</option>
-                            <option value="25">25 students</option>
-                            <option value="26">26 students</option>
-                            <option value="27">27 students</option>
-                            <option value="28">28 students</option>
-                            <option value="29">29 students</option>
-                            <option value="30">30 students</option>
-                            <option value="31">31 students</option>
-                            <option value="32">32 students</option>
-                            <option value="33">33 students</option>
-                            <option value="34">34 students</option>
-                            <option value="35">35 students</option>
-                            <option value="36">more than 35 students</option>
-                        </select>
+                    <!--class label-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
+                        <input id="class_label"
+                               name="class_label"
+                               type="text"
+                               value="{{sole.class_label}}">
+                        <label for="class_label">Class Label (optional)</label>
                     </div>
-                    <div class="input-field col s12 m12 l4">
-                        <select name="num_groups" class="browser-default validate" required
-                                value="{{sole.num_devices}}">
-                            <option value="" disabled>How many internet-enabled devices are available?</option>
-                            <option value="2">2 devices</option>
-                            <option value="3">3 devices</option>
-                            <option value="4">4 devices</option>
-                            <option value="5">5 devices</option>
-                            <option value="6">6 devices</option>
-                            <option value="7">7 devices</option>
-                            <option value="8">8 devices</option>
-                            <option value="9">9 devices</option>
-                            <option value="10">10 devices</option>
-                            <option value="11">More than 10 devices</option>
-                        </select>
-                    </div>
-                    <div class="input-field col s12 m12 l4">
-                        <input id="time" name="time" type="number" required
+                    <!--number of students-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
+                        <input id="num_students"
+                               name="num_students"
+                               type="number"
+                               min="4"
+                               required
                                class="validate"
-                               value="{{sole.duration}}">
-                        <label for="time" data-error="please enter a number">How many minutes is your class?</label>
+                               value="{{sole.num_students}}">
+                        <label for="num_students">How many students?</label>
+                        <span class="helper-text" data-error="SOLEs need at least 4 students"></span>
                     </div>
-                </div>
-                <div class="row">
+                    <!--number of devices-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
+                        <input id="num_devices"
+                               name="num_devices"
+                               type="number"
+                               min="2"
+                               required
+                               class="validate"
+                               value="{{sole.num_devices}}">
+                        <label for="num_devices">How many online devices are available?</label>
+                        <span class="helper-text" data-error="SOLEs need at least 2 devices"></span>
+                    </div>
+                    <!--number of groups-->
+                    <div class="input-field col s12 m10 offset-m1 l4">
+                        <input id="num_groups"
+                               name="num_groups"
+                               type="number"
+                               min="2"
+                               required
+                               class="validate"
+                               value="{{sole.num_groups}}">
+                        <label for="num_devices">How many groups will students be in?</label>
+                        <span class="helper-text" data-error="SOLEs need at least 2 groups"></span>
+                    </div>
+                    <!--content objective-->
+                    <div class="input-field col s12">
+                        <select id="grade" required>
+                            <option value="" disabled selected>Choose a content knowledge objective</option>
+                            <option value="objective.content.standard">
+                                Introducing students to a new concept
+                            </option>
+                            <option value="objective.content.prior">
+                                Helping students connect prior knowledge to a current topic
+                            </option>
+                            <option value="objective.content.explore">
+                                Allowing students to discover and explore interests related to a topic
+                            </option>
+                            <option value="objective.content.deepen">
+                                Helping students deepen understanding of a current topic
+                            </option>
+                            <option value="objective.content.review">
+                                Reviewing knowledge from a current unit
+                            </option>
+                            <option value="objective.content.assess">
+                                Assessing student understanding of a current topic
+                            </option>
+                        </select>
+                        <label>Which of these objectives best describes your goal for this SOLE?</label>
+                    </div>
+
+
+
+
+
+
+
+
+
                     <div class="input-field col s12">
                         <select name="sole_goal" class="browser-default validate" required
                                 value="{{sole.sole_goal}}">

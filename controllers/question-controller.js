@@ -23,13 +23,6 @@ Question.getFavorites = function (sessionToken) {
 	})
 }
 
-Question.findByText = function (searchText, sessionToken) {
-  return Parse.Cloud.run('webapp.findQuestionByText', {
-    searchText: searchText,
-		sessionToken: sessionToken
-	})
-}
-
 // returns an array of recent approved questions. defaults to limit 10.
 // optional: limit is the number of questions to return
 Question.getAll = function (sessionToken) {
@@ -39,5 +32,25 @@ Question.getAll = function (sessionToken) {
     limit: 100,
     sessionToken: sessionToken
   })
+}
+//searches questions for tags, returns results
+//param:
+// * tags - array of tags
+//output
+// * an array of questions - {questions: [{id: '555', text: 'What is rain?'}, {id: '444', text: 'Which way is up?'}]}
 
+Question.findByTags = function (tags, sessionToken) {
+
+  return Parse.Cloud.run('webapp.findQuestionByTags', {
+    tags: tags,
+    sessionToken: sessionToken
+  })
+}
+
+Question.findByText = function (searchText, sessionToken) {
+
+  return Parse.Cloud.run('webapp.findQuestionByText', {
+    searchText: searchText,
+    sessionToken: sessionToken
+  })
 }

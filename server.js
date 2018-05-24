@@ -198,6 +198,7 @@ router.route('/soles')
         Controllers.Sole.getByID(req.params.id, sessionToken)
           .then((singleSole) => {
             //in case the id of the sole is invalid
+            console.log(JSON.stringify(singleSole.sole));
             res.render('soles-single', singleSole);
           })
           .catch((err)=>{console.log('error!', err);})
@@ -248,7 +249,7 @@ router.route('/soles')
     router.route('/questions/search/:text')
       // get the question data with a given id
       .get(function(req, res) {
-        Controllers.Question.findByText(req.params.text).then((foundQuestions) => {
+        Controllers.Question.findByText(req.params.text, sessionToken).then((foundQuestions) => {
           console.log(JSON.stringify(foundQuestions));
           res.render('questions', foundQuestions);
         });

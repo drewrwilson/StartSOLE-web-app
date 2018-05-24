@@ -32,7 +32,7 @@
                                type="text"
                                class="datepicker"
                                required
-                               value="{{sole.planned_date}}">
+                               value="{{sole.planned_date.dateString}}">
                         <label for="planned_date">What is the planned date?</label>
                     </div>
                     <!--planned time-->
@@ -42,7 +42,7 @@
                                type="text"
                                class="timepicker"
                                required
-                               value="{{sole.planned_time}}">
+                               value="{{sole.planned_date.timeString}}">
                         <label for="planned_time">What is the planned time?</label>
                     </div>
                     <!--duration-->
@@ -53,7 +53,7 @@
                                min="30"
                                required
                                class="validate"
-                               value="{{sole.duration}}">
+                               value="{{sole.planned_duration}}">
                         <label for="duration">How many minutes is your class?</label>
                         <span class="helper-text" data-error="SOLEs should be at least 30 minutes"></span>
                     </div>

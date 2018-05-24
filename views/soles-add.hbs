@@ -1,37 +1,62 @@
-<a href="/">Home</a> > <a href="/soles">SOLEs</a> >
-<strong>
-{{#if sole}}
-  Edit
-{{else}}
-  Add
-{{/if}}
-</strong> <br>
-
-<!--<div class="row">-->
-    <!--<div class="col s12">-->
-        <!--<div class="card-panel">-->
-            <!--<div class="row">-->
-                <!--<div class="col m12 l10">-->
-
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">Home</a>
+    <a href="/soles" class="breadcrumb">My SOLEs</a>
+    <a class="breadcrumb">
+        {{#if sole}}
+            {{sole.question.text}}
+        {{else}}
+            Create
+        {{/if}}
+    </a>
+</div>
 
 <div class="row">
     <div class="col s12">
         <div class="card-panel">
-            <h5>Create a SOLE Lesson Plan</h5>
             <form name="step1" class="body" novalidate>
                 <div class="row">
                     <div class="input-field col s12 m6 l12 xl8 offset-xl2">
-                        <input id="question" name="question" type="text" required
+                        <input id="question"
+                               name="question"
+                               type="text"
                                class="validate"
+                               required
                                value="{{sole.question.text}}">
                         <label for="question">What is your big question?</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
-                        <input id="planned_date" name="planned_date" type="text"
-                               class="datepicker" required
+                        <input id="planned_date"
+                               name="planned_date"
+                               type="text"
+                               class="datepicker"
+                               required
                                value="{{sole.planned_date}}">
-                        <label for="planned_date">When will you complete this SOLE?</label>
+                        <label for="planned_date">What is the planned date?</label>
                     </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input id="planned_time"
+                               name="planned_time"
+                               type="text"
+                               class="timepicker"
+                               required
+                               value="{{sole.planned_time}}">
+                        <label for="planned_time">What is the planned time?</label>
+                    </div>
+                    <div class="input-field col s12 m12 l4">
+                        <input id="duration"
+                               name="time"
+                               type="number"
+                               min="30"
+                               required
+                               class="validate"
+                               value="{{sole.duration}}">
+                        <label for="duration">How many minutes is your class?</label>
+                        <span class="helper-text" data-error="SOLEs should be at least 30 minutes"></span>
+                    </div>
+
+
+
+
 
                     <div class="input-field col s12 m6">
                         <select name="grade" class="browser-default validate" required

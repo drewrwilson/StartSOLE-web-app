@@ -22,3 +22,8 @@ function initDatePicker() {
     var elems = document.querySelectorAll('.datepicker');
     M.Datepicker.init(elems, {});
 }
+
+function initTimePicker() {
+    var elems = document.querySelectorAll('.timepicker');
+    M.Timepicker.init(elems, {});
+}

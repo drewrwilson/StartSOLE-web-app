@@ -9,7 +9,6 @@ Parse.serverURL = soleConfig.serverUrl;
 //example function that returns data for the home view
 User.getProfileData = function (sessionToken) {
   return Parse.Cloud.run('webapp.getProfile', {
-    email: 'example@example.com',
     sessionToken: sessionToken
   })
 };

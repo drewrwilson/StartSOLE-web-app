@@ -1,9 +1,31 @@
 {{!-- <strong>Home</strong><br> --}}
 
-<h1>Welcome to StartSOLE2!</h1>
+
+<div class="row" style="padding-top:20px;">
+
+	<div class="col s12 offset-m1 m10 offset-l3 l6">
+		<div class="card-panel">
 
 
-<h2>SOLEs</h2>
+			<div class="row center-align">
+        <img class="hide-on-small-only" src="/images/logos/logo.svg">
+				<h5 style="margin-bottom: 1em;">Let's get started</h5>
+
+        <a class="waves-effect waves-light btn-large" href="/sole-create">Plan A Lesson</a>
+        <p style="">
+          Or you can <a href="/soles">check out your previous SOLE lessons</a> or <a href="/questions">explore some of our Big Questions</a> or <a href="/questions/add">add your own Big Question</a>.
+        </p>
+
+
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+{{!-- <h2>SOLEs</h2>
 <h3>Upcoming</h3>
 {{#if soles.upcoming }}
 <ul>
@@ -41,4 +63,4 @@ No completed SOLEs yet
 {{#each questions.favorites}}
   <li><a href="/questions/{{id}}">{{text}}</a></li>
 {{/each}}
-</ul>
+</ul> --}}

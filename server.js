@@ -226,9 +226,23 @@ router.route('/soles')
   router.route('/questions')
     // get all the soles (accessed at GET http://localhost:8080/questions)
     .get(function(req, res) {
+
+      if (req.query.q) {
+        Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
+          console.log(JSON.stringify(foundQuestions));
+          res.render('questions', foundQuestions);
+        });
+      } else if (req.query.tags) {
+        Controllers.Question.findByTags(req.query.tags, sessionToken).then((foundQuestions) => {
+          //todo probably need to do some processing on tags to convert it from a string to an array of tags
+          console.log(JSON.stringify(foundQuestions));
+          res.render('questions', foundQuestions);
+        });
+      } else {
       Controllers.Question.getAll(sessionToken).then((allQuestions)=>{
         res.render('questions', allQuestions);
       });
+    }
     });
 
     //add a question
@@ -244,14 +258,6 @@ router.route('/soles')
         Controllers.Question.getByID(req.params.id).then((questionData) => {
           console.log(JSON.stringify(questionData));
           res.render('questions-single', questionData);
-        });
-      });
-    router.route('/questions/search/:text')
-      // get the question data with a given id
-      .get(function(req, res) {
-        Controllers.Question.findByText(req.params.text, sessionToken).then((foundQuestions) => {
-          console.log(JSON.stringify(foundQuestions));
-          res.render('questions', foundQuestions);
         });
       });
 

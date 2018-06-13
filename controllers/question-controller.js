@@ -26,7 +26,6 @@ Question.getFavorites = function (sessionToken) {
 // returns an array of recent approved questions. defaults to limit 10.
 // optional: limit is the number of questions to return
 Question.getAll = function (sessionToken) {
-
   return Parse.Cloud.run('webapp.getAllMyQuestions', {
     offset: 0,
     limit: 100,
@@ -40,7 +39,6 @@ Question.getAll = function (sessionToken) {
 // * an array of questions - {questions: [{id: '555', text: 'What is rain?'}, {id: '444', text: 'Which way is up?'}]}
 
 Question.findByTags = function (tags, sessionToken) {
-
   return Parse.Cloud.run('webapp.findQuestionByTags', {
     tags: tags,
     sessionToken: sessionToken
@@ -48,9 +46,26 @@ Question.findByTags = function (tags, sessionToken) {
 }
 
 Question.findByText = function (searchText, sessionToken) {
-
   return Parse.Cloud.run('webapp.findQuestionByText', {
     searchText: searchText,
     sessionToken: sessionToken
   })
+}
+
+Question.add = function (text, tags, source) {
+  return Parse.Cloud.run('webapp.addQuestion', {
+		text: text,
+		tags: tags,
+		source: source || 'https://startsole.org',
+		sessionToken: sessionToken
+	});
+
+}
+
+Question.favorite = function (questionID, sessionToken) {
+  return Parse.Cloud.run('webapp.favQuestion', {
+		id: questionID,
+		sessionToken: sessionToken
+	});
+
 }

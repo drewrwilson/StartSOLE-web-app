@@ -49,18 +49,27 @@ No completed SOLEs yet
 {{/if}}
 
 <hr>
+--}}
 
-<h2>Questions</h2>
-<h3>My questions:</h3>
-<ul>
-{{#each questions.mine}}
-  <li> <a href="/questions/{{id}}">{{text}}</a> </li>
-{{/each}}
-</ul>
+<div class="row">
+	<div class="col s12 offset-m1 m10 offset-l3 l6">
+		<div class="card-panel">
+			<div class="row center-align">
+			<h3>My questions:</h3>
+			<ul>
+			{{#each questions.mine}}
+				<li> <a href="/questions/{{id}}">{{text}}</a> </li>
+			{{/each}}
+			</ul>
 
-<h3>My favorite questions:</h3>
-<ul>
-{{#each questions.favorites}}
-  <li><a href="/questions/{{id}}">{{text}}</a></li>
-{{/each}}
-</ul> --}}
+			<h3>My favorite questions:</h3>
+			<ul>
+			{{#each questions.favorites}}
+				<li> + <a href="/questions/{{id}}">{{text}}</a></li>
+			{{/each}}
+			</ul>
+
+			</div>
+		</div>
+	</div>
+</div>

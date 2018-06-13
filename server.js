@@ -27,10 +27,13 @@ Parse.User.enableUnsafeCurrentUser();
 Parse.User.logIn(username, password)
   .done((user)=>{
     console.log('Logged in!');
-    console.log('---');
+    console.log('\n---\n');
 		sessionToken = Parse.User.current().getSessionToken();
 		console.log('current user token: ', sessionToken);
-		console.log('---');
+		console.log('\n---\n');
+    console.log('Check out StartSOLE2 locally at:\n');
+    console.log('http://localhost:'+port+'?'+sessionToken.replace(':', '='));
+		console.log('\n---\n');
   })
   .catch((err)=>{
     console.log('error logging in', err);
@@ -77,7 +80,7 @@ router.route('/')
 
     var homeData = {soles: [],questions:[]};
 
-    Controllers.Question.getAll(sessionToken.r)
+    Controllers.Question.getAll("sessionToken")
       .then((questions)=>{
         console.log('questions', questions);
         console.log('got all questions:');
@@ -261,6 +264,16 @@ router.route('/soles')
         });
       });
 
+    router.route('/questions/:id/favorite')
+      // favorite a question with a given id
+      .get(function(req, res) {
+        Controllers.Question.favorite(req.params.id).then((questionData) => {
+          console.log(JSON.stringify(questionData));
+          // res.render('questions-single', questionData);
+          res.redirect('/questions/'+req.params.id);
+        });
+      });
+
 // REGISTER OUR ROUTES -------------------------------
 app.use('/', router);
 
@@ -270,4 +283,3 @@ app.use(express.static(path.join(__dirname, 'public')));
 // START THE SERVER
 // =============================================================================
 app.listen(port);
-console.log('Check out StartSOLE2 locally at: http://localhost:' + port);

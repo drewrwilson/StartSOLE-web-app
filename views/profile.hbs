@@ -5,24 +5,10 @@
 
 <h1>Your Profile</h1>
 <table>
+  {{#each user}}
   <tr>
-    <td>Name:</td>
-    <td>{{firstName}} {{lastName}}</td>
+    <th>{{@key}}</th>
+    <td>{{this}}</td>
   </tr>
-  <tr>
-    <td>School:</td>
-    <td>{{schoolName}}</td>
-  </tr>
-  <tr>
-    <td>Email:</td>
-    <td>{{emailAddress}}</td>
-  </tr>
-  <tr>
-    <td>Points Earned:</td>
-    <td>{{pointsEarned}}</td>
-  </tr>
-  <tr>
-    <td>CEUs Earned:</td>
-    <td>{{ceusEarned}}</td>
-  </tr>
+  {{/each}}
 </table>

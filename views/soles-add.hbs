@@ -13,286 +13,334 @@
 <div class="row">
     <div class="col s12">
         <div class="card-panel">
-            <form name="step1" class="body" novalidate>
-                <div class="row">
-                    <!--question-->
-                    <div class="input-field col s12 m10 offset-m1">
-                        <input id="question"
-                               name="question"
-                               type="text"
-                               class="validate"
-                               required
-                               value="{{sole.question.text}}">
-                        <label for="question">What is your big question?</label>
-                    </div>
-                    <!--planned date-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <input id="planned_date"
-                               name="planned_date"
-                               type="text"
-                               class="datepicker"
-                               required
-                               value="{{sole.planned_date.dateString}}">
-                        <label for="planned_date">What is the planned date?</label>
-                    </div>
-                    <!--planned time-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <input id="planned_time"
-                               name="planned_time"
-                               type="text"
-                               class="timepicker"
-                               required
-                               value="{{sole.planned_date.timeString}}">
-                        <label for="planned_time">What is the planned time?</label>
-                    </div>
-                    <!--duration-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <input id="duration"
-                               name="time"
-                               type="number"
-                               min="30"
-                               required
-                               class="validate"
-                               value="{{sole.planned_duration}}">
-                        <label for="duration">How many minutes is your class?</label>
-                        <span class="helper-text" data-error="SOLEs should be at least 30 minutes"></span>
-                    </div>
-                    <!--grade-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <select id="grade" required>
-                            <option value="" disabled selected>Choose a grade</option>
-                            <option value="edu.pre-k">Preschool</option>
-                            <option value="edu.k">Kindergarten</option>
-                            <option value="edu.1">First Grade</option>
-                            <option value="edu.2">Second Grade</option>
-                            <option value="edu.3">Third Grade</option>
-                            <option value="edu.4">Fourth Grade</option>
-                            <option value="edu.5">Fifth Grade</option>
-                            <option value="edu.6">Sixth Grade</option>
-                            <option value="edu.7">Seventh Grade</option>
-                            <option value="edu.8">Eighth Grade</option>
-                            <option value="edu.9">Ninth Grade</option>
-                            <option value="edu.10">Tenth Grade</option>
-                            <option value="edu.11">Eleventh Grade</option>
-                            <option value="edu.12">Twelfth Grade</option>
-                        </select>
-                        <label>What grade is your class?</label>
-                    </div>
-                    <!--subject-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <select id="subject" required>
-                            <option value="" disabled selected>Choose a subject</option>
-                            <option value="top.careereducation">Career Education</option>
-                            <option value="top.engineering">Engineering</option>
-                            <option value="top.english">English</option>
-                            <option value="top.englishlanguagedevelopment">English Language Development</option>
-                            <option value="top.financialliteracy">Financial Literacy</option>
-                            <option value="top.foreignlanguage">Foreign Language</option>
-                            <option value="top.health">Health</option>
-                            <option value="top.libmedia-infolit">Library Media / Information Literacy</option>
-                            <option value="top.lifeskills">Life Skills</option>
-                            <option value="top.math">Math</option>
-                            <option value="top.physicaleducation">Physical Education</option>
-                            <option value="top.science">Science</option>
-                            <option value="top.socialstudies">Social Studies</option>
-                            <option value="top.thearts">The Arts</option>
-                        </select>
-                        <label>What subject is your class?</label>
-                    </div>
-                    <!--class label-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <input id="class_label"
-                               name="class_label"
-                               type="text"
-                               value="{{sole.class_label}}">
-                        <label for="class_label">Class Label (optional)</label>
-                    </div>
-                    <!--number of students-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <input id="num_students"
-                               name="num_students"
-                               type="number"
-                               min="4"
-                               required
-                               class="validate"
-                               value="{{sole.num_students}}">
-                        <label for="num_students">How many students?</label>
-                        <span class="helper-text" data-error="SOLEs need at least 4 students"></span>
-                    </div>
-                    <!--number of devices-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <input id="num_devices"
-                               name="num_devices"
-                               type="number"
-                               min="2"
-                               required
-                               class="validate"
-                               value="{{sole.num_devices}}">
-                        <label for="num_devices">How many online devices are available?</label>
-                        <span class="helper-text" data-error="SOLEs need at least 2 devices"></span>
-                    </div>
-                    <!--number of groups-->
-                    <div class="input-field col s12 m10 offset-m1 l4">
-                        <input id="num_groups"
-                               name="num_groups"
-                               type="number"
-                               min="2"
-                               required
-                               class="validate"
-                               value="{{sole.num_groups}}">
-                        <label for="num_devices">How many groups will students be in?</label>
-                        <span class="helper-text" data-error="SOLEs need at least 2 groups"></span>
-                    </div>
-                    <!--content objective-->
-                    <div class="input-field col s12">
-                        <select id="grade" required>
-                            <option value="" disabled selected>Choose a content knowledge objective</option>
-                            <option value="objective.content.standard">
-                                Introducing students to a new concept
-                            </option>
-                            <option value="objective.content.prior">
-                                Helping students connect prior knowledge to a current topic
-                            </option>
-                            <option value="objective.content.explore">
-                                Allowing students to discover and explore interests related to a topic
-                            </option>
-                            <option value="objective.content.deepen">
-                                Helping students deepen understanding of a current topic
-                            </option>
-                            <option value="objective.content.review">
-                                Reviewing knowledge from a current unit
-                            </option>
-                            <option value="objective.content.assess">
-                                Assessing student understanding of a current topic
-                            </option>
-                        </select>
-                        <label>Which of these objectives best describes your goal for this SOLE?</label>
-                    </div>
+            <form id="soles-add-form" class="row">
 
-
-
-
-
-
-
-
-
-                    <div class="input-field col s12">
-                        <select name="sole_goal" class="browser-default validate" required
-                                value="{{sole.sole_goal}}">
-                            <option value="" disabled>Which of these content knowledge objectives
-                                best describes your goal for this SOLE?
-                            </option>
-                            <option value="Introducing students to a new concept">
-                                Introducing students to a new concept
-                            </option>
-                            <option value="Helping students connect prior knowledge to a current topic">
-                                Helping students connect prior knowledge to a current topic
-                            </option>
-                            <option value="Allowing students to discover and explore interests related to a topic">
-                                Allowing students to discover and explore interests related to
-                                a topic
-                            </option>
-                            <option value="Helping students deepen understanding of a current topic">
-                                Helping students deepen understanding of a current topic
-                            </option>
-                            <option value="Reviewing knowledge from a current unit">
-                                Reviewing knowledge from a current unit
-                            </option>
-                            <option value="Assessing student understanding of a current topic">
-                                Assessing student understanding of a current topic
-                            </option>
-                        </select>
-                    </div>
+                <!--question-->
+                <div class="input-field col s12 m10 offset-m1">
+                    <input id="question"
+                           name="question"
+                           type="text"
+                           class="validate"
+                           required
+                           value="{{sole.question.text}}">
+                    <label for="question">What is your big question?</label>
                 </div>
-                <div class="row">
-                    <div class="col s12">
-                        <p>Will students form their own groups?</p>
-                        <div class="validate-one">
-                            <p>
-                                <input name="own_groups" type="radio" id="own_groups_yes"
-                                       value="1"
-                                       value="{{sole.own_groups}}" required/>
-                                <label for="own_groups_yes">Yes</label>
-                            </p>
-                            <p>
-                                <input name="own_groups" type="radio" id="own_groups_no"
-                                       value="0"
-                                       value="{{sole.own_groups}}" required/>
-                                <label for="own_groups_no">No</label>
-                            </p>
-                        </div>
-                        <p>Will students share among groups while they were researching?</p>
-                        <div class="validate-one">
-                            <p>
-                                <input name="group_sharing" type="radio" id="group_sharing_yes"
-                                       value="1"
-                                       value="{{sole.groups_sharing}}" required/>
-                                <label for="group_sharing_yes">Yes</label>
-                            </p>
-                            <p>
-                                <input name="group_sharing" type="radio" id="group_sharing_no"
-                                       value="0"
-                                       value="{{sole.groups_sharing}}" required/>
-                                <label for="group_sharing_no">No</label>
-                            </p>
-                        </div>
-                        <p>Will students complete a self-assessment after the SOLE?</p>
-                        <div class="validate-one">
-                            <p>
-                                <input name="self_assessment" type="radio" id="self_assessment_yes"
-                                       value="1"
-                                       value="{{sole.self_assessment}}" required/>
-                                <label for="self_assessment_yes">Yes</label>
-                            </p>
-                            <p>
-                                <input name="self_assessment" type="radio" id="self_assessment_no"
-                                       value="0"
-                                       value="{{sole.self_assessment}}" required/>
-                                <label for="self_assessment_no">No</label>
-                            </p>
-                        </div>
-                    </div>
+                <!--planned date-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">calendar_today</i>
+                    <input id="planned_date"
+                           name="planned_date"
+                           type="text"
+                           class="datepicker"
+                           required
+                           value="{{sole.planned_date.dateString}}">
+                    <label for="planned_date">What is the planned date?</label>
+                    <span class="helper-text"></span>
                 </div>
-                <div class="row"
-                     ng-show="LessonPlan.show_recommended">
+                <!--planned time-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">access_time</i>
+                    <input id="planned_time"
+                           name="planned_time"
+                           type="text"
+                           class="timepicker"
+                           required
+                           value="{{sole.planned_date.timeString}}">
+                    <label for="planned_time">What is the planned time?</label>
+                </div>
+                <!--duration-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">av_timer</i>
+                    <input id="duration"
+                           name="time"
+                           type="number"
+                           min="30"
+                           required
+                           class="validate"
+                           value="{{sole.planned_duration}}"
+                            onchange="showRecommended()">
+                    <label for="duration">How many minutes is your class?</label>
+                    <span id="duration_helper_text" class="red-text helper-text"></span>
+                </div>
+                <!--grade-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <select id="grade" required>
+                        <option value="" disabled selected>Choose a grade</option>
+                        <option value="edu.pre-k">Preschool</option>
+                        <option value="edu.k">Kindergarten</option>
+                        <option value="edu.1">First Grade</option>
+                        <option value="edu.2">Second Grade</option>
+                        <option value="edu.3">Third Grade</option>
+                        <option value="edu.4">Fourth Grade</option>
+                        <option value="edu.5">Fifth Grade</option>
+                        <option value="edu.6">Sixth Grade</option>
+                        <option value="edu.7">Seventh Grade</option>
+                        <option value="edu.8">Eighth Grade</option>
+                        <option value="edu.9">Ninth Grade</option>
+                        <option value="edu.10">Tenth Grade</option>
+                        <option value="edu.11">Eleventh Grade</option>
+                        <option value="edu.12">Twelfth Grade</option>
+                    </select>
+                    <label>What grade is your class?</label>
+                </div>
+                <!--subject-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <select id="subject" required>
+                        <option value="" disabled selected>Choose a subject</option>
+                        <option value="top.careereducation">Career Education</option>
+                        <option value="top.engineering">Engineering</option>
+                        <option value="top.english">English</option>
+                        <option value="top.englishlanguagedevelopment">English Language Development</option>
+                        <option value="top.financialliteracy">Financial Literacy</option>
+                        <option value="top.foreignlanguage">Foreign Language</option>
+                        <option value="top.health">Health</option>
+                        <option value="top.libmedia-infolit">Library Media / Information Literacy</option>
+                        <option value="top.lifeskills">Life Skills</option>
+                        <option value="top.math">Math</option>
+                        <option value="top.physicaleducation">Physical Education</option>
+                        <option value="top.science">Science</option>
+                        <option value="top.socialstudies">Social Studies</option>
+                        <option value="top.thearts">The Arts</option>
+                    </select>
+                    <label>What subject is your class?</label>
+                </div>
+                <!--class label-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">label</i>
+                    <input id="class_label"
+                           name="class_label"
+                           type="text"
+                           value="{{sole.class_label}}">
+                    <label for="class_label">Class Label (optional)</label>
+                </div>
+                <!--number of students-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">school</i>
+                    <input id="num_students"
+                           name="num_students"
+                           type="number"
+                           min="4"
+                           required
+                           class="validate"
+                           value="{{sole.num_students}}">
+                    <label for="num_students">How many students?</label>
+                    <span class="helper-text" data-error="SOLEs need at least 4 students"></span>
+                </div>
+                <!--number of devices-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">devices</i>
+                    <input id="num_devices"
+                           name="num_devices"
+                           type="number"
+                           min="2"
+                           required
+                           class="validate"
+                           value="{{sole.num_devices}}">
+                    <label for="num_devices">How many online
+                        devices are
+                        available?</label>
+                    <span class="helper-text" data-error="SOLEs need at least 2 devices"></span>
+                </div>
+                <!--number of groups-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">group</i>
+                    <input id="num_groups"
+                           name="num_groups"
+                           type="number"
+                           min="2"
+                           required
+                           class="validate"
+                           value="{{sole.num_groups}}">
+                    <label for="num_groups">How many groups will students be in?</label>
+                    <span class="helper-text" data-error="SOLEs need at least 2 groups"></span>
+                </div>
+                <!--recommended settings-->
+                <div id="recommended_row" class="hide row">
                     <div class="col s12 m10 offset-m1 l8 offset-l2">
                         <div class="card">
                             <div class="card-content lp-stats">
-                                <span class="card-title center-align">Recommended Settings</span>
+                                <span class="card-title center-align">Recommended Timing</span>
+                                <div class="row"></div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div id="test-slider"></div>
+                                    </div>
+                                </div>
 
-                                <div class="input-field center-align lp-input">
-                                    <input id="groups" type="number" class="center-align"
-                                           value="{{sole.num_groups}}">
-                                    <label for="groups" data-error="wrong" data-success="right" class="center-align"></label>
-                                </div> groups with <span ng-bind="LessonPlan.group_size"></span> students each.
-                                <br><br>
-
-
-                                <div class="input-field lp-input">
-                                    <input type="number" class="center-align"
-                                           value="{{sole.question_length}}">
-                                    <!--<label for="groups" data-error="wrong" data-success="right" class="center-align"></label>-->
-                                </div> minutes to introduce the question to the class.
-                                <br>
-
-                                <div class="input-field lp-input">
-                                    <input type="number" class="center-align"
-                                           value="{{sole.investigation_length}}">
-                                    <!--<label for="groups" data-error="wrong" data-success="right" class="center-align"></label>-->
-                                </div> minutes for students to research.
-                                <br>
-
-                                <div class="input-field lp-input"
-                                     value="{{sole.review_length}}">
-                                    <input type="number" class="center-align">
-                                    <!--<label for="groups" data-error="wrong" data-success="right" class="center-align"></label>-->
-                                </div> minutes for groups to present their findings to the class.
-
+                                <div class="row">
+                                    <div class="col m4 right-align hide-on-small-only">
+                                        <img src="images/logos/question.png" alt="question">
+                                    </div>
+                                    <div class="col s12 m8">
+                                        <div class="input-field inline">
+                                            <input id="recommended_question"
+                                                   value="5"
+                                                   type="number"
+                                                   max="10"
+                                                   class="validate recommended-values">
+                                            <span class="helper-text" data-error="no no"></span>
+                                        </div> minutes to introduce the question.
+                                    </div>
+                                    <div class="col m4 right-align hide-on-small-only">
+                                        <img src="images/logos/investigate.png" alt="question">
+                                    </div>
+                                    <div class="col s12 m8">
+                                        <div class="input-field inline">
+                                            <input id="recommended_investigation"
+                                                   value="45"
+                                                   type="number"
+                                                   class="validate recommended-values">
+                                            <span class="helper-text" data-error="wrong"></span>
+                                        </div> minutes to for the investigation.
+                                    </div>
+                                    <div class="col m4 right-align hide-on-small-only">
+                                        <img src="images/logos/review.png" alt="question">
+                                    </div>
+                                    <div class="col s12 m8">
+                                        <div class="input-field inline">
+                                            <input id="recommended_review"
+                                                   value="45"
+                                                   type="number"
+                                                   class="validate recommended-values">
+                                            <span class="helper-text"></span>
+                                        </div> minutes for the review phase.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!--content objective-->
+                <div class="input-field col s12 m10 offset-m1">
+                    <select id="grade" required>
+                        <option value="" disabled selected>Choose a content knowledge objective</option>
+                        <option value="objective.content.standard">Introducing students to a new concept</option>
+                        <option value="objective.content.prior">Helping students connect prior knowledge to a current topic</option>
+                        <option value="objective.content.explore">Allowing students to discover and explore interests related to a topic</option>
+                        <option value="objective.content.deepen">Helping students deepen understanding of a current topic</option>
+                        <option value="objective.content.review">Reviewing knowledge from a current unit</option>
+                        <option value="objective.content.assess">Assessing student understanding of a current topic</option>
+                    </select>
+                    <label>Which of these objectives best describes your goal for this SOLE?</label>
+                </div>
+                <div class="col s12 m6">
+                        <p>How will you manage this SOLE?</p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Students will be forming their own groups</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Sharing among groups while researching is allowed</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input id="exit_ticket" type="checkbox" />
+                                <span>Students will complete an exit ticket
+                                after the SOLE</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>I will use the StartSOLE app to help
+                                facilitate our work</span>
+                            </label>
+                        </p>
+                        <p>
+                            <a href="http://www.startsole.org/app-home.html" target="_blank">Download the
+                                StartSOLE app</a>
+                        </p>
+                    </div>
+                <div class="col s12 m6">
+                        <p>What materials will be available for students to use?</p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Writing Tools</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Poster Paper</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Physical Resources (books, supporting content)</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>SOLE Student Organizer</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Other Materials</span>
+                            </label>
+                        </p>
+                    </div>
+                <div class="col s12">
+                    <p>
+                        Pick up to 3 student behaviors you would like to focus on during this SOLE
+                    </p>
+                    <div class="col s12 m6">
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Collaborating</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Using technology well</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Respectful dialogue and debate</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Desire to learn content</span>
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col s12 m6">
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Appropriate use of vocabulary</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Students teaching students</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Helping peers with technology</span>
+                            </label>
+                        </p>
+                    </div>
+                </div>
+            </form>
                 <div class="row">
                     <a type="submit" class="waves-effect waves-light btn"
                        ng-click="LessonPlan.save()"
@@ -300,9 +348,12 @@
                         Save &amp; Go Home
                     </a>
                 </div>
-            </form>
+
 
 
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="/js/nouislider.min.js"></script>
+<script type="text/javascript" src="/js/soles-add.js"></script>

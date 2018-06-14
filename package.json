@@ -21,6 +21,7 @@
     "express": "^4.16.3",
     "express-hbs": "^1.0.4",
     "materialize-css": "^1.0.0-rc.1",
+    "nouislider": "^11.1.0",
     "parse": "^1.11.1"
   }
 }

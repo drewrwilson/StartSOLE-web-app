@@ -143,3 +143,42 @@ header, main, footer {
     padding-right: 7px;
     font-weight: 200;
 }
+
+/* soles-add */
+
+.recommended-values {
+    max-height: 25px;
+    margin-bottom: -5px !important;
+    max-width: 40px;
+}
+
+/* slider styling */
+
+.c-1-color { background: #04893C; }
+.c-2-color { background: black; }
+.c-3-color { background: #AECCE5; }
+
+.noUi-horizontal {
+    height: 36px !important;
+}
+
+.noUi-horizontal .noUi-handle {
+    height: 44px !important;
+    width: 14px !important;
+}
+
+.noUi-handle:after, .noUi-handle:before {
+    display: none !important;
+}
+
+.noUi-horizontal .noUi-handle {
+    right: -7px !important;
+}
+
+/* questions-add */
+.question-add-header-img {
+    top: -50px;
+    position: relative;
+    margin: -25px;
+    padding: 10px;
+}

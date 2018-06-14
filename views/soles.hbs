@@ -31,6 +31,19 @@
                         {{#each planned}}
                             {{> sole-card}}
                         {{/each}}
+                    {{else}}
+                        <br><br>
+                        <div class="row">
+                            <div class="col s12 offset-m3 m6">
+                                <div class="card-panel">
+                                    <div class="row center-align">
+                                        <img class="hide-on-small-only" src="/images/logos/logo.svg">
+                                        <h5 style="margin-bottom: 1em;">Let's get started</h5>
+                                        <a class="waves-effect waves-light btn-large" href="/sole-create">Plan A Lesson</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     {{/if}}
                 </div>
                 <div id="reflect" class="col s12">

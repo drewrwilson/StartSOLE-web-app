@@ -20,7 +20,9 @@ function initTabs() {
 
 function initDatePicker() {
     var elems = document.querySelectorAll('.datepicker');
-    M.Datepicker.init(elems, {});
+    M.Datepicker.init(elems, {
+        minDate: new Date()
+    });
 }
 
 function initTimePicker() {

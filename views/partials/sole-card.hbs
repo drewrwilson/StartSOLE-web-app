@@ -1,10 +1,10 @@
 <div class="card-panel sole-card">
-    <a href="/soles/{{id}}">
+    <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{/ifEquals}}">
         <img src="images/logos/sole-card-logo.jpg"
              class="avatar-image hide-on-small-and-down">
     </a>
     <div class="question-text">
-        <a href="/soles/{{id}}" class="black-text">
+        <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{/ifEquals}}" class="black-text">
             {{question.text}}
         </a>
     </div>
@@ -25,7 +25,6 @@
     </div>
     <div class="sole-action-buttons">
     {{#ifEquals state "planned"}}
-            Your HTML here
         {{/ifEquals}}
         <a class="waves-effect waves-light green btn">
             Download Plan

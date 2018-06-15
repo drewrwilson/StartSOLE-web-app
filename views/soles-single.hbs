@@ -1,18 +1,11 @@
 <div class="breadcrumb-wrapper">
     <a href="/" class="breadcrumb">Home</a>
     <a href="/soles" class="breadcrumb">My SOLEs</a>
-    <a class="truncate truncate-question breadcrumb">Sample question text for a SOLE with a long question to test
-        the responsive nature of this class.</a>
+    <a class="truncate truncate-question breadcrumb">{{sole.question.question.text}}</a>
 </div>
 
 
-
-<strong>{{sole.question.text}}</strong><br>
-
 {{#if sole}}
-
-<h1>{{sole.question.text}}</h1>
-
 
 <h3>Data from your SOLE session</h3>
 <table class="striped responsive-table">

@@ -3,7 +3,7 @@
     <a href="/soles" class="breadcrumb">My SOLEs</a>
     <a class="breadcrumb">
         {{#if sole}}
-            {{sole.question.text}}
+            {{sole.question.question.text}}
         {{else}}
             Create
         {{/if}}
@@ -65,6 +65,7 @@
                 <!--grade-->
                 <div class="input-field col s12 m10 offset-m1 l4">
                     <select id="grade" required>
+                        {{#select sole.grade}}
                         <option value="" disabled selected>Choose a grade</option>
                         <option value="edu.pre-k">Preschool</option>
                         <option value="edu.k">Kindergarten</option>
@@ -80,12 +81,14 @@
                         <option value="edu.10">Tenth Grade</option>
                         <option value="edu.11">Eleventh Grade</option>
                         <option value="edu.12">Twelfth Grade</option>
+                        {{/select}}
                     </select>
                     <label>What grade is your class?</label>
                 </div>
                 <!--subject-->
                 <div class="input-field col s12 m10 offset-m1 l4">
                     <select id="subject" required>
+                        {{#select sole.subject}}
                         <option value="" disabled selected>Choose a subject</option>
                         <option value="top.careereducation">Career Education</option>
                         <option value="top.engineering">Engineering</option>
@@ -101,6 +104,7 @@
                         <option value="top.science">Science</option>
                         <option value="top.socialstudies">Social Studies</option>
                         <option value="top.thearts">The Arts</option>
+                        {{/select}}
                     </select>
                     <label>What subject is your class?</label>
                 </div>
@@ -218,6 +222,7 @@
                 <!--content objective-->
                 <div class="input-field col s12 m10 offset-m1">
                     <select id="grade" required>
+                        {{#select sole.content_objective}}
                         <option value="" disabled selected>Choose a content knowledge objective</option>
                         <option value="objective.content.standard">Introducing students to a new concept</option>
                         <option value="objective.content.prior">Helping students connect prior knowledge to a current topic</option>
@@ -225,6 +230,7 @@
                         <option value="objective.content.deepen">Helping students deepen understanding of a current topic</option>
                         <option value="objective.content.review">Reviewing knowledge from a current unit</option>
                         <option value="objective.content.assess">Assessing student understanding of a current topic</option>
+                        {{/select}}
                     </select>
                     <label>Which of these objectives best describes your goal for this SOLE?</label>
                 </div>
@@ -232,19 +238,19 @@
                         <p>How will you manage this SOLE?</p>
                         <p>
                             <label>
-                                <input type="checkbox" />
+                                <input type="checkbox" {{#if sole.grouporganization}}checked{{/if}}>
                                 <span>Students will be forming their own groups</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" />
+                                <input type="checkbox" {{#if sole.groupsharing}}checked{{/if}}>
                                 <span>Sharing among groups while researching is allowed</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input id="exit_ticket" type="checkbox" />
+                                <input id="exit_ticket" type="checkbox" {{#if sole.self_assessment}}checked{{/if}}>
                                 <span>Students will complete an exit ticket
                                 after the SOLE</span>
                             </label>
@@ -263,6 +269,7 @@
                     </div>
                 <div class="col s12 m6">
                         <p>What materials will be available for students to use?</p>
+                    {{#check sole.materials}}
                         <p>
                             <label>
                                 <input type="checkbox" />
@@ -271,13 +278,13 @@
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" />
+                                <input id="material.poster_paper" type="checkbox" />
                                 <span>Poster Paper</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" />
+                                <input id="material.physical" type="checkbox" />
                                 <span>Physical Resources (books, supporting content)</span>
                             </label>
                         </p>
@@ -289,10 +296,12 @@
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" />
+                                <input id="material.other" type="checkbox" />
                                 <span>Other Materials</span>
                             </label>
                         </p>
+
+{{/check}}
                     </div>
                 <div class="col s12">
                     <p>

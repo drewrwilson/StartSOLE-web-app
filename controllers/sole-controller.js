@@ -23,3 +23,11 @@ Sole.getAll = function (sessionToken) {
 		sessionToken: sessionToken
 	})
 }
+
+// upload a sole and save it to the database.
+Sole.add = function (sole, sessionToken) {
+  return Parse.Cloud.run('webapp.addSole', {
+    sole: sole,
+		sessionToken: sessionToken
+	})
+}

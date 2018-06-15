@@ -26,14 +26,21 @@ var sessionToken = null;
 Parse.User.enableUnsafeCurrentUser();
 Parse.User.logIn(username, password)
   .done((user)=>{
-    console.log('Logged in!');
-    console.log('\n---\n');
-		sessionToken = Parse.User.current().getSessionToken();
-		console.log('current user token: ', sessionToken);
-		console.log('\n---\n');
-    console.log('Check out StartSOLE2 locally at:\n');
-    console.log('http://localhost:'+port+'?'+sessionToken.replace(':', '='));
-		console.log('\n---\n');
+    Parse.Cloud.run("platform.set", {
+        app	: "web",
+        build: "2.0",
+        info: "development for now"
+    }).then(data=>{
+      console.log('Logged in!');
+      console.log('\n---\n');
+  		sessionToken = Parse.User.current().getSessionToken();
+  		console.log('current user token: ', sessionToken);
+  		console.log('\n---\n');
+      console.log('Check out StartSOLE2 locally at:\n');
+      console.log('http://localhost:'+port+'?'+sessionToken.replace(':', '='));
+  		console.log('\n---\n');
+    })
+
   })
   .catch((err)=>{
     console.log('error logging in', err);
@@ -222,6 +229,59 @@ router.route('/soles')
       // view for adding a new sole
       .get(function(req, res) {
         res.render('soles-add');
+      });
+
+  //this route is just for testing:
+  router.route('/test-sole-create')
+      // view for adding a new sole
+      .get(function(req, res) {
+        var exampleSole = {
+          state: "planned",//always planned
+          subject: "top.lifeskills",
+          grade: "edu.12",
+          tag: "World History",
+          question: "Example question text",
+          planned_date: "20180428182142",
+          planned_duration: 60.0,
+          num_groups: 5,
+          plan_state: 6,
+          target_observations: [
+            "session.observation.collaborating",
+            "session.observation.technology",
+            "session.observation.respectful"
+          ],
+          materials: [
+            "material.poster_paper",
+            "material.physical",
+            "material.other"
+          ],
+          num_students: 20,
+          num_devices: 5,
+          group_organization: true,
+          group_sharing: false,
+          "self-assessment": true,
+          content_objective: "objective.content.deepen",
+          use_app: true,//collected from the form
+          facilitation : {
+            timer: {
+              question: {
+                "duration":120
+              },
+              investigate: {
+                "duration":2280
+              },
+              review: {
+                "duration":120
+              },
+              close: {
+                "duration":600
+              }
+            }
+          }
+        }
+        Controllers.Sole.add(exampleSole).then(soleID=>{
+          console.log(soleID);
+        })
       });
 
   // on routes that end in /questions

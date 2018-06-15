@@ -63,7 +63,7 @@ a.breadcrumb::before {
     width: 115px;
 }
 
-header, main, footer {
+main, footer {
     padding-left: 300px;
 }
 
@@ -181,4 +181,18 @@ header, main, footer {
     position: relative;
     margin: -25px;
     padding: 10px;
+}
+
+/* questions-single */
+.action-buttons-header {
+    position: absolute;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    right: 5%;
+    top:104px;
+    z-index: 2;
+}
+
+.question-card {
+    margin-top: 40px;
 }

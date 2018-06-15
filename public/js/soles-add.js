@@ -31,8 +31,8 @@ function createSlider(duration,groups) {
 
 
     noUiSlider.create(slider, {
-        start: [2, duration-groups*2.5-10, duration-10],
-        connect: [true, true, true, true],
+        start: [2, duration-groups*2.5-10, duration-close],
+        connect: [true, true, true, false],
         range: {
             'min': [-10],
             'max': [duration]

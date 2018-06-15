@@ -34,3 +34,8 @@ function initSelect() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, {});
 }
+
+function initTooltips() {
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems, {});
+}

@@ -123,38 +123,38 @@ res.render('home', homeData); //display view with question data
 
 // static route for History of SOLE
 router.route('/history')
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('history');
     });
 
 // static route for History of SOLE
 router.route('/how')
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('how-to-sole');
     });
 
 // static route for History of SOLE
 router.route('/terms-of-use')
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('terms-of-use');
     });
 
 // static route for History of SOLE
 router.route('/privacy')
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('privacy');
     });
 
 // routes for resources
 router.route('/resources')
-    .get(function(req, res) {
+    .get((req, res)=> {
         var resources = Controllers.Resource.getAll();
         res.render('resources', {resources: resources});
     });
 
 // static route for community map
 router.route('/map')
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('map');
     });
 
@@ -176,7 +176,7 @@ router.route('/profile')
 router.route('/register')
 
 // profile view
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('register');
     });
 
@@ -185,7 +185,7 @@ router.route('/register')
 router.route('/login')
 
 // profile view
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('login');
     });
 
@@ -194,7 +194,7 @@ router.route('/login')
 router.route('/soles')
 
 // get all the soles (accessed at GET http://localhost:8080/api/soles)
-    .get(function(req, res) {
+    .get((req, res)=> {
         Controllers.Sole.getAll(sessionToken)
             .then(soles=>{
             console.log('All soles', JSON.stringify(soles));
@@ -210,7 +210,7 @@ router.route('/soles')
 // ----------------------------------------------------
 router.route('/soles/:id')
 // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
-    .get(function(req, res) {
+    .get((req, res)=> {
         Controllers.Sole.getByID(req.params.id, sessionToken)
             .then((singleSole) => {
             //in case the id of the sole is invalid
@@ -223,7 +223,7 @@ router.route('/soles/:id')
 // ----------------------------------------------------
 router.route('/soles/:id/edit')
 // get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
-    .get(function(req, res) {
+    .get((req, res)=> {
         Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
             console.log("single sole!!!");
             console.log(singleSole);
@@ -237,14 +237,17 @@ router.route('/soles/:id/edit')
 // ----------------------------------------------------
 router.route('/sole-create')
 // view for adding a new sole
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('soles-add');
-    });
+    })
+    .post((req, res)=>{
+
+    })
 
 //this route is just for testing:
 router.route('/test-sole-create')
 // view for adding a new sole
-    .get(function(req, res) {
+    .get((req, res)=> {
         var exampleSole = {
             state: "planned",//this is hardcoded on the backend
             plan_state: 6, //this is hardcoded on the backend
@@ -289,7 +292,7 @@ router.route('/test-sole-create')
 // ----------------------------------------------------
 router.route('/questions')
 // get all the soles (accessed at GET http://localhost:8080/questions)
-    .get(function(req, res) {
+    .get((req, res)=> {
 
         if (req.query.q) {
             Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
@@ -311,14 +314,14 @@ router.route('/questions')
 
 //add a question
 router.route('/questions/add')
-    .get(function(req, res) {
+    .get((req, res)=> {
         res.render('questions-add');
     });
 // on routes that end in /questions/:id
 // ----------------------------------------------------
 router.route('/questions/:id')
 // get the question data with a given id
-    .get(function(req, res) {
+    .get((req, res)=> {
         Controllers.Question.getByID(req.params.id).then((questionData) => {
             console.log(JSON.stringify(questionData));
         res.render('questions-single', questionData);
@@ -327,7 +330,7 @@ router.route('/questions/:id')
 
 router.route('/questions/:id/favorite')
 // favorite a question with a given id
-    .get(function(req, res) {
+    .get((req, res)=> {
         Controllers.Question.favorite(req.params.id).then((questionData) => {
             console.log(JSON.stringify(questionData));
         // res.render('questions-single', questionData);

@@ -70,17 +70,31 @@ hbs.registerHelper('check', function(checked, options) {
     // str = str.replace(re, function(matched){
     //     return mapObj[matched];
     // });
-    //
-    //
-    //
-    // console.log("CHECKED");
-    // console.log(checked);
-    // for(var i=0; i<checked.length; i++){
-    //     return options.fn(this).replace(
-    //         new RegExp(' id=\"' + checked[i] + '\"'),
-    //         '$& checked');
-    // }
 
+    function replaceAll(str){
+        var re = new RegExp(checked.join("|"),"gi");
+
+        return str.replace(re, function(matched){
+            return ' id=\"' + matched + '\" checked';
+        });
+    }
+
+
+
+    console.log("CHECKED");
+    console.log(checked);
+    console.log("this is: "+JSON.stringify(options.fn(this)));
+    console.log("multi replace: "+replaceAll(JSON.stringify(options.fn(this))));
+
+    // for(var i=0; i<checked.length; i++){
+    //     console.log("this is: "+JSON.stringify(this));
+    //     console.log("*************************");
+        var re = new RegExp(checked.join("|"),"gi");
+        return options.fn(this).replace(
+            new RegExp(' id=\"' + checked[0] + '\"'),
+            '$& checked');
+    // }
+    // return replaceAll(JSON.stringify(options.fn(this)));
 });
 
 // set the view engine

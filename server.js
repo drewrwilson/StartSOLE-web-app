@@ -265,11 +265,11 @@ router.route('/test-sole-create')
 // view for adding a new sole
     .get(function(req, res) {
         var exampleSole = {
-            state: "planned",//always planned REMEMBER TO SET THIS
-            plan_state: 6, //REMEMBER TO SET THIS
+            state: "planned",//this is hardcoded on the backend
+            plan_state: 6, //this is hardcoded on the backend
             subject: "top.english",
             grade: "edu.12",
-            class_label: "World History", //could be empty
+            class_label: "World History", //optional: could be empty
             question: "What if there were no rules or laws in the local community?",
             question_id: "EFePpFvBuo",
             planned_date: "Jun 18, 2018",
@@ -300,7 +300,8 @@ router.route('/test-sole-create')
         };
         Controllers.Sole.add(exampleSole).then(soleID=>{
             console.log(soleID);
-    })
+            res.redirect('/soles/'+soleID);
+        })
     });
 
 // on routes that end in /questions

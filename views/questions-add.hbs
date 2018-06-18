@@ -14,14 +14,15 @@
                 </div>
             </div>
             <div class="row">
-                <form ng-submit="Submit.save()">
+                <form action="/questions/add" method="post">
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea ng-model="Submit.text" id="submit-question" class="materialize-textarea"
+                            <textarea id="text" name="text" class="materialize-textarea"
                                       placeholder="Enter your question here"></textarea>
                         </div>
                     </div>
-                    <standard-picker tags="Submit.tags"></standard-picker>
+                    <input type="hidden" name="source" id="source" value="https://startsole.org">
+                    {{!-- <standard-picker tags="Submit.tags"></standard-picker> --}}
                     <div class="row">
                         <div class="input-field col s12 center">
                             <button class="btn waves-effect waves-light">

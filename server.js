@@ -78,7 +78,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-
 var port = process.env.PORT || 8080;        // set our port
 
 // ROUTES FOR APP
@@ -230,6 +229,7 @@ router.route('/soles/:id/edit')
             console.log(singleSole);
             console.log("*************");
             console.log(JSON.stringify(singleSole.sole.materials));
+            console.log(JSON.stringify(singleSole.sole.target_observations));
             res.render('soles-add', singleSole);
     });
     });

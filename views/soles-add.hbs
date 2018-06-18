@@ -27,7 +27,7 @@
                 </div>
                 <!--planned date-->
                 <div class="input-field col s12 m10 offset-m1 l4">
-                    <i class="material-icons prefix grey-text">calendar_today</i>
+                    <i class="material-icons prefix grey-text">today</i>
                     <input id="planned_date"
                            name="planned_date"
                            type="text"
@@ -64,6 +64,7 @@
                 </div>
                 <!--grade-->
                 <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">class</i>
                     <select id="grade" required>
                         {{#select sole.grade}}
                         <option value="" disabled selected>Choose a grade</option>
@@ -87,6 +88,7 @@
                 </div>
                 <!--subject-->
                 <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">library_books</i>
                     <select id="subject" required>
                         {{#select sole.subject}}
                         <option value="" disabled selected>Choose a subject</option>
@@ -278,56 +280,22 @@
                             </label>
                         </p>
                     {{/each}}
-                    </div>
+                </div>
+                <!--materials-->
                 <div class="col s12">
-                    <p>
-                        Pick up to 3 student behaviors you would like to focus on during this SOLE
-                    </p>
-                    <div class="col s12 m6">
-                        <p>
+                    <p class="no-bottom-margin">Pick up to 3 student behaviors you would like to focus on during this SOLE</p>
+                    <div class="row">
+
+                    {{#each sole.target_observations}}
+                        <div class="col s12 m6 target-observation-col">
+
                             <label>
-                                <input type="checkbox" />
-                                <span>Collaborating</span>
+                                <input type="checkbox" {{#if this.checked}}checked{{/if}}/>
+                                <span>{{this.name}}</span>
                             </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Using technology well</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Respectful dialogue and debate</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Desire to learn content</span>
-                            </label>
-                        </p>
-                    </div>
-                    <div class="col s12 m6">
-                        <p>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Appropriate use of vocabulary</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Students teaching students</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input type="checkbox" />
-                                <span>Helping peers with technology</span>
-                            </label>
-                        </p>
+
+                        </div>
+                    {{/each}}
                     </div>
                 </div>
             </form>

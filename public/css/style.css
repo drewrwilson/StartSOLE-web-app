@@ -152,6 +152,14 @@ main, footer {
     max-width: 40px;
 }
 
+.target-observation-col {
+    margin-top: 15px;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0px;
+}
+
 /* slider styling */
 
 .c-1-color { background: #04893C; }

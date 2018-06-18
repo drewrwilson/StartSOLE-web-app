@@ -243,72 +243,47 @@ router.route('/sole-create')
     })
     .post((req, res)=>{
       console.log(req.body);
-
+      //push observations into this array if any are set to 'on'
       let targetObservations = [];
+      (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
+      (req.body.technology == 'on') ? targetObservations.push('session.observation.technology'): false;
+      (req.body.respectful == 'on') ? targetObservations.push('session.observation.respectful') : false;
+      (req.body.desire == 'on') ? targetObservations.push('session.observation.desire') : false;
+      (req.body.vocabulary == 'on') ? targetObservations.push('session.observation.vocabulary') : false;
+      (req.body.help_learn == 'on') ? targetObservations.push('session.observation.help_learn') : false;
+      (req.body.help_technology == 'on') ? targetObservations.push('session.observation.help_technology') : false;
 
-      //push observations into this array
-      if (req.body.collaborating == 'on') {
-        targetObservations.push('session.observation.collaborating');
-      }
-      if (req.body.technology == 'on') {
-        targetObservations.push('session.observation.technology');
-      }
-      if (req.body.respectful == 'on') {
-        targetObservations.push('session.observation.respectful');
-      }
-      if (req.body.desire == 'on') {
-        targetObservations.push('session.observation.desire');
-      }
-      if (req.body.vocabulary == 'on') {
-        targetObservations.push('session.observation.vocabulary');
-      }
-      if (req.body.help_learn == 'on') {
-        targetObservations.push('session.observation.help_learn');
-      }
-      if (req.body.help_technology == 'on') {
-        targetObservations.push('session.observation.help_technology');
-      }
-
+      //push materials into this array if any are set to 'on'
       let materials = [];
-      if (req.body.writing_tools == 'on') {
-        materials.push('material.writing_tools');
-      }
-      if (req.body.poster_paper == 'on') {
-        materials.push('material.poster_paper');
-      }
-      if (req.body.physical == 'on') {
-        materials.push('material.physical');
-      }
-      if (req.body.student_organizer == 'on') {
-        materials.push('material.student_organizer');
-      }
-      if (req.body.other == 'on') {
-        materials.push('material.other');
-      }
+      (req.body.writing_tools == 'on') ? materials.push('material.writing_tools') : false;
+      (req.body.poster_paper == 'on') ? materials.push('material.poster_paper') : false;
+      (req.body.physical == 'on') ? materials.push('material.physical') : false;
+      (req.body.student_organizer == 'on') ? materials.push('material.student_organizer') : false;
+      (req.body.other == 'on') ? materials.push('material.other') : false;
 
       let sole = {
         //values from the frontend
         question: req.body.question,
-          subject: req.body.subject,
-          grade: req.body.grade,
-          class_label: req.body.class_label, //optional
-          planned_date: req.body.planned_date,
-          planned_time: req.body.planned_time,
-          planned_duration: req.body.planned_duration,
-          num_groups: req.body.num_groups,
-          target_observations: targetObservations,
-          grouporganization: (req.body.grouporganization == 'on') ? true : false,
-          groupsharing: (req.body.groupsharing == 'on') ? true : false,
-          self_assessment: (req.body.self_assessment == 'on') ? true : false,
-          useapp: (req.body.useapp == 'on') ? true : false,
-          materials: materials,
-          num_students: req.body.num_students,
-          num_devices: req.body.num_devices,
-          content_objective: req.body.content_objective,
-          time_question: req.body.time_question,
-          time_investigate: req.body.time_investigate,
-          time_review: req.body.time_review,
-          close: 10 //req.body.close
+        subject: req.body.subject,
+        grade: req.body.grade,
+        class_label: req.body.class_label, //optional
+        planned_date: req.body.planned_date,
+        planned_time: req.body.planned_time,
+        planned_duration: req.body.planned_duration,
+        num_groups: req.body.num_groups,
+        target_observations: targetObservations,
+        grouporganization: (req.body.grouporganization == 'on') ? true : false,
+        groupsharing: (req.body.groupsharing == 'on') ? true : false,
+        self_assessment: (req.body.self_assessment == 'on') ? true : false,
+        useapp: (req.body.useapp == 'on') ? true : false,
+        materials: materials,
+        num_students: req.body.num_students,
+        num_devices: req.body.num_devices,
+        content_objective: req.body.content_objective,
+        time_question: req.body.time_question,
+        time_investigate: req.body.time_investigate,
+        time_review: req.body.time_review,
+        close: 10 //req.body.close
       }
       Controllers.Sole.add(sole, sessionToken).then(soleID=>{
         console.log(soleID);

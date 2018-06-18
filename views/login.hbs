@@ -9,18 +9,18 @@
                     <div id="google-sign-in" google-sign-in></div>
                 </div>
             </div>
-            <form ng-submit="Login.login()">
+            <form action="/login" method="post">
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
-                        <input id="email" type="email" class="validate" ng-model="Login.form.email">
+                        <input id="email" type="email" name="email" class="validate">
                         <label for="email">Email</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">security</i>
-                        <input id="password" name="password" type="password" class="validate" ng-model="Login.form.password">
+                        <input id="password" name="password" type="password" class="validate">
                         <label for="password">Password</label>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 center">
-                        <button class="signin-db btn red waves-effect waves-light" id="login">Log In</button>
+                        <button type="submit" class="signin-db btn red waves-effect waves-light" id="login">Log In</button>
                     </div>
                 </div>
                 <div class="row">

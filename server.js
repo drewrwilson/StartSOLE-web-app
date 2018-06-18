@@ -91,6 +91,13 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
     .get((req, res) => {
 
+      // if (req.query.q) {
+      //
+      // } else {
+      //   res.redirect('/login')
+      // }
+
+
     var homeData = {soles: [],questions:[]};
 
 Controllers.Question.getAll("sessionToken")
@@ -186,8 +193,16 @@ router.route('/login')
 
 // profile view
     .get((req, res)=> {
-        res.render('login');
-    });
+      res.render('login', {layout: 'prelogin.hbs'});
+    })
+    // .post((req, res)=> {
+    //   if (req.body.u && req.body.p) {
+    //     res.redirect('/?r=' + token.r);
+    //   } else {
+    //     res.redirect('/login');
+    //   }
+    //
+    // });
 
 // routes for soles
 // ----------------------------------------------------

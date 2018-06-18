@@ -52,11 +52,11 @@ Question.findByText = function (searchText, sessionToken) {
   })
 }
 
-Question.add = function (text, tags, source) {
+Question.add = function (text, tags, source, sessionToken) {
   return Parse.Cloud.run('webapp.addQuestion', {
 		text: text,
 		tags: tags,
-		source: source || 'https://startsole.org',
+		source: 'https://startsole.org',
 		sessionToken: sessionToken
 	});
 

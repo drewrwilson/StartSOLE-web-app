@@ -54,7 +54,7 @@
                 <div class="input-field col s12 m10 offset-m1 l4">
                     <i class="material-icons prefix grey-text">av_timer</i>
                     <input id="duration"
-                           name="time"
+                           name="planned_duration"
                            type="number"
                            min="30"
                            required
@@ -67,7 +67,7 @@
                 <!--grade-->
                 <div class="input-field col s12 m10 offset-m1 l4">
                     <i class="material-icons prefix grey-text">class</i>
-                    <select id="grade" required>
+                    <select id="grade" name="grade" required>
                         {{#select sole.grade}}
                         <option value="" disabled selected>Choose a grade</option>
                         <option value="edu.pre-k">Preschool</option>
@@ -91,7 +91,7 @@
                 <!--subject-->
                 <div class="input-field col s12 m10 offset-m1 l4">
                     <i class="material-icons prefix grey-text">library_books</i>
-                    <select id="subject" required>
+                    <select id="subject" name="subject" required>
                         {{#select sole.subject}}
                         <option value="" disabled selected>Choose a subject</option>
                         <option value="top.careereducation">Career Education</option>
@@ -187,6 +187,7 @@
                                     <div class="col s12 m8">
                                         <div class="input-field inline">
                                             <input id="recommended_question"
+                                                   name="time_question"
                                                    value="5"
                                                    type="number"
                                                    max="10"
@@ -200,6 +201,7 @@
                                     <div class="col s12 m8">
                                         <div class="input-field inline">
                                             <input id="recommended_investigation"
+                                                   name="time_investigate"
                                                    value="45"
                                                    type="number"
                                                    class="validate recommended-values">
@@ -212,6 +214,7 @@
                                     <div class="col s12 m8">
                                         <div class="input-field inline">
                                             <input id="recommended_review"
+                                                   name="time_review"
                                                    value="45"
                                                    type="number"
                                                    class="validate recommended-values">
@@ -225,7 +228,7 @@
                 </div>
                 <!--content objective-->
                 <div class="input-field col s12 m10 offset-m1">
-                    <select id="grade" required>
+                    <select id="grade" name="content_objective" required>
                         {{#select sole.content_objective}}
                         <option value="" disabled selected>Choose a content knowledge objective</option>
                         <option value="objective.content.standard">Introducing students to a new concept</option>

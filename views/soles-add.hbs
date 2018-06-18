@@ -267,41 +267,17 @@
                                 StartSOLE app</a>
                         </p>
                     </div>
+                <!--materials-->
                 <div class="col s12 m6">
-                        <p>What materials will be available for students to use?</p>
-                    {{#check sole.materials}}
+                    <p>What materials will be available for students to use?</p>
+                    {{#each sole.materials}}
                         <p>
                             <label>
-                                <input type="checkbox" />
-                                <span>Writing Tools</span>
+                                <input type="checkbox" {{#if this.checked}}checked{{/if}}/>
+                                <span>{{this.name}}</span>
                             </label>
                         </p>
-                        <p>
-                            <label>
-                                <input id="material.poster_paper" type="checkbox" />
-                                <span>Poster Paper</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input id="material.physical" type="checkbox" />
-                                <span>Physical Resources (books, supporting content)</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input type="checkbox" />
-                                <span>SOLE Student Organizer</span>
-                            </label>
-                        </p>
-                        <p>
-                            <label>
-                                <input id="material.other" type="checkbox" />
-                                <span>Other Materials</span>
-                            </label>
-                        </p>
-
-                    {{/check}}
+                    {{/each}}
                     </div>
                 <div class="col s12">
                     <p>

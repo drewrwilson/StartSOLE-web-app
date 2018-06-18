@@ -62,41 +62,6 @@ hbs.registerHelper('select', function(selected, options) {
         '$& selected="selected"');
 });
 
-hbs.registerHelper('check', function(checked, options) {
-
-    // var mapObj = {"material.poster_paper":"dog",dog:"goat",goat:"cat"};
-    //
-    // var re = new RegExp(Object.keys(mapObj).join("|"),"gi");
-    // str = str.replace(re, function(matched){
-    //     return mapObj[matched];
-    // });
-
-    function replaceAll(str){
-        var re = new RegExp(checked.join("|"),"gi");
-
-        return str.replace(re, function(matched){
-            return ' id=\"' + matched + '\" checked';
-        });
-    }
-
-
-
-    console.log("CHECKED");
-    console.log(checked);
-    console.log("this is: "+JSON.stringify(options.fn(this)));
-    console.log("multi replace: "+replaceAll(JSON.stringify(options.fn(this))));
-
-    // for(var i=0; i<checked.length; i++){
-    //     console.log("this is: "+JSON.stringify(this));
-    //     console.log("*************************");
-        var re = new RegExp(checked.join("|"),"gi");
-        return options.fn(this).replace(
-            new RegExp(' id=\"' + checked[0] + '\"'),
-            '$& checked');
-    // }
-    // return replaceAll(JSON.stringify(options.fn(this)));
-});
-
 // set the view engine
 app.set('view engine', 'hbs');
 
@@ -262,6 +227,8 @@ router.route('/soles/:id/edit')
         Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
             console.log("single sole!!!");
             console.log(singleSole);
+            console.log("*************");
+            console.log(JSON.stringify(singleSole.sole.materials));
             res.render('soles-add', singleSole);
     });
     });

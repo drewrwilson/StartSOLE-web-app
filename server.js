@@ -242,8 +242,36 @@ router.route('/sole-create')
         res.render('soles-add');
     })
     .post((req, res)=>{
-
-    })
+      console.log(req.body);
+      // let sole = {
+      //   //values from the frontend
+      //     subject
+      //     grade
+      //     class_label //optional
+      //     question_id
+      //     planned_date,
+      //     planned_time,
+      //     planned_duration,
+      //     num_groups
+      //     target_observations
+      //     materials
+      //     num_students
+      //     num_devices
+      //     group_organization
+      //     group_sharing
+      //     self_assessment
+      //     content_objective
+      //     time_question
+      //     time_investigate
+      //     time_review
+      //     close
+      // }
+      // Controllers.Sole.add(req.body, sessionToken).then(questionID=>{
+      //   console.log(questionID);
+      //   res.redirect('/questions/'+questionID);
+      // });
+      res.json(req.body);
+    });
 
 //this route is just for testing:
 router.route('/test-sole-create')

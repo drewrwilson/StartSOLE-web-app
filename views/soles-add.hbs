@@ -13,7 +13,9 @@
 <div class="row">
     <div class="col s12">
         <div class="card-panel">
-            <form id="soles-add-form" class="row">
+            <form id="soles-add-form" action="/sole-create" method="post">
+              <div class="row" >
+
 
                 <!--question-->
                 <div class="input-field col s12 m10 offset-m1">
@@ -240,26 +242,26 @@
                         <p>How will you manage this SOLE?</p>
                         <p>
                             <label>
-                                <input type="checkbox" {{#if sole.grouporganization}}checked{{/if}}>
+                                <input type="checkbox" name="grouporganization" {{#if sole.grouporganization}}checked{{/if}}>
                                 <span>Students will be forming their own groups</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" {{#if sole.groupsharing}}checked{{/if}}>
+                                <input type="checkbox" name="groupsharing" {{#if sole.groupsharing}}checked{{/if}}>
                                 <span>Sharing among groups while researching is allowed</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input id="exit_ticket" type="checkbox" {{#if sole.self_assessment}}checked{{/if}}>
+                                <input id="exit_ticket" type="checkbox" name="self_assessment" {{#if sole.self_assessment}}checked{{/if}}>
                                 <span>Students will complete an exit ticket
                                 after the SOLE</span>
                             </label>
                         </p>
                         <p>
                             <label>
-                                <input type="checkbox" />
+                                <input type="checkbox" name="useapp"  />
                                 <span>I will use the StartSOLE app to help
                                 facilitate our work</span>
                             </label>
@@ -272,6 +274,7 @@
                 <!--materials-->
                 <div class="col s12 m6">
                     <p>What materials will be available for students to use?</p>
+                    {{#if sole}}
                     {{#each sole.materials}}
                         <p>
                             <label>
@@ -280,11 +283,44 @@
                             </label>
                         </p>
                     {{/each}}
+                    {{else}}
+                    <p>
+                       <label><input type="checkbox" name="writing_tools">
+                         <span>Writing Tools</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="poster_paper">
+                         <span>Poster Paper</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="physical">
+                         <span>Physical resources (books, supporting content)</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="student_organizer">
+                         <span>SOLE Student Organizer</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="other" >
+                         <span>Other</span>
+                       </label>
+                     </p>
+
+                    {{/if}}
                 </div>
                 <!--materials-->
                 <div class="col s12">
                     <p class="no-bottom-margin">Pick up to 3 student behaviors you would like to focus on during this SOLE</p>
                     <div class="row">
+                    {{#if sole}}
 
                     {{#each sole.target_observations}}
                         <div class="col s12 m6 target-observation-col">
@@ -296,16 +332,76 @@
 
                         </div>
                     {{/each}}
+                    {{else}}
+                    <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="collaborating">
+                               <span>Collaborating</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="technology">
+                               <span>Using technology well</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="respectful" >
+                               <span>Respectful dialogue and debate</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="desire">
+                               <span>Desire to learn content</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="vocabulary">
+                               <span>Appropriate use of vocabulary</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="help_learn">
+                               <span>Students teaching students</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="help_technology">
+                               <span>Helping peers with technology</span>
+                           </label>
+
+                       </div>
+                    {{/if}}
                     </div>
                 </div>
-            </form>
-                <div class="row">
-                    <a type="submit" class="waves-effect waves-light btn"
-                       ng-click="LessonPlan.save()"
-                       ng-disabled="step1.$invalid">
-                        Save &amp; Go Home
-                    </a>
+
                 </div>
+
+                <div class="row">
+                    <input type="submit" class="waves-effect waves-light btn">
+                </div>
+
+
+              </form>
+
 
 
 

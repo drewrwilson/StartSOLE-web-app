@@ -1,11 +1,15 @@
     <div class="card-panel sole-card">
-        <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{/ifEquals}}">
+        <a href="/soles/{{id}}{{#ifEquals state "reflect"}}{{else ifEquals state
+                "completed"}}{{else}}/edit{{/ifEquals}}">
             <img src="images/logos/sole-card-logo.jpg"
                  class="avatar-image hide-on-small-and-down">
         </a>
         <div class="question-text">
-            <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{else}}/edit{{/ifEquals}}" class="black-text">
+            <a href="/soles/{{id}}{{#ifEquals state "reflect"}}{{else ifEquals state
+                    "completed"}}{{else}}/edit{{/ifEquals}}"
+               class="black-text">
                 {{question.text}}
+                {{lessonplan}}
             </a>
         </div>
     {{#if tag}}
@@ -18,7 +22,7 @@
             {{planned_date.day}}
         </span>
             <span class="sole-month-year">
-            {{planned_date.month}}
+            {{planned_date.month_text}}
                 <br>
                 {{planned_date.year}}
         </span>
@@ -31,7 +35,10 @@
         {{/ifEquals}}
         {{#ifEquals state "facilitate"}}
             <a class="waves-effect waves-light green btn">
-                Download Plan
+                Upload Photos
+            </a>
+            <a href="/soles-download/{{id}}" class="waves-effect waves-light green btn">
+                Download Plan URL
             </a>
         {{/ifEquals}}
         {{#ifEquals state "reflect"}}
@@ -40,6 +47,11 @@
                 Reflect
             </a>
         {{/ifEquals}}
+        <a href="/soles/{{id}}/download-plan"
+           class="waves-effect waves-light red btn"
+           target="_blank">
+            Download Plan URL
+        </a>
     </div>
 
     </div>

@@ -31,3 +31,11 @@ Sole.add = function (sole, sessionToken) {
 		sessionToken: sessionToken
 	})
 }
+
+Sole.downloadPlan = function (id, sessionToken) {
+    // return Parse.Promise.as("foo");
+    return Parse.Cloud.run('webapp.getDownloadLink', {
+        id: id,
+        sessionToken: sessionToken
+    })
+}

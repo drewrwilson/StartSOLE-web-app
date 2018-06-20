@@ -9,7 +9,7 @@
                     <div id="google-sign-in" google-sign-in></div>
                 </div>
             </div>
-            <form id="login-form" action="/login" method="get">
+            <form id="login-form" action="/login" method="post">
                 <div class="row">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
@@ -75,6 +75,6 @@
         </a>
     </div>
 </div>
-<form id="foobar" action="/login" method="get">
-  <input type="hidden" name="sessionToken" id="sessionToken" value="">
+<form id="foobar" action="/" method="get">
+  <input type="hidden" name="token" id="token" value="">
 </form>

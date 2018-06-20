@@ -12,9 +12,9 @@ function login (username, password) {
       $('#error').html('Success! Logging you in now...')
       sessionToken = Parse.User.current().getSessionToken();
       console.log('sessionToken:', sessionToken);
-      $('#sessionToken').val(sessionToken.slice(2));
+      $('#token').val(sessionToken.slice(2));
+      console.log('submitting foobar with sessionToken: '+ $('#token'));
       $( "#foobar" ).submit()
-
     })
     .catch((error)=>{
       console.log('error!');
@@ -24,20 +24,21 @@ function login (username, password) {
 }
 
 
-//
-// function logout () {
-//   return Parse.User.logOut().then(() => {
-//     return Parse.User.current();  // this will now be null if logged out
-//   });
-// }
+
+function logout () {
+  return Parse.User.logOut().then(() => {
+    return Parse.User.current();  // this will now be null if logged out
+  });
+}
 
 
 
 $( "#login-form" ).submit(function (event) {
 
   event.preventDefault();
-  var username = $('#email').val(),
-      password = $('#password').val();
-  login(username, password);
+  var username = $('#email').val();
+  var password = $('#password').val();
+  console.log(username, password);
+  // login(username, password);
 
 });

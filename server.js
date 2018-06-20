@@ -22,29 +22,29 @@ const username = process.argv[2]; //1st parameter after node test-parse.js USERN
 const password = process.argv[3]; //2nd parameter after node test-parse.js USERNAME PASSWORD
 //note username is email address
 
-var sessionToken = null;
-Parse.User.enableUnsafeCurrentUser();
-Parse.User.logIn(username, password)
-    .done((user)=>{
-    Parse.Cloud.run("platform.set", {
-    app	: "web",
-    build: "2.0",
-    info: "development for now"
-}).then(data=>{
-    console.log('Logged in!');
-console.log('\n---\n');
-sessionToken = Parse.User.current().getSessionToken();
-console.log('current user token: ', sessionToken);
-console.log('\n---\n');
-console.log('Check out StartSOLE2 locally at:\n');
-console.log('http://localhost:'+port+'?'+sessionToken.replace(':', '='));
-console.log('\n---\n');
-})
-
-})
-.catch((err)=>{
-    console.log('error logging in', err);
-})
+// var sessionToken = null;
+// Parse.User.enableUnsafeCurrentUser();
+// Parse.User.logIn(username, password)
+//     .done((user)=>{
+//     Parse.Cloud.run("platform.set", {
+//     app	: "web",
+//     build: "2.0",
+//     info: "development for now"
+// }).then(data=>{
+//     console.log('Logged in!');
+// console.log('\n---\n');
+// sessionToken = Parse.User.current().getSessionToken();
+// console.log('current user token: ', sessionToken);
+// console.log('\n---\n');
+// console.log('Check out StartSOLE2 locally at:\n');
+// console.log('http://localhost:'+port+'?'+sessionToken.replace(':', '='));
+// console.log('\n---\n');
+// })
+//
+// })
+// .catch((err)=>{
+//     console.log('error logging in', err);
+// })
 
 hbs.registerHelper('ifEquals',
     function(a, b, opts) {
@@ -91,11 +91,13 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
     .get((req, res) => {
 
-      // if (req.query.q) {
-      //
-      // } else {
-      //   res.redirect('/login')
-      // }
+    //   if (!req.query.token || req.query.token === undefined)  {
+    //     res.redirect('/login');
+    //     return;
+    //   }
+    //
+    // sessionToken = 'r:'+req.query.token;
+    // console.log('sessionToken', sessionToken);
 
 
     var homeData = {soles: [],questions:[]};

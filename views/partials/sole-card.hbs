@@ -1,37 +1,45 @@
-<div class="card-panel sole-card">
-    <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{/ifEquals}}">
-        <img src="images/logos/sole-card-logo.jpg"
-             class="avatar-image hide-on-small-and-down">
-    </a>
-    <div class="question-text">
-        <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{/ifEquals}}" class="black-text">
-            {{question.text}}
+    <div class="card-panel sole-card">
+        <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{/ifEquals}}">
+            <img src="images/logos/sole-card-logo.jpg"
+                 class="avatar-image hide-on-small-and-down">
         </a>
-    </div>
+        <div class="question-text">
+            <a href="/soles/{{id}}{{#ifEquals state "planned"}}/edit{{else}}/edit{{/ifEquals}}" class="black-text">
+                {{question.text}}
+            </a>
+        </div>
     {{#if tag}}
         <p class="sole-tag">
             Class 7C
         </p>
     {{/if}}
-    <div class="sole-card-date">
+        <div class="sole-card-date">
         <span class="sole-day">
             {{planned_date.day}}
         </span>
-        <span class="sole-month-year">
+            <span class="sole-month-year">
             {{planned_date.month}}
-            <br>
-            {{planned_date.year}}
+                <br>
+                {{planned_date.year}}
         </span>
-    </div>
+        </div>
     <div class="sole-action-buttons">
-    {{#ifEquals state "planned"}}
+        {{#ifEquals state "planned"}}
+            <a class="waves-effect waves-light green btn">
+                Download Plan
+            </a>
         {{/ifEquals}}
-        <a class="waves-effect waves-light green btn">
-            Download Plan
-        </a>
-        <a class="waves-effect waves-light red btn">
-            Reflect
-        </a>
+        {{#ifEquals state "facilitate"}}
+            <a class="waves-effect waves-light green btn">
+                Download Plan
+            </a>
+        {{/ifEquals}}
+        {{#ifEquals state "reflect"}}
+            <a class="waves-effect waves-light red btn"
+               href="/soles/{{id}}">
+                Reflect
+            </a>
+        {{/ifEquals}}
     </div>
 
-</div>
+    </div>

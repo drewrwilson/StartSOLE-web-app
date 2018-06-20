@@ -22,7 +22,7 @@ const username = process.argv[2]; //1st parameter after node test-parse.js USERN
 const password = process.argv[3]; //2nd parameter after node test-parse.js USERNAME PASSWORD
 //note username is email address
 
-// var sessionToken = null;
+var sessionToken = null;
 // Parse.User.enableUnsafeCurrentUser();
 // Parse.User.logIn(username, password)
 //     .done((user)=>{
@@ -91,41 +91,50 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
     .get((req, res) => {
 
-    //   if (!req.query.token || req.query.token === undefined)  {
-    //     res.redirect('/login');
-    //     return;
-    //   }
-    //
-    // sessionToken = 'r:'+req.query.token;
-    // console.log('sessionToken', sessionToken);
+      if (!req.query.token || req.query.token === undefined)  {
+        res.redirect('/login');
+        return;
+      }
+
+    sessionTokenString = 'r:'+req.query.token;
+    Parse.User.enableUnsafeCurrentUser();
+    Parse.User.become(sessionTokenString).then(function (user) {
+      sessionToken = Parse.User.current().getSessionToken();
+
+      var homeData = {soles: [],questions:[]};
+      console.log('before getall questions');
+      Controllers.Question.getAll("sessionToken")
+          .then((questions)=>{
+          console.log('questions', questions);
+      console.log('got all questions:');
+      console.log(questions);
+      console.log('---');
+      homeData.questions.mine = questions.questions;
+
+      Controllers.Question.getFavorites(sessionToken.r)
+          .then((favoriteQuestions)=>{
+          console.log('got fav questions:');
+      console.log(favoriteQuestions);
+      console.log('---');
+      homeData.questions.favorites = favoriteQuestions;
+
+      res.render('home', homeData); //display view with question data
+      })
+      .catch((err)=>{
+          console.log('error getting fav questions!', err);
+      })
+      })
+      .catch((err)=>{
+          console.log('error getting questions!', err);
+      });
+    })
+      .catch(error=>{
+        // console.log('error logging in!', error);
+        res.redirect('/login')
+      })
 
 
-    var homeData = {soles: [],questions:[]};
 
-Controllers.Question.getAll("sessionToken")
-    .then((questions)=>{
-    console.log('questions', questions);
-console.log('got all questions:');
-console.log(questions);
-console.log('---');
-homeData.questions.mine = questions.questions;
-
-Controllers.Question.getFavorites(sessionToken.r)
-    .then((favoriteQuestions)=>{
-    console.log('got fav questions:');
-console.log(favoriteQuestions);
-console.log('---');
-homeData.questions.favorites = favoriteQuestions;
-
-res.render('home', homeData); //display view with question data
-})
-.catch((err)=>{
-    console.log('error getting fav questions!', err);
-})
-})
-.catch((err)=>{
-    console.log('error getting questions!', err);
-});
 
 });
 
@@ -173,12 +182,13 @@ router.route('/profile')
 
 // profile view
     .get((req, res) => {
-    Controllers.User.getProfileData(sessionToken)
-    .then((profileData) => {
-    res.render('profile', profileData);
-});
 
-});
+      Controllers.User.getProfileData(sessionToken)
+      .then((profileData) => {
+        res.render('profile', profileData);
+      });
+
+    });
 
 // routes for user registration
 // ----------------------------------------------------

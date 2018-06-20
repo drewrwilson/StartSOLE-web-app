@@ -236,6 +236,29 @@ router.route('/soles/:id')
     })
         .catch((err)=>{console.log('error!', err);})
     });
+
+
+// on routes that end in /soles/:sole_id
+// ----------------------------------------------------
+router.route('/soles/:id/download-plan')
+// get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
+    .get((req, res)=> {
+    Controllers.Sole.downloadPlan(req.params.id, sessionToken)
+    .then((url) => {
+    //in case the id of the sole is invalid
+
+    var baseUrl = 'http://localhost:1339/soleapp/files/';
+
+    // var file = baseUrl + url;
+    // res.download(file); // Set disposition and send it.
+
+    res.redirect(baseUrl+url);
+    // res.render('soles-single', singleSole);
+})
+.catch((err)=>{console.log('error!', err);})
+});
+
+
 // on routes that end in /soles/:sole_id
 // ----------------------------------------------------
 router.route('/soles/:id/edit')

@@ -97,7 +97,8 @@ router.route('/')
       }
 
     sessionTokenString = 'r:'+req.query.token;
-    // Parse.User.enableUnsafeCurrentUser();
+
+    Parse.User.enableUnsafeCurrentUser();
     Parse.User.become(sessionTokenString).then(function (user) {
       sessionToken = Parse.User.current().getSessionToken();
 

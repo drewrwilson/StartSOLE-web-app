@@ -6,10 +6,7 @@
                     <img src="/images/facebook-login-button.png" id="fb-login" onmouseover="this.src='/images/facebook-login-button-hover.png'" onmouseout="this.src='/images/facebook-login-button.png'"  />
                 </div>
                 <div class="col s12 l6 center">
-                    <!--new one-->
-                    <!--<div class="g-signin2" data-onsuccess="onGoogleSignIn"></div>-->
-                    {{!-- <div id="google-sign-in"></div> --}}
-                    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+                    <div class="g-signin2" data-onsuccess="onGoogleSignIn" data-theme="dark"></div>
                 </div>
             </div>
             <form id="login-form" action="/login" method="post">

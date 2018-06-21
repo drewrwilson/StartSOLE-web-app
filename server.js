@@ -90,12 +90,9 @@ var router = express.Router();              // get an instance of the express Ro
 //       nice encouraging message, etc etc
 router.route('/')
     .get((req, res) => {
-
-      if (!req.query.sesh || req.query.sesh === undefined)  {
-        res.redirect('/login');
-      }
-
-    sessionToken = Controllers.Helper.seshToSessionToken(req.query.sesh); //convert sesh to sessionToken string
+      const sesh = req.query.sesh;
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
     // Parse.User.enableUnsafeCurrentUser();
     // Parse.User.become(sessionToken).then(function (user) {
@@ -111,7 +108,7 @@ router.route('/')
       console.log('---');
       homeData.questions.mine = questions.questions;
 
-      Controllers.Question.getFavorites(sessionToken.r)
+      Controllers.Question.getFavorites(sessionToken)
           .then((favoriteQuestions)=>{
           console.log('got fav questions:');
       console.log(favoriteQuestions);

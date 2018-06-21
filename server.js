@@ -18,29 +18,11 @@ var soleConfig = require('./sole-config.js');
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-var sessionToken = null;
-// Parse.User.enableUnsafeCurrentUser();
-// Parse.User.logIn(username, password)
-//     .done((user)=>{
-//     Parse.Cloud.run("platform.set", {
-//     app	: "web",
-//     build: "2.0",
-//     info: "development for now"
-// }).then(data=>{
-//     console.log('Logged in!');
-// console.log('\n---\n');
-// sessionToken = Parse.User.current().getSessionToken();
-// console.log('current user token: ', sessionToken);
-// console.log('\n---\n');
-// console.log('Check out StartSOLE2 locally at:\n');
-// console.log('http://localhost:'+port+'?'+sessionToken.replace(':', '='));
-// console.log('\n---\n');
-// })
-//
-// })
-// .catch((err)=>{
-//     console.log('error logging in', err);
-// })
+var sessionToken = null; //initiatize this variable so we can use it globally
+
+// ******************
+// handlebars helpers
+// ******************
 
 hbs.registerHelper('ifEquals',
     function(a, b, opts) {
@@ -58,6 +40,9 @@ hbs.registerHelper('select', function(selected, options) {
         '$& selected="selected"');
 });
 
+// ******************
+// set up the webserver
+// ******************
 // set the view engine
 app.set('view engine', 'hbs');
 
@@ -76,7 +61,10 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080;        // set our port
 
-// ROUTES FOR APP
+// ******************
+// routes for webserver
+// ******************
+
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
@@ -201,7 +189,7 @@ router.route('/complete-profile')
 // ----------------------------------------------------
 router.route('/soles')
 
-// get all the soles (accessed at GET http://localhost:8080/api/soles)
+// get all the soles
     .get((req, res)=> {
         Controllers.Sole.getAll(sessionToken)
             .then(soles=>{
@@ -217,7 +205,7 @@ router.route('/soles')
 // on routes that end in /soles/:sole_id
 // ----------------------------------------------------
 router.route('/soles/:id')
-// get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
+// get the sole with that id
     .get((req, res)=> {
         Controllers.Sole.getByID(req.params.id, sessionToken)
             .then((singleSole) => {
@@ -232,7 +220,7 @@ router.route('/soles/:id')
 // on routes that end in /soles/:sole_id
 // ----------------------------------------------------
 router.route('/soles/:id/download-plan')
-// get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
+// get the sole with that id
     .get((req, res)=> {
     Controllers.Sole.downloadPlan(req.params.id, sessionToken)
     .then((url) => {
@@ -253,7 +241,7 @@ router.route('/soles/:id/download-plan')
 // on routes that end in /soles/:sole_id
 // ----------------------------------------------------
 router.route('/soles/:id/edit')
-// get the sole with that id (accessed at GET http://localhost:8080/api/soles/:sole_id)
+// get the sole with that id
     .get((req, res)=> {
         Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
             console.log("single sole!!!");
@@ -320,59 +308,13 @@ router.route('/sole-create')
         console.log(soleID);
         res.redirect('/soles/'+soleID);
       });
-      // console.log('---');
-      // console.log(sole);
-      // res.json(sole);
-    });
 
-//this route is just for testing:
-router.route('/test-sole-create')
-// view for adding a new sole
-    .get((req, res)=> {
-        var exampleSole = {
-            state: "planned",//this is hardcoded on the backend
-            plan_state: 6, //this is hardcoded on the backend
-            subject: "top.english",
-            grade: "edu.12",
-            class_label: "World History", //optional: could be empty
-            question: "What if there were no rules or laws in the local community?",
-            question_id: "EFePpFvBuo",
-            planned_date: "Jun 18, 2018",
-            planned_time: "09:59 AM",
-            planned_duration: 100,
-            num_groups: 5,
-            target_observations: [
-                "session.observation.collaborating",
-                "session.observation.technology",
-                "session.observation.respectful"
-            ],
-            materials: [
-                "material.poster_paper",
-                "material.physical",
-                "material.other"
-            ],
-            num_students: 20,
-            num_devices: 5,
-            group_organization: true,
-            group_sharing: false,
-            self_assessment: true,
-            content_objective: "objective.content.deepen",
-            use_app: true,//collected from the form
-            time_question : 300,
-            time_investigate : 4350,
-            time_review : 750,
-            time_close : 600,
-        };
-        Controllers.Sole.add(exampleSole).then(soleID=>{
-            console.log(soleID);
-            res.redirect('/soles/'+soleID);
-        })
     });
 
 // on routes that end in /questions
 // ----------------------------------------------------
 router.route('/questions')
-// get all the soles (accessed at GET http://localhost:8080/questions)
+// get all the soles
     .get((req, res)=> {
 
         if (req.query.q) {
@@ -404,9 +346,9 @@ router.route('/questions/:id')
 // get the question data with a given id
     .get((req, res)=> {
         Controllers.Question.getByID(req.params.id).then((questionData) => {
-            console.log(JSON.stringify(questionData));
-        res.render('questions-single', questionData);
-    });
+          console.log(JSON.stringify(questionData));
+          res.render('questions-single', questionData);
+        });
     });
 
 router.route('/questions/:id/favorite')
@@ -414,7 +356,6 @@ router.route('/questions/:id/favorite')
     .get((req, res)=> {
         Controllers.Question.favorite(req.params.id).then((questionData) => {
             console.log(JSON.stringify(questionData));
-        // res.render('questions-single', questionData);
         res.redirect('/questions/'+req.params.id);
     });
     });
@@ -428,3 +369,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 // START THE SERVER
 // =============================================================================
 app.listen(port);
+
+console.log('Server running. You can view it locally at http://localhost:' + port);

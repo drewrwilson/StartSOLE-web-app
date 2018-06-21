@@ -10,7 +10,7 @@ function onGoogleSignIn(googleUser) {
   // console.log("Email: " + profile.getEmail());
   //use the Google access_token to login and/or make an account with Parse
   return Parse.Cloud.run('loginGoogleUser', {
-      token: googleUser.Zi.access_token
+      token: access_token
   }).then(Parse.User.become).then(function(user){
       succesfulLogin(user);
       });

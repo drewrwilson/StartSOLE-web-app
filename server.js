@@ -94,10 +94,6 @@ router.route('/')
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-    // Parse.User.enableUnsafeCurrentUser();
-    // Parse.User.become(sessionToken).then(function (user) {
-      // sessionToken = Parse.User.current().getSessionToken();
-
       var homeData = {soles: [],questions:[]};
       console.log('before getall questions');
       Controllers.Question.getAll(sessionToken)
@@ -124,14 +120,6 @@ router.route('/')
       .catch((err)=>{
           console.log('error getting questions!', err);
       });
-    // })
-    //   .catch(error=>{
-    //     // console.log('error logging in!', error);
-    //     res.redirect('/login')
-    //   })
-
-
-
 
 });
 

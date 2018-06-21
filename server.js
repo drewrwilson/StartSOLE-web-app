@@ -92,6 +92,7 @@ router.route('/')
         console.log(favoriteQuestions);
         console.log('---');
         homeData.questions.favorites = favoriteQuestions;
+        homeData.sesh = sesh;
         res.render('home', homeData); //display view with question data
       }).catch((err)=>{
         console.log('error getting fav questions!', err);
@@ -108,38 +109,73 @@ router.route('/')
 // static route for History of SOLE
 router.route('/history')
     .get((req, res)=> {
-        res.render('history');
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      const viewData = {sesh: sesh};
+      res.render('history', viewData);
     });
 
 // static route for History of SOLE
 router.route('/how')
     .get((req, res)=> {
-        res.render('how-to-sole');
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      const viewData = {sesh: sesh};
+      res.render('how-to-sole', viewData);
     });
 
 // static route for History of SOLE
 router.route('/terms-of-use')
     .get((req, res)=> {
-        res.render('terms-of-use');
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      const viewData = {sesh: sesh};
+      res.render('terms-of-use', viewData);
     });
 
 // static route for History of SOLE
 router.route('/privacy')
     .get((req, res)=> {
-        res.render('privacy');
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      const viewData = {sesh: sesh};
+      res.render('privacy', viewData);
     });
 
 // routes for resources
 router.route('/resources')
     .get((req, res)=> {
-        var resources = Controllers.Resource.getAll();
-        res.render('resources', {resources: resources});
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      Controllers.Resource.getAll().then(resources=>{
+        const viewData = {
+          resources: resources,
+          sesh: sesh
+        }
+        res.render('resources', viewData);
+      })
+
     });
 
 // static route for community map
 router.route('/map')
     .get((req, res)=> {
-        res.render('map');
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      const viewData = {sesh: sesh};
+      res.render('map', viewData);
     });
 
 // routes for profile
@@ -154,6 +190,7 @@ router.route('/profile')
 
       Controllers.User.getProfileData(sessionToken)
       .then((profileData) => {
+        profileData.sesh = sesh;
         res.render('profile', profileData);
       });
 
@@ -198,6 +235,7 @@ router.route('/soles')
         Controllers.Sole.getAll(sessionToken)
           .then(soles=>{
           console.log('All soles', JSON.stringify(soles));
+          soles.sesh = sesh;
           res.render('soles', soles);
         }).catch(err=>{
           console.log('oops! error!', err);
@@ -217,14 +255,14 @@ router.route('/soles/:id')
 
       Controllers.Sole.getByID(req.params.id, sessionToken)
           .then((singleSole) => {
-          //in case the id of the sole is invalid
-          console.log(JSON.stringify(singleSole.sole));
-      res.render('soles-single', singleSole);
-    })
-        .catch((err)=>{
-          console.log('error!', err);
-          res.redirect('/login')
-        })
+            //in case the id of the sole is invalid
+            console.log(JSON.stringify(singleSole.sole));
+            singleSole.sesh = sesh;
+            res.render('soles-single', singleSole);
+          }).catch((err)=>{
+            console.log('error!', err);
+            res.redirect('/login')
+          })
     });
 
 
@@ -268,6 +306,7 @@ router.route('/soles/:id/edit')
             console.log("*************");
             console.log(JSON.stringify(singleSole.sole.materials));
             console.log(JSON.stringify(singleSole.sole.target_observations));
+            singleSole.sesh = sesh;
             res.render('soles-add', singleSole);
           }).catch((err)=>{
             console.log('error!', err);
@@ -356,6 +395,7 @@ router.route('/questions')
         if (req.query.q) {
           Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
             console.log(JSON.stringify(foundQuestions));
+            foundQuestions.sesh = sesh;
             res.render('questions', foundQuestions);
           }).catch((err)=>{
             console.log('error!', err);
@@ -365,6 +405,7 @@ router.route('/questions')
             Controllers.Question.findByTags(req.query.tags, sessionToken).then((foundQuestions) => {
               //todo probably need to do some processing on tags to convert it from a string to an array of tags
               console.log(JSON.stringify(foundQuestions));
+              foundQuestions.sesh = sesh;
               res.render('questions', foundQuestions);
             }).catch((err)=>{
               console.log('error!', err);
@@ -372,6 +413,7 @@ router.route('/questions')
             });
         } else {
             Controllers.Question.getAll(sessionToken).then((allQuestions)=>{
+              allQuestions.sesh = sesh;
               res.render('questions', allQuestions);
             }).catch((err)=>{
               console.log('error!', err);
@@ -386,8 +428,8 @@ router.route('/questions/add')
       const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-      res.render('questions-add');
+      const viewData = {sesh: sesh};
+      res.render('questions-add', viewData);
     });
 // on routes that end in /questions/:id
 // ----------------------------------------------------
@@ -400,6 +442,7 @@ router.route('/questions/:id')
 
         Controllers.Question.getByID(req.params.id).then((questionData) => {
           console.log(JSON.stringify(questionData));
+          questionData.sesh = sesh;
           res.render('questions-single', questionData);
         }).catch((err)=>{
           console.log('error!', err);

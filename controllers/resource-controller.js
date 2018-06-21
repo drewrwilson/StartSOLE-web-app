@@ -424,5 +424,5 @@ Resource.getAll = function () {
       ]
     }
   ];
-  return resources;
+  return Parse.Promise.as(resources);
 }

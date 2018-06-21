@@ -18,12 +18,12 @@ var soleConfig = require('./sole-config.js');
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-const username = process.argv[2]; //1st parameter after node test-parse.js USERNAME PASSWORD
-const password = process.argv[3]; //2nd parameter after node test-parse.js USERNAME PASSWORD
+// const username = process.argv[2]; //1st parameter after node test-parse.js USERNAME PASSWORD
+// const password = process.argv[3]; //2nd parameter after node test-parse.js USERNAME PASSWORD
 //note username is email address
 
 var sessionToken = null;
-// Parse.User.enableUnsafeCurrentUser();
+Parse.User.enableUnsafeCurrentUser();
 // Parse.User.logIn(username, password)
 //     .done((user)=>{
 //     Parse.Cloud.run("platform.set", {
@@ -91,15 +91,14 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
     .get((req, res) => {
 
-      if (!req.query.token || req.query.token === undefined)  {
+      if (!req.query.sesh || req.query.sesh === undefined)  {
         res.redirect('/login');
-        return;
       }
 
-    sessionTokenString = 'r:'+req.query.token;
+    sessionToken = Controller.Helper.seshToSessionToken(req.query.sesh); //convert sesh to sessionToken string
 
-    Parse.User.enableUnsafeCurrentUser();
-    Parse.User.become(sessionTokenString).then(function (user) {
+    // Parse.User.enableUnsafeCurrentUser();
+    Parse.User.become(sessionToken).then(function (user) {
       sessionToken = Parse.User.current().getSessionToken();
 
       var homeData = {soles: [],questions:[]};
@@ -137,13 +136,6 @@ router.route('/')
 
 
 
-});
-
-router.route('/testparse')
-    .get((req, res)=> {
-
-    Controllers.Question.getAll("r:2d03f28420b049fc1ffb4aee4a5396f1").then((response)=>console.log(response))
-    // res.render('history');
 });
 
 

@@ -46,9 +46,9 @@ function succesfulLogin(user) {
   sessionToken = Parse.User.current().getSessionToken();
   sessionToken = sessionToken.slice(2)
   console.log('sessionToken:', sessionToken);
-  $('#token').val(sessionToken);
-  console.log('submitting foobar with sessionToken: '+ $('#token').val());
-  $("#foobar").submit()
+  $('#sesh').val(sessionToken);
+  console.log('submitting foobar with sessionToken: '+ $('#sesh').val());
+  $("#login-with-session").submit()
 }
 
 function login (username, password) {

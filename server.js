@@ -18,12 +18,8 @@ var soleConfig = require('./sole-config.js');
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-// const username = process.argv[2]; //1st parameter after node test-parse.js USERNAME PASSWORD
-// const password = process.argv[3]; //2nd parameter after node test-parse.js USERNAME PASSWORD
-//note username is email address
-
 var sessionToken = null;
-Parse.User.enableUnsafeCurrentUser();
+// Parse.User.enableUnsafeCurrentUser();
 // Parse.User.logIn(username, password)
 //     .done((user)=>{
 //     Parse.Cloud.run("platform.set", {
@@ -192,14 +188,6 @@ router.route('/login')
     .get((req, res)=> {
       res.render('login', {layout: 'prelogin.hbs'});
     })
-    // .post((req, res)=> {
-    //   if (req.body.u && req.body.p) {
-    //     res.redirect('/?r=' + token.r);
-    //   } else {
-    //     res.redirect('/login');
-    //   }
-    //
-    // });
 
 // static route for completing profile
 router.route('/complete-profile')

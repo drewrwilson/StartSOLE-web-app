@@ -25,7 +25,20 @@
 
 
 
-					<standard-picker tags="Search.tags" onupdate="Search.searchChanged"></standard-picker>
+          {{!-- <standard-picker tags="Search.tags" onupdate="Search.searchChanged" class="ng-isolate-scope"><div class="row standard-picker">
+            <div class="input-field col s12 m6">
+                <label for="subject" class="active">Subject</label>
+                <select id="subject" class="browser-default ng-pristine ng-valid ng-not-empty ng-touched" ng-model="selectedSubject" ng-options="item.get('rdn') as item.get('short') for item in subjects" ng-change="subjectChanged()" style=""><option value="?" selected="selected"></option><option label="AmeriCorps" value="string:asn.d0000003">AmeriCorps</option><option label="College Now" value="string:asn.d0000001">College Now</option><option label="Community Health Worker Certification" value="string:asn.d0000002">Community Health Worker Certification</option><option label="Dance" value="string:asn.d2466234">Dance</option><option label="Drama/Theatre" value="string:asn.d2466454">Drama/Theatre</option><option label="English Language Arts (Common Core)" value="string:asn.d10003fc">English Language Arts (Common Core)</option><option label="Mathematics (Common Core)" value="string:asn.d10003fb">Mathematics (Common Core)</option><option label="Music" value="string:asn.d2482974">Music</option><option label="Next Generation Science Standards" value="string:asn.d2454348">Next Generation Science Standards</option><option label="Physical Education" value="string:asn.d2716034">Physical Education</option><option label="Science (High School)" value="string:asn.d2692656">Science (High School)</option><option label="Science (K-8)" value="string:asn.d2462762">Science (K-8)</option><option label="Social Studies (High School)" value="string:asn.d2463176">Social Studies (High School)</option><option label="Social Studies (K-8)" value="string:asn.d2462866">Social Studies (K-8)</option><option label="Technology" value="string:asn.d2465259">Technology</option><option label="Visual Arts" value="string:asn.d2483255">Visual Arts</option><option label="World Languages" value="string:asn.d2483559">World Languages</option></select>
+            </div>
+            <div class="input-field col s12 m6">
+                <label for="grade" class="active">Grade <span style="color:pink;" ng-show="selectedSubject === false">(subject required)</span></label>
+                <select id="grade" class="browser-default ng-pristine ng-untouched ng-valid ng-not-empty" ng-model="selectedGrade" ng-disabled="selectedSubject === false" ng-options="item.get('rdn') as item.get('short') for item in grades" ng-change="gradeChanged()" disabled="disabled" style=""><option value="?" selected="selected"></option></select>
+            </div>
+            <div id="refine">
+                <!-- ngRepeat: level in refines -->
+            </div>
+          </div>
+        </standard-picker> --}}
 				</div>
 			</form>
 		</div>

@@ -74,35 +74,32 @@ var router = express.Router();              // get an instance of the express Ro
 //       nice encouraging message, etc etc
 router.route('/')
     .get((req, res) => {
-      const sesh = req.query.sesh;
+      const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       var homeData = {soles: [],questions:[]};
       console.log('before getall questions');
-      Controllers.Question.getAll(sessionToken)
-          .then((questions)=>{
-          console.log('questions', questions);
-      console.log('got all questions:');
-      console.log(questions);
-      console.log('---');
-      homeData.questions.mine = questions.questions;
+      Controllers.Question.getAll(sessionToken).then((questions)=>{
+        console.log('questions', questions);
+        console.log('got all questions:');
+        console.log(questions);
+        console.log('---');
+        homeData.questions.mine = questions.questions;
 
-      Controllers.Question.getFavorites(sessionToken)
-          .then((favoriteQuestions)=>{
-          console.log('got fav questions:');
-      console.log(favoriteQuestions);
-      console.log('---');
-      homeData.questions.favorites = favoriteQuestions;
-
-      res.render('home', homeData); //display view with question data
+      Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
+        console.log('got fav questions:');
+        console.log(favoriteQuestions);
+        console.log('---');
+        homeData.questions.favorites = favoriteQuestions;
+        res.render('home', homeData); //display view with question data
+      }).catch((err)=>{
+        console.log('error getting fav questions!', err);
+        res.redirect('/login');
       })
-      .catch((err)=>{
-          console.log('error getting fav questions!', err);
-      })
-      })
-      .catch((err)=>{
-          console.log('error getting questions!', err);
+      }).catch((err)=>{
+        console.log('error getting all questions!', err);
+        res.redirect('/login');
       });
 
 });
@@ -151,6 +148,9 @@ router.route('/profile')
 
 // profile view
     .get((req, res) => {
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       Controllers.User.getProfileData(sessionToken)
       .then((profileData) => {
@@ -191,14 +191,18 @@ router.route('/soles')
 
 // get all the soles
     .get((req, res)=> {
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
         Controllers.Sole.getAll(sessionToken)
-            .then(soles=>{
-            console.log('All soles', JSON.stringify(soles));
-        res.render('soles', soles);
-    })
-        .catch(err=>{
-            console.log('oops! error!', err);
-    })
+          .then(soles=>{
+          console.log('All soles', JSON.stringify(soles));
+          res.render('soles', soles);
+        }).catch(err=>{
+          console.log('oops! error!', err);
+          res.redirect('/login')
+        })
 
     });
 
@@ -207,13 +211,20 @@ router.route('/soles')
 router.route('/soles/:id')
 // get the sole with that id
     .get((req, res)=> {
-        Controllers.Sole.getByID(req.params.id, sessionToken)
-            .then((singleSole) => {
-            //in case the id of the sole is invalid
-            console.log(JSON.stringify(singleSole.sole));
-        res.render('soles-single', singleSole);
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      Controllers.Sole.getByID(req.params.id, sessionToken)
+          .then((singleSole) => {
+          //in case the id of the sole is invalid
+          console.log(JSON.stringify(singleSole.sole));
+      res.render('soles-single', singleSole);
     })
-        .catch((err)=>{console.log('error!', err);})
+        .catch((err)=>{
+          console.log('error!', err);
+          res.redirect('/login')
+        })
     });
 
 
@@ -222,20 +233,24 @@ router.route('/soles/:id')
 router.route('/soles/:id/download-plan')
 // get the sole with that id
     .get((req, res)=> {
+
     Controllers.Sole.downloadPlan(req.params.id, sessionToken)
     .then((url) => {
-    //in case the id of the sole is invalid
+      //in case the id of the sole is invalid
 
-    var baseUrl = 'http://localhost:1339/soleapp/files/';
+      var baseUrl = 'http://localhost:1339/soleapp/files/';
 
-    // var file = baseUrl + url;
-    // res.download(file); // Set disposition and send it.
+      // var file = baseUrl + url;
+      // res.download(file); // Set disposition and send it.
 
-    res.redirect(baseUrl+url);
-    // res.render('soles-single', singleSole);
-})
-.catch((err)=>{console.log('error!', err);})
-});
+      res.redirect(baseUrl+url);
+      // res.render('soles-single', singleSole);
+    })
+    .catch((err)=>{
+      console.log('error!', err);
+      res.redirect('/login')
+    })
+  });
 
 
 // on routes that end in /soles/:sole_id
@@ -243,6 +258,10 @@ router.route('/soles/:id/download-plan')
 router.route('/soles/:id/edit')
 // get the sole with that id
     .get((req, res)=> {
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
         Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
             console.log("single sole!!!");
             console.log(singleSole);
@@ -250,7 +269,10 @@ router.route('/soles/:id/edit')
             console.log(JSON.stringify(singleSole.sole.materials));
             console.log(JSON.stringify(singleSole.sole.target_observations));
             res.render('soles-add', singleSole);
-    });
+          }).catch((err)=>{
+            console.log('error!', err);
+            res.redirect('/login')
+          })
     });
 
 // on routes that end in /soles/add/
@@ -258,10 +280,17 @@ router.route('/soles/:id/edit')
 router.route('/sole-create')
 // view for adding a new sole
     .get((req, res)=> {
-        res.render('soles-add');
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+      res.render('soles-add');
     })
     .post((req, res)=>{
-      console.log(req.body);
+      // const sesh = req.query.sesh; //get the sesh token string from the query param
+      // (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      // sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+      // this needs to do it in the post param
+
       //push observations into this array if any are set to 'on'
       let targetObservations = [];
       (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
@@ -307,7 +336,10 @@ router.route('/sole-create')
       Controllers.Sole.add(sole, sessionToken).then(soleID=>{
         console.log(soleID);
         res.redirect('/soles/'+soleID);
-      });
+      }).catch((err)=>{
+        console.log('error!', err);
+        // res.redirect('/login')
+      })
 
     });
 
@@ -317,47 +349,78 @@ router.route('/questions')
 // get all the soles
     .get((req, res)=> {
 
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
         if (req.query.q) {
-            Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
-                console.log(JSON.stringify(foundQuestions));
+          Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
+            console.log(JSON.stringify(foundQuestions));
             res.render('questions', foundQuestions);
-        });
+          }).catch((err)=>{
+            console.log('error!', err);
+            res.redirect('/login')
+          });
         } else if (req.query.tags) {
             Controllers.Question.findByTags(req.query.tags, sessionToken).then((foundQuestions) => {
-                //todo probably need to do some processing on tags to convert it from a string to an array of tags
-                console.log(JSON.stringify(foundQuestions));
-            res.render('questions', foundQuestions);
-        });
+              //todo probably need to do some processing on tags to convert it from a string to an array of tags
+              console.log(JSON.stringify(foundQuestions));
+              res.render('questions', foundQuestions);
+            }).catch((err)=>{
+              console.log('error!', err);
+              res.redirect('/login')
+            });
         } else {
             Controllers.Question.getAll(sessionToken).then((allQuestions)=>{
-                res.render('questions', allQuestions);
-        });
+              res.render('questions', allQuestions);
+            }).catch((err)=>{
+              console.log('error!', err);
+              res.redirect('/login')
+            })
         }
     });
 
 //add a question
 router.route('/questions/add')
     .get((req, res)=> {
-        res.render('questions-add');
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      res.render('questions-add');
     });
 // on routes that end in /questions/:id
 // ----------------------------------------------------
 router.route('/questions/:id')
 // get the question data with a given id
     .get((req, res)=> {
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
         Controllers.Question.getByID(req.params.id).then((questionData) => {
           console.log(JSON.stringify(questionData));
           res.render('questions-single', questionData);
-        });
+        }).catch((err)=>{
+          console.log('error!', err);
+          res.redirect('/login')
+        })
     });
 
 router.route('/questions/:id/favorite')
 // favorite a question with a given id
     .get((req, res)=> {
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
         Controllers.Question.favorite(req.params.id).then((questionData) => {
-            console.log(JSON.stringify(questionData));
-        res.redirect('/questions/'+req.params.id);
-    });
+          console.log(JSON.stringify(questionData));
+          res.redirect('/questions/'+req.params.id);
+        }).catch((err)=>{
+          console.log('error!', err);
+          res.redirect('/login')
+        });
     });
 
 // REGISTER OUR ROUTES -------------------------------

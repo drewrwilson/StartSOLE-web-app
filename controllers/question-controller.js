@@ -67,5 +67,9 @@ Question.favorite = function (questionID, sessionToken) {
 		id: questionID,
 		sessionToken: sessionToken
 	});
+}
+
+// filter down the question tags and return a list
+Question.tagPickers = function () {
 
 }

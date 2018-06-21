@@ -25,20 +25,31 @@
 
 
 
-          {{!-- <standard-picker tags="Search.tags" onupdate="Search.searchChanged" class="ng-isolate-scope"><div class="row standard-picker">
-            <div class="input-field col s12 m6">
-                <label for="subject" class="active">Subject</label>
-                <select id="subject" class="browser-default ng-pristine ng-valid ng-not-empty ng-touched" ng-model="selectedSubject" ng-options="item.get('rdn') as item.get('short') for item in subjects" ng-change="subjectChanged()" style=""><option value="?" selected="selected"></option><option label="AmeriCorps" value="string:asn.d0000003">AmeriCorps</option><option label="College Now" value="string:asn.d0000001">College Now</option><option label="Community Health Worker Certification" value="string:asn.d0000002">Community Health Worker Certification</option><option label="Dance" value="string:asn.d2466234">Dance</option><option label="Drama/Theatre" value="string:asn.d2466454">Drama/Theatre</option><option label="English Language Arts (Common Core)" value="string:asn.d10003fc">English Language Arts (Common Core)</option><option label="Mathematics (Common Core)" value="string:asn.d10003fb">Mathematics (Common Core)</option><option label="Music" value="string:asn.d2482974">Music</option><option label="Next Generation Science Standards" value="string:asn.d2454348">Next Generation Science Standards</option><option label="Physical Education" value="string:asn.d2716034">Physical Education</option><option label="Science (High School)" value="string:asn.d2692656">Science (High School)</option><option label="Science (K-8)" value="string:asn.d2462762">Science (K-8)</option><option label="Social Studies (High School)" value="string:asn.d2463176">Social Studies (High School)</option><option label="Social Studies (K-8)" value="string:asn.d2462866">Social Studies (K-8)</option><option label="Technology" value="string:asn.d2465259">Technology</option><option label="Visual Arts" value="string:asn.d2483255">Visual Arts</option><option label="World Languages" value="string:asn.d2483559">World Languages</option></select>
-            </div>
-            <div class="input-field col s12 m6">
-                <label for="grade" class="active">Grade <span style="color:pink;" ng-show="selectedSubject === false">(subject required)</span></label>
-                <select id="grade" class="browser-default ng-pristine ng-untouched ng-valid ng-not-empty" ng-model="selectedGrade" ng-disabled="selectedSubject === false" ng-options="item.get('rdn') as item.get('short') for item in grades" ng-change="gradeChanged()" disabled="disabled" style=""><option value="?" selected="selected"></option></select>
-            </div>
-            <div id="refine">
-                <!-- ngRepeat: level in refines -->
-            </div>
+          <div class="row" id="standard-picker">
+          <div class="input-field col s12 m6">
+              <label for="subject" class="active">Subject</label>
+              <select id="subject" class="browser-default standard-picker"><option label="AmeriCorps" value="asn.d0000003">AmeriCorps</option><option label="College Now" value="asn.d0000001">College Now</option><option label="Community Health Worker Certification" value="asn.d0000002">Community Health Worker Certification</option><option label="Dance" value="asn.d2466234">Dance</option><option label="Drama/Theatre" value="asn.d2466454">Drama/Theatre</option><option label="English Language Arts (Common Core)" value="asn.d10003fc">English Language Arts (Common Core)</option><option label="Mathematics (Common Core)" value="asn.d10003fb">Mathematics (Common Core)</option><option label="Music" value="asn.d2482974">Music</option><option label="Next Generation Science Standards" value="asn.d2454348">Next Generation Science Standards</option><option label="Physical Education" value="asn.d2716034">Physical Education</option><option label="Science (High School)" value="asn.d2692656">Science (High School)</option><option label="Science (K-8)" value="asn.d2462762">Science (K-8)</option><option label="Social Studies (High School)" value="asn.d2463176">Social Studies (High School)</option><option label="Social Studies (K-8)" value="asn.d2462866">Social Studies (K-8)</option><option label="Technology" value="asn.d2465259">Technology</option><option label="Visual Arts" value="asn.d2483255">Visual Arts</option><option label="World Languages" value="asn.d2483559">World Languages</option></select>
           </div>
-        </standard-picker> --}}
+          <div class="input-field col s12 m6">
+              <label for="grade" class="active">Grade <span style="color: pink;" >(subject required)</span></label>
+              <select id="grade" class="browser-default standard-picker" disabled>
+              </select>
+          </div>
+
+          <div id="refine">
+              {{!-- <!-- ngRepeat: level in refines --><div class="input-field col s12 m6 ng-scope" ng-repeat="level in refines" style="">
+                  <label for="refine-0" class="active ng-binding">Cognitive &amp; Creative Learning Process</label>
+                  <select id="refine-0" class="browser-default ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" ng-model="selectedRefine[$index]" ng-options="item.get('rdn') as item.get('short') for item in level" ng-change="refineChanged($index)" style=""><option label="Perceiving/Knowing" value="asn.s2466235">Perceiving/Knowing</option><option label="Producing/Performing" value="asn.s2466236">Producing/Performing</option><option label="Responding/Reflecting" value="asn.s2466237">Responding/Reflecting</option></select>
+              </div><!-- end ngRepeat: level in refines -->
+
+              <div class="input-field col s12 m6 ng-scope" ng-repeat="level in refines" style="">
+                  <label for="refine-1" class="active ng-binding">Content Statement</label>
+                  <select id="refine-1" class="browser-default ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" ng-model="selectedRefine[$index]" ng-options="item.get('rdn') as item.get('short') for item in level" ng-change="refineChanged($index)" style=""><option label="Discuss personal reactions to dances viewed or performed and consider how these are informed by cultural and social influences." value="asn.s2466394">Discuss personal reactions to dances viewed or performed and consider how these are informed by cultural and social influences.</option><option label="Identify ways that the same dance movement can be described differently, based on point of view." value="asn.s2466395">Identify ways that the same dance movement can be described differently, based on point of view.</option><option label="Reflect on how attention to physical sensations can impact movement experiences and performance." value="asn.s2466396">Reflect on how attention to physical sensations can impact movement experiences and performance.</option><option label="Reflect on, evaluate and refine choreographic, rehearsal and performance processes based on established criteria." value="asn.s2466398">Reflect on, evaluate and refine choreographic, rehearsal and performance processes based on established criteria.</option><option label="Use forms of writing (e.g., note-taking, graphic organizers, motif notation) to record choices made in the dance-making process." value="asn.s2466397">Use forms of writing (e.g., note-taking, graphic organizers, motif notation) to record choices made in the dance-making process.</option></select>
+              </div><!-- end ngRepeat: level in refines --> --}}
+          </div>
+
+      </div>
+
 				</div>
 			</form>
 		</div>
@@ -108,3 +119,8 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
+<script type="text/javascript" src="/js/sole-config.js"></script>
+<script type="text/javascript" src="/js/questions.js"></script>

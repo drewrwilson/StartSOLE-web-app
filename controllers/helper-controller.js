@@ -1,4 +1,4 @@
-var Sole = module.exports = {};
+var Helper = module.exports = {};
 
 // takes a sesh string and adds the "r:" so it's a valid session token string
 // param: sesh - string

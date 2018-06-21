@@ -95,15 +95,15 @@ router.route('/')
         res.redirect('/login');
       }
 
-    sessionToken = Controller.Helper.seshToSessionToken(req.query.sesh); //convert sesh to sessionToken string
+    sessionToken = Controllers.Helper.seshToSessionToken(req.query.sesh); //convert sesh to sessionToken string
 
     // Parse.User.enableUnsafeCurrentUser();
-    Parse.User.become(sessionToken).then(function (user) {
-      sessionToken = Parse.User.current().getSessionToken();
+    // Parse.User.become(sessionToken).then(function (user) {
+      // sessionToken = Parse.User.current().getSessionToken();
 
       var homeData = {soles: [],questions:[]};
       console.log('before getall questions');
-      Controllers.Question.getAll("sessionToken")
+      Controllers.Question.getAll(sessionToken)
           .then((questions)=>{
           console.log('questions', questions);
       console.log('got all questions:');
@@ -127,11 +127,11 @@ router.route('/')
       .catch((err)=>{
           console.log('error getting questions!', err);
       });
-    })
-      .catch(error=>{
-        // console.log('error logging in!', error);
-        res.redirect('/login')
-      })
+    // })
+    //   .catch(error=>{
+    //     // console.log('error logging in!', error);
+    //     res.redirect('/login')
+    //   })
 
 
 

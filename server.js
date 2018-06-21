@@ -201,6 +201,14 @@ router.route('/login')
     //
     // });
 
+// static route for completing profile
+router.route('/complete-profile')
+    .get((req, res)=> {
+    res.render('complete-profile', {layout: 'prelogin.hbs'});
+});
+
+
+
 // routes for soles
 // ----------------------------------------------------
 router.route('/soles')

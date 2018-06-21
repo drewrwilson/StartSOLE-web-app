@@ -97,7 +97,7 @@ router.route('/')
       }
 
     sessionTokenString = 'r:'+req.query.token;
-    Parse.User.enableUnsafeCurrentUser();
+    // Parse.User.enableUnsafeCurrentUser();
     Parse.User.become(sessionTokenString).then(function (user) {
       sessionToken = Parse.User.current().getSessionToken();
 
@@ -136,6 +136,13 @@ router.route('/')
 
 
 
+});
+
+router.route('/testparse')
+    .get((req, res)=> {
+
+    Controllers.Question.getAll("r:2d03f28420b049fc1ffb4aee4a5396f1").then((response)=>console.log(response))
+    // res.render('history');
 });
 
 

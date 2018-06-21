@@ -204,3 +204,30 @@ main, footer {
 .question-card {
     margin-top: 40px;
 }
+
+/* resources */
+@media (max-width:1200px) and (min-width:992px) {
+    .resource-card .card-title {
+        font-size: 20px !important;
+    }
+
+    .resource-card .card-content {
+        padding: 10px !important;
+    }
+
+    .resource-card .card-content p {
+        display: none !important;
+    }
+}​
+
+@media (max-width:1599px) {
+    .resource-card .card-content p.long-description {
+        display: none !important;
+    }
+}
+
+@media (min-width:1600px) {
+    .resource-card .card-content p.short-description {
+        display: none !important;
+    }
+}

@@ -200,12 +200,12 @@ router.route('/profile')
 // ----------------------------------------------------
 router.route('/register')
 
-// profile view
+// register view
     .get((req, res)=> {
         res.render('register');
     });
 
-// routes for user registration
+// routes for logging in
 // ----------------------------------------------------
 router.route('/login')
 
@@ -216,8 +216,26 @@ router.route('/login')
 
 // static route for completing profile
 router.route('/complete-profile')
-    .get((req, res)=> {
-    res.render('complete-profile', {layout: 'prelogin.hbs'});
+    .get((req, res) => {
+    const sesh = req.query.sesh; //get the sesh token string from the query param
+    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+    Controllers.User.getProfileData(sessionToken)
+        .then((profileData) => {
+            console.log("PROFIIIIILE");
+            console.log(JSON.stringify(profileData));
+            if( profileData.user.firstName && profileData.user.lastName ) {
+                console.log("got first and last");
+            }
+            else {
+                console.log("don't have mah data!");
+            }
+
+            profileData.sesh = sesh;
+            res.render('complete-profile', {layout: 'prelogin.hbs'});
+        });
+
 });
 
 

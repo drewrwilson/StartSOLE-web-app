@@ -469,13 +469,14 @@ router.route('/questions/:id')
       const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+      console.log("sessionToken", sessionToken);
 
-        Controllers.Question.getByID(req.params.id).then((questionData) => {
+        Controllers.Question.getByID(req.params.id, sessionToken).then((questionData) => {
           console.log(JSON.stringify(questionData));
           questionData.sesh = sesh;
           res.render('questions-single', questionData);
         }).catch((err)=>{
-          console.log('error!', err);
+          console.log('error! oh noes!', err);
           res.redirect('/login')
         })
     });

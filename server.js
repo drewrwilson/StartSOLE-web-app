@@ -78,9 +78,9 @@ router.route('/')
       const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       console.log('what happened??');
-      return
-      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+      console.log("sessionToken", sessionToken);
       var homeData = {soles: [],questions:[]};
       console.log('before getall questions');
       Controllers.Question.getAll(sessionToken).then((questions)=>{
@@ -90,17 +90,17 @@ router.route('/')
         console.log('---');
         homeData.questions.mine = questions.questions;
 
-      Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
-        console.log('got fav questions:');
-        console.log(favoriteQuestions);
-        console.log('---');
-        homeData.questions.favorites = favoriteQuestions;
-        homeData.sesh = sesh;
-        res.render('home', homeData); //display view with question data
-      }).catch((err)=>{
-        console.log('error getting fav questions!', err);
-        res.redirect('/login');
-      })
+        Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
+          console.log('got fav questions:');
+          console.log(favoriteQuestions);
+          console.log('---');
+          homeData.questions.favorites = favoriteQuestions;
+          homeData.sesh = sesh;
+          res.render('home', homeData); //display view with question data
+        }).catch((err)=>{
+          console.log('error getting fav questions!', err);
+          res.redirect('/login');
+        })
       }).catch((err)=>{
         console.log('error getting all questions!', err);
         res.redirect('/login');
@@ -433,13 +433,8 @@ router.route('/questions')
               res.redirect('/login')
             });
         } else {
-            Controllers.Question.getAll(sessionToken).then((allQuestions)=>{
-              allQuestions.sesh = sesh;
-              res.render('questions', allQuestions);
-            }).catch((err)=>{
-              console.log('error!', err);
-              res.redirect('/login')
-            })
+          viewData = {sesh: sesh};
+          res.render('questions', viewData);
         }
     });
 

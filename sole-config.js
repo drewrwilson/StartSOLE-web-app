@@ -1,5 +1,9 @@
-// local
-// var soleConfig = {"serverUrl":"http://localhost:1339/soleapp","appId":"Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp"}
+var soleConfig = module.exports = {};
 
-// staging
-var soleConfig = {"serverUrl":"https://api.staging.startsole.net/sole/","appId":"Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp"}
+//for local
+// soleConfig.serverUrl = "http://localhost:1339/soleapp";
+
+// uncomment for staging
+soleConfig.serverUrl = "https://api.staging.startsole.net/sole/";
+
+soleConfig.appId = "Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp";

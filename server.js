@@ -14,6 +14,7 @@ var Controllers = require('./controllers/controllers.js');
 var Parse       =  require('parse/node');
 var soleConfig = require('./sole-config.js');
 
+console.log("serverURL:", soleConfig.serverUrl);
 // connect to parse server
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;

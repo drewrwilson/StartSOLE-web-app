@@ -3,6 +3,7 @@ var Question = module.exports = {};
 var Parse       =  require('parse/node');
 var soleConfig = require('../sole-config.js');
 
+console.log(soleConfig.serverUrl);
 // connect to parse server
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;

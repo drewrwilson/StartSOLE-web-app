@@ -1,11 +1,11 @@
 <div class="breadcrumb-wrapper">
-    <a href="/" class="breadcrumb">Home</a>
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
     <a class="breadcrumb">Explore Questions</a>
 </div>
 
 <div class="row" style="padding-top:20px;">
 	<div class="col offset-s10 s2 offset-m9 m3 offset-l8 l4">
-		<a href="/questions/add" class="btn-floating btn-large waves-effect waves-light red">
+		<a href="/questions/add?sesh={{sesh}}" class="btn-floating btn-large waves-effect waves-light red">
 			<i class="material-icons">add</i>
 		</a>
 	</div>
@@ -78,19 +78,7 @@
 
 
           {{#each questions}}
-          {{!-- <div class="col m12 l4 animated fadeIn"
-						 style="-webkit-animation-duration:300ms;">
-						<div class="card blue lighten-1">
-							<div class="question-card card-content center-align">
-								<a href="/questions/{{id}}">
-								<div class="card-title white-text">{{text}}</div>
-								</a>
-
-							</div>
-						</div>
-					</div> --}}
-          {{!-- question-card --}}
-          {{> question-card }}
+            {{> question-card }}
           {{/each}}
 
           {{else}}

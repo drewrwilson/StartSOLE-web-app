@@ -1,6 +1,6 @@
 <div class="breadcrumb-wrapper">
-    <a href="/" class="breadcrumb">Home</a>
-    <a href="/questions" class="breadcrumb">Questions</a>
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a href="/questions?sesh={{sesh}}" class="breadcrumb">Questions</a>
     {{#if question}}
         <a class="truncate truncate-question breadcrumb">{{question.text}}</a>
     {{/if}}
@@ -15,11 +15,11 @@
                 <hr>
                 <div class="row hide-on-med-and-up">
                     <div class="col s12 right-align">
-                        <a href="/questions/{{question.id}}/favorite" class="waves-effect waves-light btn">
+                        <a href="/questions/{{question.id}}/favorite?sesh={{sesh}}" class="waves-effect waves-light btn">
                             <i class="material-icons left">favorite</i>
                             Favorite
                         </a>
-                        <a href="/questions/{{question.id}}/copy" class="waves-effect waves-light btn">
+                        <a href="/questions/{{question.id}}/copy?sesh={{sesh}}" class="waves-effect waves-light btn">
                             <i class="material-icons left">assignment</i>
                             Create Lesson
                         </a>

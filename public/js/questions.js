@@ -14,7 +14,9 @@
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-var sessionToken = 'r:' + '5d278aceb9a523bdd4337a0dae128e6a';
+//get session info to be used later and to be passed to handlebars view
+var sesh         = $('#sesh').val(), //get the sesh token from the DOM
+    sessionToken = 'r:' + sesh;      //convert sesh token to full sessionToken string
 
 function getGrades(subject){
   return Parse.Cloud.run('webapp.getGrades', {
@@ -74,10 +76,27 @@ $('.standard-picker').change(function (){
 
   Parse.Cloud.run('webapp.findQuestionByTags', {
     tags: standards,
-    sessionToken: 'r:' + '5d278aceb9a523bdd4337a0dae128e6a'
-  }).then(questions=>{
-    console.log(questions);
-    //// TODO: put the questions in the view DOM
+    sessionToken: sessionToken 
+  }).then(response=>{
+    //Ok, now that we have the questions with a given tag, let's add them to the DOM
+
+    //First, remove all the current questions from the DOM.
+    $('#questions').empty();
+
+    //Now add the new questions to the DOM
+
+    //more handlebars frontend stuff. compost this code when you can. -DW 2018-06-22
+    var source   = $("#question-card-template").html(),
+        template = Handlebars.compile(source),
+        html     = '';
+
+    //loop through all the returns questions and add each to the DOM
+    response.questions.forEach(function (question){
+      //handlebars stuff. this is just for the question-card. bad architecture having two handlebars (frontend and backend), but we're moving so fast! (Come back later and refactor) -DW 2018-06-22
+      question.sesh = sesh; //add sesh token to view data so we can add it to each question's link
+      html = template(question);
+      $('#questions').append(html);
+    })
 
   })
 })

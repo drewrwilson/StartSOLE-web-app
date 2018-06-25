@@ -74,9 +74,12 @@
 						They typically connect more than one subject area.</p>
             <p>Here are a few examples of big questions:</p>
           {{/if}}
+          <div id="questions">
           {{#if questions}}
+
+
           {{#each questions}}
-          <div class="col m12 l4 animated fadeIn"
+          {{!-- <div class="col m12 l4 animated fadeIn"
 						 style="-webkit-animation-duration:300ms;">
 						<div class="card blue lighten-1">
 							<div class="question-card card-content center-align">
@@ -86,9 +89,10 @@
 
 							</div>
 						</div>
-					</div>
+					</div> --}}
+          {{!-- question-card --}}
+          {{> question-card }}
           {{/each}}
-
 
           {{else}}
           <!-- No results -->
@@ -107,6 +111,7 @@
           </div>
           <!-- End No results -->
           {{/if}}
+        </div><!-- end #questions -->
 
 				</div>
 
@@ -122,5 +127,26 @@
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+
+
+{{!-- this is duplicated code. we currently need it. but a copy of it also exists in the backend for the templating engine and here for use with the frontend. JFYI. We should remove one of these at some point in the future. -DW 2018-06-22 --}}
+{{!-- //FYI this has escapes before the {{}}'s because this is in a HBS file. this isn't needed on the backend HBS version --}}
+<script id="question-card-template" type="text/x-handlebars-template">
+  <div class="col m12 l4 animated fadeIn"
+     style="-webkit-animation-duration:300ms;">
+    <div class="card blue lighten-1">
+      <div class="question-card card-content center-align">
+        <a href="/questions/\{{id}}?sesh=\{{sesh}}">
+        <div class="card-title white-text">\{{text}}</div>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</script>
+
+<input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
+
 <script type="text/javascript" src="/js/sole-config.js"></script>
 <script type="text/javascript" src="/js/questions.js"></script>

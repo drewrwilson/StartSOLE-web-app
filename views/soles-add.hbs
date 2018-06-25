@@ -1,6 +1,6 @@
 <div class="breadcrumb-wrapper">
-    <a href="/" class="breadcrumb">Home</a>
-    <a href="/soles" class="breadcrumb">My SOLEs</a>
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a href="/soles?sesh={{sesh}}" class="breadcrumb">My SOLEs</a>
     <a class="breadcrumb">
         {{#if sole}}
             {{sole.question.question.text}}
@@ -14,6 +14,7 @@
     <div class="col s12">
         <div class="card-panel">
             <form id="soles-add-form" action="/sole-create" method="post">
+              <input type="hidden" name="sesh" value="{{sesh}}">
               <div class="row" >
 
 

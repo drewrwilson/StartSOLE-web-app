@@ -76,6 +76,7 @@ router.route('/')
     .get((req, res) => {
       const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      console.log('what happened??');
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       var homeData = {soles: [],questions:[]};
@@ -223,17 +224,16 @@ router.route('/complete-profile')
 
     Controllers.User.getProfileData(sessionToken)
         .then((profileData) => {
-            console.log("PROFIIIIILE");
-            console.log(JSON.stringify(profileData));
-            if( profileData.user.firstName && profileData.user.lastName ) {
-                console.log("got first and last");
-            }
-            else {
-                console.log("don't have mah data!");
-            }
+          console.log("PROFIIIIILE");
+          console.log(JSON.stringify(profileData));
+          if( profileData.user.firstName && profileData.user.lastName ) {
+            console.log("got first and last");
+          } else {
+            console.log("don't have mah data!");
+          }
 
-            profileData.sesh = sesh;
-            res.render('complete-profile', {layout: 'prelogin.hbs'});
+          profileData.sesh = sesh;
+          res.render('complete-profile', {layout: 'prelogin.hbs'});
         });
 
 });
@@ -256,8 +256,8 @@ router.route('/soles')
           soles.sesh = sesh;
           res.render('soles', soles);
         }).catch(err=>{
-          console.log('oops! error!', err);
-          res.redirect('/login')
+          console.log('oops! error getting all soles!', err);
+          // res.redirect('/login')
         })
 
     });
@@ -337,10 +337,11 @@ router.route('/soles/:id/edit')
 router.route('/sole-create')
 // view for adding a new sole
     .get((req, res)=> {
-      const sesh = req.query.sesh; //get the sesh token string from the query param
+      const sesh = req.body.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-      res.render('soles-add');
+      var viewData = {sesh: sesh}
+      res.render('soles-add', viewData);
     })
     .post((req, res)=>{
       // const sesh = req.query.sesh; //get the sesh token string from the query param
@@ -392,7 +393,7 @@ router.route('/sole-create')
       }
       Controllers.Sole.add(sole, sessionToken).then(soleID=>{
         console.log(soleID);
-        res.redirect('/soles/'+soleID);
+        res.redirect('/soles/'+soleID+'?sesh='+sesh);
       }).catch((err)=>{
         console.log('error!', err);
         // res.redirect('/login')
@@ -446,9 +447,20 @@ router.route('/questions/add')
       const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
       const viewData = {sesh: sesh};
       res.render('questions-add', viewData);
-    });
+    })
+    // TODO: add post route here to save question to DB
+    // .post((req, res)=> {
+    //   const sesh = req.query.sesh; //get the sesh token string from the query param
+    //   (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    //   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+    //
+    //   const viewData = {sesh: sesh};
+    //   res.render('questions-add', viewData);
+    // })
+
 // on routes that end in /questions/:id
 // ----------------------------------------------------
 router.route('/questions/:id')

@@ -5,9 +5,9 @@
 			<div class="row center-align">
                 <img class="hide-on-small-only" src="/images/logos/logo.svg">
 				<h5 style="margin-bottom: 1em;">Let's get started</h5>
-                <a class="waves-effect waves-light btn-large" href="/sole-create">Plan A Lesson</a>
+                <a class="waves-effect waves-light btn-large" href="/sole-create?sesh={{sesh}}">Plan A Lesson</a>
                 <p>
-                  Or you can <a href="/soles">check out your previous SOLE lessons</a> or <a href="/questions">explore some of our Big Questions</a> or <a href="/questions/add">add your own Big Question</a>.
+                  Or you can <a href="/soles?sesh={{sesh}}">check out your previous SOLE lessons</a> or <a href="/questions?sesh={{sesh}}">explore some of our Big Questions</a> or <a href="/questions/add?sesh={{sesh}}">add your own Big Question</a>.
                 </p>
 			</div>
 		</div>
@@ -48,14 +48,14 @@ No completed SOLEs yet
 			<h3>My questions:</h3>
 			<ul>
 			{{#each questions.mine}}
-				<li> <a href="/questions/{{id}}">{{text}}</a> </li>
+				<li> <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a> </li>
 			{{/each}}
 			</ul>
 
 			<h3>My favorite questions:</h3>
 			<ul>
 			{{#each questions.favorites}}
-				<li> + <a href="/questions/{{id}}">{{text}}</a></li>
+				<li> + <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a></li>
 			{{/each}}
 			</ul>
 

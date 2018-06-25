@@ -12,7 +12,7 @@ var path        = require('path');
 var Controllers = require('./controllers/controllers.js');
 
 var Parse       =  require('parse/node');
-var soleConfig = require('./sole-config.js');
+var soleConfig  = require('./sole-config.js');
 
 console.log("serverURL:", soleConfig.serverUrl);
 // connect to parse server
@@ -339,17 +339,18 @@ router.route('/soles/:id/edit')
 router.route('/sole-create')
 // view for adding a new sole
     .get((req, res)=> {
-      const sesh = req.body.sesh; //get the sesh token string from the query param
+      const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
       var viewData = {sesh: sesh}
       res.render('soles-add', viewData);
     })
     .post((req, res)=>{
-      // const sesh = req.query.sesh; //get the sesh token string from the query param
-      // (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-      // sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-      // this needs to do it in the post param
+      const sesh = req.body.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+
 
       //push observations into this array if any are set to 'on'
       let targetObservations = [];
@@ -397,8 +398,8 @@ router.route('/sole-create')
         console.log(soleID);
         res.redirect('/soles/'+soleID+'?sesh='+sesh);
       }).catch((err)=>{
-        console.log('error!', err);
-        // res.redirect('/login')
+        console.log('error saving sole', err);
+        res.redirect('/login')
       })
 
     });

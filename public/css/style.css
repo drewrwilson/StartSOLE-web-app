@@ -206,28 +206,46 @@ main, footer {
 }
 
 /* resources */
-@media (max-width:1200px) and (min-width:992px) {
-    .resource-card .card-title {
-        font-size: 20px !important;
-    }
 
-    .resource-card .card-content {
-        padding: 10px !important;
-    }
-
-    .resource-card .card-content p {
+@media only screen and (max-width:552px) {
+    .resource-card .card-content p.short-description {
         display: none !important;
     }
-}​
-
-@media (max-width:1599px) {
-    .resource-card .card-content p.long-description {
+    .resource-card .card-content p.text-description {
         display: none !important;
     }
 }
 
-@media (min-width:1600px) {
+@media only screen and (min-width:553px) and (max-width:700px) {
+    .resource-card .card-content p.text-description {
+        display: none !important;
+    }
+    .resource-card .card-content p.short-description {
+        display: block !important;
+    }
+}
+
+@media only screen and (min-width:701px) and (max-width:992px) {
+    .resource-card .card-content p.text-description {
+        display: block !important;
+    }
     .resource-card .card-content p.short-description {
         display: none !important;
     }
 }
+
+@media only screen and (min-width:992px) and (max-width:1200px) {
+    .resource-card .card-title {
+        font-size: 20px !important;
+    }
+    .resource-card .card-content {
+        padding: 10px !important;
+    }
+
+    .resource-card .card-content p.text-description {
+        display: none !important;
+    }
+    .resource-card .card-content p.short-description {
+        display: none !important;
+    }
+}​

@@ -133,7 +133,23 @@
   </div>
 </script>
 
+{{!-- this is a handlebars template for the dropdown for tags --}}
+<script id="standard-picker-template" type="text/x-handlebars-template">
+  <div id="picker-\{{index}}" class="input-field col s12 m6">
+    <!-- <label for="refine-\{{rdn}}" class="active">Domain</label> -->
+    <select class="browser-default new-standard-picker" onchange="itChanged($(this))" >
+      <option value=""></option>
+      \{{#each standards}}
+      <option value="\{{rdn}}">\{{short}}</option>
+      \{{/each}}
+    </div>
+</script>
+
+
 <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
 
 <script type="text/javascript" src="/js/sole-config.js"></script>
 <script type="text/javascript" src="/js/questions.js"></script>
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>

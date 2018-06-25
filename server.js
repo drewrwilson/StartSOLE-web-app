@@ -449,14 +449,26 @@ router.route('/questions/add')
       res.render('questions-add', viewData);
     })
     // TODO: add post route here to save question to DB
-    // .post((req, res)=> {
-    //   const sesh = req.query.sesh; //get the sesh token string from the query param
-    //   (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    //   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-    //
-    //   const viewData = {sesh: sesh};
-    //   res.render('questions-add', viewData);
-    // })
+    .post((req, res)=>{
+      console.log('body', req.body);
+      const sesh = req.body.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+      var newQuestion = {
+        text: req.body.text,
+        source: req.body.source,
+        tags: []
+      }
+      Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, sessionToken).then(questionID=>{
+        console.log('added new question with id: ' + questionID);
+        res.redirect('/questions/'+questionID+'?sesh='+sesh);
+      }).catch((err)=>{
+        console.log('error adding question!', err);
+        res.redirect('/login')
+      })
+
+    });
 
 // on routes that end in /questions/:id
 // ----------------------------------------------------

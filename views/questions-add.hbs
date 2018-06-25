@@ -17,6 +17,7 @@
                 <form action="/questions/add?sesh={{sesh}}" method="post">
                     <div class="row">
                         <div class="input-field col s12">
+                          <input type="hidden" name="sesh" value="{{sesh}}">
                             <textarea id="text" name="text" class="materialize-textarea"
                                       placeholder="Enter your question here"></textarea>
                         </div>

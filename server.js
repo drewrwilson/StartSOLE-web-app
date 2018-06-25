@@ -78,6 +78,7 @@ router.route('/')
       const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       console.log('what happened??');
+      return
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       var homeData = {soles: [],questions:[]};

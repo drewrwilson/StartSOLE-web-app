@@ -12,8 +12,11 @@ var Parse       =  require('parse/node');
 var soleConfig = require('./sole-config.js');
 
 // connect to parse server
-Parse.initialize(soleConfig.appId);
-Parse.serverURL = soleConfig.serverUrl;
+// Parse.initialize(soleConfig.appId);
+// Parse.serverURL = soleConfig.serverUrl;
+Parse.initialize("Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp");
+Parse.serverURL = "https://api.staging.startsole.net/sole/";
+
 
 function getFavQuestions(sessionToken) {
 	return Parse.Cloud.run('question.webappFavs', {

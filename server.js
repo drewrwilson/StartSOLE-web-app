@@ -41,6 +41,11 @@ hbs.registerHelper('select', function(selected, options) {
         '$& selected="selected"');
 });
 
+hbs.registerHelper('contains', function( value, array, options ){
+    array = ( array instanceof Array ) ? array : [array];
+    return (array.indexOf(value) > -1) ? options.fn( this ) : "";
+});
+
 // ******************
 // set up the webserver
 // ******************
@@ -197,6 +202,25 @@ router.route('/profile')
         res.render('profile', profileData);
       });
 
+    })
+    .post((req, res)=> {
+        console.log("trying to update profile");
+        const sesh = req.body.sesh; //get the sesh token string from the query param
+        (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+        sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+        console.log('sessionToken', sessionToken);
+        console.log(JSON.stringify(req.body));
+
+        Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
+            console.log("updated user!");
+            console.log(JSON.stringify(user));
+        res.redirect('/soles/?sesh='+sesh);
+        }).catch((err)=>{
+            console.log('error updating user', err);
+        // res.redirect('/login')
+        })
+
     });
 
 // routes for user registration
@@ -235,7 +259,10 @@ router.route('/complete-profile')
           }
 
           profileData.sesh = sesh;
-          res.render('complete-profile', {layout: 'prelogin.hbs'});
+          res.render('complete-profile', {
+              layout: 'prelogin.hbs',
+              profile: profileData
+          });
         });
 
 });

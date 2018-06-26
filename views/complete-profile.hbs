@@ -11,27 +11,41 @@
             </div>
 
             <div class="row">
-
                 <div class="input-field col s6">
-                    <input id="first_name" type="text" class="validate">
+                    <input id="first_name"
+                           type="text"
+                           class="validate"
+                           {{#if profile.user.firstName}}value="{{profile.user.firstName}}"{{/if}}
+                    >
                     <label for="first_name">First Name</label>
                 </div>
                 <div class="input-field col s6">
-                    <input id="last_name" type="text" class="validate">
+                    <input id="last_name"
+                           type="text"
+                           class="validate"
+                           {{#if profile.user.lastName}}value="{{profile.user.lastName}}"{{/if}}
+                    >
                     <label for="last_name">Last Name</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
                     <select name="role">
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="user.role.teacher">Teacher</option>
-                        <option value="user.role.preservice_teacher">Pre-service Teacher</option>
-                        <option value="user.role.administrator">Administrator</option>
-                        <option value="user.role.coach">Coach</option>
-                        <option value="user.role.out_of_school_educator">Out of School Educator</option>
-                        <option value="user.role.parent">Parent</option>
-                        <option value="user.role.other">Other</option>
+                        {{#unless profile.user.role}}<option value="" disabled>Choose your option</option>{{/unless}}
+                        <option value="profile.user.role.teacher" {{#ifEquals profile.user.role "profile.user.role
+                                .teacher"}}selected{{/ifEquals}}>Teacher</option>
+                        <option value="profile.user.role.preservice_teacher" {{#ifEquals profile.user.role "profile.user.role
+                                .preservice_teacher"}}selected{{/ifEquals}}>Pre-service Teacher</option>
+                        <option value="profile.user.role.administrator" {{#ifEquals profile.user.role "profile.user.role
+                                .administrator"}}selected{{/ifEquals}}>Administrator</option>
+                        <option value="profile.user.role.coach" {{#ifEquals profile.user.role "profile.user.role
+                                .coach"}}selected{{/ifEquals}}>Coach</option>
+                        <option value="profile.user.role.out_of_school_educator" {{#ifEquals profile.user.role "profile.user.role
+                                .out_of_school_educator"}}selected{{/ifEquals}}>Out of School Educator</option>
+                        <option value="profile.user.role.parent" {{#ifEquals profile.user.role "profile.user.role
+                                .parent"}}selected{{/ifEquals}}>Parent</option>
+                        <option value="profile.user.role.other" {{#ifEquals profile.user.role "profile.user.role
+                                .other"}}selected{{/ifEquals}}>Other</option>
                     </select>
                     <label>What's your primary role?</label>
                 </div>
@@ -40,21 +54,36 @@
             <div class="row">
                 <div class="input-field col s12">
                     <select multiple name="grade">
-                        <option value="" disabled>Choose your option</option>
-                        <option value="edu.pre-k">Preschool</option>
-                        <option value="edu.k">Kindergarten</option>
-                        <option value="edu.1">First Grade</option>
-                        <option value="edu.2">Second Grade</option>
-                        <option value="edu.3">Third Grade</option>
-                        <option value="edu.4">Fourth Grade</option>
-                        <option value="edu.5">Fifth Grade</option>
-                        <option value="edu.6">Sixth Grade</option>
-                        <option value="edu.7">Seventh Grade</option>
-                        <option value="edu.8">Eighth Grade</option>
-                        <option value="edu.9">Ninth Grade</option>
-                        <option value="edu.10">Tenth Grade</option>
-                        <option value="edu.11">Eleventh Grade</option>
-                        <option value="edu.12">Twelfth Grade</option>
+                        {{#unless profile.user.grades}}<option value="" disabled>Choose your option</option>{{/unless}}
+                        <option value="edu.pre-k"
+                                {{#contains "edu.pre-k" profile.user.grades}}selected{{/contains}}
+                        >Preschool</option>
+                        <option value="edu.k" {{#contains "edu.k" profile.user.grades}}selected{{/contains}}
+                        >Kindergarten</option>
+                        <option value="edu.1" {{#contains "edu.1" profile.user.grades}}selected{{/contains}}
+                        >First Grade</option>
+                        <option value="edu.2" {{#contains "edu.2" profile.user.grades}}selected{{/contains}}
+                        >Second Grade</option>
+                        <option value="edu.3" {{#contains "edu.3" profile.user.grades}}selected{{/contains}}
+                        >Third Grade</option>
+                        <option value="edu.4" {{#contains "edu.4" profile.user.grades}}selected{{/contains}}
+                        >Fourth Grade</option>
+                        <option value="edu.5" {{#contains "edu.5" profile.user.grades}}selected{{/contains}}
+                        >Fifth Grade</option>
+                        <option value="edu.6" {{#contains "edu.6" profile.user.grades}}selected{{/contains}}
+                        >Sixth Grade</option>
+                        <option value="edu.7" {{#contains "edu.7" profile.user.grades}}selected{{/contains}}
+                        >Seventh Grade</option>
+                        <option value="edu.8" {{#contains "edu.8" profile.user.grades}}selected{{/contains}}
+                        >Eighth Grade</option>
+                        <option value="edu.9" {{#contains "edu.9" profile.user.grades}}selected{{/contains}}
+                        >Ninth Grade</option>
+                        <option value="edu.10" {{#contains "edu.10" profile.user.grades}}selected{{/contains}}
+                        >Tenth Grade</option>
+                        <option value="edu.11" {{#contains "edu.11" profile.user.grades}}selected{{/contains}}
+                        >Eleventh Grade</option>
+                        <option value="edu.12" {{#contains "edu.12" profile.user.grades}}selected{{/contains}}
+                        >Twelfth Grade</option>
                     </select>
                     <label>What grade(s) do you teach?</label>
                 </div>
@@ -63,10 +92,22 @@
             <div class="row">
                 <div class="input-field col s12">
                     <select multiple name="subject">
-                        <option value="" disabled>Choose your option</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
+                        {{#unless profile.user.subjects}}<option value="" disabled>Choose your option</option>{{/unless}}
+                        <option value="top.careereducation" {{#contains "top.careereducation" profile.user.subjects}}selected{{/contains}}>Career Education</option>
+                        <option value="top.engineering" {{#contains "top.engineering" profile.user.subjects}}selected{{/contains}}>Engineering</option>
+                        <option value="top.english" {{#contains "top.english" profile.user.subjects}}selected{{/contains}}>English</option>
+                        <option value="top.englishlanguagedevelopment" {{#contains "top.englishlanguagedevelopment" profile.user.subjects}}selected{{/contains}}>English Language Development</option>
+                        <option value="top.financialliteracy" {{#contains "top.financialliteracy" profile.user.subjects}}selected{{/contains}}>Financial Literacy</option>
+                        <option value="top.foreignlanguage" {{#contains "top.foreignlanguage" profile.user.subjects}}selected{{/contains}}>Foreign Language</option>
+                        <option value="top.health" {{#contains "top.health" profile.user.subjects}}selected{{/contains}}>Health</option>
+                        <option value="top.libmedia-infolit" {{#contains "top.libmedia-infolit" profile.user.subjects}}selected{{/contains}}>Library Media / Information Literacy</option>
+                        <option value="top.lifeskills" {{#contains "top.lifeskills" profile.user.subjects}}selected{{/contains}}>Life Skills</option>
+                        <option value="top.math" {{#contains "top.math" profile.user.subjects}}selected{{/contains}}>Math</option>
+                        <option value="top.physicaleducation" {{#contains "top.physicaleducation" profile.user.subjects}}selected{{/contains}}>Physical Education</option>
+                        <option value="top.science" {{#contains "top.science" profile.user.subjects}}selected{{/contains}}>Science</option>
+                        <option value="top.socialstudies" {{#contains "top.socialstudies" profile.user.subjects}}selected{{/contains}}>Social Studies</option>
+                        <option value="top.technology" {{#contains "top.technology" profile.user.subjects}}selected{{/contains}}>Technology</option>
+                        <option value="top.thearts" {{#contains "top.thearts" profile.user.subjects}}selected{{/contains}}>The Arts</option>
                     </select>
                     <label>What subject(s) do you teach?</label>
                 </div>

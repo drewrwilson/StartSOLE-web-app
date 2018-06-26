@@ -6,9 +6,16 @@ var soleConfig = require('../sole-config.js');
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-//example function that returns data for the home view
+//returns user profile data
 User.getProfileData = function (sessionToken) {
   return Parse.Cloud.run('webapp.getProfile', {
+    sessionToken: sessionToken
+  })
+};
+
+User.updateProfileData = function (user, sessionToken) {
+  return Parse.Cloud.run('webapp.updateProfile', {
+    user: user,
     sessionToken: sessionToken
   })
 };

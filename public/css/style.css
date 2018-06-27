@@ -36,7 +36,7 @@ nav .brand-logo {
 }
 
 .truncate-question {
-    width: calc(100vw - 517px);
+    width: calc(100vw - 590px);
 }
 
 a.breadcrumb {
@@ -181,6 +181,31 @@ main, footer {
 
 .noUi-horizontal .noUi-handle {
     right: -7px !important;
+}
+
+/*questions*/
+
+@media only screen and (max-width:600px) {
+    .masonry-card {
+        width: calc(100% - 20px);
+        margin: 10px;
+    }
+
+}
+
+@media only screen and (min-width:601px) and (max-width:992px) {
+    .masonry-card {
+        width: calc(50% - 20px);
+        margin: 10px;
+    }
+
+}
+
+@media only screen and (min-width:993px) {
+    .masonry-card {
+        width: calc(33% - 20px);
+        margin: 10px;
+    }
 }
 
 /* questions-add */

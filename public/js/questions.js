@@ -49,8 +49,14 @@ $('#subject').change(function (){
     console.log(grades);
     $('#grade').children().remove(); //get rid of any children in the drop down
     $('#grade').removeAttr('disabled');
-    $('#grade').append('<option></option>')
+    // $('#grade').append('<option></option>');
 
+    $('#grade')
+        .append($("<option></option>")
+            .attr("value","")
+            .attr('disabled','disabled')
+            .attr('selected','selected')
+            .text("Filter by grade"));
 
     grades.forEach(function(grade) {
       //add all the appropriate grades for a selected subject
@@ -84,7 +90,6 @@ $('#grade').change(function (){
 
   })
 })
-!function(e,t){var n=function(e){var n=[];for(;e&&e.tagName!==t;e=e.parentNode){if(e.className){var r=e.className.split(" ");for(var i in r){if(r.hasOwnProperty(i)&&r[i]){n.unshift(r[i]);n.unshift(".")}}}if(e.id&&!/\s/.test(e.id)){n.unshift(e.id);n.unshift("#")}n.unshift(e.tagName);n.unshift(" > ")}return n.slice(1).join("")};e.fn.getSelector=function(t){if(true===t){return n(this[0])}else{return e.map(this,function(e){return n(e)})}}}(window.jQuery)
 
 //when the user changes the grade, get the corresponding standards
 function itChanged (element){
@@ -155,7 +160,14 @@ function getQuestions (){
       question.sesh = sesh; //add sesh token to view data so we can add it to each question's link
       html = template(question);
       $('#questions').append(html);
+
+      var elem = document.querySelector('.grid');
+      var msnry = new Masonry( elem, {
+        itemSelector: '.grid-item'
+      });
+
     })
 
-  })
+  });
+
 }

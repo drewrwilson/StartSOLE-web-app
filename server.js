@@ -46,6 +46,10 @@ hbs.registerHelper('contains', function( value, array, options ){
     return (array.indexOf(value) > -1) ? options.fn( this ) : "";
 });
 
+hbs.registerHelper("log", function(something) {
+    console.log(something);
+});
+
 // ******************
 // set up the webserver
 // ******************

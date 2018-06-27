@@ -18,7 +18,7 @@ Parse.serverURL = soleConfig.serverUrl;
 var sesh         = $('#sesh').val(), //get the sesh token from the DOM
     sessionToken = 'r:' + sesh;      //convert sesh token to full sessionToken string
 
-var standardPickerIndex = 0;
+var standardPickerLevel = 0;
 
 function getGrades(subject){
   return Parse.Cloud.run('webapp.getGrades', {
@@ -63,6 +63,11 @@ $('#grade').change(function (){
   var grade = $('#grade').val(),
       rdn = $('#subject').val();
 
+  //remove all "children"
+  var parent = $('#grade').parent();
+  var allSiblings = $(parent).nextAll()
+  $(allSiblings).remove()
+
   getStandards(rdn, grade).then(standards=>{
     console.log(standards);
 
@@ -75,9 +80,16 @@ $('#grade').change(function (){
 
   })
 })
+!function(e,t){var n=function(e){var n=[];for(;e&&e.tagName!==t;e=e.parentNode){if(e.className){var r=e.className.split(" ");for(var i in r){if(r.hasOwnProperty(i)&&r[i]){n.unshift(r[i]);n.unshift(".")}}}if(e.id&&!/\s/.test(e.id)){n.unshift(e.id);n.unshift("#")}n.unshift(e.tagName);n.unshift(" > ")}return n.slice(1).join("")};e.fn.getSelector=function(t){if(true===t){return n(this[0])}else{return e.map(this,function(e){return n(e)})}}}(window.jQuery)
 
 //when the user changes the grade, get the corresponding standards
 function itChanged (element){
+
+  //remove all "children"
+  var parent = $(element).parent();
+  var allSiblings = $(parent).nextAll()
+  $(allSiblings).remove()
+
   console.log('IT CHANGED');
   var grade = $('#grade').val(),
       rdn = element.val();

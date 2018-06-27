@@ -120,6 +120,8 @@ function itChanged (element){
 
 //whenever any standard picker select changes, get the questions that are tagged with the corresponding standards
 function getQuestions (){
+
+  var questionText = $('#search').val();
   var standards = [];
   // var standarPickers = $('.standard-picker');
   $('.standard-picker').each(function(i, standard) {
@@ -130,8 +132,9 @@ function getQuestions (){
 
   console.log('standards', standards);
 
-  Parse.Cloud.run('webapp.findQuestionByTags', {
+  Parse.Cloud.run('webapp.findQuestionByTagsAndText', {
     tags: standards,
+    text: questionText,
     sessionToken: sessionToken
   }).then(response=>{
     //Ok, now that we have the questions with a given tag, let's add them to the DOM

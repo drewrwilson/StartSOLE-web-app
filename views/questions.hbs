@@ -3,16 +3,16 @@
     <a class="breadcrumb">Explore Questions</a>
 </div>
 
-<div class="row" style="padding-top:20px;">
-	<div class="col offset-s10 s2 offset-m9 m3 offset-l8 l4">
+<div class="row" style="padding-top:40px;">
+	{{!-- <div class="col offset-s10 s2 offset-m9 m3 offset-l8 l4">
 		<a href="/questions/add?sesh={{sesh}}" class="btn-floating btn-large waves-effect waves-light red">
 			<i class="material-icons">add</i>
 		</a>
-	</div>
+	</div> --}}
 	<div class="col s12 offset-m1 m10 offset-l3 l6">
 		<div class="card-panel" style="padding-bottom:inherit;margin-top: -30px;">
 
-			<form action="/questions" method="get">
+			<form id="search-form" action="/questions" method="get" onsubmit="event.preventDefault(); getQuestions();">
 				<div class="row">
 					<h5 class="center-align" style="margin-bottom: 1em;">Explore Our Questions</h5>
 
@@ -22,6 +22,7 @@
                                placeholder="Search by keyword">
                         <label class="no-transform" for="search"><i class="material-icons">search</i></label>
 					</div>
+          {{!-- <button type="button" name="button" class="waves-effect waves-light btn-large" onclick="getQuestions()">Search</button> --}}
 
 
 

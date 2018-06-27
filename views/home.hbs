@@ -1,17 +1,23 @@
 <div class="row" style="padding-top:20px;">
 
-	<div class="col s12 offset-m1 m10 offset-l3 l6">
-		<div class="card-panel">
-			<div class="row center-align">
+    <div class="col s12 offset-m1 m10 offset-l3 l6">
+        <div class="card-panel">
+            <div class="row center-align">
                 <img class="hide-on-small-only" src="/images/logos/logo.svg">
-				<h5 style="margin-bottom: 1em;">Let's get started</h5>
+                <h5 style="margin-bottom: 1em;">Let's get started</h5>
                 <a class="waves-effect waves-light btn-large" href="/sole-create?sesh={{sesh}}">Plan A Lesson</a>
                 <p>
-                  Or you can <a href="/soles?sesh={{sesh}}">check out your previous SOLE lessons</a> or <a href="/questions?sesh={{sesh}}">explore some of our Big Questions</a> or <a href="/questions/add?sesh={{sesh}}">add your own Big Question</a>.
+                    Or you can...
+                <ul>
+                    <li><a href="/soles?sesh={{sesh}}">check out your SOLE lessons</a></li>
+                    <li><a href="/questions?sesh={{sesh}}">explore our Big Questions</a></li>
+                    <li><a href="/questions/add?sesh={{sesh}}">add your Big Question</a></li>
+                </ul>
+
                 </p>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -41,25 +47,25 @@ No completed SOLEs yet
 <hr>
 --}}
 
-<div class="row">
-	<div class="col s12 offset-m1 m10 offset-l3 l6">
-		<div class="card-panel">
-			<div class="row center-align">
-			<h3>My questions:</h3>
-			<ul>
-			{{#each questions.mine}}
-				<li> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a> </li>
-			{{/each}}
-			</ul>
+<!--<div class="row">-->
+	<!--<div class="col s12 offset-m1 m10 offset-l3 l6">-->
+		<!--<div class="card-panel">-->
+			<!--<div class="row center-align">-->
+			<!--<h3>My questions:</h3>-->
+			<!--<ul>-->
+			<!--{{#each questions.mine}}-->
+				<!--<li> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a> </li>-->
+			<!--{{/each}}-->
+			<!--</ul>-->
 
-			<h3>My favorite questions:</h3>
-			<ul>
-			{{#each questions.favorites}}
-				<li> + <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a></li>
-			{{/each}}
-			</ul>
+			<!--<h3>My favorite questions:</h3>-->
+			<!--<ul>-->
+			<!--{{#each questions.favorites}}-->
+				<!--<li> + <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a></li>-->
+			<!--{{/each}}-->
+			<!--</ul>-->
 
-			</div>
-		</div>
-	</div>
-</div>
+			<!--</div>-->
+		<!--</div>-->
+	<!--</div>-->
+<!--</div>-->

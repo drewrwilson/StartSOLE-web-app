@@ -33,22 +33,25 @@ function getStandards(rdn, grade){
   });
 }
 
-function makeStandardPickerHTML (short, rdn) {
-  var html = '<div class="input-field col s12 m6 new-standard-picker"><label for="refine-0" class="active">Domain</label><select id="refine-0" class="browser-default" ><option label="short 1" value="1">short1</option><option label="short 2" value="2">short2</option><option label="short 3" value="3">short3</option><option label="short 4" value="4">short4</option></div>';
-  return html;
-}
-
 
 //when the user changes the subject, get the corresponding grades
 $('#subject').change(function (){
   var rdn = $(this).val(),
       q = $('#search').val(); //the search term
 
+  var parent = $('#grade').parent();
+  var allSiblings = $(parent).nextAll()
+  $(allSiblings).remove()
+  getQuestions();
+
   getGrades(rdn).then(grades=>{
     //update grade select
     console.log(grades);
     $('#grade').children().remove(); //get rid of any children in the drop down
     $('#grade').removeAttr('disabled');
+    $('#grade').append('<option></option>')
+
+
     grades.forEach(function(grade) {
       //add all the appropriate grades for a selected subject
      $('#grade')
@@ -67,14 +70,15 @@ $('#grade').change(function (){
   var parent = $('#grade').parent();
   var allSiblings = $(parent).nextAll()
   $(allSiblings).remove()
+  getQuestions();
 
   getStandards(rdn, grade).then(standards=>{
-    console.log(standards);
+    // console.log(standards);
 
     var source   = $("#standard-picker-template").html(),
         template = Handlebars.compile(source),
         html     = '';
-      console.log({standards: standards});
+
     html = template({standards: standards});
     $('#standard-picker').append(html)
 
@@ -84,6 +88,8 @@ $('#grade').change(function (){
 
 //when the user changes the grade, get the corresponding standards
 function itChanged (element){
+
+  getQuestions(element);
 
   //remove all "children"
   var parent = $(element).parent();
@@ -111,37 +117,25 @@ function itChanged (element){
   })
 }
 
-//when the user changes the standard, get the corresponding standards, infinite
-// TODO:
-// $('.new-standard-picker').change(function (){
-//   var rdn   = $(this).val(),
-//       grade = $('#grade').val();
-//
-//   grade = 'edu.6';
-//   rdn = 'asn.s114340d'; //hardcoded for testing Geometry
-//
-//   console.log('rdn', rdn);
-//   getStandards(rdn, grade).then(standards=>{
-//     console.log(standards);
-//     $('#standard-picker').append(makeStandardPickerHTML())
-//   })
-//
-// })
 
 //whenever any standard picker select changes, get the questions that are tagged with the corresponding standards
-$('.standard-picker').change(function (){
+function getQuestions (){
   var standards = [];
   // var standarPickers = $('.standard-picker');
   $('.standard-picker').each(function(i, standard) {
     standards.push($(standard).val());
   });
 
+  standards = standards.filter(Boolean) //remove any empty strings from the array
+
+  console.log('standards', standards);
+
   Parse.Cloud.run('webapp.findQuestionByTags', {
     tags: standards,
     sessionToken: sessionToken
   }).then(response=>{
     //Ok, now that we have the questions with a given tag, let's add them to the DOM
-
+    console.log('response', response);
     //First, remove all the current questions from the DOM.
     $('#questions').empty();
 
@@ -161,4 +155,4 @@ $('.standard-picker').change(function (){
     })
 
   })
-})
+}

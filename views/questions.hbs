@@ -33,6 +33,7 @@
           <div class="input-field col s12 m6">
               <label for="grade" class="active">Grade <span style="color: pink;" >(subject required)</span></label>
               <select id="grade" class="browser-default standard-picker" disabled>
+                <option value=""></option>
               </select>
           </div>
 
@@ -137,7 +138,7 @@
 <script id="standard-picker-template" type="text/x-handlebars-template">
   <div class="input-field col s12 m6">
     <!-- <label for="refine-\{{rdn}}" class="active">Domain</label> -->
-    <select class="browser-default new-standard-picker" onchange="itChanged($(this))" >
+    <select class="browser-default standard-picker" onchange="itChanged($(this))" >
       <option value=""></option>
       \{{#each standards}}
       <option value="\{{rdn}}">\{{short}}</option>

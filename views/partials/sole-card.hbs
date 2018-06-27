@@ -1,7 +1,7 @@
     <div class="card-panel sole-card">
         <a href="/soles/{{id}}{{#ifEquals state "reflect"}}{{else ifEquals state
                 "completed"}}{{else}}/edit{{/ifEquals}}">
-            <img src="images/logos/sole-card-logo.jpg"
+            <img src="/images/logos/sole-card-logo.jpg"
                  class="avatar-image hide-on-small-and-down">
         </a>
         <div class="question-text">
@@ -29,28 +29,28 @@
         </div>
     <div class="sole-action-buttons">
         {{#ifEquals state "planned"}}
-            <a class="waves-effect waves-light green btn">
-                Download Plan
-            </a>
+            <!--<a class="waves-effect waves-light green btn">-->
+                <!--Download Plan-->
+            <!--</a>-->
         {{/ifEquals}}
         {{#ifEquals state "facilitate"}}
-            <a class="waves-effect waves-light green btn">
-                Upload Photos
-            </a>
-            <a href="/soles-download/{{id}}" class="waves-effect waves-light green btn">
-                Download Plan URL
-            </a>
+            <!--<a class="waves-effect waves-light green btn">-->
+                <!--Upload Photos-->
+            <!--</a>-->
+            <!--<a href="/soles-download/{{id}}" class="waves-effect waves-light green btn">-->
+                <!--Download Plan URL-->
+            <!--</a>-->
         {{/ifEquals}}
         {{#ifEquals state "reflect"}}
-            <a class="waves-effect waves-light red btn"
-               href="/soles/{{id}}">
-                Reflect
-            </a>
+            <!--<a class="waves-effect waves-light red btn"-->
+               <!--href="/soles/{{id}}">-->
+                <!--Reflect-->
+            <!--</a>-->
         {{/ifEquals}}
         <a href="/soles/{{id}}/download-plan"
-           class="waves-effect waves-light red btn"
+           class="waves-effect waves-light green btn"
            target="_blank">
-            Download Plan URL
+            Download Plan
         </a>
     </div>
 

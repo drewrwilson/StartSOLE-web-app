@@ -204,21 +204,16 @@ router.route('/profile')
 
     })
     .post((req, res)=> {
-        console.log("trying to update profile");
         const sesh = req.body.sesh; //get the sesh token string from the query param
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-        console.log('sessionToken', sessionToken);
-        console.log(JSON.stringify(req.body));
-
         Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
-            console.log("updated user!");
-            console.log(JSON.stringify(user));
-        res.redirect('/soles/?sesh='+sesh);
+            // res.redirect('/soles');
+            res.redirect('/soles?sesh='+sesh);
         }).catch((err)=>{
             console.log('error updating user', err);
-        // res.redirect('/login')
+            res.redirect('/login')
         })
 
     });

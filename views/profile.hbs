@@ -4,7 +4,7 @@
 </div>
 
 <div class="row">
-    <div class="col s12 m10 offset-m1 l8 offset-l2 xl6 offset-xl3">
+    <div class="col s12 m10 offset-m1 xl8 offset-xl2">
         <div class="card-panel">
             {{#if user}}
                 <div class="row">
@@ -29,65 +29,76 @@
                 <input type="hidden" name="sesh" value="{{sesh}}">
                 <!--role-->
                 <div class="row">
-                    <div class="input-field col s12 m8 offset-m2 l6 offset-l3">
+                    <div class="input-field col s12 m10 offset-m1">
                         <select name="role">
                             {{#unless user.role}}<option value="" disabled>Choose your option</option>{{/unless}}
-                            <option value="user.role.teacher" {{#ifEquals user.role "user.role
-                                .teacher"}}selected{{/ifEquals}}>Teacher</option>
-                            <option value="user.role.preservice_teacher" {{#ifEquals user.role "user.role
-                                .preservice_teacher"}}selected{{/ifEquals}}>Pre-service Teacher</option>
-                            <option value="user.role.administrator" {{#ifEquals user.role "user.role
-                                .administrator"}}selected{{/ifEquals}}>Administrator</option>
-                            <option value="user.role.coach" {{#ifEquals user.role "user.role
-                                .coach"}}selected{{/ifEquals}}>Coach</option>
-                            <option value="user.role.out_of_school_educator" {{#ifEquals user.role "user.role
-                                .out_of_school_educator"}}selected{{/ifEquals}}>Out of School Educator</option>
-                            <option value="user.role.parent" {{#ifEquals user.role "user.role
-                                .parent"}}selected{{/ifEquals}}>Parent</option>
-                            <option value="user.role.other" {{#ifEquals user.role "user.role
-                                .other"}}selected{{/ifEquals}}>Other</option>
+                            <option value="user.role.teacher"
+                                    {{#ifEquals user.role "user.role.teacher"}}selected{{/ifEquals}}
+                            >Teacher</option>
+                            <option value="user.role.preservice_teacher"
+                                    {{#ifEquals user.role "user.role.preservice_teacher"}}selected{{/ifEquals}}
+                            >Pre-service Teacher</option>
+                            <option value="user.role.administrator"
+                                    {{#ifEquals user.role "user.role.administrator"}}selected{{/ifEquals}}
+                            >Administrator</option>
+                            <option value="user.role.coach"
+                                    {{#ifEquals user.role "user.role.coach"}}selected{{/ifEquals}}
+                            >Coach</option>
+                            <option value="user.role.out_of_school_educator"
+                                    {{#ifEquals user.role "user.role.out_of_school_educator"}}selected{{/ifEquals}}
+                            >Out of School Educator</option>
+                            <option value="user.role.parent"
+                                    {{#ifEquals user.role "user.role.parent"}}selected{{/ifEquals}}
+                            >Parent</option>
+                            <option value="user.role.other"
+                                    {{#ifEquals user.role "user.role.other"}}selected{{/ifEquals}}
+                            >Other</option>
                         </select>
                         <label>What's your primary role?</label>
                     </div>
                 </div>
                 <!--grades-->
                 <div class="row">
-                    <div class="input-field col s12 m8 offset-m2 l6 offset-l3">
-                        <select multiple name="grade">
+                    <div class="input-field col s12 m10 offset-m1">
+                        <select multiple name="grades">
                             {{#unless user.grades}}<option value="" disabled>Choose your option</option>{{/unless}}
-                            <option value="edu.pre-k" {{#contains "edu.pre-k" user.grades}}selected{{/contains}}>Preschool</option>
-                            <option value="edu.k" {{#contains "edu.k" user.grades}}selected{{/contains}}>Kindergarten</option>
-                            <option value="edu.1" {{#contains "edu.1" user.grades}}selected{{/contains}}>First
-                                Grade</option>
-                            <option value="edu.2" {{#contains "edu.2" user.grades}}selected{{/contains}}>Second
-                                Grade</option>
-                            <option value="edu.3" {{#contains "edu.3" user.grades}}selected{{/contains}}>Third
-                                Grade</option>
-                            <option value="edu.4" {{#contains "edu.4" user.grades}}selected{{/contains}}>Fourth
-                                Grade</option>
-                            <option value="edu.5" {{#contains "edu.5" user.grades}}selected{{/contains}}>Fifth
-                                Grade</option>
-                            <option value="edu.6" {{#contains "edu.6" user.grades}}selected{{/contains}}>Sixth
-                                Grade</option>
-                            <option value="edu.7" {{#contains "edu.7" user.grades}}selected{{/contains}}>Seventh
-                                Grade</option>
-                            <option value="edu.8" {{#contains "edu.8" user.grades}}selected{{/contains}}>Eighth
-                                Grade</option>
-                            <option value="edu.9" {{#contains "edu.9" user.grades}}selected{{/contains}}>Ninth
-                                Grade</option>
-                            <option value="edu.10" {{#contains "edu.10" user.grades}}selected{{/contains}}>Tenth
-                                Grade</option>
-                            <option value="edu.11" {{#contains "edu.11" user.grades}}selected{{/contains}}>Eleventh Grade</option>
-                            <option value="edu.12" {{#contains "edu.12" user.grades}}selected{{/contains}}>Twelfth
-                                Grade</option>
+                            <option value="edu.pre-k"
+                                    {{#contains "edu.pre-k" user.grades}}selected{{/contains}}
+                            >Preschool</option>
+                            <option value="edu.k" {{#contains "edu.k" user.grades}}selected{{/contains}}
+                            >Kindergarten</option>
+                            <option value="edu.1" {{#contains "edu.1" user.grades}}selected{{/contains}}
+                            >First Grade</option>
+                            <option value="edu.2" {{#contains "edu.2" user.grades}}selected{{/contains}}
+                            >Second Grade</option>
+                            <option value="edu.3" {{#contains "edu.3" user.grades}}selected{{/contains}}
+                            >Third Grade</option>
+                            <option value="edu.4" {{#contains "edu.4" user.grades}}selected{{/contains}}
+                            >Fourth Grade</option>
+                            <option value="edu.5" {{#contains "edu.5" user.grades}}selected{{/contains}}
+                            >Fifth Grade</option>
+                            <option value="edu.6" {{#contains "edu.6" user.grades}}selected{{/contains}}
+                            >Sixth Grade</option>
+                            <option value="edu.7" {{#contains "edu.7" user.grades}}selected{{/contains}}
+                            >Seventh Grade</option>
+                            <option value="edu.8" {{#contains "edu.8" user.grades}}selected{{/contains}}
+                            >Eighth Grade</option>
+                            <option value="edu.9" {{#contains "edu.9" user.grades}}selected{{/contains}}
+                            >Ninth Grade</option>
+                            <option value="edu.10" {{#contains "edu.10" user.grades}}selected{{/contains}}
+                            >Tenth Grade</option>
+                            <option value="edu.11" {{#contains "edu.11" user.grades}}selected{{/contains}}
+                            >Eleventh Grade</option>
+                            <option value="edu.12" {{#contains "edu.12" user.grades}}selected{{/contains}}
+                            >Twelfth Grade</option>
                         </select>
                         <label>What grade(s) do you teach?</label>
                     </div>
                 </div>
                 <!--subjects-->
                 <div class="row">
-                    <div class="input-field col s12 m8 offset-m2 l6 offset-l3">
-                        <select multiple name="subject">
+                    <div class="input-field col s12 m10 offset-m1">
+                        <select multiple name="subjects">
                             {{#unless user.subjects}}<option value="" disabled>Choose your option</option>{{/unless}}
                             <option value="top.careereducation" {{#contains "top.careereducation" user.subjects}}selected{{/contains}}>Career Education</option>
                             <option value="top.engineering" {{#contains "top.engineering" user.subjects}}selected{{/contains}}>Engineering</option>
@@ -109,8 +120,19 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <input type="submit" value="Save" class="waves-effect waves-light btn">
+                <div class="row center-align">
+
+                    <button class="btn waves-effect waves-light"
+                            type="submit"
+                            id="update-profile-button"
+                            name="action">
+                        Save
+                    </button>
+
+                    <!--<input type="submit"-->
+                           <!--id="update-profile-button"-->
+                           <!--value="Save"-->
+                           <!--class="waves-effect waves-light btn">-->
                 </div>
             </form>
 
@@ -122,11 +144,11 @@
 </div>
 
 
-<!--<table>-->
-    <!--{{#each user}}-->
-        <!--<tr>-->
-            <!--<th>{{@key}}</th>-->
-            <!--<td>{{this}}</td>-->
-        <!--</tr>-->
-    <!--{{/each}}-->
-<!--</table>-->
+<table>
+    {{#each user}}
+        <tr>
+            <th>{{@key}}</th>
+            <td>{{this}}</td>
+        </tr>
+    {{/each}}
+</table>

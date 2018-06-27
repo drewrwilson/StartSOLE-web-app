@@ -53,7 +53,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <select multiple name="grade">
+                    <select multiple name="grades">
                         {{#unless profile.user.grades}}<option value="" disabled>Choose your option</option>{{/unless}}
                         <option value="edu.pre-k"
                                 {{#contains "edu.pre-k" profile.user.grades}}selected{{/contains}}
@@ -91,7 +91,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <select multiple name="subject">
+                    <select multiple name="subjects">
                         {{#unless profile.user.subjects}}<option value="" disabled>Choose your option</option>{{/unless}}
                         <option value="top.careereducation" {{#contains "top.careereducation" profile.user.subjects}}selected{{/contains}}>Career Education</option>
                         <option value="top.engineering" {{#contains "top.engineering" profile.user.subjects}}selected{{/contains}}>Engineering</option>

@@ -227,6 +227,12 @@ router.route('/register')
         res.render('register');
     });
 
+//route for logging out
+router.route('/logout')
+  .get((req, res)=> {
+    res.render('logout', {layout: 'prelogin.hbs'});
+  })
+
 // routes for logging in
 // ----------------------------------------------------
 router.route('/login')

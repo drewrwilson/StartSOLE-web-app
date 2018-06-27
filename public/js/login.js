@@ -21,6 +21,9 @@ function onGoogleSignIn(googleUser) {
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
+//do a logout first to ensure 
+Parse.User.logOut();
+
 window.fbAsyncInit = function() {
   Parse.FacebookUtils.init({
     appId      : '283486318802722', // Facebook App ID

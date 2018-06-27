@@ -73,3 +73,13 @@
         </div>
     </div>
 </div>
+
+<table class="striped responsive-table">
+    {{#each question}}
+        <tr>
+            <th>{{@key}}</th>
+            <td>{{this}}</td>
+        </tr>
+    {{/each}}
+
+</table>

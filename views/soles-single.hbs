@@ -8,16 +8,73 @@
     <div class="col s12">
         <div class="card-panel">
             {{#if sole}}
-                <h3>{{sole.question.question.text}}</h3>
-                <table class="striped responsive-table">
-                    {{#each sole}}
-                        <tr>
-                            <th>{{@key}}</th>
-                            <td>{{this}}</td>
-                        </tr>
-                    {{/each}}
+                <div class="row">
+                    <div class="col s12">
+                        <h3>{{sole.question.question.text}}</h3>
+                    </div>
+                </div>
 
-                </table>
+                <div class="row">
+                    {{#each sole.observations}}
+                        {{#if image.full}}
+                        <div class="col s12 m4 l3 xl2">
+                            <div class="materialbox-preview thumbnail">
+                                <img class="materialboxed responsive-img "
+                                     src="{{ image.full }}"
+                                >
+                            </div>
+                        </div>
+                        {{/if}}
+                    {{/each}}
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6">
+                        <p>Date: {{sole.planned_date.dateString}}</p>
+                        <p>Attendance: {{sole.num_students}} students ({{sole.num_groups}} groups)</p>
+                        <p>Notes: {{sole.reflection.notes}}</p>
+                    </div>
+                    <div class="col s12 m6">
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.grouporganization}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Students formed their own groups</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.groupsharing}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Students shared across groups</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.self_assessment}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Students completed a self-assessment</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.reflection.ground_rules}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Students followed the ground rules</span>
+                            </label>
+                        </p>
+                    </div>
+
+                </div>
+
             {{else}}
                 <h2>No SOLE found with that ID</h2>
             {{/if}}

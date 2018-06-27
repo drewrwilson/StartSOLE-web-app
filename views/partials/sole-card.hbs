@@ -1,12 +1,12 @@
     <div class="card-panel sole-card">
         <a href="/soles/{{id}}{{#ifEquals state "reflect"}}{{else ifEquals state
-                "completed"}}{{else}}/edit{{/ifEquals}}">
+                "completed"}}{{else}}/edit{{/ifEquals}}?sesh={{sesh}}">
             <img src="/images/logos/sole-card-logo.jpg"
                  class="avatar-image hide-on-small-and-down">
         </a>
         <div class="question-text">
             <a href="/soles/{{id}}{{#ifEquals state "reflect"}}{{else ifEquals state
-                    "completed"}}{{else}}/edit{{/ifEquals}}"
+                    "completed"}}{{else}}/edit{{/ifEquals}}?sesh={{sesh}}"
                class="black-text">
                 {{question.text}}
                 {{lessonplan}}
@@ -47,7 +47,7 @@
                 <!--Reflect-->
             <!--</a>-->
         {{/ifEquals}}
-        <a href="/soles/{{id}}/download-plan"
+        <a href="/soles/{{id}}/download-plan?sesh={{sesh}}"
            class="waves-effect waves-light green btn"
            target="_blank">
             Download Plan

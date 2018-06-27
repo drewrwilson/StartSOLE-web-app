@@ -1,26 +1,31 @@
-
 <div class="row" style="padding-top:50px;">
-    <form id="initial-registration-form" class="col s12 offset-m2 m8 offset-l3 l6" ng-submit="Register.register()">
+  <div class="col s12 offset-m2 m8 offset-l3 l6" >
+    <h2>Register for StartSOLE</h2>
+  </div>
+
+</div>
+<div class="row" >
+    <form id="initial-registration-form" class="col s12 offset-m2 m8 offset-l3 l6" action="/register" method="post">
 
         <div class="row">
             <div class="input-field col s6">
-                <input id="first_name" name="first_name" type="text" class="signup-text-field validate" ng-model="Register.newUser.first_name">
+                <input id="first_name" name="first_name" type="text" class="signup-text-field validate">
                 <label for="first_name" class="signup-label">First Name</label>
             </div>
             <div class="input-field col s6">
-                <input id="last_name" name="last_name" type="text" class="signup-text-field validate" ng-model="Register.newUser.last_name">
+                <input id="last_name" name="last_name" type="text" class="signup-text-field validate">
                 <label for="last_name" class="signup-label">Last Name</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input id="email" type="email" class="signup-text-field validate" ng-model="Register.newUser.email">
+                <input id="email" type="email" class="signup-text-field validate">
                 <label for="email" class="signup-label">Email</label>
             </div>
         </div>
         <div class="row no-bottom">
             <div class="input-field col s12">
-                <input id="password" name="password" type="password" class="signup-text-field validate" ng-model="Register.newUser.password">
+                <input id="password" name="password" type="password" class="signup-text-field validate">
                 <label for="password" class="signup-label">Password</label>
             </div>
             <!--<div class="input-field col s6">-->
@@ -30,13 +35,14 @@
         </div>
         <div class="row no-bottom">
             <div class="col s12">
-                <div class="red-text" id="error">{{ Register.errorText }}</div>
+                <div class="red-text" id="error"></div>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12 center">
-                <button class="signin-db btn waves-effect red waves-light" id="login"><i
-                        class="mdi-login left"></i>Register</button>
+                <button class="signin-db btn waves-effect red waves-light" id="login">
+                  <i class="mdi-login left"></i>Register
+                </button>
             </div>
 
             <div class="input-field col s12 center">
@@ -47,14 +53,6 @@
             <hr>
         </div>
 
-        <div class="row">
-            <div class="col s12 m6 center">
-              <img src="/images/facebook-login-button.png" onmouseover="this.src='/images/facebook-login-button-hover.png'" onmouseout="this.src='/images/facebook-login-button.png'"  facebook-sign-in />
-            </div>
-            <div class="col s12 m6 center">
-                <div id="google-sign-in" google-sign-in></div>
-            </div>
-        </div>
 
         </form>
         <div class="row">
@@ -66,27 +64,10 @@
 
 
 
-<div class="modal" id="password-reset-modal">
-    <div class="modal-content">
-        <h4>Reset Password</h4>
-        <p>Confirm your email below and we'll send you a link to reset your password.</p>
-        <div class="row">
-            <div class="input-field col s12 m6 offset-m3">
-                <input type="email" class="validate" id="password-reset-email"
-                       ng-model="Register.password_reset_email">
-                <label for="password-reset-email">
-                    Email
-                </label>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <a class="modal-action modal-close waves-effect waves-red btn-flat">
-            Cancel
-        </a>
-        <a class="modal-action modal-close waves-effect waves-green btn-flat"
-           ng-click="Register.sendPasswordReset()">
-            Send Reset Email
-        </a>
-    </div>
-</div>
+<form id="final-registration-form" class="" action="/complete-profile" method="get">
+  <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
+  <input type="hidden" name="firstname" id="firstname" value="">
+  <input type="hidden" name="lastname" id="lastname" value="">
+</form>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/register.js"></script>

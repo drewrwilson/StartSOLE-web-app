@@ -16,12 +16,7 @@ function onGoogleSignIn(googleUser) {
       });
 };
 
-
-// connect to parse server
-Parse.initialize(soleConfig.appId);
-Parse.serverURL = soleConfig.serverUrl;
-
-//do a logout first to ensure 
+//do a logout first to ensure
 Parse.User.logOut();
 
 window.fbAsyncInit = function() {

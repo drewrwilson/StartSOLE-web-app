@@ -84,53 +84,6 @@ function loginFacebook () {
 });
 }
 
-// function onGoogleSignIn(googleUser) {
-//     var profile = googleUser.getBasicProfile();
-//     var authData = googleUser.getAuthResponse();
-//     var id_token = authData.id_token;
-//     var full_name = profile.getName();
-//     var name_bits = full_name.split(" ");
-//     var first_name = name_bits[0];
-//     var last_name = name_bits[name_bits.length - 1];
-//     var email = profile.getEmail();
-//
-//
-//     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-//     console.log('Name: ' + profile.getName());
-//     console.log('Image URL: ' + profile.getImageUrl());
-//     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-//     console.log('Token: ' + authData.id_token);
-//     console.log('Token: ' + authData.access_token);
-//     console.log('AuthData: ' + JSON.stringify(authData));
-//
-//
-//
-//
-//     return Parse.Cloud.run('loginGoogleUser', {
-//         token: authData.access_token
-//     }).then(Parse.User.become).then(function(user){
-//         succesfulLogin(user);
-//
-//         // var promise = user.get('pub').fetch();
-//         // promise = promise.then(function(pub){
-//         //     return Parse.Promise.as({user: user, pub: pub})
-//         // }).then(function(data){
-//         //     var pub = data.pub;
-//         //     var values = pub.get('values');
-//         //     return Parse.Promise.as({
-//         //         user: data.user,
-//         //         pub: pub,
-//         //         values: values
-//         //     });
-//         });
-//
-//
-// }
-
-// function loginGoogle () {
-//
-// }
-
 function logout () {
   return Parse.User.logOut().then(function () {
     return Parse.User.current();  // this will now be null if logged out

@@ -39,3 +39,13 @@ function initTooltips() {
     var elems = document.querySelectorAll('.tooltipped');
     var instances = M.Tooltip.init(elems, {});
 }
+
+function initSlider() {
+    var elems = document.querySelectorAll('.slider');
+    var instances = M.Slider.init(elems, {});
+}
+
+function initMaterialBoxed() {
+    var elems = document.querySelectorAll('.materialboxed');
+    var instances = M.Materialbox.init(elems, {});
+}

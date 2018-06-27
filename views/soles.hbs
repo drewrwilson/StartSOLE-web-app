@@ -3,7 +3,6 @@
     <a class="breadcrumb">My SOLEs</a>
 </div>
 
-
 <div class="row">
     <div class="col s12">
         <div class="card-panel">
@@ -38,7 +37,7 @@
                 <div id="planned" class="col s12">
                     {{#if planned}}
                         {{#each planned}}
-                            {{> sole-card}}
+                            {{> sole-card sesh=../sesh}}
                         {{/each}}
                     {{else}}
                         <br><br>
@@ -57,12 +56,12 @@
                 </div>
                 <div id="reflect" class="col s12">
                     {{#each reflect}}
-                        {{> sole-card}}
+                        {{> sole-card sesh=../sesh}}
                     {{/each}}
                 </div>
                 <div id="completed" class="col s12">
                     {{#each completed}}
-                        {{> sole-card}}
+                        {{> sole-card sesh=../sesh}}
                     {{/each}}
                 </div>
             </div>

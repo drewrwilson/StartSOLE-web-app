@@ -143,23 +143,13 @@ router.route('/how')
 // static route for History of SOLE
 router.route('/terms-of-use')
     .get((req, res)=> {
-      const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-      const viewData = {sesh: sesh};
-      res.render('terms-of-use', viewData);
+      res.render('terms-of-use', {layout: 'no-sidebar.hbs'});
     });
 
 // static route for History of SOLE
 router.route('/privacy')
     .get((req, res)=> {
-      const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-      const viewData = {sesh: sesh};
-      res.render('privacy', viewData);
+      res.render('privacy', {layout: 'no-sidebar.hbs'});
     });
 
 // routes for resources
@@ -212,6 +202,7 @@ router.route('/profile')
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
+        // TODO: refactor so this accept explicit param instead of of req.body
         Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
             // res.redirect('/soles');
             res.redirect('/soles?sesh='+sesh);
@@ -228,13 +219,13 @@ router.route('/register')
 
 // register view
     .get((req, res)=> {
-        res.render('register');
+        res.render('register', {layout: 'no-sidebar.hbs'});
     });
 
 //route for logging out
 router.route('/logout')
   .get((req, res)=> {
-    res.render('logout', {layout: 'prelogin.hbs'});
+    res.render('logout', {layout: 'no-sidebar.hbs'});
   })
 
 // routes for logging in
@@ -261,6 +252,8 @@ router.route('/complete-profile')
             console.log("got first and last");
           } else {
             console.log("don't have mah data!");
+            profileData.user.firstName = req.query.firstname;
+            profileData.user.lastName = req.query.lastname;
           }
 
           profileData.sesh = sesh;

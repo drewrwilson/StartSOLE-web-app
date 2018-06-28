@@ -346,11 +346,6 @@ router.route('/soles/:id/edit')
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
         Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
-            console.log("single sole!!!");
-            console.log(singleSole);
-            console.log("*************");
-            console.log(JSON.stringify(singleSole.sole.materials));
-            console.log(JSON.stringify(singleSole.sole.target_observations));
             singleSole.sesh = sesh;
             res.render('soles-add', singleSole);
           }).catch((err)=>{
@@ -415,13 +410,33 @@ router.route('/sole-create')
         num_devices: req.body.num_devices,
         content_objective: req.body.content_objective
       }
-      Controllers.Sole.add(sole, sessionToken).then(soleID=>{
-        console.log(soleID);
-        res.redirect('/soles/?sesh='+sesh);
-      }).catch((err)=>{
-        console.log('error saving sole', err);
-        res.redirect('/login')
-      })
+
+console.log("SOLE ID!");
+console.log(req.body.sole_id);
+
+        if(req.body.sole_id){
+            Controllers.Sole.add(sole, sessionToken, true).then(soleID=>{
+                console.log("UPDATING and existing SOLE with this ID:");
+                console.log(soleID);
+            res.redirect('/soles/?sesh='+sesh);
+        }).catch((err)=>{
+                console.log('error saving sole', err);
+            res.redirect('/login')
+        })
+        }
+        else {
+            Controllers.Sole.add(sole, sessionToken, false).then(soleID=>{
+                console.log("SAVING a NEW SOLE with this ID:");
+                console.log(soleID);
+            res.redirect('/soles/?sesh='+sesh);
+        }).catch((err)=>{
+                console.log('error saving sole', err);
+            res.redirect('/login')
+        })
+        }
+
+
+
 
     });
 

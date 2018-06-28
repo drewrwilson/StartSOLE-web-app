@@ -1,3 +1,4 @@
+
 <div class="row" style="padding-top:50px;">
     <div class="col s12 m8 offset-m2 l6 offset-l3">
         <div class="card-panel">
@@ -10,9 +11,15 @@
                 </video>
             </div>
 
+          <form id="profile-update-form" action="/profile" method="post">
+
+            <h1>SESH {{profile.sesh}}</h1>
+
+              <input type="hidden" name="sesh" value="{{profile.sesh}}">
             <div class="row">
                 <div class="input-field col s6">
                     <input id="first_name"
+                           name="firstName"
                            type="text"
                            class="validate"
                            {{#if profile.user.firstName}}value="{{profile.user.firstName}}"{{/if}}
@@ -21,6 +28,7 @@
                 </div>
                 <div class="input-field col s6">
                     <input id="last_name"
+                           name="lastName"
                            type="text"
                            class="validate"
                            {{#if profile.user.lastName}}value="{{profile.user.lastName}}"{{/if}}
@@ -112,8 +120,9 @@
                     <label>What subject(s) do you teach?</label>
                 </div>
             </div>
-        <button type="button" class="btn-large" name="button">submit</button>
+        <button type="submit" class="btn waves-effect waves-light" name="button">submit</button>
         </div>
+      </form>
 
     </div>
 </div>

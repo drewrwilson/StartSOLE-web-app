@@ -201,7 +201,8 @@ router.route('/profile')
         const sesh = req.body.sesh; //get the sesh token string from the query param
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
+        console.log('req.body',req.body);
+        console.log('sessionToken', sessionToken);
         // TODO: refactor so this accept explicit param instead of of req.body
         Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
             // res.redirect('/soles');
@@ -257,6 +258,7 @@ router.route('/complete-profile')
           }
 
           profileData.sesh = sesh;
+          console.log('profileData', profileData);
           res.render('complete-profile', {
               layout: 'prelogin.hbs',
               profile: profileData
@@ -316,24 +318,29 @@ router.route('/soles/:id')
 router.route('/soles/:id/download-plan')
 // get the sole with that id
     .get((req, res)=> {
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+      console.log('sessionToken', sessionToken);
+      console.log('req.params.id', req.params.id);
+      Controllers.Sole.downloadPlan(req.params.id, sessionToken)
+      .then((url) => {
+        //in case the id of the sole is invalid
+        console.log(url);
+        var baseUrl = 'http://localhost:1339/soleapp/files/';
+        // var baseUrl = 'https://hrsa.staging.startsole.org/soleapp/files/';
 
-    Controllers.Sole.downloadPlan(req.params.id, sessionToken)
-    .then((url) => {
-      //in case the id of the sole is invalid
+        // var file = baseUrl + url;
+        // res.download(file); // Set disposition and send it.
 
-      var baseUrl = 'http://localhost:1339/soleapp/files/';
-
-      // var file = baseUrl + url;
-      // res.download(file); // Set disposition and send it.
-
-      res.redirect(baseUrl+url);
-      // res.render('soles-single', singleSole);
-    })
-    .catch((err)=>{
-      console.log('error!', err);
-      res.redirect('/login')
-    })
-  });
+        res.redirect(baseUrl+url);
+        // res.render('soles-single', singleSole);
+      })
+      .catch((err)=>{
+        console.log('error!', err);
+        res.redirect('/login')
+      })
+    });
 
 
 // on routes that end in /soles/:sole_id

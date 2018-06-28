@@ -1,0 +1,24 @@
+{{!-- this is duplicated code. we currently need it. but a copy of it also exists in the backend for the templating engine and here for use with the frontend. JFYI. We should remove one of these at some point in the future. -DW 2018-06-22 --}}
+{{!-- //FYI this has escapes before the {{}}'s because this is in a HBS file. this isn't needed on the backend HBS version --}}
+<script id="question-card-template" type="text/x-handlebars-template">
+        <div class="card blue lighten-1 grid-item masonry-card">
+            <div class="card-content center-align">
+                <a href="/questions/\{{id}}?sesh=\{{sesh}}">
+                    <div class="card-title white-text">\{{text}}</div>
+                </a>
+
+            </div>
+        </div>
+</script>
+
+{{!-- this is a handlebars template for the dropdown for tags --}}
+<script id="standard-picker-template" type="text/x-handlebars-template">
+    <div class="input-field col s12 m6">
+        <!-- <label for="refine-\{{rdn}}" class="active">Domain</label> -->
+        <select class="browser-default standard-picker" onchange="itChanged($(this))" >
+            <option value=""></option>
+            \{{#each standards}}
+            <option value="\{{rdn}}">\{{short}}</option>
+            \{{/each}}
+    </div>
+</script>

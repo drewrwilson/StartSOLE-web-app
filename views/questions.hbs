@@ -23,42 +23,7 @@
                                placeholder="Search by keyword">
                     </div>
 
-                    <div class="row" id="standard-picker">
-                        <div class="col s12 m6">
-                            <label>Subject</label>
-                            <select id="subject" class="browser-default standard-picker">
-                                <option value="" disabled selected>Filter by subject</option>
-                                <option label="AmeriCorps" value="asn.d0000003">AmeriCorps</option>
-                                <option label="College Now" value="asn.d0000001">College Now</option>
-                                <option label="Community Health Worker Certification" value="asn.d0000002">Community Health Worker Certification</option>
-                                <option label="Dance" value="asn.d2466234">Dance</option>
-                                <option label="Drama/Theatre" value="asn.d2466454">Drama/Theatre</option>
-                                <option label="English Language Arts (Common Core)" value="asn.d10003fc">English Language Arts (Common Core)</option>
-                                <option label="HRSA (ACT test)" value="asn.d0000004">HRSA (ACT test)</option>
-                                <option label="Mathematics (Common Core)" value="asn.d10003fb">Mathematics (Common Core)</option>
-                                <option label="Music" value="asn.d2482974">Music</option>
-                                <option label="Next Generation Science Standards" value="asn.d2454348">Next Generation Science Standards</option>
-                                <option label="Physical Education" value="asn.d2716034">Physical Education</option>
-                                <option label="Science (High School)" value="asn.d2692656">Science (High School)</option>
-                                <option label="Science (K-8)" value="asn.d2462762">Science (K-8)</option>
-                                <option label="Social Studies (High School)" value="asn.d2463176">Social Studies (High School)</option>
-                                <option label="Social Studies (K-8)" value="asn.d2462866">Social Studies (K-8)</option>
-                                <option label="Technology" value="asn.d2465259">Technology</option>
-                                <option label="Visual Arts" value="asn.d2483255">Visual Arts</option>
-                                <option label="World Languages" value="asn.d2483559">World Languages</option>
-                            </select>
-                        </div>
-                        <div class="col s12 m6">
-                            <label>Grade <span style="color: pink;" >(subject required)</span></label>
-                            <select id="grade" class="browser-default standard-picker" disabled>
-                                <option value=""></option>
-                            </select>
-                        </div>
-
-                        <div id="refine">
-                        </div>
-
-                    </div>
+                    {{>standard-picker}}
 
                 </div>
             </form>
@@ -151,34 +116,10 @@
 <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
 
 
-{{!-- this is duplicated code. we currently need it. but a copy of it also exists in the backend for the templating engine and here for use with the frontend. JFYI. We should remove one of these at some point in the future. -DW 2018-06-22 --}}
-{{!-- //FYI this has escapes before the {{}}'s because this is in a HBS file. this isn't needed on the backend HBS version --}}
-<script id="question-card-template" type="text/x-handlebars-template">
-        <div class="card blue lighten-1 grid-item masonry-card">
-            <div class="card-content center-align">
-                <a href="/questions/\{{id}}?sesh=\{{sesh}}">
-                    <div class="card-title white-text">\{{text}}</div>
-                </a>
-
-            </div>
-        </div>
-</script>
-
-{{!-- this is a handlebars template for the dropdown for tags --}}
-<script id="standard-picker-template" type="text/x-handlebars-template">
-    <div class="input-field col s12 m6">
-        <!-- <label for="refine-\{{rdn}}" class="active">Domain</label> -->
-        <select class="browser-default standard-picker" onchange="itChanged($(this))" >
-            <option value=""></option>
-            \{{#each standards}}
-            <option value="\{{rdn}}">\{{short}}</option>
-            \{{/each}}
-    </div>
-</script>
+{{>question-templates}}
 
 
 <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
 
 <script type="text/javascript" src="/js/sole-config.js"></script>
 <script type="text/javascript" src="/js/questions.js"></script>
-

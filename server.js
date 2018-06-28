@@ -497,10 +497,14 @@ router.route('/questions/add')
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
+
+      let tags = req.body.tags.split(',');
+      console.log('tags', tags);
+
       var newQuestion = {
         text: req.body.text,
         source: req.body.source,
-        tags: []
+        tags: tags
       }
       Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, sessionToken).then(questionID=>{
         console.log('added new question with id: ' + questionID);

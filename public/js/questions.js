@@ -95,6 +95,7 @@ $('#grade').change(function (){
 function itChanged (element){
 
   getQuestions(element);
+  getStandardsFromDOM();//update the list of tags
 
   //remove all "children"
   var parent = $(element).parent();
@@ -170,4 +171,14 @@ function getQuestions (){
 
   });
 
+}
+
+function getStandardsFromDOM () {
+  var tags = [];
+  $('.standard-picker').each(function (index, elem){
+    tags.push(elem.value);
+  })
+  tags = tags.filter(Boolean); //remove any empty strings like ""
+  // return tags.join(",");;
+  $('#tags').val(tags);
 }

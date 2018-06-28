@@ -1,3 +1,7 @@
+// connect to parse server
+Parse.initialize(soleConfig.appId);
+Parse.serverURL = soleConfig.serverUrl;
+
 $( "#initial-registration-form").submit(function (event) {
 
   event.preventDefault();

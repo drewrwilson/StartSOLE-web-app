@@ -321,7 +321,10 @@ router.route('/soles/:id/download-plan')
     .then((url) => {
       //in case the id of the sole is invalid
 
-      var baseUrl = 'http://localhost:1339/soleapp/files/';
+      // var baseUrl = 'http://localhost:1339/soleapp/files/';
+
+
+        var baseUrl = 'https://api.staging.startsole.net/sole/files/';
 
       // var file = baseUrl + url;
       // res.download(file); // Set disposition and send it.

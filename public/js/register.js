@@ -2,7 +2,7 @@
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-$( "#initial-registration-form").submit(function (event) {
+$("#initial-registration-form").submit(function (event) {
 
   event.preventDefault();
   var first_name  = $('#first_name').val(),

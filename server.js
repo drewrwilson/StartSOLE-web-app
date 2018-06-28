@@ -413,15 +413,11 @@ router.route('/sole-create')
         materials: materials,
         num_students: req.body.num_students,
         num_devices: req.body.num_devices,
-        content_objective: req.body.content_objective,
-        time_question: req.body.time_question,
-        time_investigate: req.body.time_investigate,
-        time_review: req.body.time_review,
-        close: 10 //req.body.close
+        content_objective: req.body.content_objective
       }
       Controllers.Sole.add(sole, sessionToken).then(soleID=>{
         console.log(soleID);
-        res.redirect('/soles/'+soleID+'?sesh='+sesh);
+        res.redirect('/soles/?sesh='+sesh);
       }).catch((err)=>{
         console.log('error saving sole', err);
         res.redirect('/login')

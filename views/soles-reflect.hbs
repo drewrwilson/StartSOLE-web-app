@@ -14,28 +14,13 @@
     <div class="col s12">
         <div class="card-panel">
 
-
-            <h3>Upload Photos</h3>
             <form action="/file-upload"
                   class="dropzone"
                   id="my-awesome-dropzone"></form>
 
             <form action="#">
 
-                <div class="row">
-                    <div class="col s12">
-                        <h4>Upload Photos</h4>
-                        <div class="file-field input-field">
-                            <div class="btn">
-                                <span>Upload Photos</span>
-                                <input type="file" multiple>
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" placeholder="Upload one or more photos">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!--content knowledge objective-->
                 <div class="row">
                     <div class="col s12">
                         <p>1. During this SOLE, your objective was {{sole.content_objective.text}}.  Do you think you
@@ -54,11 +39,12 @@
                         </div>
                     </div>
                     <div class="input-field col m12 l6">
-                        <input value="" id="first_name2" type="text" class="validate">
-                        <label class="active" for="first_name2">Why do you think this?</label>
+                        <input value="" id="content_objective_why" type="text" class="validate">
+                        <label class="active" for="content_objective_why">Why do you think this?</label>
                     </div>
                 </div>
 
+                <!--type of thinking-->
                 <div class="row">
                     <div class="col s12">
                         <p>2. What type of thinking were most students using during this SOLE? <a>Learn More
@@ -77,62 +63,123 @@
                         </div>
                     </div>
                     <div class="input-field col m12 l6">
-                        <input value="" id="first_name2" type="text" class="validate">
-                        <label class="active" for="first_name2">Why do you think this?</label>
+                        <input value="" id="dok_why" type="text" class="validate">
+                        <label class="active" for="dok_why">Why do you think this?</label>
                     </div>
                 </div>
 
+                <!--student engagement-->
                 <div class="row">
                     <div class="col s12 m8">
-                        <p>
-                            What percentage of students were engaged during the SOLE?</p>
+                        <p>3. What percentage of students were engaged during the SOLE?</p>
                     </div>
                     <div class="col s12 m4">
                         <p class="range-field">
-                            <input type="range" id="percent_engaged-{{ suffix }}" name="percent_engaged"
+                            <input type="range" name="percent_engaged"
                                    min="0" step="1" max="100"
-                                   class="validate" required
-                                   ng-model="session['reflection.engagement']"
+                                   required
                             />
                         </p>
                     </div>
                 </div>
 
+                <!--collaboration-->
+                <div class="row">
+                    <div class="col s12 m8">
+                        <p>4. What percentage of students worked effectively and respectfully together and shared responsibility?</p>
+                    </div>
+                    <div class="col s12 m4">
+                        <p class="range-field">
+                            <input type="range" name="percent_collaboration"
+                                   min="0" step="1" max="100"
+                                   required
+                            />
+                        </p>
+                    </div>
+                </div>
 
+                <!--technology use-->
+                <div class="row">
+                    <div class="col s12 m8">
+                        <p>5. What percentage of student groups used technology effectively?</p>
+                    </div>
+                    <div class="col s12 m4">
+                        <p class="range-field">
+                            <input type="range" name="percent_technology"
+                                   min="0" step="1" max="100"
+                                   required
+                            />
+                        </p>
+                    </div>
+                </div>
 
+                <!--communication-->
+                <div class="row">
+                    <div class="col s12 m8">
+                        <p>6. What percentage of students articulated thoughts and listened effectively?</p>
+                    </div>
+                    <div class="col s12 m4">
+                        <p class="range-field">
+                            <input type="range" name="percent_communication"
+                                   min="0" step="1" max="100"
+                                   required
+                            />
+                        </p>
+                    </div>
+                </div>
+
+                <!--content knowledge objective-->
+                <div class="row">
+                    <div class="col s12">
+                        <p>7. Did students appreciate and follow the ground rules?</p>
+                    </div>
+                    <div class="col m12 l6">
+                        <div class="input-field">
+                            <select>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                            <label>Select your response</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!--do you need help?-->
+                <div class="row">
+                    <div class="col s12">
+                        <p>8. Do you need help with SOLE?</p>
+                    </div>
+                    <div class="col m12 l6">
+                        <div class="input-field">
+                            <select>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                            <label>Select your response</label>
+                        </div>
+                    </div>
+                    <div class="input-field col m12 l6">
+                        <input value="" id="help_why" type="text" class="validate">
+                        <label class="active" for="help_why">If yes, please tell us a little more about your
+                            challenge</label>
+                    </div>
+                </div>
+
+                <!--additional notes-->
+                <div class="row">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea id="notes" class="materialize-textarea"></textarea>
+                        <label for="Notes">Additional Notes for your Records</label>
+                    </div>
+                </div>
 
             </form>
-
-
-
-
-
-
-
-
-
-
-
 
         </div>
     </div>
 </div>
-
-<table>
-    <thead>
-    <tr>
-        <th>Key</th>
-        <th>This</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each sole}}
-        <tr>
-            <td>{{@key}}</td>
-            <td>{{this}}</td>
-        </tr>
-    {{/each}}
-    </tbody>
-</table>
 
 <script type="text/javascript" src="/js/dropzone.min.js"></script>

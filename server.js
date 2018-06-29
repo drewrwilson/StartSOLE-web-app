@@ -341,7 +341,7 @@ router.route('/soles/:id/download-plan')
     })
   });
 
-// on routes that end in /soles/:sole_id
+// on routes that end in /soles/:sole_id/edit
 // ----------------------------------------------------
 router.route('/soles/:id/edit')
 // get the sole with that id
@@ -358,6 +358,26 @@ router.route('/soles/:id/edit')
             res.redirect('/login')
           })
     });
+
+// on routes that end in /soles/:sole_id/reflect
+// ----------------------------------------------------
+router.route('/soles/:id/reflect')
+// get the sole with that id
+    .get((req, res)=> {
+    const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
+    singleSole.sesh = sesh;
+res.render('soles-reflect', singleSole);
+}).catch((err)=>{
+    console.log('error!', err);
+res.redirect('/login')
+})
+});
+
+
 
 // on routes that end in /soles/add/
 // ----------------------------------------------------

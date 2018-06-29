@@ -32,6 +32,10 @@
             <!--<a class="waves-effect waves-light green btn">-->
                 <!--Download Plan-->
             <!--</a>-->
+            <a class="waves-effect waves-light red btn"
+               href="/soles/{{id}}/reflect?sesh={{sesh}}">
+                Reflect
+            </a>
         {{/ifEquals}}
         {{#ifEquals state "facilitate"}}
             <!--<a class="waves-effect waves-light green btn">-->
@@ -42,15 +46,19 @@
             <!--</a>-->
         {{/ifEquals}}
         {{#ifEquals state "reflect"}}
-            <!--<a class="waves-effect waves-light red btn"-->
-               <!--href="/soles/{{id}}">-->
-                <!--Reflect-->
-            <!--</a>-->
+            <a class="waves-effect waves-light red btn"
+               href="/soles/{{id}}?sesh={{sesh}}">
+                Reflect
+            </a>
         {{/ifEquals}}
         <a href="/soles/{{id}}/download-plan?sesh={{sesh}}"
            class="waves-effect waves-light green btn"
            target="_blank">
             Download Plan
+        </a>
+        <a class="waves-effect waves-light red btn"
+           href="/soles/{{id}}/reflect?sesh={{sesh}}">
+            Reflect
         </a>
     </div>
 

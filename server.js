@@ -364,17 +364,35 @@ router.route('/soles/:id/edit')
 router.route('/soles/:id/reflect')
 // get the sole with that id
     .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
-    singleSole.sesh = sesh;
-res.render('soles-reflect', singleSole);
-}).catch((err)=>{
-    console.log('error!', err);
-res.redirect('/login')
-})
+      Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
+          singleSole.sesh = sesh;
+      res.render('soles-reflect', singleSole);
+      }).catch((err)=>{
+          console.log('error!', err);
+      res.redirect('/login')
+      })
+    });
+
+router.route('/sole-reflect')
+.post((req, res)=>{
+  const sesh = req.body.sesh; //get the sesh token string from the query param
+  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+  const soleID     = req.body.id ;
+  const reflection = req.body.reflection || {};
+  const files      = [];
+
+  Controllers.Sole.saveReflection(soleID, reflection, files, sessionToken).then(soleID=>{
+    res.redirect('/soles/'+soleID+'?sesh='+sesh);
+  })
+
+  console.log('req.body', JSON.stringify(req.body));
+
 });
 
 

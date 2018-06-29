@@ -1,11 +1,11 @@
     <div class="card-panel sole-card">
-        <a href="/soles/{{id}}{{#ifEquals state "reflect"}}{{else ifEquals state
+        <a href="/soles/{{id}}{{#ifEquals state "reflect"}}/reflect{{else ifEquals state
                 "completed"}}{{else}}/edit{{/ifEquals}}?sesh={{sesh}}">
             <img src="/images/logos/sole-card-logo.jpg"
                  class="avatar-image hide-on-small-and-down">
         </a>
         <div class="question-text">
-            <a href="/soles/{{id}}{{#ifEquals state "reflect"}}{{else ifEquals state
+            <a href="/soles/{{id}}{{#ifEquals state "reflect"}}/reflect{{else ifEquals state
                     "completed"}}{{else}}/edit{{/ifEquals}}?sesh={{sesh}}"
                class="black-text">
                 {{question.text}}

@@ -1,0 +1,138 @@
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a href="/soles?sesh={{sesh}}" class="breadcrumb">My SOLEs</a>
+    <a class="breadcrumb">
+        {{#if sole}}
+            {{sole.question.question.text}}
+        {{else}}
+            Create
+        {{/if}}
+    </a>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+
+
+            <h3>Upload Photos</h3>
+            <form action="/file-upload"
+                  class="dropzone"
+                  id="my-awesome-dropzone"></form>
+
+            <form action="#">
+
+                <div class="row">
+                    <div class="col s12">
+                        <h4>Upload Photos</h4>
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Upload Photos</span>
+                                <input type="file" multiple>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload one or more photos">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <p>1. During this SOLE, your objective was {{sole.content_objective.text}}.  Do you think you
+                            achieved this objective?</p>
+                    </div>
+                    <div class="col m12 l6">
+                        <div class="input-field">
+                            <select>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="reflect.agree.strongly_agree">Strongly Agree</option>
+                                <option value="reflect.agree.agree">Agree</option>
+                                <option value="reflect.agree.disagree">Disagree</option>
+                                <option value="reflect.agree.strongly_disagree">Strongly Disagree</option>
+                            </select>
+                            <label>Select your response</label>
+                        </div>
+                    </div>
+                    <div class="input-field col m12 l6">
+                        <input value="" id="first_name2" type="text" class="validate">
+                        <label class="active" for="first_name2">Why do you think this?</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <p>2. What type of thinking were most students using during this SOLE? <a>Learn More
+                            about Webb's Depth of Knowledge</a></p>
+                    </div>
+                    <div class="col m12 l6">
+                        <div class="input-field">
+                            <select>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="reflection.type_of_thinking.recall">Recall and Reproduction</option>
+                                <option value="reflection.type_of_thinking.skill">Skill/Concept</option>
+                                <option value="reflection.type_of_thinking.short_strategic">Short Term Strategic</option>
+                                <option value="reflection.type_of_thinking.long_strategic">Long Term Strategic</option>
+                            </select>
+                            <label>Select your response</label>
+                        </div>
+                    </div>
+                    <div class="input-field col m12 l6">
+                        <input value="" id="first_name2" type="text" class="validate">
+                        <label class="active" for="first_name2">Why do you think this?</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m8">
+                        <p>
+                            What percentage of students were engaged during the SOLE?</p>
+                    </div>
+                    <div class="col s12 m4">
+                        <p class="range-field">
+                            <input type="range" id="percent_engaged-{{ suffix }}" name="percent_engaged"
+                                   min="0" step="1" max="100"
+                                   class="validate" required
+                                   ng-model="session['reflection.engagement']"
+                            />
+                        </p>
+                    </div>
+                </div>
+
+
+
+
+            </form>
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Key</th>
+        <th>This</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each sole}}
+        <tr>
+            <td>{{@key}}</td>
+            <td>{{this}}</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+
+<script type="text/javascript" src="/js/dropzone.min.js"></script>

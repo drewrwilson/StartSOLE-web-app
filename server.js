@@ -383,11 +383,23 @@ router.route('/sole-reflect')
   (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-  const soleID     = req.body.id ;
-  const reflection = req.body.reflection || {};
-  const files      = [];
+  var reflection = {
+      id: req.body.soleID,
+      achieved: req.body.content_objective_achieved, //session.reflection.content_objective.achieved
+      achieved_why: req.body.content_objective_achieved_why, //session.reflection.content_objective.notes
+      type_of_thinking: req.body.dok, //session.reflection.type_of_thinking
+      type_of_thinking_why: req.body.dok_why, //session.reflection.type_of_thinking.notes
+      percent_engaged: req.body.percent_engaged, //reflection.engagement
+      percent_collaboration: req.body.percent_collaboration, //reflection.collaboration
+      percent_technology: req.body.percent_technology, //reflection.technology
+      percent_communication: req.body.percent_communication, //reflection.communication
+      ground_rules: req.body.ground_rules, //reflection.ground_rules
+      needs_help: req.body.needs_help, //session.needs_help
+      notes: req.body.notes //session.reflection.notes
+  };
 
-  Controllers.Sole.saveReflection(soleID, reflection, files, sessionToken).then(soleID=>{
+
+  Controllers.Sole.saveReflection(reflection, sessionToken).then(soleID=>{
     res.redirect('/soles/'+soleID+'?sesh='+sesh);
   })
 

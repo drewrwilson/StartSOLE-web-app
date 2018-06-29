@@ -32,6 +32,15 @@ Sole.add = function (sole, sessionToken) {
 	})
 }
 
+// upload a sole and save it to the database.
+Sole.saveReflection = function (reflection, sessionToken) {
+    console.log("Now we are in saveReflection with SOLE: ",reflection.id)
+    return Parse.Cloud.run('webapp.completeReflection', {
+        sole: reflection,
+        sessionToken: sessionToken
+    })
+}
+
 Sole.downloadPlan = function (id, sessionToken) {
     // return Parse.Promise.as("foo");
     return Parse.Cloud.run('webapp.getDownloadLink', {

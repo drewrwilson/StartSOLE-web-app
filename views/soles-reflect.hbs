@@ -15,16 +15,20 @@
         <div class="card-panel">
 
             <h3>Upload Photos</h3>
-            {{!-- <form action="/file-upload"
+            <form action="/api/upload-sole-image"
                   class="dropzone"
-                  id="my-awesome-dropzone"></form>  --}}
+                  id="myAwesomeDropzone">
+              <div class="fallback">
+                <input name="file" type="file" multiple />
+              </div>
+            </form>
 
             <form id="reflect-form" method="post" action="/sole-reflect">
               <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
-              <input type="hidden" name="sole_id" value="{{sole.id}}">
+              <input type="hidden" name="soleID" id="soleID" value="{{sole.id}}">
 
 
-                <div class="row">
+                {{!-- <div class="row">
                     <div class="col s12">
                         <h4>Upload Photos</h4>
                         <div class="file-field input-field">
@@ -37,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!--content knowledge objective-->
 

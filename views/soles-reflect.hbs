@@ -14,21 +14,16 @@
     <div class="col s12">
         <div class="card-panel">
 
-<<<<<<< HEAD
-
             <h3>Upload Photos</h3>
             {{!-- <form action="/file-upload"
-=======
-            <form action="/file-upload"
->>>>>>> 9f8c5ed63a3fdba9ea6f2e63c26ba0471eb2d29c
                   class="dropzone"
-                  id="my-awesome-dropzone"></form> --}}
+                  id="my-awesome-dropzone"></form>  --}}
 
             <form id="reflect-form" method="post" action="/sole-reflect">
               <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
               <input type="hidden" name="sole_id" value="{{sole.id}}">
 
-<<<<<<< HEAD
+
                 <div class="row">
                     <div class="col s12">
                         <h4>Upload Photos</h4>
@@ -43,9 +38,9 @@
                         </div>
                     </div>
                 </div>
-=======
+
                 <!--content knowledge objective-->
->>>>>>> 9f8c5ed63a3fdba9ea6f2e63c26ba0471eb2d29c
+
                 <div class="row">
                     <div class="col s12">
                         <p>1. During this SOLE, your objective was {{sole.content_objective.text}}.  Do you think you
@@ -138,20 +133,10 @@
                     </div>
                 </div>
 
-<<<<<<< HEAD
-                <div class="row">
-                    <input type="submit" value="Save" class="waves-effect waves-light btn">
-                </div>
-            </form>
 
 
 
 
-
-
-
-
-=======
                 <!--communication-->
                 <div class="row">
                     <div class="col s12 m8">
@@ -183,7 +168,6 @@
                         </div>
                     </div>
                 </div>
->>>>>>> 9f8c5ed63a3fdba9ea6f2e63c26ba0471eb2d29c
 
                 <!--do you need help?-->
                 <div class="row">
@@ -216,35 +200,18 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <input type="submit" value="Save" class="waves-effect waves-light btn">
+                </div>
             </form>
 
         </div>
     </div>
 </div>
 
-<<<<<<< HEAD
-<table>
-    <thead>
-    <tr>
-        <th>Key</th>
-        <th>This</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each sole}}
-        <tr>
-            <td>{{@key}}</td>
-            <td>{{this}}</td>
-        </tr>
-    {{/each}}
-    </tbody>
-</table>
 
 <script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
 <script type="text/javascript" src="/js/sole-config.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/js/dropzone.min.js"></script>
 <script type="text/javascript" src="/js/img-upload.js"></script>
-=======
-<script type="text/javascript" src="/js/dropzone.min.js"></script>
->>>>>>> 9f8c5ed63a3fdba9ea6f2e63c26ba0471eb2d29c

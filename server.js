@@ -357,7 +357,67 @@ router.route('/soles/:id/edit')
             console.log('error!', err);
             res.redirect('/login')
           })
-    });
+    })
+.post((req, res)=> {
+    //TODO: make this reusable
+
+    console.log("sole-edit post!");
+    const sesh = req.body.sesh; //get the sesh token string from the query param
+    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+    //push observations into this array if any are set to 'on'
+    let targetObservations = [];
+    (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
+    (req.body.technology == 'on') ? targetObservations.push('session.observation.technology'): false;
+    (req.body.respectful == 'on') ? targetObservations.push('session.observation.respectful') : false;
+    (req.body.desire == 'on') ? targetObservations.push('session.observation.desire') : false;
+    (req.body.vocabulary == 'on') ? targetObservations.push('session.observation.vocabulary') : false;
+    (req.body.help_learn == 'on') ? targetObservations.push('session.observation.help_learn') : false;
+    (req.body.help_technology == 'on') ? targetObservations.push('session.observation.help_technology') : false;
+
+    //push materials into this array if any are set to 'on'
+    let materials = [];
+    (req.body.writing_tools == 'on') ? materials.push('material.writing_tools') : false;
+    (req.body.poster_paper == 'on') ? materials.push('material.poster_paper') : false;
+    (req.body.physical == 'on') ? materials.push('material.physical') : false;
+    (req.body.student_organizer == 'on') ? materials.push('material.student_organizer') : false;
+    (req.body.other == 'on') ? materials.push('material.other') : false;
+
+    let sole = {
+        //values from the frontend
+        question: req.body.question,
+        subject: req.body.subject,
+        grade: req.body.grade,
+        class_label: req.body.class_label, //optional
+        planned_date: req.body.planned_date,
+        planned_time: req.body.planned_time,
+        planned_duration: req.body.planned_duration,
+        num_groups: req.body.num_groups,
+        target_observations: targetObservations,
+        grouporganization: (req.body.grouporganization == 'on') ? true : false,
+        groupsharing: (req.body.groupsharing == 'on') ? true : false,
+        self_assessment: (req.body.self_assessment == 'on') ? true : false,
+        useapp: (req.body.useapp == 'on') ? true : false,
+        materials: materials,
+        num_students: req.body.num_students,
+        num_devices: req.body.num_devices,
+        content_objective: req.body.content_objective
+    }
+
+    let id = req.body.sole_id;
+
+    Controllers.Sole.update(id, sole, sessionToken).then(soleID=>{
+        console.log("UPDATING an EXISTING SOLE with this ID:");
+        console.log(id);
+    res.redirect('/soles/?sesh='+sesh);
+    }).catch((err)=>{
+        console.log('error saving sole', err);
+    res.redirect('/login')
+    })
+
+
+});
 
 // on routes that end in /soles/:sole_id/reflect
 // ----------------------------------------------------
@@ -422,6 +482,8 @@ router.route('/sole-create')
       res.render('soles-add', viewData);
     })
     .post((req, res)=>{
+
+    console.log("sole-create post!");
       const sesh = req.body.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
@@ -467,21 +529,8 @@ router.route('/sole-create')
         content_objective: req.body.content_objective
       }
 
-console.log("SOLE ID!");
-console.log(req.body.sole_id);
 
-        if(req.body.sole_id){
-            Controllers.Sole.add(sole, sessionToken, true).then(soleID=>{
-                console.log("UPDATING and existing SOLE with this ID:");
-                console.log(soleID);
-            res.redirect('/soles/?sesh='+sesh);
-        }).catch((err)=>{
-                console.log('error saving sole', err);
-            res.redirect('/login')
-        })
-        }
-        else {
-            Controllers.Sole.add(sole, sessionToken, false).then(soleID=>{
+            Controllers.Sole.add(sole, sessionToken).then(soleID=>{
                 console.log("SAVING a NEW SOLE with this ID:");
                 console.log(soleID);
             res.redirect('/soles/?sesh='+sesh);
@@ -489,7 +538,7 @@ console.log(req.body.sole_id);
                 console.log('error saving sole', err);
             res.redirect('/login')
         })
-        }
+
 
 
 

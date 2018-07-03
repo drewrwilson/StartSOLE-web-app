@@ -394,7 +394,8 @@ router.route('/sole-reflect')
       percent_technology: req.body.percent_technology, //reflection.technology
       percent_communication: req.body.percent_communication, //reflection.communication
       ground_rules: req.body.ground_rules, //reflection.ground_rules
-      needs_help: req.body.needs_help, //session.needs_help
+      need_help: req.body.need_help, //reflection.need_help
+      help_why: req.body.help_why, //session.help_why
       notes: req.body.notes //session.reflection.notes
   };
 

@@ -14,7 +14,7 @@
     <div class="col s12">
         <div class="card-panel">
 
-            <h3>Upload Photos</h3>
+            <h5>Upload Photos</h5>
             <form action="/api/upload-sole-image"
                   class="dropzone"
                   id="myAwesomeDropzone">
@@ -28,25 +28,10 @@
               <input type="hidden" name="soleID" id="soleID" value="{{sole.id}}">
 
 
-                {{!-- <div class="row">
-                    <div class="col s12">
-                        <h4>Upload Photos</h4>
-                        <div class="file-field input-field">
-                            <div class="btn">
-                                <span>Upload Photos</span>
-                                <input type="file" id="photoUpload" name="files" multiple>
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" name="files-text" placeholder="Upload one or more photos">
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
                 <!--content knowledge objective-->
-
                 <div class="row">
                     <div class="col s12">
+                        <h5>Reflect</h5>
                         <p>1. During this SOLE, your objective was {{sole.content_objective.text}}.  Do you think you
                             achieved this objective?</p>
                     </div>

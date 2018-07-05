@@ -281,7 +281,7 @@
                     {{#each sole.materials}}
                         <p>
                             <label>
-                                <input type="checkbox" {{#if this.checked}}checked{{/if}}/>
+                                <input type="checkbox" name="{{this.nameText}}" {{#if this.checked}}checked{{/if}}/>
                                 <span>{{this.name}}</span>
                             </label>
                         </p>
@@ -329,7 +329,7 @@
                         <div class="col s12 m6 target-observation-col">
 
                             <label>
-                                <input type="checkbox" {{#if this.checked}}checked{{/if}}/>
+                                <input type="checkbox" name="{{this.nameText}}" {{#if this.checked}}checked{{/if}}/>
                                 <span>{{this.name}}</span>
                             </label>
 

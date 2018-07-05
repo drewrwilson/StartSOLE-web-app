@@ -198,19 +198,25 @@ router.route('/profile')
 
     })
     .post((req, res)=> {
+
         const sesh = req.body.sesh; //get the sesh token string from the query param
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
         console.log('req.body',req.body);
+        console.log('hey hey hey ');
+        console.log('sesh:' + sesh);
         console.log('sessionToken', sessionToken);
-        // TODO: refactor so this accept explicit param instead of of req.body
-        Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
-            // res.redirect('/soles');
-            res.redirect('/soles?sesh='+sesh);
-        }).catch((err)=>{
-            console.log('error updating user', err);
-            res.redirect('/login')
-        })
+        res.redirect('/soles?sesh='+sesh);
+        // res.redirect('/')
+
+        // // TODO: refactor so this accept explicit param instead of of req.body
+        // Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
+        //     // res.redirect('/soles');
+        //     res.redirect('/soles?sesh='+sesh);
+        // }).catch((err)=>{
+        //     console.log('error updating user', err);
+        //     res.redirect('/login')
+        // })
 
     });
 
@@ -245,14 +251,18 @@ router.route('/complete-profile')
     (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
+    console.log('sesh', sesh);
+    console.log('sessionToken', sessionToken);
+    // res.redirect('/?sesh='+sesh);
+
     Controllers.User.getProfileData(sessionToken)
         .then((profileData) => {
-          console.log("PROFIIIIILE");
+          console.log("get Profile Data");
           console.log(JSON.stringify(profileData));
           if( profileData.user.firstName && profileData.user.lastName ) {
             console.log("got first and last");
           } else {
-            console.log("don't have mah data!");
+            console.log("don't have first name and last name from db! seting them from the query param");
             profileData.user.firstName = req.query.firstname;
             profileData.user.lastName = req.query.lastname;
           }
@@ -260,9 +270,10 @@ router.route('/complete-profile')
           profileData.sesh = sesh;
           console.log('profileData', profileData);
           res.render('complete-profile', {
-              layout: 'prelogin.hbs',
+              layout: 'no-sidebar.hbs',
               profile: profileData
           });
+
         });
 
 });

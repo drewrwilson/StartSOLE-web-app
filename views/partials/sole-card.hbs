@@ -14,7 +14,7 @@
         </div>
     {{#if tag}}
         <p class="sole-tag">
-            Class 7C
+            {{tag}}
         </p>
     {{/if}}
         <div class="sole-card-date">
@@ -28,38 +28,17 @@
         </span>
         </div>
     <div class="sole-action-buttons">
-        {{#ifEquals state "planned"}}
-            <!--<a class="waves-effect waves-light green btn">-->
-                <!--Download Plan-->
-            <!--</a>-->
-            <a class="waves-effect waves-light red btn"
-               href="/soles/{{id}}/reflect?sesh={{sesh}}">
-                Reflect
-            </a>
-        {{/ifEquals}}
-        {{#ifEquals state "facilitate"}}
-            <!--<a class="waves-effect waves-light green btn">-->
-                <!--Upload Photos-->
-            <!--</a>-->
-            <!--<a href="/soles-download/{{id}}" class="waves-effect waves-light green btn">-->
-                <!--Download Plan URL-->
-            <!--</a>-->
-        {{/ifEquals}}
-        {{#ifEquals state "reflect"}}
-            <a class="waves-effect waves-light red btn"
-               href="/soles/{{id}}?sesh={{sesh}}">
-                Reflect
-            </a>
-        {{/ifEquals}}
         <a href="/soles/{{id}}/download-plan?sesh={{sesh}}"
            class="waves-effect waves-light green btn"
            target="_blank">
             Download Plan
         </a>
-        <a class="waves-effect waves-light red btn"
-           href="/soles/{{id}}/reflect?sesh={{sesh}}">
-            Reflect
-        </a>
+        {{#unless completed}}
+            <a class="waves-effect waves-light red btn"
+               href="/soles/{{id}}/reflect?sesh={{sesh}}">
+                Reflect
+            </a>
+        {{/unless}}
     </div>
 
     </div>

@@ -14,18 +14,35 @@
     <div class="col s12">
         <div class="card-panel">
 
-            <h5>Upload Photos</h5>
-            <form action="/api/upload-sole-image"
-                  class="dropzone"
-                  id="myAwesomeDropzone">
-              <div class="fallback">
-                <input name="file" type="file" multiple />
-              </div>
-            </form>
+            {{#if sole.observations}}
+                <h5>Review Photos</h5>
+                <div class="row">
+                    {{#each sole.observations}}
+                        {{#if image.full}}
+                            <div class="col s12 m4 l3 xl2">
+                                <div class="materialbox-preview thumbnail">
+                                    <img class="materialboxed responsive-img "
+                                         src="{{ image.full }}"
+                                    >
+                                </div>
+                            </div>
+                        {{/if}}
+                    {{/each}}
+                </div>
+            {{else}}
+                <h5>Upload Photos</h5>
+                <form action="/api/upload-sole-image"
+                      class="dropzone"
+                      id="myAwesomeDropzone">
+                    <div class="fallback">
+                        <input name="file" type="file" multiple />
+                    </div>
+                </form>
+            {{/if}}
 
             <form id="reflect-form" method="post" action="/sole-reflect">
-              <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
-              <input type="hidden" name="soleID" id="soleID" value="{{sole.id}}">
+                <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
+                <input type="hidden" name="soleID" id="soleID" value="{{sole.id}}">
 
 
                 <!--content knowledge objective-->
@@ -37,7 +54,7 @@
                     </div>
                     <div class="col m12 l6">
                         <div class="input-field">
-                            <select name="content_objective_achieved">
+                            <select name="content_objective_achieved" required>
                                 <option value="" disabled selected>Choose your option</option>
                                 <option value="reflect.agree.strongly_agree">Strongly Agree</option>
                                 <option value="reflect.agree.agree">Agree</option>
@@ -48,7 +65,10 @@
                         </div>
                     </div>
                     <div class="input-field col m12 l6">
-                        <input name="content_objective_achieved_why" id="content_objective_why" type="text"
+                        <input name="content_objective_achieved_why"
+                               id="content_objective_why"
+                               type="text"
+                               required
                                class="validate">
                         <label class="active" for="content_objective_why">Why do you think this?</label>
                     </div>
@@ -62,7 +82,7 @@
                     </div>
                     <div class="col m12 l6">
                         <div class="input-field">
-                            <select name="dok">
+                            <select name="dok" required>
                                 <option value="" disabled selected>Choose your option</option>
                                 <option value="reflection.type_of_thinking.recall">Recall and Reproduction</option>
                                 <option value="reflection.type_of_thinking.skill">Skill/Concept</option>
@@ -73,7 +93,11 @@
                         </div>
                     </div>
                     <div class="input-field col m12 l6">
-                        <input name="dok_why" id="dok_why" type="text" class="validate">
+                        <input name="dok_why"
+                               id="dok_why"
+                               type="text"
+                               class="validate"
+                               required>
                         <label class="active" for="dok_why">Why do you think this?</label>
                     </div>
                 </div>
@@ -86,7 +110,7 @@
                     <div class="col s12 m4">
                         <p class="range-field">
                             <input type="range" name="percent_engaged"
-                                   min="0" step="1" max="100"
+                                   min="0" step="5" max="100"
                                    required
                             />
                         </p>
@@ -101,7 +125,7 @@
                     <div class="col s12 m4">
                         <p class="range-field">
                             <input type="range" name="percent_collaboration"
-                                   min="0" step="1" max="100"
+                                   min="0" step="5" max="100"
                                    required
                             />
                         </p>
@@ -116,7 +140,7 @@
                     <div class="col s12 m4">
                         <p class="range-field">
                             <input type="range" name="percent_technology"
-                                   min="0" step="1" max="100"
+                                   min="0" step="5" max="100"
                                    required
                             />
                         </p>
@@ -135,7 +159,7 @@
                     <div class="col s12 m4">
                         <p class="range-field">
                             <input type="range" name="percent_communication"
-                                   min="0" step="1" max="100"
+                                   min="0" step="5" max="100"
                                    required
                             />
                         </p>
@@ -149,7 +173,7 @@
                     </div>
                     <div class="col m12 l6">
                         <div class="input-field">
-                            <select name="ground_rules">
+                            <select name="ground_rules" required>
                                 <option value="" disabled selected>Choose your option</option>
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>

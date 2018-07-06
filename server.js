@@ -140,13 +140,13 @@ router.route('/how')
       res.render('how-to-sole', viewData);
     });
 
-// static route for History of SOLE
+// static route for ToS
 router.route('/terms-of-use')
     .get((req, res)=> {
       res.render('terms-of-use', {layout: 'no-sidebar.hbs'});
     });
 
-// static route for History of SOLE
+// static route for privacy
 router.route('/privacy')
     .get((req, res)=> {
       res.render('privacy', {layout: 'no-sidebar.hbs'});

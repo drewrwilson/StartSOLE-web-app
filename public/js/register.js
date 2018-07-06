@@ -15,29 +15,24 @@ $("#initial-registration-form").submit(function (event) {
     email: email,
     pw: password
   }).then(data=>{
-    console.log('************');
-    console.log('************');
-    console.log('************');
-    console.log('data', JSON.stringify(data));
-    console.log('************');
-    console.log('************');
-    console.log('************');
-    // login with the new user and get a session token
-    // redirect to complete-profile with session token
-    return Parse.User.logIn(email, password)
-      .done(function (user){
-        console.log('login success!');
-        console.log('user', JSON.stringify(user));
-        console.log('sesh', sesh);
-        var sessionToken = user.attributes.sessionToken;
-        var sesh = user.attributes.sessionToken.slice(2); //suspect
-        console.log('sesh', sesh);
+    console.log('made user!');
+    console.log('now logging in as this user');
+    Parse.User.logIn(email, password).then(data=>{
+      console.log('logged in user: ' + email);
+      var currentUser = Parse.User.current();
+      var sessionToken = currentUser.getSessionToken();
+      console.log('current user token! ' + sessionToken);
+      var sesh = sessionToken.slice(2);
+      console.log('sesh',sesh);
+      $('#sesh').val(sesh);
 
-        $('#sesh').val(sesh);
-        $('#firstname').val(first_name);
-        $('#lastname').val(last_name);
-        // $( "#final-registration-form" ).submit();
-      })
+      $('#firstname').val(first_name);
+      console.log('first_name',first_name);
+      $('#lastname').val(last_name);
+      console.log('last_name',last_name);
+      $( "#final-registration-form" ).submit();
+    })
+
   });
 
 });

@@ -13,8 +13,6 @@
 
           <form id="profile-update-form" action="/profile" method="post">
 
-            <h1>SESH {{profile.sesh}}</h1>
-
               <input type="hidden" name="sesh" value="{{profile.sesh}}">
             <div class="row">
                 <div class="input-field col s6">
@@ -22,8 +20,7 @@
                            name="firstName"
                            type="text"
                            class="validate"
-                           {{#if profile.user.firstName}}value="{{profile.user.firstName}}"{{/if}}
-                    >
+                           {{#if profile.user.firstName}}value="{{profile.user.firstName}}"{{/if}}>
                     <label for="first_name">First Name</label>
                 </div>
                 <div class="input-field col s6">
@@ -31,8 +28,7 @@
                            name="lastName"
                            type="text"
                            class="validate"
-                           {{#if profile.user.lastName}}value="{{profile.user.lastName}}"{{/if}}
-                    >
+                           {{#if profile.user.lastName}}value="{{profile.user.lastName}}"{{/if}}>
                     <label for="last_name">Last Name</label>
                 </div>
             </div>

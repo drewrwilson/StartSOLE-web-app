@@ -202,21 +202,16 @@ router.route('/profile')
         const sesh = req.body.sesh; //get the sesh token string from the query param
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-        console.log('req.body',req.body);
-        console.log('hey hey hey ');
-        console.log('sesh:' + sesh);
-        console.log('sessionToken', sessionToken);
-        res.redirect('/soles?sesh='+sesh);
-        // res.redirect('/')
+
 
         // // TODO: refactor so this accept explicit param instead of of req.body
-        // Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
-        //     // res.redirect('/soles');
-        //     res.redirect('/soles?sesh='+sesh);
-        // }).catch((err)=>{
-        //     console.log('error updating user', err);
-        //     res.redirect('/login')
-        // })
+        Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
+            // res.redirect('/soles');
+            res.redirect('/soles?sesh='+sesh);
+        }).catch((err)=>{
+            console.log('error updating user', err);
+            res.redirect('/login')
+        })
 
     });
 
@@ -238,22 +233,17 @@ router.route('/logout')
 // routes for logging in
 // ----------------------------------------------------
 router.route('/login')
-
-// profile view
+// login vieww
     .get((req, res)=> {
       res.render('login', {layout: 'prelogin.hbs'});
     })
 
-// static route for completing profile
+// route for completing profile
 router.route('/complete-profile')
     .get((req, res) => {
     const sesh = req.query.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    console.log('sesh', sesh);
-    console.log('sessionToken', sessionToken);
-    // res.redirect('/?sesh='+sesh);
 
     Controllers.User.getProfileData(sessionToken)
         .then((profileData) => {

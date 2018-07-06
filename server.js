@@ -206,7 +206,6 @@ router.route('/profile')
 
         // // TODO: refactor so this accept explicit param instead of of req.body
         Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
-            // res.redirect('/soles');
             res.redirect('/soles?sesh='+sesh);
         }).catch((err)=>{
             console.log('error updating user', err);

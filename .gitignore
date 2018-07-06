@@ -61,3 +61,4 @@ package-lock.json
 .DS_Store
 
 sole-config.js
+public/js/sole-config.js

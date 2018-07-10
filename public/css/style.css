@@ -8,6 +8,11 @@ nav .brand-logo {
     margin-top:5px;
 }
 
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
 .sidenav span.badge {
     position: absolute;
 }

@@ -117,6 +117,16 @@ router.route('/')
 
 });
 
+// static route for Sample Tutorial
+router.route('/academy/qft')
+    .get((req, res)=> {
+    const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+const viewData = {sesh: sesh};
+res.render('academy/qft', viewData);
+});
 
 // static route for History of SOLE
 router.route('/history')
@@ -129,7 +139,7 @@ router.route('/history')
       res.render('history', viewData);
     });
 
-// static route for History of SOLE
+// static route for How to SOLE
 router.route('/how')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param

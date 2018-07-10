@@ -83,6 +83,12 @@ main, footer {
     cursor: pointer;
 }
 
+/* login */
+.abcRioButton {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /*SOLE plan cards*/
 .sole-card {
     min-height: 124px;

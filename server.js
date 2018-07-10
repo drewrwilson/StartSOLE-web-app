@@ -14,6 +14,8 @@ var Controllers = require('./controllers/controllers.js');
 var Parse       =  require('parse/node');
 var soleConfig  = require('./sole-config.js');
 
+var port = process.env.PORT || 8080;                 // set our port
+
 console.log("serverURL:", soleConfig.serverUrl);
 // connect to parse server
 Parse.initialize(soleConfig.appId);
@@ -69,7 +71,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-var port = process.env.PORT || 8080;        // set our port
+
 
 // ******************
 // routes for webserver
@@ -105,6 +107,7 @@ router.route('/')
           console.log('---');
           homeData.questions.favorites = favoriteQuestions;
           homeData.sesh = sesh;
+          homeData.config = soleConfig;
           res.render('home', homeData); //display view with question data
         }).catch((err)=>{
           console.log('error getting fav questions!', err);
@@ -126,6 +129,7 @@ router.route('/history')
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
+      viewData.config = soleConfig;
       res.render('history', viewData);
     });
 
@@ -137,19 +141,20 @@ router.route('/how')
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
+      viewData.config = soleConfig;
       res.render('how-to-sole', viewData);
     });
 
 // static route for ToS
 router.route('/terms-of-use')
     .get((req, res)=> {
-      res.render('terms-of-use', {layout: 'no-sidebar.hbs'});
+      res.render('terms-of-use', {layout: 'no-sidebar.hbs', config: soleConfig});
     });
 
 // static route for privacy
 router.route('/privacy')
     .get((req, res)=> {
-      res.render('privacy', {layout: 'no-sidebar.hbs'});
+      res.render('privacy', {layout: 'no-sidebar.hbs', config: soleConfig});
     });
 
 // routes for resources
@@ -162,7 +167,8 @@ router.route('/resources')
       Controllers.Resource.getAll().then(resources=>{
         const viewData = {
           resources: resources,
-          sesh: sesh
+          sesh: sesh,
+          config: soleConfig
         }
         res.render('resources', viewData);
       })
@@ -177,6 +183,7 @@ router.route('/map')
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
+      viewData.config = soleConfig;
       res.render('map', viewData);
     });
 
@@ -193,6 +200,7 @@ router.route('/profile')
       Controllers.User.getProfileData(sessionToken)
       .then((profileData) => {
         profileData.sesh = sesh;
+        profileData.config = soleConfig;
         res.render('profile', profileData);
       });
 
@@ -219,13 +227,13 @@ router.route('/register')
 
 // register view
     .get((req, res)=> {
-        res.render('register', {layout: 'no-sidebar.hbs'});
+        res.render('register', {layout: 'no-sidebar.hbs', config: soleConfig});
     });
 
 //route for logging out
 router.route('/logout')
   .get((req, res)=> {
-    res.render('logout', {layout: 'no-sidebar.hbs'});
+    res.render('logout', {layout: 'no-sidebar.hbs', config: soleConfig});
   })
 
 // routes for logging in
@@ -233,7 +241,7 @@ router.route('/logout')
 router.route('/login')
 // login vieww
     .get((req, res)=> {
-      res.render('login', {layout: 'prelogin.hbs'});
+      res.render('login', {layout: 'prelogin.hbs', config: soleConfig});
     })
 
 // route for completing profile
@@ -259,7 +267,9 @@ router.route('/complete-profile')
           console.log('profileData', profileData);
           res.render('complete-profile', {
               layout: 'no-sidebar.hbs',
-              profile: profileData
+              profile: profileData,
+              sesh: sesh,
+              config: soleConfig
           });
 
         });
@@ -280,6 +290,7 @@ router.route('/soles')
           .then(soles=>{
           console.log('All soles', JSON.stringify(soles));
           soles.sesh = sesh;
+          soles.config = soleConfig;
           res.render('soles', soles);
         }).catch(err=>{
           console.log('oops! error getting all soles!', err);
@@ -302,6 +313,7 @@ router.route('/soles/:id')
             //in case the id of the sole is invalid
             console.log(JSON.stringify(singleSole.sole));
             singleSole.sesh = sesh;
+            singleSole.config = soleConfig;
             res.render('soles-single', singleSole);
           }).catch((err)=>{
             console.log('error!', err);
@@ -349,6 +361,7 @@ router.route('/soles/:id/edit')
 
         Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
             singleSole.sesh = sesh;
+            singleSole.config = soleConfig;
             res.render('soles-add', singleSole);
           }).catch((err)=>{
             console.log('error!', err);
@@ -427,6 +440,7 @@ router.route('/soles/:id/reflect')
 
       Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
           singleSole.sesh = sesh;
+          singleSole.config = soleConfig;
       res.render('soles-reflect', singleSole);
       }).catch((err)=>{
           console.log('error!', err);
@@ -476,6 +490,7 @@ router.route('/sole-create')
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
       var viewData = {sesh: sesh}
+      viewData.config = soleConfig;
       res.render('soles-add', viewData);
     })
     .post((req, res)=>{
@@ -552,6 +567,7 @@ router.route('/questions')
           Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
             console.log(JSON.stringify(foundQuestions));
             foundQuestions.sesh = sesh;
+            foundQuestions.config = soleConfig;
             res.render('questions', foundQuestions);
           }).catch((err)=>{
             console.log('error!', err);
@@ -562,6 +578,7 @@ router.route('/questions')
               //todo probably need to do some processing on tags to convert it from a string to an array of tags
               console.log(JSON.stringify(foundQuestions));
               foundQuestions.sesh = sesh;
+              foundQuestions.config = soleConfig;
               res.render('questions', foundQuestions);
             }).catch((err)=>{
               console.log('error!', err);
@@ -569,6 +586,7 @@ router.route('/questions')
             });
         } else {
           viewData = {sesh: sesh};
+          viewData.config = soleConfig;
           res.render('questions', viewData);
         }
     });
@@ -581,6 +599,7 @@ router.route('/questions/add')
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
+      viewData.config = soleConfig;
       res.render('questions-add', viewData);
     })
     // TODO: add post route here to save question to DB
@@ -622,6 +641,7 @@ router.route('/questions/:id')
         Controllers.Question.getByID(req.params.id, sessionToken).then((questionData) => {
           console.log(JSON.stringify(questionData));
           questionData.sesh = sesh;
+          questionData.config = soleConfig;
           res.render('questions-single', questionData);
         }).catch((err)=>{
           console.log('error! oh noes!', err);

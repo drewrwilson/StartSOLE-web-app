@@ -2,11 +2,6 @@
 
 // BASE SETUP
 // =============================================================================
-var ring = process.env.RING || 'regular';        // can be "hrsa" or nothing
-var environment = process.env.ENVIRONMENT || 'local';
-console.log('Ring: ' + ring);
-console.log('Environment: ' + environment);
-
 
 // call the packages we need
 var express     = require('express');        // call express
@@ -16,15 +11,18 @@ var hbs         = require('express-hbs');
 var path        = require('path');
 var Controllers = require('./controllers/controllers.js');
 
-var Parse       =  require('parse/node');
+// var Parse       =  require('parse/node');
 var soleConfig  = require('./sole-config.js');
 
 var port = process.env.PORT || 8080;                 // set our port
 
-console.log("serverURL:", soleConfig.serverUrl);
+console.log("serverURL: " + soleConfig.serverUrl);
+console.log("Ring: " + soleConfig.ring);
+console.log("Environment: " + soleConfig.environment);
+
 // connect to parse server
-Parse.initialize(soleConfig.appId);
-Parse.serverURL = soleConfig.serverUrl;
+// Parse.initialize(soleConfig.appId);
+// Parse.serverURL = soleConfig.serverUrl;
 
 var sessionToken = null; //initiatize this variable so we can use it globally
 

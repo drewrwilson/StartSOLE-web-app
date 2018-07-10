@@ -16,10 +16,6 @@ var soleConfig  = require('./sole-config.js');
 
 var port = process.env.PORT || 8080;                 // set our port
 
-console.log("serverURL: " + soleConfig.serverUrl);
-console.log("Ring: " + soleConfig.ring);
-console.log("Environment: " + soleConfig.environment);
-
 // connect to parse server
 // Parse.initialize(soleConfig.appId);
 // Parse.serverURL = soleConfig.serverUrl;

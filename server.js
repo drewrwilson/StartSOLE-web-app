@@ -2,6 +2,11 @@
 
 // BASE SETUP
 // =============================================================================
+var ring = process.env.RING || 'regular';        // can be "hrsa" or nothing
+var environment = process.env.ENVIRONMENT || 'local';
+console.log('Ring: ' + ring);
+console.log('Environment: ' + environment);
+
 
 // call the packages we need
 var express     = require('express');        // call express

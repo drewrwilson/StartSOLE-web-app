@@ -1,0 +1,19 @@
+{
+	"apps": [{
+		"name": "webapp",
+		"instances": "1",
+      "cwd": ".",
+		"script": "server.js",
+		"watch": true,
+		"env": {
+			"PORT": 5000,
+			"RING": "regular",
+			"ENVIRONMENT": "production"
+		},
+		"env_staging": {
+			"ENVIRONMENT": "staging"
+		},
+		"env_develop": {
+		}
+	}]
+}

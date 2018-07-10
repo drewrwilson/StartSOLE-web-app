@@ -26,3 +26,15 @@ Then open your browser and point it to `http:\\localhost:8080` to see the page
 
  * Use SASS to keep styles well structured and clean
  * Use React and replace the node express backend entirely
+
+
+# notes
+
+Process for clearing env variables and restarting the pm2 instance
+
+`pm2 delete hrsa`
+`pm2 start hrsa.json`
+`pm2 save`
+
+For starting server as staging:
+`pm2 start hrsa --env staging`

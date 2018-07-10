@@ -429,6 +429,34 @@ router.route('/soles/:id/edit')
 
 });
 
+//on routes that end in /soles/:sole_id/delete
+router.route('/soles/:id/delete')
+// get the sole with that id
+    .get((req, res)=> {
+    const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
+    singleSole.sesh = sesh;
+    res.render('soles-delete', singleSole);
+    }).catch((err)=>{
+        console.log('error!', err);
+    res.redirect('/login')
+    })
+})
+.post((req, res)=> {
+    console.log("Tryna delete a SOLE!",req.body.soleID);
+    const sesh = req.query.sesh; //get the sesh token string from the query param
+    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+    Controllers.Sole.delete(req.body.soleID, sessionToken).then(soleID=>{
+        console.log('deleted SOLE',soleID);
+        res.redirect('/soles/?sesh='+sesh);
+    });
+});
+
+
 // on routes that end in /soles/:sole_id/reflect
 // ----------------------------------------------------
 router.route('/soles/:id/reflect')

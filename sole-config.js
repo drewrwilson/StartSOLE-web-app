@@ -3,6 +3,8 @@ var soleConfig = module.exports = {};
 var ring = process.env.RING || 'regular';        // can be "hrsa" or nothing
 var environment = process.env.ENVIRONMENT || 'local';
 
+
+
 soleConfig.logo = 'logo.png'; //default
 soleConfig.tagline = 'Let learning happen'; //default
 soleConfig.ring = 'startsole'; //default
@@ -25,3 +27,8 @@ if (environment.toLowerCase() == 'production') {
   soleConfig.serverUrl = 'https://api.staging.startsole.net/sole/';
   // soleConfig.facebookAppID = ''; // same as local testing
 }
+
+console.log('Ring: ' + ring);
+console.log('Environment: ' + environment);
+console.log('Database URL: ' + soleConfig.serverUrl);
+console.log('Facebook App ID: ' + soleConfig.facebookAppID);

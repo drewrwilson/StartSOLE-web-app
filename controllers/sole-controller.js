@@ -57,3 +57,11 @@ Sole.downloadPlan = function (id, sessionToken) {
         sessionToken: sessionToken
     })
 }
+
+// delete a sole and return true if done, null if not
+Sole.delete = function (id, sessionToken) {
+    return Parse.Cloud.run('webapp.deleteSole', {
+        id: id,
+        sessionToken: sessionToken
+    })
+}

@@ -1,0 +1,18 @@
+{
+	"apps": [{
+		"name": "hrsa",
+		"instances": "1",
+      "cwd": ".",
+		"script": "server.js",
+		"watch": true,
+		"env": {
+			"RING": "hrsa",
+			"ENVIRONMENT": "production"
+		},
+		"env_staging": {
+			"ENVIRONMENT": "staging"
+		},
+		"env_develop": {
+		}
+	}]
+}

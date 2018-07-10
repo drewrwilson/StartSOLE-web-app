@@ -36,19 +36,19 @@
                 <div class="input-field col s12">
                     <select name="role">
                         {{#unless profile.user.role}}<option value="" disabled>Choose your option</option>{{/unless}}
-                        <option value="profile.user.role.teacher" {{#ifEquals profile.user.role "profile.user.role
+                        <option value="user.role.teacher" {{#ifEquals profile.user.role "profile.user.role
                                 .teacher"}}selected{{/ifEquals}}>Teacher</option>
-                        <option value="profile.user.role.preservice_teacher" {{#ifEquals profile.user.role "profile.user.role
+                        <option value="user.role.preservice_teacher" {{#ifEquals profile.user.role "profile.user.role
                                 .preservice_teacher"}}selected{{/ifEquals}}>Pre-service Teacher</option>
-                        <option value="profile.user.role.administrator" {{#ifEquals profile.user.role "profile.user.role
+                        <option value="user.role.administrator" {{#ifEquals profile.user.role "profile.user.role
                                 .administrator"}}selected{{/ifEquals}}>Administrator</option>
-                        <option value="profile.user.role.coach" {{#ifEquals profile.user.role "profile.user.role
+                        <option value="user.role.coach" {{#ifEquals profile.user.role "profile.user.role
                                 .coach"}}selected{{/ifEquals}}>Coach</option>
-                        <option value="profile.user.role.out_of_school_educator" {{#ifEquals profile.user.role "profile.user.role
+                        <option value="user.role.out_of_school_educator" {{#ifEquals profile.user.role "profile.user.role
                                 .out_of_school_educator"}}selected{{/ifEquals}}>Out of School Educator</option>
-                        <option value="profile.user.role.parent" {{#ifEquals profile.user.role "profile.user.role
+                        <option value="user.role.parent" {{#ifEquals profile.user.role "profile.user.role
                                 .parent"}}selected{{/ifEquals}}>Parent</option>
-                        <option value="profile.user.role.other" {{#ifEquals profile.user.role "profile.user.role
+                        <option value="user.role.other" {{#ifEquals profile.user.role "profile.user.role
                                 .other"}}selected{{/ifEquals}}>Other</option>
                     </select>
                     <label>What's your primary role?</label>

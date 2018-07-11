@@ -514,11 +514,25 @@ router.route('/sole-create')
 // view for adding a new sole
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
+      const question = req.query.question; //get the ID of desired question from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
       var viewData = {sesh: sesh}
       viewData.config = soleConfig;
-      res.render('soles-add', viewData);
+
+      //if a question is present get it and attach to viewData as part of a SOLE
+      if(question){
+          Controllers.Question.getByID(question, sessionToken).then((questionData) => {
+            viewData.sole = {question: questionData};
+            res.render('soles-add', viewData);
+          }).catch((err)=>{
+              console.log('error! oh noes!', err);
+              // res.render('soles-add', viewData);
+          })
+      }
+      else {
+        res.render('soles-add', viewData);
+      }
     })
     .post((req, res)=>{
 

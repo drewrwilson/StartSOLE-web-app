@@ -702,4 +702,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // =============================================================================
 app.listen(port);
 
+console.log(".d8888. d888888b  .d8b.  d8888b. d888888b .d8888.  .d88b.  db      d88888b ");
+console.log("88'  YP `~~88~~' d8' `8b 88  `8D `~~88~~' 88'  YP .8P  Y8. 88      88'     ");
+console.log("`8bo.      88    88ooo88 88oobY'    88    `8bo.   88    88 88      88ooooo ");
+console.log("  `Y8b.    88    88~~~88 88`8b      88      `Y8b. 88    88 88      88~~~~~ ");
+console.log("db   8D    88    88   88 88 `88.    88    db   8D `8b  d8' 88booo. 88.     ");
+console.log("`8888Y'    YP    YP   YP 88   YD    YP    `8888Y'  `Y88P'  Y88888P Y88888P \n");
+
 console.log('Server running. You can view it locally at http://localhost:' + port);

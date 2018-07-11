@@ -4,9 +4,20 @@
 		  <div class="row center-align">
               <img class="responsive-img" src="images/404.jpg" alt="Error!">
 		  </div>
+            {{#if sesh}}
+                <div class="row center-align">
+                    <a class="red waves-effect waves-light btn" href="/?sesh={{sesh}}">
+                        Take Me Home
+                    </a>
+                </div>
+            {{else}}
+                <div class="row center-align">
+                    <a class="red waves-effect waves-light btn" href="/login">Log In</a>
+                </div>
+            {{/if}}
             <div class="row center-align">
                 <a class="waves-effect waves-light btn" href="mailto:support@startsole.org"><i class="material-icons
-                right">cloud</i>Contact Us</a>
+                right">mail</i>Contact Us</a>
             </div>
         </div>
     </div>

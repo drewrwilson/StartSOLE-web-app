@@ -36,6 +36,13 @@
                         {{/each}}
                     </div>
                 </div>
+                {{#if question.sourceURL}}
+                <div class="row">
+                    <div class="col s12">
+                        Question Source: <a href="{{question.sourceURL}}" target="_new">{{question.sourceURL}}</a>
+                    </div>
+                </div>
+                {{/if}}
             {{else}}
                 <br><br><br>
                 <div class="row">

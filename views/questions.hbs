@@ -35,36 +35,6 @@
         <div class="card-panel">
             <div class="alert alert-danger">{{ errorText }}</div>
 
-            <!--<div class="row">-->
-                <!--<h4>masonry</h4>-->
-                <!--<div class="col s12">-->
-                    <!--<div class="grid">-->
-                        <!--<div class="grid-item">-->
-                            <!--<div class="card-panel teal masonry-card">-->
-        <!--<span class="white-text">I am a very simple card. I am good at containing small bits of information.-->
-        <!--I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.-->
-        <!--</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="grid-item grid-item--width2">-->
-                            <!--<div class="card-panel teal masonry-card">-->
-        <!--<span class="white-text">I am a very simple card. I am good at containing small bits of information.-->
-        <!--I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.-->
-        <!--</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="grid-item">      <div class="card-panel teal masonry-card">-->
-        <!--<span class="white-text">I am a very simple card. I am good at containing small bits of information.-->
-        <!--I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.-->
-        <!--</span>-->
-                        <!--</div>-->
-                        <!--</div>-->
-
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-
-
             <div class="row">
 
                 {{#if searchText}}
@@ -73,36 +43,39 @@
                 {{/if}}
                 <div id="questions" class="grid">
                     {{#if questions}}
-
                         {{#each questions}}
                             {{> question-card }}
                         {{/each}}
-
                     {{else}}
                         <!-- No results -->
                         <h5 class="center-align">What are Big Questions?</h5>
+                    <div class="col s12 m10 offset-m1">
                         <p>Big questions do not have an easy answer, and often lead to more questions.
                             They inspire deep conversations and encourage children to offer theories, work collaboratively,
                             use reason and think critically.  Big questions vary; they often tie in with what children are
                             learning at school, come from their every day experiences, or maybe even something completely new.
                             They typically connect more than one subject area.</p>
-                        <div class="row" >
-                            <div class="col s12 m8 offset-m2 l6 offset-l3" ui-sref="question-submit">
-                                <div class="card red lighten-1">
-                                    <div class="question-card card-content center-align">
-                                        <p class="card-title white-text text-darken-4 center-align valign">Nothing here...yet</p>
-                                        <p class="flow-text white-text text-darken-4 center-align valign"
-                                           style="margin:10px">
-                                            Share your own questions with the SOLE community.<br>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
                         <!-- End No results -->
                     {{/if}}
+
                 </div><!-- end #questions -->
 
+            </div>
+            <div class="row" id="no-questions-submission" style="display: none">
+                <a href="questions/add/?sesh={{sesh}}">
+                    <div class="col s12 m8 offset-m2 l6 offset-l3">
+                        <div class="card red lighten-1">
+                            <div class="question-card card-content center-align">
+                                <p class="card-title white-text text-darken-4 center-align valign">Nothing here...yet</p>
+                                <p class="flow-text white-text text-darken-4 center-align valign"
+                                   style="margin:10px">
+                                    Share your own questions with the SOLE community.<br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
 
         </div>

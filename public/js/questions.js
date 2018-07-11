@@ -155,6 +155,14 @@ function getQuestions (){
         template = Handlebars.compile(source),
         html     = '';
 
+    //more quick fixes from Justin.  Sorry sorry sorry sorry!  -JD 2018-07-11 (hey, today is 7-11!)
+    if(response.questions.length == 0){
+      $('#no-questions-submission').show();
+    }
+    else {
+      $('#no-questions-submission').hide();
+    }
+
     //loop through all the returns questions and add each to the DOM
     response.questions.forEach(function (question){
       //handlebars stuff. this is just for the question-card. bad architecture having two handlebars (frontend and backend), but we're moving so fast! (Come back later and refactor) -DW 2018-06-22

@@ -706,6 +706,23 @@ router.route('/questions/:id/favorite')
         });
     });
 
+// static route for fail cases (404)
+router.route('/fail')
+  .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+  // const viewData = {sesh: sesh};
+  // viewData.config = soleConfig;
+
+  res.render('fail', {
+    layout: 'no-sidebar.hbs',
+    sesh: sesh,
+    config: soleConfig
+  });
+});
+
 // REGISTER OUR ROUTES -------------------------------
 app.use('/', router);
 

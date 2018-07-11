@@ -34,7 +34,21 @@
     <div class="col s12">
         <div class="card-panel">
             <div class="alert alert-danger">{{ errorText }}</div>
-
+            <div class="row" id="no-questions-submission" style="display: none">
+                <a href="questions/add/?sesh={{sesh}}">
+                    <div class="col s12 m8 offset-m2 l6 offset-l3">
+                        <div class="card red lighten-1">
+                            <div class="question-card card-content center-align">
+                                <p class="card-title white-text text-darken-4 center-align valign">Nothing here...yet</p>
+                                <p class="flow-text white-text text-darken-4 center-align valign"
+                                   style="margin:10px">
+                                    Share your own questions with the SOLE community.<br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
             <div class="row">
 
                 {{#if searchText}}
@@ -62,21 +76,7 @@
                 </div><!-- end #questions -->
 
             </div>
-            <div class="row" id="no-questions-submission" style="display: none">
-                <a href="questions/add/?sesh={{sesh}}">
-                    <div class="col s12 m8 offset-m2 l6 offset-l3">
-                        <div class="card red lighten-1">
-                            <div class="question-card card-content center-align">
-                                <p class="card-title white-text text-darken-4 center-align valign">Nothing here...yet</p>
-                                <p class="flow-text white-text text-darken-4 center-align valign"
-                                   style="margin:10px">
-                                    Share your own questions with the SOLE community.<br>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
+
 
         </div>
     </div>

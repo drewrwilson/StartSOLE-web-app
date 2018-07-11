@@ -1,3 +1,11 @@
+function setPlatform() {
+  return Parse.Cloud.run("platform.set", {
+    app	: "web",
+    build: "2.0",
+    info: navigator.userAgent
+  });
+}
+
 function onGoogleSignIn(googleUser) {
   var access_token = googleUser.Zi.access_token,
       id_token     = googleUser.getAuthResponse().id_token,
@@ -43,14 +51,17 @@ window.fbAsyncInit = function() {
 
 
 function succesfulLogin(user) {
-  console.log('success!');
-  $('#error').html('Success! Logging you in now...')
-  sessionToken = Parse.User.current().getSessionToken();
-  sessionToken = sessionToken.slice(2)
-  console.log('sessionToken:', sessionToken);
-  $('#sesh').val(sessionToken);
-  console.log('submitting foobar with sessionToken: '+ $('#sesh').val());
-  $("#login-with-session").submit()
+  setPlatform().then(data=>{
+    console.log('success!');
+    $('#error').html('Success! Logging you in now...')
+    sessionToken = Parse.User.current().getSessionToken();
+    sessionToken = sessionToken.slice(2)
+    console.log('sessionToken:', sessionToken);
+    $('#sesh').val(sessionToken);
+    console.log('submitting foobar with sessionToken: '+ $('#sesh').val());
+    $("#login-with-session").submit()
+  })
+
 }
 
 function login (username, password) {

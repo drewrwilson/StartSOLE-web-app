@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/startsole/startsole2-backend-mockup.git"
+    "url": "git+https://github.com/startsole/startsole2.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/startsole/startsole2-backend-mockup/issues"
+    "url": "https://github.com/startsole/startsole2/issues"
   },
-  "homepage": "https://github.com/startsole/startsole2-backend-mockup#readme",
+  "homepage": "https://github.com/startsole/startsole2#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "dropzone": "^5.4.0",

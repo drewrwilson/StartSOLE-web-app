@@ -2,6 +2,8 @@
 
 # connects to the Webapp production server and pulls the latest code from startsole2 github repo
 
+source ./util.sh
+
 ssh parse@sole 'cd sole/webapp2/startsole2/; git pull;'
 
 

@@ -2,6 +2,8 @@
 
 # connects to the HRSA production server and pulls the latest code from startsole2 github repo
 
+source ./util.sh
+
 ssh parse@sole 'cd sole/hrsa/startsole2/; git pull;'
 
 

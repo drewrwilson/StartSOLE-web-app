@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # connects to the Webapp staging server and pulls the latest code from startsole2 github repo
+source ./util.sh
 
 ssh solestaging 'cd sole/webapp2/startsole2/; git pull;'
 

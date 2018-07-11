@@ -2,7 +2,6 @@
 
 # connects to the HRSA staging server and pulls the latest code from startsole2 github repo
 
-
 source ./util.sh
 
 ssh solestaging 'cd sole/hrsa/startsole2/; git pull;'

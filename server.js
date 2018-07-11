@@ -707,27 +707,39 @@ router.route('/questions/:id/favorite')
     });
 
 // static route for fail cases (404)
-router.route('/fail')
+router.route('/error')
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-  // const viewData = {sesh: sesh};
-  // viewData.config = soleConfig;
 
   res.render('fail', {
     layout: 'no-sidebar.hbs',
-    sesh: sesh,
+    sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
     config: soleConfig
   });
 });
+
 
 // REGISTER OUR ROUTES -------------------------------
 app.use('/', router);
 
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+//custom 404 page
+app.get('*', function(req, res){
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+  res.render('fail', {
+    layout: 'no-sidebar.hbs',
+    sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
+    config: soleConfig
+  });
+});
+
 
 // START THE SERVER
 // =============================================================================
@@ -739,5 +751,6 @@ console.log("`8bo.      88    88ooo88 88oobY'    88    `8bo.   88    88 88      
 console.log("  `Y8b.    88    88~~~88 88`8b      88      `Y8b. 88    88 88      88~~~~~ ");
 console.log("db   8D    88    88   88 88 `88.    88    db   8D `8b  d8' 88booo. 88.     ");
 console.log("`8888Y'    YP    YP   YP 88   YD    YP    `8888Y'  `Y88P'  Y88888P Y88888P \n");
+
 
 console.log('Server running. You can view it locally at http://localhost:' + port);

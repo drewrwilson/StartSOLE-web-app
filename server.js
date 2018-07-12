@@ -683,6 +683,7 @@ router.route('/questions/:id')
           console.log(JSON.stringify(questionData));
           questionData.sesh = sesh;
           questionData.config = soleConfig;
+          questionData.question.favorited = true;
           res.render('questions-single', questionData);
         }).catch((err)=>{
           console.log('error! oh noes!', err);

@@ -15,11 +15,11 @@
                 <hr>
                 <div class="row hide-on-med-and-up">
                     <div class="col s12 right-align">
-                        <a href="/questions/{{question.id}}/favorite?sesh={{sesh}}" class="waves-effect waves-light btn">
+                        {{!-- <a href="/questions/{{question.id}}/favorite?sesh={{sesh}}" class="fav-button teal waves-effect waves-light btn {{#if question.favorited}} disabled {{/if}}">
                             <i class="material-icons left">favorite</i>
                             Favorite
-                        </a>
-                        <a href="/sole-create?sesh={{sesh}}&question={{question.id}}" class="waves-effect waves-light
+                        </a> --}}
+                        <a href="/sole-create?sesh={{sesh}}&question={{question.id}}" class="teal waves-effect waves-light
                         btn">
                             <i class="material-icons left">assignment</i>
                             Create Lesson
@@ -71,11 +71,11 @@
 
         </div>
         <div class="action-buttons-header hide-on-small-only">
-            <a class="teal btn-floating btn-large waves-effect waves-light tooltipped"
+            {{!-- <a class="fav-button teal btn-floating btn-large waves-effect waves-light tooltipped {{#if question.favorited}} disabled {{/if}}"
                data-position="bottom"
                data-tooltip="Favorite Question" href="/questions/{{question.id}}/favorite?sesh={{sesh}}">
                 <i class="material-icons">favorite</i>
-            </a>
+            </a> --}}
             <a class="teal btn-floating btn-large waves-effect waves-light tooltipped"
                href="/sole-create?sesh={{sesh}}&question={{question.id}}"
                data-position="bottom"

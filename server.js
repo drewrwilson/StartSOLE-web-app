@@ -697,9 +697,9 @@ router.route('/questions/:id/favorite')
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-        Controllers.Question.favorite(req.params.id).then((questionData) => {
+        Controllers.Question.favorite(req.params.id, sessionToken).then((questionData) => {
           console.log(JSON.stringify(questionData));
-          res.redirect('/questions/'+req.params.id);
+          res.redirect('/questions/'+req.params.id+'?sesh='+sesh);
         }).catch((err)=>{
           console.log('error!', err);
           res.redirect('/login')

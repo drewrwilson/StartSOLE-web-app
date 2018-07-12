@@ -216,7 +216,11 @@ router.route('/profile')
                                            req.body.role || false,
                                            req.body.firstName || false,
                                            req.body.lastName || false,
+                                           req.body.schoolName || false,
+                                           req.body.schoolAddress || false,
+                                           req.body.schoolPlaceID || false,
                                            sessionToken)
+
           .then(user=>{
             res.redirect('/soles?sesh='+sesh);
           }).catch((err)=>{

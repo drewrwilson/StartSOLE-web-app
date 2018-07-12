@@ -32,6 +32,26 @@
                     <label for="last_name">Last Name</label>
                 </div>
             </div>
+
+
+
+
+            <div class="row">
+              <div class="col s12"  style="padding-bottom:10px">
+
+                <label for="schoolSearch">What's your school?</label>
+                  <input
+                         id="schoolSearch"
+                         placeholder="American International School of Vienna"
+                         style="width:100%;" required>
+                  <input type="hidden" id="schoolName" name="schoolName" value="">
+                  <input type="hidden" id="schoolAddress" name="schoolName" value="">
+                  <input type="hidden" id="schoolPlaceID" name="schoolPlaceID" value="">
+
+              </div>
+            </div>
+
+
             <div class="row">
                 <div class="input-field col s12">
                     <select name="role">
@@ -122,3 +142,39 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+var school = {};
+function initializeAutocomplete(){
+  console.log("initializing google places autocomplete!");
+  var input = document.getElementById('schoolSearch');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.addListener('place_changed', function() {
+   console.log("place changed!");
+   var place = autocomplete.getPlace();
+   console.log(place);
+   if (!place.geometry) {
+     // User entered the name of a Place that was not suggested and
+     // pressed the Enter key, or the Place Details request failed.
+     var error = "'" + place.name + "' is not recognized by Google Places.";
+     Materialize.toast(error, 3000);
+     // school.badSchoolValue = true;
+   }else{
+     // school.badSchoolValue = false;
+     document.getElementById("schoolPlaceID").value = place.place_id; //add the placeID to the form in the DOM so it gets submitted on POST
+     document.getElementById("schoolAddress").value = place.formatted_address; //add the address to the form in the DOM so it gets submitted on POST
+     document.getElementById("schoolName").value = place.name; ////add the schoolname to the form in the DOM so it gets submitted on POST
+   }
+
+  });
+
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  initializeAutocomplete()
+});
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_4aqJcZYOl-dHZdtZSht3rOolk8JzO3I&libraries=places"></script>

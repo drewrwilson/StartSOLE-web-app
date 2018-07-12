@@ -6,6 +6,7 @@ function setPlatform() {
   });
 }
 
+
 function onGoogleSignIn(googleUser) {
   var access_token = googleUser.Zi.access_token,
       id_token     = googleUser.getAuthResponse().id_token,
@@ -29,7 +30,11 @@ Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
 //do a logout first to ensure
-Parse.User.logOut();
+logout();
+
+$('document').ready(function (){
+  console.log('document ready. logging out to start');
+})
 
 window.fbAsyncInit = function() {
   Parse.FacebookUtils.init({

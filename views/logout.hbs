@@ -21,6 +21,19 @@
 
 <script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
 
+<script src="https://apis.google.com/js/platform.js?onload=logoutOfGoogle" async defer></script>
+<script type="text/javascript">
+  function logoutOfGoogle () {
+    gapi.load('auth2', function() {
+      gapi.auth2.init({
+        client_id: '824307770319-v35co4sbfui42q2a93hcccvk68hfpam7.apps.googleusercontent.com'
+      }).then(data=>{
+        gapi.auth2.getAuthInstance().signOut();
+        console.log('logged out of google');
+      })
+    });
+  }
+</script>
 {{> sole-config-frontend-js}}
 <script type="text/javascript">
   // connect to parse server

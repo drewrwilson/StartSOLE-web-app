@@ -210,13 +210,19 @@ router.route('/profile')
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-        // // TODO: refactor so this accept explicit param instead of of req.body
-        Controllers.User.updateProfileData(req.body, sessionToken).then(user=>{
+        // TODO: refactor so this accept explicit param instead of of req.body
+        Controllers.User.updateProfileData(req.body.subjects || false,
+                                           req.body.grades || false,
+                                           req.body.role || false,
+                                           req.body.firstName || false,
+                                           req.body.lastName || false,
+                                           sessionToken)
+          .then(user=>{
             res.redirect('/soles?sesh='+sesh);
-        }).catch((err)=>{
+          }).catch((err)=>{
             console.log('error updating user', err);
             res.redirect('/login')
-        })
+          })
 
     });
 

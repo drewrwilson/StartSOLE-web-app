@@ -47,6 +47,7 @@
                   <input type="hidden" id="schoolName" name="schoolName" value="">
                   <input type="hidden" id="schoolAddress" name="schoolName" value="">
                   <input type="hidden" id="schoolPlaceID" name="schoolPlaceID" value="">
+                  <input type="hidden" id="schoolState" name="schoolState" value="">
 
               </div>
             </div>
@@ -145,14 +146,37 @@
 
 <script type="text/javascript">
 var school = {};
+var myPlace = {};
+//get state from google Places
+
+function getStateCode (place) {
+  var huh = "";
+  place.address_components.forEach(function (component) {
+    component.types.forEach(function(type){
+      if (type == "administrative_area_level_1") {
+        // console.log('component.short_name', component.short_name);
+        huh = component.short_name;
+      };
+    })
+  })
+  return huh;
+}
+
 function initializeAutocomplete(){
   console.log("initializing google places autocomplete!");
   var input = document.getElementById('schoolSearch');
-  var autocomplete = new google.maps.places.Autocomplete(input);
+  // var options = {types: ['administrative_area1']};
+  var options = {
+    // bounds: defaultBounds,
+    // regions: ['administrative_area1']
+  };
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
+
 
   autocomplete.addListener('place_changed', function() {
    console.log("place changed!");
    var place = autocomplete.getPlace();
+   myPlace = place;
    console.log(place);
    if (!place.geometry) {
      // User entered the name of a Place that was not suggested and
@@ -165,6 +189,9 @@ function initializeAutocomplete(){
      document.getElementById("schoolPlaceID").value = place.place_id; //add the placeID to the form in the DOM so it gets submitted on POST
      document.getElementById("schoolAddress").value = place.formatted_address; //add the address to the form in the DOM so it gets submitted on POST
      document.getElementById("schoolName").value = place.name; ////add the schoolname to the form in the DOM so it gets submitted on POST
+
+     document.getElementById("schoolState").value = getStateCode(place);
+
    }
 
   });

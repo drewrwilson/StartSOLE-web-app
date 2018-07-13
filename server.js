@@ -219,6 +219,7 @@ router.route('/profile')
                                            req.body.schoolName || false,
                                            req.body.schoolAddress || false,
                                            req.body.schoolPlaceID || false,
+                                           'jur.' + req.body.schoolState.toLowerCase() || false, //need to add 'jur.' to the string and lowercase it to make it work with the database
                                            sessionToken)
 
           .then(user=>{

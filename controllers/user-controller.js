@@ -13,7 +13,7 @@ User.getProfileData = function (sessionToken) {
   })
 };
 
-User.updateProfileData = function (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, sessionToken) {
+User.updateProfileData = function (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, schoolState, sessionToken) {
   return Parse.Cloud.run('webapp.updateProfile', {
     subjects: subjects,
     grades: grades,
@@ -23,6 +23,7 @@ User.updateProfileData = function (subjects, grades, role, firstName, lastName, 
     schoolName: schoolName,
     schoolAddress: schoolAddress,
     schoolPlaceID: schoolPlaceID,
+    schoolState: schoolState,
     sessionToken: sessionToken
   })
 };

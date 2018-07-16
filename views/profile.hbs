@@ -4,27 +4,41 @@
 </div>
 
 <div class="row">
-    <div class="col s12 m10 offset-m1 xl8 offset-xl2">
+    <div class="col s12">
+
+        <div class="card {{#if user.thumb._url}}profile-header-card{{/if}}">
+            <div class="card-image waves-effect waves-block waves-light activator profile-bg-image">
+            </div>
+            {{#if user.thumb._url}}
+                <img src="{{user.thumb._url}}" alt="profile-picture" class="circle responsive-img profile-thumb">
+            {{/if}}
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">{{user.name}}</span>
+                <p>Member since {{user.createdAt}}</p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">Super Secret!
+                    <i class="material-icons right">close</i>
+                </span>
+                <p>You found the secret SOLE area!  Email support@startsole.org with the subject line '↑↑↓↓←→←→BA'
+                    to claim your prize</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 m10 offset-m1 l6">
         <div class="card-panel">
             {{#if user}}
                 <div class="row">
-                    <!--<div class="col m3 s4">-->
-                        <!--<img src="/images/sample_profile.jpg" alt="profile picture" class="circle responsive-img">-->
-                        <!--<img src="/images/logos/sole-graphic-logo-small.png" alt="profile picture placeholder">-->
-                    <!--</div>-->
                     <div class="col s12 center-align">
-                        <h4 class="hide-on-med-and-down">{{user.firstName}} {{user.lastName}}</h4>
-                        <h3 class="hide-on-large-only">{{user.firstName}} {{user.lastName}}</h3>
-                        <!--<p>South High Community School</p>-->
+                        <h4>About Me</h4>
+                        <hr>
                     </div>
                 </div>
 
-                <div class="row">
-                    <hr>
-                    <!--<div class="col l4 s12 center-align">3 CEUs</div>-->
-                    <!--<div class="col l4 s12 center-align"><h5>1500/2000 points to next CEU</h5></div>-->
-                    <!--<div class="col l4 s12 center-align"><h5>15 completed SOLEs</h5></div>-->
-                </div>
             <form id="profile-update-form" action="/profile" method="post">
                 <input type="hidden" name="sesh" value="{{sesh}}">
                 <!--role-->
@@ -133,6 +147,30 @@
             {{else}}
                 Hmm.... looks like something went wrong.
             {{/if}}
+        </div>
+    </div>
+    <div class="col s12 m10 offset-m1 l6">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s12 center-align">
+                    <h4>My CEUs</h4>
+                    <hr>
+                    <div class="progress big-bar">
+                        <div class="determinate" style="width: {{user.points_progress}}%"></div>
+                    </div>
+                    <p>{{user.points}}/2000 points to your next CEU</p>
+
+                    <ul class="collection">
+                        <li class="collection-item"><div>September 2, 2016<a href="www.google.com"
+                                                                             class="secondary-content"><i
+                                class="material-icons">save_alt</i></a></div></li>
+                        <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                        <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                        <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="material-icons">send</i></a></div></li>
+                    </ul>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -89,6 +89,31 @@ main, footer {
     margin-right: auto;
 }
 
+/*profile*/
+.profile-bg-image {
+    height:150px;
+    background-image: url("../images/profile/background.png");
+    background-repeat: repeat;
+    background-color: #26A69A;
+    z-index: 0;
+}
+
+.profile-thumb {
+    top: -50px;
+    position: relative;
+    margin-left:15px;
+    max-height: 100px;
+}
+
+.profile-header-card .card-content {
+    margin-top: -100px;
+    margin-left: 100px;
+}
+
+.big-bar {
+    height: 18px;
+}
+
 /*SOLE plan cards*/
 .sole-card {
     min-height: 124px;

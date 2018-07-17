@@ -7,6 +7,10 @@
       gtag('js', new Date());
 
       gtag('config', '{{config.googleAnalyticsUA}}');
+      {{#if config.googleAdWordsID}}
+        gtag('config', '{{config.googleAdWordsID}}');
+      {{/if}}
+
     </script>
 
     <!--Import Google Icon Font-->

@@ -11,6 +11,8 @@ soleConfig.serverUrl = 'http://localhost:1339/soleapp'; //defaultly set to local
 soleConfig.appId = 'Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp'; //same for all environments
 soleConfig.facebookAppID = '283486318802722' //default for local testing
 
+soleConfig.googleAdWordsID = '136-847-7470';//adwords tracking. might be only for production webapp because that's the only place we send ads that we want to track? I don't think it hurts to also have it here.
+
 //change some values if this is being run locally/staging/production
 if (environment.toLowerCase() == 'production') {
   soleConfig.serverUrl = 'https://api.startsole.net/sole/';
@@ -45,4 +47,5 @@ console.log('    Environment: ' + environment);
 console.log('   Database URL: ' + soleConfig.serverUrl);
 console.log('Facebook App ID: ' + soleConfig.facebookAppID);
 console.log('      Google UA: ' + soleConfig.googleAnalyticsUA);
+console.log(' Google AdWords: ' + soleConfig.googleAdWordsID);
 console.log('\n/^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ \n\n');

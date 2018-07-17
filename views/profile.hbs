@@ -155,10 +155,16 @@
                 <div class="col s12 center-align">
                     <h4>My CEUs</h4>
                     <hr>
+                    {{#if user.points_progress}}
                     <div class="progress big-bar">
                         <div class="determinate" style="width: {{user.points_progress}}%"></div>
                     </div>
-                    <p>{{user.points}}/2000 points to your next CEU</p>
+                    {{/if}}
+                    {{#if user.points}}
+                      <p>{{user.points}}/2000 points to your next CEU</p>
+                    {{else}}
+                      <p><em>No points yet. <a href="/sole-create?sesh={{sesh}}">Create your first SOLE lesson plan & get points.</a></em></p>
+                    {{/if}}
 
                     <ul class="collection">
                         <li class="collection-item"><div>September 2, 2016<a href="www.google.com"

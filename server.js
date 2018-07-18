@@ -342,7 +342,7 @@ router.route('/soles/:id')
     });
 
 
-// on routes that end in /soles/:sole_id
+// on routes that end in /soles/:sole_id/download-plan
 // ----------------------------------------------------
 router.route('/soles/:id/download-plan')
 // get the sole with that id
@@ -375,6 +375,36 @@ router.route('/soles/:id/download-plan')
       res.redirect('/error?sesh=' + sesh)
     })
   });
+
+
+// on routes that end in /soles/:sole_id/download-summary
+// ----------------------------------------------------
+router.route('/soles/:id/download-summary')
+// get the sole with that id
+  .get((req, res)=> {
+
+
+  Controllers.Sole.downloadSummary(req.params.id, sessionToken)
+  .then((url) => {
+  //in case the id of the sole is invalid
+
+  // var baseUrl = 'http://localhost:1339/soleapp/files/';
+
+
+  var baseUrl = 'https://api.staging.startsole.net/sole/files/';
+
+// var file = baseUrl + url;
+// res.download(file); // Set disposition and send it.
+
+res.redirect(baseUrl+url);
+// res.render('soles-single', singleSole);
+})
+.catch((err)=>{
+  console.log('error!', err);
+res.redirect('/login')
+})
+});
+
 
 // on routes that end in /soles/:sole_id/edit
 // ----------------------------------------------------

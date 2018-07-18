@@ -33,7 +33,12 @@
            target="_blank">
             Download Plan
         </a>
-        {{#unless completed}}
+        {{#if completed}}
+            <a class="waves-effect waves-light green btn"
+               href="/soles/{{id}}/download-summary?sesh={{sesh}}">
+                Download Summary
+            </a>
+        {{else}}
             <a class="waves-effect waves-light red btn"
                href="/soles/{{id}}/reflect?sesh={{sesh}}">
                 Reflect
@@ -42,7 +47,7 @@
                href="/soles/{{id}}/delete?sesh={{sesh}}">
                 <i class="material-icons">delete</i>
             </a>
-        {{/unless}}
+        {{/if}}
     </div>
 
     </div>

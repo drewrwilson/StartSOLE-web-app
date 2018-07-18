@@ -65,8 +65,9 @@ $('#subject').change(function (){
          .attr("value",grade.rdn)
          .text(grade.short));
        });
-       getQuestions();
-  })
+  });
+  getQuestions();
+
 })
 
 $('#grade').change(function (){
@@ -132,7 +133,7 @@ function getQuestions (){
   var standards = [];
   // var standarPickers = $('.standard-picker');
   $('.standard-picker').each(function(i, standard) {
-    if (standard != null) {standards.push($(standard).val());}
+    standards.push($(standard).val());
   });
 
   standards = standards.filter(Boolean) //remove any empty strings from the array

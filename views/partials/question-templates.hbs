@@ -15,12 +15,13 @@
 <script id="standard-picker-template" type="text/x-handlebars-template">
     <div class="input-field col s12 m6">
         <!-- <label for="refine-\{{rdn}}" class="active">Domain</label> -->
+        \{{#if standards}}
         <select class="browser-default standard-picker" onchange="itChanged($(this))" >
             <option value=""></option>
             \{{#each standards}}
-                \{{#if questions}}
                 <option value="\{{rdn}}">\{{short}}</option>
-                \{{/if}}
             \{{/each}}
+        </select>
+        \{{/if}}
     </div>
 </script>

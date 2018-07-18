@@ -51,11 +51,17 @@ Sole.saveReflection = function (reflection, sessionToken) {
 }
 
 Sole.downloadPlan = function (id, sessionToken) {
-    // return Parse.Promise.as("foo");
     return Parse.Cloud.run('webapp.getDownloadLink', {
         id: id,
         sessionToken: sessionToken
     })
+}
+
+Sole.downloadSummary = function (id, sessionToken) {
+  return Parse.Cloud.run('webapp.getDownloadLinkSummary', {
+    id: id,
+    sessionToken: sessionToken
+  })
 }
 
 // delete a sole and return true if done, null if not

@@ -65,9 +65,8 @@ $('#subject').change(function (){
          .attr("value",grade.rdn)
          .text(grade.short));
        });
-  });
   getQuestions();
-
+  });
 })
 
 $('#grade').change(function (){

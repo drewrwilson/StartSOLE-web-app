@@ -205,6 +205,8 @@ router.route('/profile')
 
     })
     .post((req, res)=> {
+        var completeProfile = false;
+        (req.body.completeProfile == 'true') ? completeProfile = true : false; //if the this was called from completeprofile page
 
         const sesh = req.body.sesh; //get the sesh token string from the query param
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
@@ -223,6 +225,14 @@ router.route('/profile')
                                            sessionToken)
 
           .then(user=>{
+            if (completeProfile) {
+              return Parse.Cloud.run("event.trigger", {
+                rdn	: "onboarding.done",
+                isActivity: false,
+                objectId: pub.id,
+                className:"UserPub"
+              });
+            }
             res.redirect('/soles?sesh='+sesh);
           }).catch((err)=>{
             console.log('error updating user', err);
@@ -337,26 +347,32 @@ router.route('/soles/:id')
 router.route('/soles/:id/download-plan')
 // get the sole with that id
     .get((req, res)=> {
+      const sesh = req.query.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 
-    Controllers.Sole.downloadPlan(req.params.id, sessionToken)
+      console.log('TRYING TO GET DOWNLOAD LINK!');
+      var id = req.params.id;
+      console.log('id', id);
+      console.log('sessionToken', sessionToken);
+
+    Controllers.Sole.downloadPlan(id, sessionToken)
     .then((url) => {
+      console.log('GOT DOWNLOAD LINK!');
+      res.json({sup: 'sup'})
       //in case the id of the sole is invalid
-
-      // var baseUrl = 'http://localhost:1339/soleapp/files/';
-
-
-        var baseUrl = 'https://api.staging.startsole.net/sole/files/';
 
       // var file = baseUrl + url;
       // res.download(file); // Set disposition and send it.
 
-      res.redirect(baseUrl+url);
+      // res.redirect(soleConfig.baseURL+url);
+      // console.log('download URL ' + soleConfig.baseURL+url);
       // res.render('soles-single', singleSole);
     })
     .catch((err)=>{
       console.log('error!', err);
-      res.redirect('/login')
+      res.redirect('/error?sesh=' + sesh)
     })
   });
 

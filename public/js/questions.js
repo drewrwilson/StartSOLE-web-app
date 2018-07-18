@@ -42,7 +42,7 @@ $('#subject').change(function (){
   var parent = $('#grade').parent();
   var allSiblings = $(parent).nextAll()
   $(allSiblings).remove()
-  getQuestions();
+
 
   getGrades(rdn).then(grades=>{
     //update grade select
@@ -65,6 +65,7 @@ $('#subject').change(function (){
          .attr("value",grade.rdn)
          .text(grade.short));
        });
+       getQuestions();
   })
 })
 
@@ -131,7 +132,7 @@ function getQuestions (){
   var standards = [];
   // var standarPickers = $('.standard-picker');
   $('.standard-picker').each(function(i, standard) {
-    standards.push($(standard).val());
+    if (standard != null) {standards.push($(standard).val());}
   });
 
   standards = standards.filter(Boolean) //remove any empty strings from the array

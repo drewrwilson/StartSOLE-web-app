@@ -27,3 +27,10 @@ User.updateProfileData = function (subjects, grades, role, firstName, lastName, 
     sessionToken: sessionToken
   })
 };
+
+//after the user completes their profile, set off the Parse event
+User.completedProfile = function (sessionToken) {
+  return Parse.Cloud.run("webapp.completedProfile", {
+    sessionToken: sessionToken
+  })
+};

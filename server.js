@@ -205,39 +205,27 @@ router.route('/profile')
 
     })
     .post((req, res)=> {
-        var completeProfile = false;
-        (req.body.completeProfile == 'true') ? completeProfile = true : false; //if the this was called from completeprofile page
+      const sesh = req.body.sesh; //get the sesh token string from the query param
+      (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+      sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-        const sesh = req.body.sesh; //get the sesh token string from the query param
-        (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
-        sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-        // TODO: refactor so this accept explicit param instead of of req.body
-        Controllers.User.updateProfileData(req.body.subjects || false,
-                                           req.body.grades || false,
-                                           req.body.role || false,
-                                           req.body.firstName || false,
-                                           req.body.lastName || false,
-                                           req.body.schoolName || false,
-                                           req.body.schoolAddress || false,
-                                           req.body.schoolPlaceID || false,
-                                           'jur.' + req.body.schoolState.toLowerCase() || false, //need to add 'jur.' to the string and lowercase it to make it work with the database
-                                           sessionToken)
-
-          .then(user=>{
-            if (completeProfile) {
-              return Parse.Cloud.run("event.trigger", {
-                rdn	: "onboarding.done",
-                isActivity: false,
-                objectId: pub.id,
-                className:"UserPub"
-              });
-            }
-            res.redirect('/soles?sesh='+sesh);
-          }).catch((err)=>{
-            console.log('error updating user', err);
-            res.redirect('/login')
-          })
+      // TODO: refactor so this accept explicit param instead of of req.body
+      Controllers.User.updateProfileData(req.body.subjects || false,
+                                         req.body.grades || false,
+                                         req.body.role || false,
+                                         req.body.firstName || false,
+                                         req.body.lastName || false,
+                                         false,
+                                         false,
+                                         false,
+                                         false,
+                                         sessionToken)
+        .then(user=>{
+          res.redirect('/soles?sesh='+sesh);
+        }).catch((err)=>{
+          console.log('error updating user', err);
+          res.redirect('/error?sesh='+sesh)
+        })
 
     });
 
@@ -294,7 +282,31 @@ router.route('/complete-profile')
 
         });
 
-});
+  })
+  .post((req, res)=>{
+
+    const sesh = req.body.sesh; //get the sesh token string from the POST param
+    (!sesh || sesh === undefined) ? res.redirect('/error') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+    Controllers.User.updateProfileData(req.body.subjects,
+                                       req.body.grades,
+                                       req.body.role,
+                                       req.body.firstName,
+                                       req.body.lastName,
+                                       req.body.schoolName,
+                                       req.body.schoolAddress,
+                                       req.body.schoolPlaceID,
+                                       'jur.' + req.body.schoolState.toLowerCase(), //need to add 'jur.' to the string and lowercase it to make it work with the database
+                                       sessionToken)
+      .then(user=>{
+        Controllers.User.completedProfile(sessionToken);
+        res.redirect('/soles?sesh='+sesh);
+      }).catch((err)=>{
+        console.log('error completing user profile', err);
+        res.redirect('/error?sesh='+sesh);
+      })
+  })
 
 // routes for soles
 // ----------------------------------------------------

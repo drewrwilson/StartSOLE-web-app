@@ -18,7 +18,9 @@
         <select class="browser-default standard-picker" onchange="itChanged($(this))" >
             <option value=""></option>
             \{{#each standards}}
-            <option value="\{{rdn}}">\{{short}}</option>
+                \{{#if questions}}
+                <option value="\{{rdn}}">\{{short}}</option>
+                \{{/if}}
             \{{/each}}
     </div>
 </script>

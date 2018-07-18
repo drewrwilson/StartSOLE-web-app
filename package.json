@@ -23,6 +23,7 @@
     "express-hbs": "^1.0.4",
     "masonry-layout": "^4.2.1",
     "materialize-css": "^1.0.0-rc.1",
-    "parse": "^1.11.1"
+    "parse": "^1.11.1",
+    "progressbar.js": "^1.0.1"
   }
 }

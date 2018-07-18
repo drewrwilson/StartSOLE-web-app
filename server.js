@@ -360,13 +360,12 @@ router.route('/soles/:id/download-plan')
     Controllers.Sole.downloadPlan(id, sessionToken)
     .then((url) => {
       console.log('GOT DOWNLOAD LINK!');
-      res.json({sup: 'sup'})
       //in case the id of the sole is invalid
 
       // var file = baseUrl + url;
       // res.download(file); // Set disposition and send it.
 
-      // res.redirect(soleConfig.baseURL+url);
+      res.redirect(soleConfig.baseURL+url);
       // console.log('download URL ' + soleConfig.baseURL+url);
       // res.render('soles-single', singleSole);
     })

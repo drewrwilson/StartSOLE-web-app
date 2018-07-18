@@ -56,7 +56,8 @@
                 </div>
                 <!--duration-->
                 <div class="input-field col s12 m10 offset-m1 l4">
-                    <i class="material-icons prefix grey-text">av_timer</i>
+                    <i class="material-icons prefix grey-text tooltipped" data-position="bottom"
+                       data-tooltip="45-90 minutes recommended">av_timer</i>
                     <input id="duration"
                            name="planned_duration"
                            type="number"
@@ -65,7 +66,7 @@
                            class="validate"
                            value="{{sole.planned_duration}}"
                             onchange="showRecommended()">
-                    <label for="duration">How many minutes is your class?</label>
+                    <label for="duration">How many minutes<span class="hide-on-large-only"> is your class</span>?</label>
                     <span id="duration_helper_text" class="red-text helper-text"></span>
                 </div>
                 <!--grade-->
@@ -148,9 +149,7 @@
                            required
                            class="validate"
                            value="{{sole.num_devices}}">
-                    <label for="num_devices">How many online
-                        devices are
-                        available?</label>
+                    <label for="num_devices">How many <span class="hide-on-large-only">online </span>devices?</label>
                     <span class="helper-text" data-error="SOLEs need at least 2 devices"></span>
                 </div>
                 <!--number of groups-->
@@ -163,7 +162,7 @@
                            required
                            class="validate"
                            value="{{sole.num_groups}}">
-                    <label for="num_groups">How many groups will students be in?</label>
+                    <label for="num_groups">How many <span class="hide-on-large-only">student </span>groups?</label>
                     <span class="helper-text" data-error="SOLEs need at least 2 groups"></span>
                 </div>
                 <!--recommended settings-->

@@ -363,26 +363,13 @@ router.route('/soles/:id/download-plan')
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-
-      console.log('TRYING TO GET DOWNLOAD LINK!');
       var id = req.params.id;
-      console.log('id', id);
-      console.log('sessionToken', sessionToken);
 
     Controllers.Sole.downloadPlan(id, sessionToken)
     .then((url) => {
-      console.log('GOT DOWNLOAD LINK!');
-      //in case the id of the sole is invalid
-
-      // var file = baseUrl + url;
-      // res.download(file); // Set disposition and send it.
-
       res.redirect(soleConfig.baseURL+url);
-      // console.log('download URL ' + soleConfig.baseURL+url);
-      // res.render('soles-single', singleSole);
     })
     .catch((err)=>{
-      console.log('error!', err);
       res.redirect('/error?sesh=' + sesh)
     })
   });
@@ -393,26 +380,18 @@ router.route('/soles/:id/download-plan')
 router.route('/soles/:id/download-summary')
 // get the sole with that id
   .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
+var id = req.params.id;
 
-  Controllers.Sole.downloadSummary(req.params.id, sessionToken)
+Controllers.Sole.downloadSummary(id, sessionToken)
   .then((url) => {
-  //in case the id of the sole is invalid
-
-  // var baseUrl = 'http://localhost:1339/soleapp/files/';
-
-
-  var baseUrl = 'https://api.staging.startsole.net/sole/files/';
-
-// var file = baseUrl + url;
-// res.download(file); // Set disposition and send it.
-
-res.redirect(baseUrl+url);
-// res.render('soles-single', singleSole);
+  res.redirect(soleConfig.baseURL+url);
 })
 .catch((err)=>{
-  console.log('error!', err);
-res.redirect('/login')
+  res.redirect('/error?sesh=' + sesh)
 })
 });
 

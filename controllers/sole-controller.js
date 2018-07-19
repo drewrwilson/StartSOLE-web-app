@@ -8,6 +8,9 @@ Parse.serverURL = soleConfig.serverUrl;
 
 //returns data for a question with a given ID
 Sole.getByID = function (id, sessionToken) {
+  console.log('git to getByID');
+  console.log('id', id);
+  console.log('sessionToken', sessionToken);
   return Parse.Cloud.run('webapp.getSoleByID', {
     id: id,
     sessionToken: sessionToken
@@ -64,4 +67,54 @@ Sole.delete = function (id, sessionToken) {
         id: id,
         sessionToken: sessionToken
     })
+}
+
+Sole.copy = function (id, sessionToken) {
+  return Parse.Cloud.run('webapp.getSoleByID', {
+    id: id,
+    sessionToken: sessionToken
+  })
+  .then(sole=>{
+    //process newSole so it fits with addSole. data shimming or whatever
+    sole = sole.sole; // DRRRREEEWWWW! WTF MAN! DON'T DO THIS! -DW 2018-07-19
+    console.log('how it is: sole.planned_date.dateString: ', sole.planned_date.dateString);
+    console.log('how it is: sole.planned_date.dateString: ', sole.planned_date.dateString);
+    // "MMM D, YYYY hh:mm A"
+
+    let newSole = {
+      //values from the frontend
+      question: sole.question.question.text,
+      subject: sole.subject,
+      grade: sole.grade,
+      class_label: sole.tag, //optional
+      planned_date: sole.planned_date.month_text + " " + sole.planned_date.day + ", " + sole.planned_date.year, //check this out
+      // planned_time: sole.planned_date.hour + ':'+ sole.planned_date.minute + , //make the AM/PM capitalized
+      planned_time: sole.planned_date.timeString.toUpperCase(),
+      planned_duration: sole.planned_duration,
+      num_groups: sole.num_groups,
+      target_observations: sole.target_observations,
+      grouporganization: sole.grouporganization,
+      groupsharing: sole.groupsharing,
+      self_assessment: sole.self_assessment,
+      useapp: false, //this wasn't in the getter, hardcoding for now -DW 2018-07-19
+      materials: sole.materials,//check if this data format matches up. might need some processing
+      num_students: sole.num_students,
+      num_devices: sole.num_devices,
+      content_objective: sole.content_objective //two variables in here. might need some processing
+    }
+
+    return Parse.Cloud.run('webapp.addSole', {
+      sole: newSole,
+      sessionToken: sessionToken
+    })
+    .catch(err=>{
+      console.log('error! couldnt make a new sole as a copy', err);
+    })
+
+  })
+  .catch(err=>{
+    console.log('error! couldnt getSoleByID', err);
+  })
+
+
 }

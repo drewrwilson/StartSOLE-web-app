@@ -364,8 +364,9 @@ router.route('/soles/:id/download-plan')
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       var id = req.params.id;
+      var type = "plan";
 
-    Controllers.Sole.downloadPlan(id, sessionToken)
+    Controllers.Sole.downloadDocument(id, type, sessionToken)
     .then((url) => {
       res.redirect(soleConfig.baseURL+url);
     })
@@ -385,8 +386,9 @@ router.route('/soles/:id/download-summary')
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 var id = req.params.id;
+var type = "summary";
 
-Controllers.Sole.downloadSummary(id, sessionToken)
+Controllers.Sole.downloadDocument(id, type, sessionToken)
   .then((url) => {
   res.redirect(soleConfig.baseURL+url);
 })

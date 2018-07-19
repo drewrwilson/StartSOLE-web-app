@@ -19,7 +19,7 @@ Sole.getByID = function (id, sessionToken) {
 Sole.getAll = function (sessionToken) {
   return Parse.Cloud.run('webapp.getAllMySoles', {
     offset: 0,
-    limit: 100,
+    limit: 5,
 		sessionToken: sessionToken
 	})
 }

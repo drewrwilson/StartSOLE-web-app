@@ -95,8 +95,9 @@ $('#grade').change(function (){
 //when the user changes the grade, get the corresponding standards
 function itChanged (element){
 
-  getQuestions(element);
+
   getStandardsFromDOM();//update the list of tags
+
 
   //remove all "children"
   var parent = $(element).parent();
@@ -119,7 +120,7 @@ function itChanged (element){
       $('#standard-picker').append(html)
     }
 
-
+  getQuestions(element);
 
   })
 }

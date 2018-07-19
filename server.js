@@ -397,6 +397,154 @@ Controllers.Sole.downloadDocument(id, type, sessionToken)
 })
 });
 
+// on routes that end in /soles/:sole_id/copy
+// 1. get the data from a SOLE
+// 2. send it to create SOLE with that data
+// ----------------------------------------------------
+// router.route('/soles/:id/copy')
+//   .get((req,res)=> {
+//     const sesh = req.query.sesh; //get the sesh token string from the query param
+//     (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+//     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+//
+// let sole = {
+//   //values from the frontend
+//   question: sole.question.question.text,
+//   subject: sole.subject,
+//   grade: sole.grade,
+//   class_label: sole.tag, //optional
+//   planned_date: sole.planned_date.dateString, //check this out
+//   planned_time: sole.planned_date.dateString,
+//   planned_duration: sole.planned_duration,
+//   num_groups: sole.num_groups
+//   target_observations: sole.target_observations,
+//   grouporganization: sole.grouporganization,
+//   groupsharing: (req.body.groupsharing == 'on') ? true : false,
+//   self_assessment: (req.body.self_assessment == 'on') ? true : false,
+//   useapp: (req.body.useapp == 'on') ? true : false,
+//   materials: materials,
+//   num_students: req.body.num_students,
+//   num_devices: req.body.num_devices,
+//   content_objective: req.body.content_objective
+// }
+//
+// //this is what the setter needs
+// let sole = {
+//   //values from the frontend
+//   question: req.body.question,
+//   subject: req.body.subject,
+//   grade: req.body.grade,
+//   class_label: req.body.class_label, //optional
+//   planned_date: req.body.planned_date,
+//   planned_time: req.body.planned_time,
+//   planned_duration: req.body.planned_duration,
+//   num_groups: req.body.num_groups,
+//   target_observations: targetObservations,
+//   grouporganization: (req.body.grouporganization == 'on') ? true : false,
+//   groupsharing: (req.body.groupsharing == 'on') ? true : false,
+//   self_assessment: (req.body.self_assessment == 'on') ? true : false,
+//   useapp: (req.body.useapp == 'on') ? true : false,
+//   materials: materials,
+//   num_students: req.body.num_students,
+//   num_devices: req.body.num_devices,
+//   content_objective: req.body.content_objective
+// }
+//
+// //this is what the getter gets
+// {
+//   "id": "tqyP2WQNEY",
+//   "question": {
+//   "question": {
+//     "text": "Can I save this SOLE?",
+//       "id": "gKXfElSteo",
+//       "favorited": false,
+//       "tags": []
+//   }
+// },
+//   "planned_date": {
+//   "year": "2018",
+//     "month": "07",
+//     "month_text": "Jul",
+//     "day": "19",
+//     "hour": "11",
+//     "minute": "41",
+//     "second": "00",
+//     "dateString": "July 19th 2018",
+//     "timeString": "11:41 am"
+// },
+//   "target_observations": [{
+//   "name": "Collaborating",
+//   "checked": true,
+//   "nameText": "collaborating"
+// }, {
+//   "name": "Using technology well",
+//   "checked": false,
+//   "nameText": "technology"
+// }, {
+//   "name": "Respectful dialogue and debate",
+//   "checked": false,
+//   "nameText": "respectful"
+// }, {
+//   "name": "Desire to learn content",
+//   "checked": false,
+//   "nameText": "desire"
+// }, {
+//   "name": "Appropriate use of vocabulary",
+//   "checked": false,
+//   "nameText": "vocabulary"
+// }, {
+//   "name": "Students teaching students",
+//   "checked": false,
+//   "nameText": "help_learn"
+// }, {
+//   "name": "Helping peers with technology",
+//   "checked": false,
+//   "nameText": "help_technology"
+// }],
+//   "materials": [{
+//   "name": "Writing Tools",
+//   "checked": false,
+//   "nameText": "writing_tools"
+// }, {
+//   "name": "Poster Paper",
+//   "checked": true,
+//   "nameText": "poster_paper"
+// }, {
+//   "name": "Physical resources (books, supporting content)",
+//   "checked": false,
+//   "nameText": "physical"
+// }, {
+//   "name": "SOLE Student Organizer",
+//   "checked": false,
+//   "nameText": "student_organizer"
+// }, {
+//   "name": "Other",
+//   "checked": false,
+//   "nameText": "other"
+// }],
+//   "grouporganization": true,
+//   "groupsharing": true,
+//   "self_assessment": false,
+//   "num_devices": 5,
+//   "num_groups": 5,
+//   "planned_duration": 55,
+//   "num_students": 25,
+//   "content_objective": {
+//   "value": "objective.content.explore",
+//     "text": "allowing students to discover and explore interests related to a topic"
+// },
+//   "grade": "edu.5",
+//   "tag": "7C",
+//   "subject": "top.foreignlanguage",
+//   "reflection": {
+//   "content_objective": {},
+//   "type_of_thinking": {}
+// },
+//   "observations": []
+// }
+//
+// })
+
 
 // on routes that end in /soles/:sole_id/edit
 // ----------------------------------------------------
@@ -417,7 +565,7 @@ router.route('/soles/:id/edit')
           })
     })
 .post((req, res)=> {
-    //TODO: make this reusable
+    //TODO: make this reusable for copying
 
     console.log("sole-edit post!");
     const sesh = req.body.sesh; //get the sesh token string from the query param

@@ -412,3 +412,28 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript">
+var targetObservationCheckedCount = 0;
+function updateCheckboxes () {
+  targetObservationCheckedCount = $('.target-observation-col input:checked').length
+
+  if(targetObservationCheckedCount >= 3) {
+  $('.target-observation-col input:not(:checked)').attr('disabled', true);
+  } else {
+   $('.target-observation-col input').attr('disabled', false);
+  }
+}
+$('document').ready(updateCheckboxes());
+$('.target-observation-col input').change(function () {
+  updateCheckboxes();
+});
+
+$('#soles-add-form').submit(function (e) {
+  if(targetObservationCheckedCount < 1) {
+    e.preventDefault();
+    M.toast({html: 'Please select at least one target observation'})
+  }
+})
+</script>

@@ -276,7 +276,7 @@
                 <!--materials-->
                 <div class="col s12 m6">
                     <p>What materials will be available for students to use?</p>
-                    {{#if sole}}
+                    {{#if sole.materials}}
                     {{#each sole.materials}}
                         <p>
                             <label>
@@ -322,7 +322,7 @@
                 <div class="col s12">
                     <p class="no-bottom-margin">Pick up to 3 student behaviors you would like to focus on during this SOLE</p>
                     <div class="row">
-                    {{#if sole}}
+                    {{#if sole.target_observations}}
 
                     {{#each sole.target_observations}}
                         <div class="col s12 m6 target-observation-col">

@@ -92,16 +92,28 @@ Sole.copy = function (id, sessionToken) {
       planned_time: sole.planned_date.timeString.toUpperCase(),
       planned_duration: sole.planned_duration,
       num_groups: sole.num_groups,
-      target_observations: sole.target_observations,
+      target_observations: [],
       grouporganization: sole.grouporganization,
       groupsharing: sole.groupsharing,
       self_assessment: sole.self_assessment,
       useapp: false, //this wasn't in the getter, hardcoding for now -DW 2018-07-19
-      materials: sole.materials,//check if this data format matches up. might need some processing
+      materials: [],
       num_students: sole.num_students,
       num_devices: sole.num_devices,
       content_objective: sole.content_objective //two variables in here. might need some processing
     }
+
+  sole.target_observations.forEach(function(observation){
+    if(observation.checked){
+      newSole.target_observations.push("session.observation."+observation.nameText);
+    }
+  });
+
+  sole.materials.forEach(function(material){
+    if(material.checked){
+      newSole.materials.push("material."+material.nameText);
+    }
+  });
 
     return Parse.Cloud.run('webapp.addSole', {
       sole: newSole,

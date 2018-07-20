@@ -120,9 +120,9 @@ function itChanged (element){
       $('#standard-picker').append(html)
     }
 
-  getQuestions(element);
 
-  })
+  });
+  getQuestions(element);
 }
 
 

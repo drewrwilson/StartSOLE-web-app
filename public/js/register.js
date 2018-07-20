@@ -8,7 +8,8 @@ $("#initial-registration-form").submit(function (event) {
   var first_name  = $('#first_name').val(),
       last_name   = $('#last_name').val(),
       email       = $('#email').val(),
-      password    = $('#password').val();
+      password    = $('#password').val(),
+      sessionToken = "";
 
   Parse.Cloud.run("user.add", {
     name: first_name + " " + last_name,
@@ -20,7 +21,7 @@ $("#initial-registration-form").submit(function (event) {
     Parse.User.logIn(email, password).then(data=>{
       console.log('logged in user: ' + email);
       var currentUser = Parse.User.current();
-      var sessionToken = currentUser.getSessionToken();
+      sessionToken = currentUser.getSessionToken();
       console.log('current user token! ' + sessionToken);
       var sesh = sessionToken.slice(2);
       console.log('sesh',sesh);
@@ -30,8 +31,14 @@ $("#initial-registration-form").submit(function (event) {
       console.log('first_name',first_name);
       $('#lastname').val(last_name);
       console.log('last_name',last_name);
+
+    }).then(data=>{
+      Parse.Cloud.run("webapp.updateEmail", {email: email, session: sessionToken}).then(data=>{
       $( "#final-registration-form" ).submit();
     })
+
+  });
+
 
   });
 

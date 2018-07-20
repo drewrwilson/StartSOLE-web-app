@@ -10,7 +10,7 @@ function uploadImage(file) {
       sessionToken = 'r:'+$("#sesh"),
       soleID       = $('#soleID').val();
 
-  var parseFile = new Parse.File(name, file, 'image/*');
+  var parseFile = new Parse.File(name, file);
 
   parseFile.save().then(function(file) {
     //maybe disable submit button until finished uploading

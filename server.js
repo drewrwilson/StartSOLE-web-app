@@ -506,6 +506,7 @@ sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to se
 
 Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
     singleSole.sesh = sesh;
+    singleSole.config = soleConfig;
     res.render('soles-delete', singleSole);
     }).catch((err)=>{
         console.log('error!', err);

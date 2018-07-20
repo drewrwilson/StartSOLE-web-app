@@ -100,7 +100,7 @@ Sole.copy = function (id, sessionToken) {
       materials: [],
       num_students: sole.num_students,
       num_devices: sole.num_devices,
-      content_objective: sole.content_objective //two variables in here. might need some processing
+      content_objective: sole.content_objective.value
     }
 
   sole.target_observations.forEach(function(observation){

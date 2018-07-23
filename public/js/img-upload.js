@@ -1,12 +1,12 @@
 // connect to parse server
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
-
+var imageSuffix = 0;
 
 // uploads an image to parse file input
 function uploadImage(file) {
-
-  var name         = file.name,
+  imageSuffix++;
+  var name         = "coolimage-"+imageSuffix, //TODO: Why are the first 4 characters of image name chopped off?
       sessionToken = 'r:'+$("#sesh"),
       soleID       = $('#soleID').val();
 
@@ -35,7 +35,7 @@ function uploadImage(file) {
 }
 
 Dropzone.options.myAwesomeDropzone = {
-  url: "/api/upload-sole-image",//this isn't used
+  // paramName: "image",
   maxFilesize: 10, // MB
   parallelUploads: 10,
   maxFiles: 10,

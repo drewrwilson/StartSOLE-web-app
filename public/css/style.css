@@ -148,6 +148,10 @@ main, footer {
         margin: 0;
     }
 
+    .sole-card > .sole-action-buttons {
+        position: initial !important;
+    }
+
 }
 
 .sole-card-date {

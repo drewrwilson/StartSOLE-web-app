@@ -11,7 +11,7 @@
                 </video>
             </div>
 
-          <form id="profile-update-form" action="/complete-profile" method="post" onkeypress="return event.keyCode != 13;">
+          <form id="profile-update-form" action="/complete-profile" method="post" onkeypress="return event.keyCode != 13;" onsubmit="validateInputs(event)" >
 
               <input type="hidden" name="sesh" value="{{profile.sesh}}">
             <div class="row">
@@ -55,7 +55,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <select name="role">
+                    <select name="role" required>
                         {{#unless profile.user.role}}<option value="" disabled>Choose your option</option>{{/unless}}
                         <option value="user.role.teacher" {{#ifEquals profile.user.role "profile.user.role
                                 .teacher"}}selected{{/ifEquals}}>Teacher</option>
@@ -78,7 +78,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <select multiple name="grades">
+                    <select multiple name="grades" id="grades">
                         {{#unless profile.user.grades}}<option value="" disabled>Choose your option</option>{{/unless}}
                         <option value="edu.pre-k"
                                 {{#contains "edu.pre-k" profile.user.grades}}selected{{/contains}}
@@ -116,7 +116,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <select multiple name="subjects">
+                    <select multiple name="subjects" id="subjects">
                         {{#unless profile.user.subjects}}<option value="" disabled>Choose your option</option>{{/unless}}
                         <option value="top.careereducation" {{#contains "top.careereducation" profile.user.subjects}}selected{{/contains}}>Career Education</option>
                         <option value="top.engineering" {{#contains "top.engineering" profile.user.subjects}}selected{{/contains}}>Engineering</option>
@@ -201,6 +201,29 @@ function initializeAutocomplete(){
 document.addEventListener("DOMContentLoaded", function(event) {
   initializeAutocomplete()
 });
+
+/*********** input validation check ********/
+//check length of multiple select dropdown before submitting
+var grades = [];
+var subjects =[];
+
+function validateInputs (event) {
+  event.preventDefault();
+  grades = M.FormSelect.getInstance(document.getElementById("grades")).getSelectedValues();
+  subjects = M.FormSelect.getInstance(document.getElementById("subjects")).getSelectedValues();
+
+  if (grades.length < 1) {
+    //show user an error message
+    M.toast({html: 'Please select at least one grade'})
+  } else if (subjects.length < 1) {
+    //show user an error message
+    M.toast({html: 'Please select at least one subject'})
+  } else {
+    console.log('looks good! we can submit it!');
+    document.getElementById("profile-update-form").submit()
+  }
+}
+
 
 </script>
 

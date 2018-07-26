@@ -458,7 +458,7 @@ router.route('/soles/:id/edit')
     (req.body.writing_tools == 'on') ? materials.push('material.writing_tools') : false;
     (req.body.poster_paper == 'on') ? materials.push('material.poster_paper') : false;
     (req.body.physical == 'on') ? materials.push('material.physical') : false;
-    (req.body.student_organizer == 'on') ? materials.push('material.student_organizer') : false;
+    (req.body.sole_organizer == 'on') ? materials.push('material.sole_organizer') : false;
     (req.body.other == 'on') ? materials.push('material.other') : false;
 
     let sole = {
@@ -627,7 +627,7 @@ router.route('/sole-create')
       (req.body.writing_tools == 'on') ? materials.push('material.writing_tools') : false;
       (req.body.poster_paper == 'on') ? materials.push('material.poster_paper') : false;
       (req.body.physical == 'on') ? materials.push('material.physical') : false;
-      (req.body.student_organizer == 'on') ? materials.push('material.student_organizer') : false;
+      (req.body.sole_organizer == 'on') ? materials.push('material.sole_organizer') : false;
       (req.body.other == 'on') ? materials.push('material.other') : false;
 
       let sole = {

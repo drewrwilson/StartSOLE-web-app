@@ -9,17 +9,17 @@ Parse.serverURL = soleConfig.serverUrl;
 // returns an array of all resources
 Resource.getAll = function () {
   // return Parse.Cloud.run('webapp.getResources')
-  var Resource = {tags : {
-    questionHelp: 'Help with Question phase',
-    investigationHelp: 'Help with Investigation phase',
-    reviewHelp: 'Help with Review phase',
-    paraphrasing: 'Paraphrasing support',
-    posters: 'Posters',
-    rubric: 'Rubrics',
-    selfAssessment: 'Self-assessments',
-    sentenceStarters: 'Sentence starters',
-    organizer: 'Student organizers'
-  }};
+  // var Resource = {tags : {
+  //   question-help": 'Help with Question phase',
+  //   investigation-help": 'Help with Investigation phase',
+  //   review-help": 'Help with Review phase',
+  //   paraphrasing: 'Paraphrasing support',
+  //   posters: 'Posters',
+  //   rubric: 'Rubrics',
+  //   self-assessment": 'Self-assessments',
+  //   sentenceStarters: 'Sentence starters',
+  //   organizer: 'Student organizers'
+  // }};
   var resources = [
     {
       file: 'SOLE_Website_Resources.docx',
@@ -31,7 +31,7 @@ Resource.getAll = function () {
         { email: 'jeff.mcclellan.9@gmail.com', name: 'Jeff M.'}
       ],
       tags: [
-        Resource.tags.investigationHelp
+        "investigation-help"
       ]
     },
     {
@@ -44,7 +44,7 @@ Resource.getAll = function () {
         { email: 'dietz_j@shaker.org', name: 'Jocelyn D.'}
       ],
       tags: [
-        Resource.tags.questionHelp
+        "question-help"
       ]
     },
     {
@@ -57,7 +57,7 @@ Resource.getAll = function () {
         { email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp
+        "investigation-help"
       ]
     },
     {
@@ -70,7 +70,7 @@ Resource.getAll = function () {
         { email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.selfAssessment, Resource.tags.organizer, Resource.tags.rubric
+        "investigation-help", "self-assessment", "organizer", "rubric"
       ]
     },
     {
@@ -83,7 +83,7 @@ Resource.getAll = function () {
         { email: 'clark_k@shaker.org', name: 'Ms. Clark'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.paraphrasing
+        "investigation-help", "paraphrasing"
       ]
     },
     {
@@ -96,7 +96,7 @@ Resource.getAll = function () {
         { email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.selfAssessment
+        "investigation-help", "self-assessment"
       ]
     },
     {
@@ -109,7 +109,7 @@ Resource.getAll = function () {
         {email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.selfAssessment
+        "investigation-help", "self-assessment"
       ]
     },
     {
@@ -122,7 +122,7 @@ Resource.getAll = function () {
         { email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.selfAssessment
+        "investigation-help", "self-assessment"
       ]
     },
     {
@@ -135,7 +135,7 @@ Resource.getAll = function () {
         { email: 'dietz_j@shaker.org', name: 'Jocelyn D.'}
       ],
       tags: [
-        Resource.tags.reviewHelp, Resource.tags.sentenceStarters
+        "review-help", "sentence-starters"
       ]
     },
     {
@@ -148,7 +148,7 @@ Resource.getAll = function () {
         { email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.organizer
+        "investigation-help", "organizer"
       ]
     },
     {
@@ -161,7 +161,7 @@ Resource.getAll = function () {
         { email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.organizer
+        "investigation-help", "organizer"
       ]
     },
     {
@@ -174,7 +174,7 @@ Resource.getAll = function () {
         { email: 'dorabechtel@gmail.com', name: 'Dora B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.organizer
+        "investigation-help", "organizer"
       ]
     },
     {
@@ -187,7 +187,7 @@ Resource.getAll = function () {
         { email: 'bishko_j@shaker.org', name: 'Jeremy B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.organizer
+        "investigation-help", "organizer"
       ]
     },
     {
@@ -200,7 +200,7 @@ Resource.getAll = function () {
         { email: 'Heather.Snyder@clevelandmetroschools.org', name: 'Heather S.'}
       ],
       tags: [
-        Resource.tags.reviewHelp
+        "review-help"
       ]
     },
     {
@@ -213,7 +213,7 @@ Resource.getAll = function () {
         { email: 'erika.howard@clevelandmetroschools.org', name: 'Erika H.'}
       ],
       tags: [
-        Resource.tags.reviewHelp
+        "review-help"
       ]
     },
     {
@@ -226,7 +226,7 @@ Resource.getAll = function () {
         { email: 'jonathan.bubbett@clevelandmetroschools.org', name: 'Miles B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.organizer, Resource.tags.selfAssessment
+        "investigation-help", "organizer", "self-assessment"
       ]
     },
     {
@@ -239,7 +239,7 @@ Resource.getAll = function () {
         { email: 'jonathan.bubbett@clevelandmetroschools.org', name: 'Miles B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp, Resource.tags.reviewHelp, Resource.tags.organizer
+        "investigation-help", "review-help", "organizer"
       ]
     },
     {
@@ -252,7 +252,7 @@ Resource.getAll = function () {
         { email: 'jonathan.bubbett@clevelandmetroschools.org', name: 'Miles B.'}
       ],
       tags: [
-        Resource.tags.investigationHelp
+        "investigation-help"
       ]
     },
     {
@@ -265,7 +265,7 @@ Resource.getAll = function () {
         { email: 'lindzyt@gmail.com', name: 'Lindsay A.'}
       ],
       tags: [
-        Resource.tags.reviewHelp, Resource.tags.organizer
+        "review-help", "organizer"
       ]
     },
     {
@@ -278,7 +278,7 @@ Resource.getAll = function () {
         { email: 'lindzyt@gmail.com', name: 'Lindsay A.'}
       ],
       tags: [
-        Resource.tags.selfAssessment
+        "self-assessment"
       ]
     },
     {
@@ -291,7 +291,7 @@ Resource.getAll = function () {
         { email: 'DAVID_J@hcde.org', name: 'David J.'}
       ],
       tags: [
-        Resource.tags.questionHelp
+        "question-help"
       ]
     },
     {
@@ -304,7 +304,7 @@ Resource.getAll = function () {
         { email: 'larmstrong@mcspresidents.org', name: 'Lindsay T.'}
       ],
       tags: [
-        Resource.tags.investigationHelp
+        "investigation-help"
       ]
     },
     {
@@ -317,7 +317,7 @@ Resource.getAll = function () {
         { email: 'macsurak@sel.k12.oh.us', name: 'Erin M.'}
       ],
       tags: [
-        Resource.tags.investigationHelp
+        "investigation-help"
       ]
     },
     {
@@ -331,7 +331,7 @@ Resource.getAll = function () {
         { email: 'darnold@npesc.org', name: 'Dwayne A.'}
       ],
       tags: [
-        Resource.tags.selfAssessment, Resource.tags.organizer, Resource.tags.questionHelp, Resource.tags.investigationHelp, Resource.tags.reviewHelp, Resource.tags.rubric
+        "self-assessment", "organizer", "question-help", "investigation-help", "review-help", "rubric"
       ]
     },
     {
@@ -345,7 +345,7 @@ Resource.getAll = function () {
         { email: 'bgoodwin@monroevilleschools.org', name: 'Brandi G.'}
       ],
       tags: [
-        Resource.tags.organizer, Resource.tags.investigationHelp, Resource.tags.reviewHelp
+        "organizer", "investigation-help", "review-help"
       ]
     },
     {
@@ -359,7 +359,7 @@ Resource.getAll = function () {
         { email: 'bgoodwin@monroevilleschools.org', name: 'Brandi G.'}
       ],
       tags: [
-        Resource.tags.selfAssessment, Resource.tags.organizer
+        "self-assessment", "organizer"
       ]
     },
     {
@@ -374,7 +374,7 @@ Resource.getAll = function () {
         { email: 'jeff.mcclellan.9@gmail.com', name: 'Jeff M.'}
       ],
       tags: [
-        Resource.tags.reviewHelp, Resource.tags.organizer, Resource.tags.rubric
+        "review-help", "organizer", "rubric"
       ]
     },
     {
@@ -389,7 +389,7 @@ Resource.getAll = function () {
         { email: 'dmoody@perkinsschools.org', name: 'Danielle M.'}
       ],
       tags: [
-        Resource.tags.reviewHelp, Resource.tags.organizer, Resource.tags.sentenceStarters, Resource.tags.selfAssessment
+        "review-help", "organizer", "sentence-starters", "self-assessment"
       ]
     },
     {
@@ -404,7 +404,7 @@ Resource.getAll = function () {
         { email: 'bgoodwin@monroevilleschools.org', name: 'Brandi G.'}
       ],
       tags: [
-        Resource.tags.investigationHelp,Resource.tags.reviewHelp,Resource.tags.posters
+        "investigation-help","review-help","posters"
       ]
     },
     {
@@ -420,7 +420,7 @@ Resource.getAll = function () {
         { email: 'Adam.Trifiro@clevelandmetroschools.org', name: 'Adam T.'}
       ],
       tags: [
-        Resource.tags.investigationHelp,Resource.tags.organizer,Resource.tags.paraphrasing
+        "investigation-help","organizer","paraphrasing"
       ]
     }
   ];

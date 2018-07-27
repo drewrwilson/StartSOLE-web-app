@@ -7,12 +7,29 @@
     <div class="col s12">
         <div class="card-panel">
             <div class="row">
+                <div class="input-field col s12 m6">
+                    <select id="tag-filter" onchange="filterSelection()">
+                        <option value="show-all" selected>Show All</option>
+                        <option value="question-help">Help with Question phase</option>
+                        <option value="investigation-help">Help with Investigation phase</option>
+                        <option value="review-help">Help with Review phase</option>
+                        <option value="paraphrasing">Paraphrasing support</option>
+                        <option value="posters">Posters</option>
+                        <option value="rubric">Rubrics</option>
+                        <option value="self-assessment">Self-assessments</option>
+                        <option value="sentence-starters">Sentence starters</option>
+                        <option value="organizer">Student organizer</option>
+                    </select>
+                    <label>Filter</label>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col l12">
                     <div class="row">
 
                         {{#if resources}}
                             {{#each resources}}
-                                <div class="col m12 l6">
+                                <div class="col m12 l6 resource-card-col show-all {{#each tags}}{{this}} {{/each}}">
                                     <div class="resource-card card horizontal">
                                         <div class="card-image">
                                             <img src="images/resources/{{image}}">
@@ -43,3 +60,14 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+    function filterSelection() {
+        var tag = $('#tag-filter').val();
+        $('.resource-card-col').hide();
+        $('.'+tag).show();
+    }
+
+</script>

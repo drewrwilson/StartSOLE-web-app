@@ -112,10 +112,13 @@
 
 <script type="text/javascript">
 var message = 'testing login';
-ga('send', {
-  hitType: 'event',
-  eventCategory: 'PageViews',
-  eventAction: 'ViewByLoggedInUser',
-  eventLabel: message
-});
+//ga('send', {
+//  hitType: 'event',
+//  eventCategory: 'PageViews',
+//  eventAction: 'ViewByLoggedInUser',
+//  eventLabel: message
+//});
+
+ga('send', 'event', 'testCategory1', 'testAction1', 'testLabel1', 'testValue1');
+
 </script>

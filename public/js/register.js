@@ -45,3 +45,4 @@ $("#initial-registration-form").submit(function (event) {
 })
 
 });
+

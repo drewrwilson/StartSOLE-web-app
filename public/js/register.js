@@ -39,7 +39,9 @@ $("#initial-registration-form").submit(function (event) {
 
   });
 
-
-  });
+}).catch(err=>{
+  //if there's an error signing up, eg if a user already exists with that email address, then show an error to the user
+  $('#error').html(err.message.message)
+})
 
 });

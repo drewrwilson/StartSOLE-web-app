@@ -108,7 +108,12 @@
         <a class="modal-close waves-effect waves-green btn-flat">No Thanks</a>
     </div>
 </div>
-{{> final-registration-form}}
+
+<form id="final-registration-form" class="" action="/complete-profile" method="get">
+    <input type="hidden" name="sesh" id="sesh" value="">
+    <input type="hidden" name="firstname" id="firstname" value="">
+    <input type="hidden" name="lastname" id="lastname" value="">
+</form>
 
 <script type="text/javascript">
 var message = 'testing login';

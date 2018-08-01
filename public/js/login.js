@@ -64,7 +64,7 @@ function succesfulLogin(user) {
     console.log('sessionToken:', sessionToken);
     $('#sesh').val(sessionToken);
     console.log('submitting foobar with sessionToken: '+ $('#sesh').val());
-    $("#login-with-session").submit()
+    $("#login-with-session").submit();
   })
 
 }
@@ -86,10 +86,12 @@ function login (username, password) {
 
 function loginFacebook () {
   var permissions = "public_profile,email";
-  Parse.FacebookUtils.logIn(permissions, {
+  f(permissions, {
   success: function(user) {
     if (!user.existed()) {
       console.log("User signed up and logged in through Facebook!");
+      //how about we actually do something here
+
     } else {
       console.log("User logged in through Facebook!");
     }

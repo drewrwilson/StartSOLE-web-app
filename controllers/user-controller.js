@@ -34,3 +34,10 @@ User.completedProfile = function (sessionToken) {
     sessionToken: sessionToken
   })
 };
+
+//check if user's profile is complete. returns true or false
+User.isProfileComplete = function (sessionToken) {
+  return Parse.Cloud.run("webapp.isProfileComplete", {
+    sessionToken: sessionToken
+  })
+};

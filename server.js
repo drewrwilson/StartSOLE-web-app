@@ -87,38 +87,52 @@ router.route('/')
     .get((req, res) => {
       const sesh = req.query.sesh; //get the sesh token string from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-      console.log('what happened??');
-
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-      console.log("sessionToken", sessionToken);
-      var homeData = {soles: [],questions:[]};
-      console.log('before getall questions');
-      Controllers.Question.getAll(sessionToken).then((questions)=>{
-        console.log('questions', questions);
-        console.log('got all questions:');
-        console.log(questions);
-        console.log('---');
-        homeData.questions.mine = questions.questions;
 
-        Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
-          console.log('got fav questions:');
-          console.log(favoriteQuestions);
-          console.log('---');
-          homeData.questions.favorites = favoriteQuestions;
-          homeData.sesh = sesh;
-          homeData.config = soleConfig;
-          res.render('home', homeData); //display view with question data
-        }).catch((err)=>{
-          console.log('error getting fav questions!', err);
-          res.redirect('/login');
-        })
-      }).catch((err)=>{
-        console.log('error getting all questions!', err);
-        res.redirect('/login');
-      });
+      //check if user needs to complete profile
+      // if so, show them the compete profile view
+      Controllers.User.isProfileComplete(sessionToken).then(profileIsCompleted=>{
+        if (!profileIsCompleted) {
+          res.redirect('/complete-profile?sesh='+ sesh);
+        } else {
+          res.redirect('/home?sesh='+ sesh);
+        }
+      })
 
 });
 
+router.route('/home')
+  .get((req,  res)=>{
+    const sesh = req.query.sesh; //get the sesh token string from the query param
+    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+    var homeData = {soles: [],questions:[]};
+
+    Controllers.Question.getAll(sessionToken).then((questions)=>{
+      console.log('questions', questions);
+      console.log('got all questions:');
+      console.log(questions);
+      console.log('---');
+      homeData.questions.mine = questions.questions;
+
+      Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
+        console.log('got fav questions:');
+        console.log(favoriteQuestions);
+        console.log('---');
+        homeData.questions.favorites = favoriteQuestions;
+        homeData.sesh = sesh;
+        homeData.config = soleConfig;
+        res.render('home', homeData); //display view with question data
+      }).catch((err)=>{
+        console.log('error getting fav questions!', err);
+        res.redirect('/login');
+      })
+    }).catch((err)=>{
+      console.log('error getting all questions!', err);
+      res.redirect('/login');
+    });
+  })
 
 // static route for History of SOLE
 router.route('/history')

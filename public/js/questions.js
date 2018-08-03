@@ -21,6 +21,10 @@ var sesh         = $('#sesh').val(), //get the sesh token from the DOM
 var standardPickerLevel = 0;
 
 function getGrades(subject){
+  if (subject == 'all') {
+    subject = false;
+  }
+
   return Parse.Cloud.run('webapp.getGrades', {
     subject: subject || false
   });
@@ -38,6 +42,7 @@ function getStandards(rdn, grade){
 $('#subject').change(function (){
   var rdn = $(this).val(),
       q = $('#search').val(); //the search term
+
 
   var parent = $('#grade').parent();
   var allSiblings = $(parent).nextAll()
@@ -127,7 +132,7 @@ function itChanged (element){
 
 
 //whenever any standard picker select changes, get the questions that are tagged with the corresponding standards
-function getQuestions (){
+function getQuestions () {
 
   var questionText = $('#search').val();
   var standards = [];
@@ -137,7 +142,7 @@ function getQuestions (){
   });
 
   standards = standards.filter(Boolean) //remove any empty strings from the array
-
+  standards = standards.filter(standard => standard != 'all')
   console.log('standards', standards);
 
   Parse.Cloud.run('webapp.findQuestionByTagsAndText', {

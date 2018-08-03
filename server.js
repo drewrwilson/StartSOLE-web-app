@@ -125,7 +125,8 @@ router.route('/home')
         homeData.config = soleConfig;
         res.render('home', homeData); //display view with question data
       }).catch((err)=>{
-        console.log('error getting fav questions!', err);
+        console.log('Error getting fav questions!', err);
+
         res.redirect('/login');
       })
     }).catch((err)=>{
@@ -238,7 +239,13 @@ router.route('/profile')
           res.redirect('/soles?sesh='+sesh);
         }).catch((err)=>{
           console.log('error updating user', err);
-          res.redirect('/error?sesh='+sesh)
+          // res.redirect('/error?sesh='+sesh)
+          res.render('fail', {
+            layout: 'no-sidebar.hbs',
+            sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
+            config: soleConfig,
+            error: 'Updating user'
+          });
         })
 
     });
@@ -795,6 +802,8 @@ router.route('/error')
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+  // var errorText = 'This is example error text.';
 
   res.render('fail', {
     layout: 'no-sidebar.hbs',

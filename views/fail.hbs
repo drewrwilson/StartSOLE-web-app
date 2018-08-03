@@ -4,6 +4,13 @@
 		  <div class="row center-align">
               <img class="responsive-img" src="images/404.jpg" alt="Error!">
 		  </div>
+      {{#if error}}
+      <div class="row center-align">
+        <p style="color:red;">
+          <strong>Error:</strong>  {{error}}
+        </p>
+      </div>
+      {{/if}}
             {{#if sesh}}
                 <div class="row center-align">
                     <a class="red waves-effect waves-light btn" href="/?sesh={{sesh}}">

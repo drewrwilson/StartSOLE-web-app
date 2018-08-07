@@ -207,10 +207,17 @@ function validateInputs (event) {
   event.preventDefault();
   grades = M.FormSelect.getInstance(document.getElementById("grades")).getSelectedValues();
   subjects = M.FormSelect.getInstance(document.getElementById("subjects")).getSelectedValues();
-  schoolPlaceID = document.getElementById("schoolPlaceID").value
+  var school = {
+    placeID: document.getElementById("schoolPlaceID").value,
+    name: document.getElementById("schoolName").value,
+    address: document.getElementById("schoolAddress").value,
+    state:  document.getElementById("schoolState").value
+  }
 
-  if (schoolPlaceID == "") {
+
+  if (school.placeID == "" || school.name == "" || school.address == ""  || place.state == "") {
     M.toast({html: 'Please select a school or a place from the dropdown'})
+      document.getElementById("schoolSearch").click()
   } else if (grades.length < 1) {
     //show user an error message
     M.toast({html: 'Please select at least one grade'})

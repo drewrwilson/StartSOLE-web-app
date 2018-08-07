@@ -3,7 +3,6 @@
     <div class="col s12 m8 offset-m2 l6 offset-l3">
         <div class="card-panel">
 
-
             <div class="row center-align">
                 <video width="165" height="165" autoplay muted>
                     <source src="/images/logos/animated-logo-small.webm" type="video/webm">
@@ -32,9 +31,6 @@
                     <label for="last_name">Last Name</label>
                 </div>
             </div>
-
-
-
 
             <div class="row">
               <div class="col s12"  style="padding-bottom:10px">
@@ -211,8 +207,11 @@ function validateInputs (event) {
   event.preventDefault();
   grades = M.FormSelect.getInstance(document.getElementById("grades")).getSelectedValues();
   subjects = M.FormSelect.getInstance(document.getElementById("subjects")).getSelectedValues();
+  schoolPlaceID = document.getElementById("schoolPlaceID").value
 
-  if (grades.length < 1) {
+  if (schoolPlaceID == "") {
+    M.toast({html: 'Please select a school or a place from the dropdown'})
+  } else if (grades.length < 1) {
     //show user an error message
     M.toast({html: 'Please select at least one grade'})
   } else if (subjects.length < 1) {

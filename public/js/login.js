@@ -86,7 +86,7 @@ function login (username, password) {
 
 function loginFacebook () {
   var permissions = "public_profile,email";
-  f(permissions, {
+  Parse.FacebookUtils.logIn(permissions, {
   success: function(user) {
     if (!user.existed()) {
       console.log("User signed up and logged in through Facebook!");

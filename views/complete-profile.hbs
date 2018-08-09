@@ -215,7 +215,7 @@ function validateInputs (event) {
   }
 
 
-  if (school.placeID == "" || school.name == "" || school.address == ""  || place.state == "") {
+  if (school.placeID == "" || school.name == "" || school.address == "") {
     M.toast({html: 'Please select a school or a place from the dropdown'})
       document.getElementById("schoolSearch").click()
   } else if (grades.length < 1) {

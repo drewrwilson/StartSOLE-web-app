@@ -16,7 +16,8 @@ Parse.serverURL = soleConfig.serverUrl;
 
 //get session info to be used later and to be passed to handlebars view
 var sesh         = $('#sesh').val(), //get the sesh token from the DOM
-    sessionToken = 'r:' + sesh;      //convert sesh token to full sessionToken string
+    sessionToken = 'r:' + sesh,      //convert sesh token to full sessionToken string
+    showAll      = $("input[name=showAll]").val(); //this is true if we are adding a question, undefined if not
 
 var standardPickerLevel = 0;
 
@@ -33,7 +34,8 @@ function getGrades(subject){
 function getStandards(rdn, grade){
   return Parse.Cloud.run('webapp.getStandards', {
   	rdn: rdn,
-  	grade: grade || false
+  	grade: grade || false,
+    showAll: showAll || false
   });
 }
 
@@ -108,8 +110,7 @@ function itChanged (element){
   var parent = $(element).parent();
   var allSiblings = $(parent).nextAll()
   $(allSiblings).remove()
-
-  console.log('IT CHANGED');
+  
   var grade = $('#grade').val(),
       rdn = element.val();
 
@@ -134,24 +135,26 @@ function itChanged (element){
 //whenever any standard picker select changes, get the questions that are tagged with the corresponding standards
 function getQuestions () {
 
-  var questionText = $('#search').val();
-  var standards = [];
-  // var standarPickers = $('.standard-picker');
-  $('.standard-picker').each(function(i, standard) {
-    standards.push($(standard).val());
-  });
+  //don't check for questions if we are adding a new one
+  if(typeof showAll === 'undefined'){
+    var questionText = $('#search').val();
+    var standards = [];
+    // var standarPickers = $('.standard-picker');
+    $('.standard-picker').each(function(i, standard) {
+      standards.push($(standard).val());
+    });
 
-  standards = standards.filter(Boolean) //remove any empty strings from the array
-  standards = standards.filter(standard => standard != 'all')
-  console.log('standards', standards);
+    standards = standards.filter(Boolean) //remove any empty strings from the array
+    standards = standards.filter(standard => standard != 'all')
+    console.log('standards', standards);
 
-  Parse.Cloud.run('webapp.findQuestionByTagsAndText', {
-    tags: standards,
-    text: questionText,
-    sessionToken: sessionToken
-  }).then(response=>{
-    //Ok, now that we have the questions with a given tag, let's add them to the DOM
-    console.log('response', response);
+    Parse.Cloud.run('webapp.findQuestionByTagsAndText', {
+      tags: standards,
+      text: questionText,
+      sessionToken: sessionToken
+    }).then(response=>{
+      //Ok, now that we have the questions with a given tag, let's add them to the DOM
+      console.log('response', response);
     //First, remove all the current questions from the DOM.
     $('#questions').empty();
 
@@ -159,8 +162,8 @@ function getQuestions () {
 
     //more handlebars frontend stuff. compost this code when you can. -DW 2018-06-22
     var source   = $("#question-card-template").html(),
-        template = Handlebars.compile(source),
-        html     = '';
+      template = Handlebars.compile(source),
+      html     = '';
 
     //more quick fixes from Justin.  Sorry sorry sorry sorry!  -JD 2018-07-11 (hey, today is 7-11!)
     if(response.questions.length == 0){
@@ -185,6 +188,7 @@ function getQuestions () {
     })
 
   });
+  }
 
 }
 

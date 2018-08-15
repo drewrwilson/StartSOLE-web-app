@@ -74,13 +74,20 @@ function login (username, password) {
   Parse.User.logIn(username, password)
     .done(function (user){
       console.log('login success!');
-      succesfulLogin(user)
-
+      succesfulLogin(user);
     })
     .catch(function (error) {
-      console.log('error!');
-      $('#error').html(error.message)
-      console.log(error.message);
+      console.log('error! going to try lowercase version');
+      Parse.User.logIn(username.toLowerCase(), password)
+        .done(function (user){
+          console.log('login success!');
+          succesfulLogin(user);
+        })
+        .catch(function (error){
+          $('#error').html(error.message)
+          console.log(error.message);
+        })
+
     });
 }
 
@@ -118,9 +125,8 @@ $('#fb-login').click(function (event){
 $( "#login-form" ).submit(function (event) {
 
   event.preventDefault();
-  var username = $('#email').val().toLowerCase();
+  var username = $('#email').val();
   var password = $('#password').val();
-  console.log(username, password);
   login(username, password);
 
 });

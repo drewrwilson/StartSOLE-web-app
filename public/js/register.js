@@ -7,7 +7,7 @@ $("#initial-registration-form").submit(function (event) {
   event.preventDefault();
   var first_name  = $('#first_name').val(),
       last_name   = $('#last_name').val(),
-      email       = $('#email').val(),
+      email       = $('#email').val().toLowerCase(),
       password    = $('#password').val(),
       sessionToken = "";
 
@@ -45,4 +45,3 @@ $("#initial-registration-form").submit(function (event) {
 })
 
 });
-

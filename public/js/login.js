@@ -118,7 +118,7 @@ $('#fb-login').click(function (event){
 $( "#login-form" ).submit(function (event) {
 
   event.preventDefault();
-  var username = $('#email').val();
+  var username = $('#email').val().toLowerCase();
   var password = $('#password').val();
   console.log(username, password);
   login(username, password);

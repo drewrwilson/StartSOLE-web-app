@@ -110,7 +110,7 @@ function itChanged (element){
   var parent = $(element).parent();
   var allSiblings = $(parent).nextAll()
   $(allSiblings).remove()
-  
+
   var grade = $('#grade').val(),
       rdn = element.val();
 

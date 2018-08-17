@@ -10,10 +10,13 @@ Parse.serverURL = soleConfig.serverUrl;
 
 //returns data for a question with a given ID
 Question.getByID =  (id, sessionToken) => {
-    return Parse.Cloud.run('webapp.getQuestionByID', {
+    var result = Parse.Cloud.run('webapp.getQuestionByID', {
       id: id,
   		sessionToken: sessionToken
   	})
+    console.log(result);
+    return result;
+
 }
 //returns a user's fav'ed questions
 Question.getFavorites = function (sessionToken) {
@@ -68,6 +71,14 @@ Question.favorite = function (questionID, sessionToken) {
 		id: questionID,
 		sessionToken: sessionToken
 	});
+}
+
+Question.deleteTag = function (questionID, tagID, sessionToken) {
+  return Parse.Cloud.run('webapp.deleteQuestionTag', {
+    id: questionID,
+    tag: tagID,
+    sessionToken: sessionToken
+  });
 }
 
 // filter down the question tags and return a list

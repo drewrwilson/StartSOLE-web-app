@@ -12,6 +12,7 @@
 
             {{#if question}}
                 <h3>{{question.text}}</h3>
+                <h3>{{question.role}}</h3>
                 <hr>
                 <div class="row hide-on-med-and-up">
                     <div class="col s12 right-align">
@@ -29,10 +30,13 @@
                 <div class="row">
                     <div class="col s12">
                         {{#each question.tags}}
-                            <div class="chip truncate-tag tooltipped"
-                                 data-position="bottom" data-tooltip="{{this.text}}">
-                                {{this.text}}
-                            </div>
+                            <a class="chip tooltipped"
+                                 data-position="bottom"
+                                 data-tooltip="{{this.text}}"
+                                 href="{{../question.id}}/delete-tag/{{this.rdn}}?sesh={{../sesh}}">
+                                {{this.short_text}}
+                                <i class="close material-icons">close</i>
+                            </a>
                         {{/each}}
                     </div>
                 </div>

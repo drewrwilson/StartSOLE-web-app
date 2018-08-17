@@ -797,6 +797,23 @@ router.route('/questions/:id/favorite')
         });
     });
 
+router.route('/questions/:id/delete-tag/:rdn')
+// remove a tag from a question
+  .get((req, res)=> {
+  console.log("looks like we're trying to delete a tag!");
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Question.deleteTag(req.params.id, req.params.rdn, sessionToken).then((questionData) => {
+  console.log(JSON.stringify(questionData));
+res.redirect('/questions/'+req.params.id+'?sesh='+sesh);
+}).catch((err)=>{
+  console.log('error!', err);
+res.redirect('/login')
+});
+});
+
 // static route for fail cases (404)
 router.route('/error')
   .get((req, res)=> {

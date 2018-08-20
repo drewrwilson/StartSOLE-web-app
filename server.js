@@ -121,9 +121,20 @@ router.route('/home')
         console.log(favoriteQuestions);
         console.log('---');
         homeData.questions.favorites = favoriteQuestions;
-        homeData.sesh = sesh;
-        homeData.config = soleConfig;
-        res.render('home', homeData); //display view with question data
+
+        Controllers.User.getRoleData(sessionToken).then((roleData)=>{
+          console.log('got user RoleData:');
+          console.log(roleData);
+          console.log('---');
+          homeData.roleData = roleData;
+          homeData.sesh = sesh;
+          homeData.config = soleConfig;
+          res.render('home', homeData); //display view with question data
+        }).catch((err)=>{
+          console.log('Error getting roleData for user!', err);
+
+          res.redirect('/home');
+          })
       }).catch((err)=>{
         console.log('Error getting fav questions!', err);
 
@@ -813,6 +824,30 @@ res.redirect('/questions/'+req.params.id+'?sesh='+sesh);
 res.redirect('/login')
 });
 });
+
+// routes for soles
+// ----------------------------------------------------
+router.route('/dashboard/question-approval')
+
+// get all the unapproved questions
+  .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Question.getUnapproved(sessionToken)
+  .then(questions=>{
+  console.log('Here are the unapproved questions: ', JSON.stringify(questions));
+questions.sesh = sesh;
+questions.config = soleConfig;
+res.render('dashboard-question-approval', questions);
+}).catch(err=>{
+  console.log('oops! error getting unapproved questions!', err);
+  res.redirect('/home')
+})
+
+});
+
 
 // static route for fail cases (404)
 router.route('/error')

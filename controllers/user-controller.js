@@ -13,6 +13,13 @@ User.getProfileData = function (sessionToken) {
   })
 };
 
+//returns user profile data
+User.getRoleData = function (sessionToken) {
+  return Parse.Cloud.run('webapp.getRoleData', {
+    sessionToken: sessionToken
+  })
+};
+
 User.updateProfileData = function (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, schoolState, sessionToken) {
   return Parse.Cloud.run('webapp.updateProfile', {
     subjects: subjects,

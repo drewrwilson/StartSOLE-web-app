@@ -27,6 +27,15 @@ Question.getFavorites = function (sessionToken) {
 	})
 }
 
+//returns unapproved questions for approval
+Question.getUnapproved = function (sessionToken) {
+  return Parse.Cloud.run('webapp.getUnapprovedQuestions', {
+    offset: 0,
+    limit: 10,
+    sessionToken: sessionToken
+  })
+}
+
 // returns an array of recent approved questions. defaults to limit 10.
 // optional: limit is the number of questions to return
 Question.getAll = function (sessionToken) {

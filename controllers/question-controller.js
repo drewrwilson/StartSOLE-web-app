@@ -98,6 +98,14 @@ Question.approve = function (questionID, sessionToken) {
   });
 }
 
+//rejects a questions
+Question.reject = function (questionID, sessionToken) {
+  return Parse.Cloud.run('webapp.rejectQuestion', {
+    id: questionID,
+    sessionToken: sessionToken
+  });
+}
+
 
 // filter down the question tags and return a list
 Question.tagPickers = function () {

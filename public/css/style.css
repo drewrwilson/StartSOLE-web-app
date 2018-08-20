@@ -278,6 +278,10 @@ main, footer {
 }
 
 /*dashboard-question-approval*/
+.unapproved-questions .collection-item {
+    padding-right: 72px;
+}
+
 .tags-collapsible {
     border: none;
 }

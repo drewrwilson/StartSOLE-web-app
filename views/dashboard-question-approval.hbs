@@ -11,7 +11,7 @@
     <div class="col s12">
         <div class="card-panel">
             {{#if questions}}
-            <ul class="collection">
+            <ul class="collection unapproved-questions">
                     {{#each questions}}
                         <li class="collection-item avatar">
                             <i class="material-icons circle">help</i>
@@ -47,7 +47,7 @@
                     {{/each}}
             </ul>
                 {{else}}
-all set!
+No questions awaiting approval at this time... nice work!
             {{/if}}
         </div>
     </div>

@@ -825,23 +825,8 @@ res.redirect('/login')
 });
 });
 
-router.route('/questions/:id/approve')
-// remove a tag from a question
-  .get((req, res)=> {
-  console.log("looks like we're trying to approve a question!");
-  const sesh = req.query.sesh; //get the sesh token string from the query param
-  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-  Controllers.Question.approve(req.params.id, sessionToken).then((questionData) => {
-    res.redirect('/dashboard/question-approval?sesh='+sesh);
-    }).catch((err)=>{
-      console.log('error!', err);
-    res.redirect('/login')
-  });
-});
-
-// routes for soles
+// routes for question approval
 // ----------------------------------------------------
 router.route('/dashboard/question-approval')
 
@@ -862,6 +847,40 @@ res.render('dashboard-question-approval', questions);
   res.redirect('/home')
 })
 
+});
+
+router.route('/questions/:id/approve')
+
+// approve a single question
+  .get((req, res)=> {
+  console.log("looks like we're trying to approve a question!");
+const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Question.approve(req.params.id, sessionToken).then((questionData) => {
+  res.redirect('/dashboard/question-approval?sesh='+sesh);
+}).catch((err)=>{
+  console.log('error!', err);
+res.redirect('/login')
+});
+});
+
+router.route('/questions/:id/reject')
+
+// reject a single question
+  .get((req, res)=> {
+  console.log("looks like we're trying to reject a question!");
+const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Question.reject(req.params.id, sessionToken).then((questionData) => {
+  res.redirect('/dashboard/question-approval?sesh='+sesh);
+}).catch((err)=>{
+  console.log('error!', err);
+res.redirect('/login')
+});
 });
 
 

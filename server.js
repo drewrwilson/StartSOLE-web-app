@@ -785,7 +785,14 @@ router.route('/questions/:id')
           questionData.sesh = sesh;
           questionData.config = soleConfig;
           questionData.question.favorited = true;
-          res.render('questions-single', questionData);
+          Controllers.User.getRoleData(sessionToken).then((roleData)=>{
+            questionData.roleData = roleData;
+            res.render('questions-single', questionData);
+            })
+            .catch((err)=>{
+              console.log('Error getting roleData for user!', err);
+            res.redirect('/home');
+            })
         }).catch((err)=>{
           console.log('error! oh noes!', err);
           res.redirect('/login')

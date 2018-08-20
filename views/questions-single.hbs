@@ -29,14 +29,23 @@
                 </div>
                 <div class="row">
                     <div class="col s12">
+
                         {{#each question.tags}}
-                            <a class="chip tooltipped"
-                                 data-position="bottom"
-                                 data-tooltip="{{this.text}}"
-                                 href="{{../question.id}}/delete-tag/{{this.rdn}}?sesh={{../sesh}}">
-                                {{this.short_text}}
-                                <i class="close material-icons">close</i>
-                            </a>
+                            {{#if ../roleData.isAdmin}}
+                                <a class="chip tooltipped"
+                                   data-position="bottom"
+                                   data-tooltip="{{this.text}}"
+                                   href="{{../question.id}}/delete-tag/{{this.rdn}}?sesh={{../sesh}}">
+                                    {{this.short_text}}
+                                    <i class="close material-icons">close</i>
+                                </a>
+                            {{else}}
+                                <a class="chip tooltipped"
+                                   data-position="bottom"
+                                   data-tooltip="{{this.text}}">
+                                    {{this.short_text}}
+                                </a>
+                            {{/if}}
                         {{/each}}
                     </div>
                 </div>

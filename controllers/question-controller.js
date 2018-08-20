@@ -90,6 +90,15 @@ Question.deleteTag = function (questionID, tagID, sessionToken) {
   });
 }
 
+//approves a questions
+Question.approve = function (questionID, sessionToken) {
+  return Parse.Cloud.run('webapp.approveQuestion', {
+    id: questionID,
+    sessionToken: sessionToken
+  });
+}
+
+
 // filter down the question tags and return a list
 Question.tagPickers = function () {
 

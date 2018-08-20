@@ -49,3 +49,8 @@ function initMaterialBoxed() {
     var elems = document.querySelectorAll('.materialboxed');
     var instances = M.Materialbox.init(elems, {});
 }
+
+function initCollapsible() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, {});
+}

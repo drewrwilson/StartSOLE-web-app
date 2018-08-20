@@ -17,10 +17,30 @@
                             <i class="material-icons circle">help</i>
                             <!--<img src="images/yuna.jpg" alt="" class="circle">-->
                             <span class="title">{{text}}</span>
-                            <p>When was it submitted</p>
+                            <p>Submitted: {{createdAt}}</p>
+                            {{#if tags}}
+                            <ul class="collapsible z-depth-0 tags-collapsible">
+                                <li>
+                                    <div class="collapsible-header">Tags</div>
+                                    <div class="collapsible-body">
+                                        {{#each tags}}
+                                            <a class="chip tooltipped"
+                                               data-position="bottom"
+                                               data-tooltip="{{this}}"
+                                               href="../questions/{{../id}}/delete-tag/{{@key}}?sesh={{../../sesh}}">
+                                                {{this}}
+                                                <i class="close material-icons">close</i>
+                                            </a>
+                                        {{/each}}
+                                    </div>
+                                </li>
+                            </ul>
+                            {{/if}}
                             <div class="secondary-content">
-                                <a href="approve"><i class="material-icons">thumb_up</i></a>
-                                <a href="disapprove"><i class="material-icons">thumb_down</i></a>
+                                <a href="../questions/{{id}}/approve?sesh={{../sesh}}"><i
+                                        class="material-icons">thumb_up</i></a>
+                                <a href="../questions/{{id}}/reject?sesh={{../sesh}}"><i
+                                        class="material-icons">thumb_down</i></a>
                             </div>
                         </li>
 

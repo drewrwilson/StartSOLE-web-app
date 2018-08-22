@@ -22,12 +22,21 @@
         // The data for our dataset
         data: {
             labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September"],
-            datasets: [{
-                label: "New Users",
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [{{sample}}],
-            }]
+            datasets: [
+                {
+                    label: "New Users 2017",
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [{{data17}}],
+                    fill: false,
+                },
+                {
+                    label: "New Users 2018",
+                    backgroundColor: 'rgb(47,166,154)',
+                    borderColor: 'rgb(47,166,154)',
+                    data: [{{data18}}],
+                    fill: false,
+                }]
         },
 
         // Configuration options go here

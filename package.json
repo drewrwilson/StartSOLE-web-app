@@ -18,6 +18,7 @@
   "homepage": "https://github.com/startsole/startsole2#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "chart.js": "^2.7.2",
     "dropzone": "^5.4.0",
     "express": "^4.16.3",
     "express-hbs": "^1.0.4",

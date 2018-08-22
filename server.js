@@ -833,6 +833,30 @@ res.redirect('/login')
 });
 
 
+// routes for admin dashboard
+// ----------------------------------------------------
+router.route('/dashboard')
+
+// gets data to build a simple dashboard
+  .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Dashboard.getUsersByMonth(sessionToken)
+  .then(dashboard=>{
+  dashboard.sesh = sesh;
+  dashboard.config = soleConfig;
+  res.render('dashboard', dashboard);
+}).
+catch(err => {
+  console.log('oops! error getting dashboard data!', err);
+res.redirect('/home')
+})
+
+
+});
+
 // routes for question approval
 // ----------------------------------------------------
 router.route('/dashboard/question-approval')
@@ -884,6 +908,63 @@ sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to se
 
 Controllers.Question.reject(req.params.id, sessionToken).then((questionData) => {
   res.redirect('/dashboard/question-approval?sesh='+sesh);
+}).catch((err)=>{
+  console.log('error!', err);
+res.redirect('/login')
+});
+});
+
+// routes for SOLE approval
+// ----------------------------------------------------
+router.route('/dashboard/sole-approval')
+
+// get all the unapproved SOLEs
+  .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Sole.getUnapproved(sessionToken)
+  .then(soles=>{
+  console.log('Here are the unapproved SOLEs: ', JSON.stringify(soles));
+soles.sesh = sesh;
+soles.config = soleConfig;
+res.render('dashboard-sole-approval', soles);
+}).catch(err=>{
+  console.log('oops! error getting unapproved soles!', err);
+res.redirect('/home')
+})
+
+});
+
+router.route('/soles/:id/approve')
+
+// approve a single SOLE
+  .get((req, res)=> {
+  console.log("looks like we're trying to approve a SOLE!");
+const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Sole.approve(req.params.id, sessionToken).then((soleData) => {
+  res.redirect('/dashboard/sole-approval?sesh='+sesh);
+}).catch((err)=>{
+  console.log('error!', err);
+res.redirect('/login')
+});
+});
+
+router.route('/soles/:id/reject')
+
+// reject a single SOLE
+  .get((req, res)=> {
+  console.log("looks like we're trying to reject a SOLE!");
+const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+Controllers.Sole.reject(req.params.id, sessionToken).then((soleData) => {
+  res.redirect('/dashboard/sole-approval?sesh='+sesh);
 }).catch((err)=>{
   console.log('error!', err);
 res.redirect('/login')

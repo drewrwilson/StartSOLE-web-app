@@ -1,70 +1,78 @@
+
 <div class="row" style="padding-top:50px;">
-  <div class="col s12 offset-m2 m8 offset-l3 l6" >
-    <h2>Register for StartSOLE</h2>
-  </div>
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel">
 
-</div>
-<div class="row" >
-    <form id="initial-registration-form" class="col s12 offset-m2 m8 offset-l3 l6" action="/register" method="post">
-
-        <div class="row">
-            <div class="input-field col s6">
-                <input id="first_name" name="first_name" type="text" class="signup-text-field validate">
-                <label for="first_name" class="signup-label">First Name</label>
-            </div>
-            <div class="input-field col s6">
-                <input id="last_name" name="last_name" type="text" class="signup-text-field validate">
-                <label for="last_name" class="signup-label">Last Name</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="email" type="email" class="signup-text-field validate">
-                <label for="email" class="signup-label">Email</label>
-            </div>
-        </div>
-        <div class="row no-bottom">
-            <div class="input-field col s12">
-                <input id="password" name="password" type="password" class="signup-text-field validate">
-                <label for="password" class="signup-label">Password</label>
-            </div>
-            <!--<div class="input-field col s6">-->
-                <!--<input id="password_confirmation" name="password_confirmation" type="password" class="signup-text-field validate" ng-model="Register.newUser.password_confirmation">-->
-                <!--<label for="password_confirmation" class="signup-label">Confirm Password</label>-->
-            <!--</div>-->
-        </div>
-        <div class="row no-bottom">
-            <div class="col s12">
-                <div class="red-text" id="error"></div>
-            </div>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            <div class="red-text" id="error"></div>
-          </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12 center">
-                <button class="signin-db btn waves-effect red waves-light" id="login">
-                  <i class="mdi-login left"></i>Register
-                </button>
+            <div class="row center-align">
+                <video width="165" height="165" autoplay muted>
+                    <source src="/images/logos/animated-logo-small.webm" type="video/webm">
+                    <img src="/images/logos/logo.svg">
+                </video>
             </div>
 
-            <div class="input-field col s12 center">
-                Already have an account?  <a href="login">Login</a>
-            </div>
-        </div>
-        <div class="row">
-            <hr>
-        </div>
+            <div class="row">
+                <form id="initial-registration-form" class="col s12" action="/register" method="post">
+
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <input id="first_name" name="first_name" type="text" class="signup-text-field validate">
+                            <label for="first_name" class="signup-label">First Name</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input id="last_name" name="last_name" type="text" class="signup-text-field validate">
+                            <label for="last_name" class="signup-label">Last Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="email" type="email" class="signup-text-field validate">
+                            <label for="email" class="signup-label">Email</label>
+                        </div>
+                    </div>
+                    <div class="row no-bottom">
+                        <div class="input-field col s12">
+                            <input id="password" name="password" type="password" class="signup-text-field validate">
+                            <label for="password" class="signup-label">Password</label>
+                        </div>
+                        <!--<div class="input-field col s6">-->
+                        <!--<input id="password_confirmation" name="password_confirmation" type="password" class="signup-text-field validate" ng-model="Register.newUser.password_confirmation">-->
+                        <!--<label for="password_confirmation" class="signup-label">Confirm Password</label>-->
+                        <!--</div>-->
+                    </div>
+                    <div class="row no-bottom">
+                        <div class="col s12">
+                            <div class="red-text" id="error"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="red-text" id="error"></div>
+                        </div>
+                        <div class="input-field col s12 center">
+                            <button class="signin-db btn waves-effect red waves-light" id="login">
+                                <i class="mdi-login left"></i>Register
+                            </button>
+                        </div>
+
+                        <div class="input-field col s12 center">
+                            Already have an account?  <a href="login">Login</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr>
+                    </div>
 
 
-        </form>
-        <div class="row">
-            <div class="col s12 center-align">
-                <span style="font-size:0.7rem;">By creating an account and logging in, I agree to the <a href="/terms-of-use" target="_blank">Terms of Use</a> and <a href="/privacy" target="_blank">Privacy Policy</a>.</span>
+                </form>
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <span style="font-size:0.7rem;">By creating an account and logging in, I agree to the <a href="/terms-of-use" target="_blank">Terms of Use</a> and <a href="/privacy" target="_blank">Privacy Policy</a>.</span>
+                    </div>
+                </div>
             </div>
+
         </div>
+    </div>
 </div>
 
 <form id="final-registration-form" class="" action="/complete-profile" method="get">

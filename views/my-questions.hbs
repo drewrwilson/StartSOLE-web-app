@@ -1,0 +1,81 @@
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a class="breadcrumb">My Questions</a>
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s6"><a href="#mine">Mine</a></li>
+                        <li class="tab col s6"><a href="#favorites">Favorites</a></li>
+                    </ul>
+                </div>
+                <div class="col s12">
+                    <div id="mine">
+                        <ul class="collection">
+                            {{#if questions.mine}}
+                                {{#each questions.mine}}
+                                    <li class="collection-item"> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a></li>
+                                {{/each}}
+                            {{else}}
+                                <li class="collection-item">no questions yet</li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                    <div id="favorites">
+                        <ul class="collection">
+                            {{#each questions.favorites}}
+                                <li class="collection-item"> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+		<!--<div class="card-panel">-->
+			<!--<div class="row center-align">-->
+			<!--<h3>My questions:</h3>-->
+			<!--<ul>-->
+			<!--{{#each questions.mine}}-->
+				<!--<li> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a> </li>-->
+			<!--{{/each}}-->
+			<!--</ul>-->
+
+			<!--<h3>My favorite questions:</h3>-->
+			<!--<ul>-->
+			<!--{{#each questions.favorites}}-->
+				<!--<li> + <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a></li>-->
+			<!--{{/each}}-->
+			<!--</ul>-->
+
+			<!--</div>-->
+		<!--</div>-->
+	</div>
+    {{#if roleData.isAdmin}}
+        <div class="col s12 m6">
+            <div class="card-panel">
+                <div class="row center-align">
+                    <h3>Administration</h3>
+                    <a href="/dashboard/question-approval?sesh={{sesh}}" class="waves-effect waves-light btn">Question Approval</a>
+                    <br><br>
+                    <a href="/dashboard?sesh={{sesh}}" class="waves-effect waves-light btn">Dashboard</a>
+                    <!--<a href="/dashboard/sole-approval?sesh={{sesh}}" class="waves-effect waves-light btn">SOLE-->
+                        <!--Approval</a>-->
+                </div>
+            </div>
+        </div>
+    {{/if}}
+</div>

@@ -63,10 +63,10 @@ function succesfulLogin(user) {
     sessionToken = sessionToken.slice(2)
     console.log('sessionToken:', sessionToken);
     $('#sesh').val(sessionToken);
+    $('#sesh2').val(sessionToken);
     console.log('submitting foobar with sessionToken: '+ $('#sesh').val());
     $("#login-with-session").submit();
   })
-
 }
 
 function login (username, password) {

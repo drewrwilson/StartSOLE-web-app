@@ -41,7 +41,7 @@
                     <div class="row no-bottom">
                         <div class="col s12">
                             <div class="red-text" id="error"></div>
-                        </div>t
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col s12">
@@ -52,6 +52,23 @@
                                 <i class="mdi-login left"></i>Register
                             </button>
                         </div>
+                        <hr>
+                        <div class="input-field col s12 center">
+                            {{!-- <p class="center">Or register with your Google or Facebook account.</p><br> --}}
+                            <div class="col s12 l6 center">
+                              <img src="/images/facebook-login-button.png" id="fb-login" onmouseover="this.src='/images/facebook-login-button-hover.png'" onmouseout="this.src='/images/facebook-login-button.png'"  />
+                            </div>
+                            <div class="col s12 l6 center">
+                              <div class="g-signin2"
+                                   data-onsuccess="onGoogleSignIn"
+                                   data-theme="dark"
+                                   data-width="200"
+                                   data-height="50"
+                                   data-longtitle="true"></div>
+                            </div>
+                        </div>
+
+
 
                         <div class="input-field col s12 center">
                             Already have an account?  <a href="login">Login</a>
@@ -80,4 +97,13 @@
     <input type="hidden" name="lastname" id="lastname" value="">
 </form>
 
+<form id="login-with-session" action="/" method="get">
+  <input type="hidden" name="sesh" id="sesh2" value="">
+  <input type="hidden" name="redirectURL" id="redirectURL" value="{{redirectURL}}">
+</form>
+
+<script id="facebook-jssdk" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10"></script>
+<meta name="google-signin-client_id" content="824307770319-v35co4sbfui42q2a93hcccvk68hfpam7.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script type="text/javascript" src="/js/login.js"></script>
 <script type="text/javascript" src="/js/register.js"></script>

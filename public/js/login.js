@@ -8,6 +8,8 @@ function setPlatform() {
 
 
 function onGoogleSignIn(googleUser) {
+  console.log("sending google login attempt event");
+  ga('send', 'event', 'onboarding.login', 'google-attempt');
   var access_token = googleUser.Zi.access_token,
       id_token     = googleUser.getAuthResponse().id_token,
       profile      = googleUser.getBasicProfile();
@@ -66,6 +68,8 @@ function succesfulLogin(user) {
     $('#sesh2').val(sessionToken);
     console.log('submitting foobar with sessionToken: '+ $('#sesh').val());
     $("#login-with-session").submit();
+    console.log("sending successful login event");
+    ga('send', 'event', 'onboarding.login', 'success');
   })
 }
 
@@ -92,6 +96,8 @@ function login (username, password) {
 }
 
 function loginFacebook () {
+  console.log("sending facebook login attempt event");
+  ga('send', 'event', 'onboarding.login', 'facebook-attempt');
   var permissions = "public_profile,email";
   Parse.FacebookUtils.logIn(permissions, {
   success: function(user) {

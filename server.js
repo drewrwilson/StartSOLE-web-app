@@ -748,6 +748,38 @@ router.route('/questions')
         }
     });
 
+
+// on routes that end in /questions/mine
+// ----------------------------------------------------
+router.route('/questions/mine')
+  .get((req,  res)=>{
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+var myQuestionsData = {soles: [], questions:[], sesh: sesh};
+
+Controllers.Question.getAll(sessionToken).then((questions)=>{
+  myQuestionsData.questions.mine = questions.questions;
+
+Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
+  myQuestionsData.questions.favorites = favoriteQuestions;
+
+myQuestionsData.sesh = sesh;
+myQuestionsData.config = soleConfig;
+res.render('my-questions', myQuestionsData); //display view with question data
+
+}).catch((err)=>{
+  console.log('Error getting fav questions!', err);
+
+res.redirect('/login');
+})
+}).catch((err)=>{
+  console.log('error getting all questions!', err);
+res.redirect('/login');
+});
+})
+
 //add a question
 router.route('/questions/add')
     .get((req, res)=> {

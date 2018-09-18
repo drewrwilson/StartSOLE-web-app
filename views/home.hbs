@@ -1,81 +1,24 @@
 <div class="row" style="padding-top:20px;">
 
     <div class="col s12 offset-m1 m10 offset-l3 l6">
-        <div class="card-panel">
-            <div class="row center-align">
+
+        <div class="card">
+            <div class="card-content center-align">
                 <img class="hide-on-small-only" src="/images/logos/logo.svg">
                 <h5 style="margin-bottom: 1em;">Let's get started</h5>
                 <a class="waves-effect waves-light btn-large" href="/sole-create?sesh={{sesh}}">Plan A Lesson</a>
-                <p>
-                    Or you can...
-                <ul>
-                    <li><a href="/soles?sesh={{sesh}}">check out your SOLE lessons</a></li>
-                    <li><a href="/questions?sesh={{sesh}}">explore our Big Questions</a></li>
-                    <li><a href="/questions/add?sesh={{sesh}}">add your Big Question</a></li>
-                </ul>
-
-                </p>
+                <br><br>
             </div>
+            <div class="card-action center-align">
+                <a href="/soles?sesh={{sesh}}">View SOLEs</a>
+                <a href="/questions?sesh={{sesh}}">Explore Questions</a>
+             </div>
         </div>
+
     </div>
-</div>
 
-
-{{!-- <h2>SOLEs</h2>
-<h3>Upcoming</h3>
-{{#if soles.upcoming }}
-<ul>
-{{#each soles.upcoming}}
-  <li>{{text}} by {{author}}</li>
-{{/each}}
-</ul>
-{{else}}
-No upcoming SOLEs yet
-{{/if}}
-
-<h3>Completed</h3>
-{{#if soles.completed }}
-<ul>
-{{#each soles.completed}}
-  <li>{{text}} by {{author}}</li>
-{{/each}}
-</ul>
-{{else}}
-No completed SOLEs yet
-{{/if}}
-
-<hr>
---}}
-
-
-
-<div class="row">
-{{#if roleData.isAdmin}}
-    <div class="col s12 m6">
-    {{else}}
-    <div class="col s12 offset-m1 m10 offset-l3 l6">
-{{/if}}
-		<div class="card-panel">
-			<div class="row center-align">
-			<h3>My questions:</h3>
-			<ul>
-			{{#each questions.mine}}
-				<li> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a> </li>
-			{{/each}}
-			</ul>
-
-			<h3>My favorite questions:</h3>
-			<ul>
-			{{#each questions.favorites}}
-				<li> + <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a></li>
-			{{/each}}
-			</ul>
-
-			</div>
-		</div>
-	</div>
     {{#if roleData.isAdmin}}
-        <div class="col s12 m6">
+        <div class="col s12 offset-m1 m10 offset-l3 l6">
             <div class="card-panel">
                 <div class="row center-align">
                     <h3>Administration</h3>

@@ -754,10 +754,11 @@ router.route('/questions')
 router.route('/questions/mine')
   .get((req,  res)=>{
   const sesh = req.query.sesh; //get the sesh token string from the query param
+  const fav = req.query.fav; //optional query parameter to set fav tab as active
 (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-var myQuestionsData = {soles: [], questions:[], sesh: sesh};
+var myQuestionsData = {soles: [], questions:[], sesh: sesh, fav: fav};
 
 Controllers.Question.getAll(sessionToken).then((questions)=>{
   myQuestionsData.questions.mine = questions.questions;
@@ -823,6 +824,7 @@ router.route('/questions/:id')
 // get the question data with a given id
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
+      const favorited = req.query.fav; //is true if question was just favorited
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
       console.log("sessionToken", sessionToken);
@@ -830,6 +832,7 @@ router.route('/questions/:id')
         Controllers.Question.getByID(req.params.id, sessionToken).then((questionData) => {
           console.log(JSON.stringify(questionData));
           questionData.sesh = sesh;
+          questionData.favorited = favorited;
           questionData.config = soleConfig;
           questionData.question.favorited = true;
           Controllers.User.getRoleData(sessionToken).then((roleData)=>{
@@ -855,7 +858,7 @@ router.route('/questions/:id/favorite')
 
         Controllers.Question.favorite(req.params.id, sessionToken).then((questionData) => {
           console.log(JSON.stringify(questionData));
-          res.redirect('/questions/'+req.params.id+'?sesh='+sesh);
+          res.redirect('/questions/'+req.params.id+'?fav=true&sesh='+sesh);
         }).catch((err)=>{
           console.log('error!', err);
           res.redirect('/login')

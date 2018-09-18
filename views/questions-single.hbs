@@ -16,10 +16,10 @@
                 <hr>
                 <div class="row hide-on-med-and-up">
                     <div class="col s12 right-align">
-                        {{!-- <a href="/questions/{{question.id}}/favorite?sesh={{sesh}}" class="fav-button teal waves-effect waves-light btn {{#if question.favorited}} disabled {{/if}}">
-                            <i class="material-icons left">favorite</i>
-                            Favorite
-                        </a> --}}
+                        <a href="/questions/{{question.id}}/favorite?sesh={{sesh}}" class="fav-button teal waves-effect waves-light btn">
+                        <i class="material-icons left">favorite</i>
+                        Favorite
+                        </a>
                         <a href="/sole-create?sesh={{sesh}}&question={{question.id}}" class="teal waves-effect waves-light
                         btn">
                             <i class="material-icons left">assignment</i>
@@ -84,11 +84,13 @@
 
         </div>
         <div class="action-buttons-header hide-on-small-only">
-            {{!-- <a class="fav-button teal btn-floating btn-large waves-effect waves-light tooltipped {{#if question.favorited}} disabled {{/if}}"
+            <a class="fav-button teal btn-floating btn-large waves-effect waves-light tooltipped"
                data-position="bottom"
-               data-tooltip="Favorite Question" href="/questions/{{question.id}}/favorite?sesh={{sesh}}">
+               data-tooltip="Favorite Question"
+               href="/questions/{{question.id}}/favorite?sesh={{sesh}}"
+            >
                 <i class="material-icons">favorite</i>
-            </a> --}}
+            </a>
             <a class="teal btn-floating btn-large waves-effect waves-light tooltipped"
                href="/sole-create?sesh={{sesh}}&question={{question.id}}"
                data-position="bottom"
@@ -98,3 +100,12 @@
         </div>
     </div>
 </div>
+
+{{#if favorited}}
+    <script>
+        $('document').ready(function(){
+            var toastHTML = '<span>Added to Favorites</span><a href="mine?fav=active&sesh={{sesh}}" class="btn-flat toast-action">View</a>';
+            M.toast({html: toastHTML})
+        });
+    </script>
+{{/if}}

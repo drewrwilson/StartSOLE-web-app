@@ -182,6 +182,20 @@ router.route('/privacy')
       res.render('privacy', {layout: 'no-sidebar.hbs', config: soleConfig});
     });
 
+// static route for email verification success
+router.route('/verify-email-success')
+  .get((req, res)=> {
+  const email = req.query.email;
+  res.render('verify-email-success', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
+});
+
+// static route for email verification failure
+router.route('/verify-email-failure')
+  .get((req, res)=> {
+  const email = req.query.email;
+res.render('verify-email-failure', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
+});
+
 // routes for resources
 router.route('/resources')
     .get((req, res)=> {
@@ -281,7 +295,8 @@ router.route('/logout')
 router.route('/login')
 // login vieww
     .get((req, res)=> {
-      res.render('login', {layout: 'prelogin.hbs', config: soleConfig});
+      const email = req.query.email;
+      res.render('login', {layout: 'prelogin.hbs', config: soleConfig, email: email});
     })
 
 // route for completing profile

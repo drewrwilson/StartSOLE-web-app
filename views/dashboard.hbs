@@ -6,16 +6,87 @@
 <div class="row">
     <div class="col s12">
         <div class="card-panel">
-            <canvas id="myChart"></canvas>
+            <ul class="tabs">
+                <li class="tab">
+                    <a href="#educators" class="active">Educators</a>
+                </li>
+                <li class="tab">
+                    <a href="#soles">SOLEs</a>
+                </li>
+                <li class="tab">
+                    <a href="#schools">Schools</a>
+                </li>
+                <li class="tab">
+                    <a href="#students">Students</a>
+                </li>
+            </ul>
+            <div id="educators">
+                <canvas id="educator-growth-chart"></canvas>
+                <div class="row">
+                    <div class="col s12 m6">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title">Educators By Grade</span>
+                                <canvas id="educator-by-grade-chart"></canvas>
+                            </div>
+                            <div class="card-action">
+                                <a href="#">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6">
+                        <div class="card">
+                            <div class="card-content">
+                                <span class="card-title">Educators By Subject</span>
+                                <canvas id="educator-by-subject-chart"></canvas>
+                            </div>
+                            <div class="card-action">
+                                <a href="#">More Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="soles">
+                <div class="col s6">
+                    <div class="card-panel">
+                        <!--<span class="card-title">-->
+                        <!--At a Glance-->
+                        <!--</span>-->
+                        total educators
+                        total SOLEs
+                        total students
+                        Educators with at least 1 SOLE planned
+                        SOLEs - stay above the level of naming the teacher
+                        school
+                        grade
+                        subject
+
+                        display educators, SOLEs, students on same line graph as different data sets.  Options are show educators, students, SOLEs.  Doughnut charts below update as well and show grade/subject dimensions
+                    </div>
+                </div>
+            </div>
+            <div id="schools">
+
+            </div>
+            <div id="students">
+                <div style="width: 300px; height: 300px">
+                    <canvas id="myChart"></canvas>
+                </div>
+
+            </div>
+
         </div>
     </div>
 </div>
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var chart = new Chart(ctx, {
+    var educatorGrowthChartCanvas = document.getElementById('educator-growth-chart').getContext('2d');
+    var educatorGrowthChart = new Chart(educatorGrowthChartCanvas, {
         // The type of chart we want to create
         type: 'line',
 
@@ -42,4 +113,157 @@
         // Configuration options go here
         options: {}
     });
+
+    var educatorByGradeChartCanvas = document.getElementById('educator-by-grade-chart');
+    var educatorByGradeData = {
+        datasets: [{
+            data: [15, 78, 35, 55, 12],
+            backgroundColor: ['#f44336','#673ab7','#03a9f4','#4caf50','#607d8b']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'Pre-K & Kindergarten',
+            'Elementary',
+            'Middle',
+            'High School',
+            'Other'
+        ]
+    };
+
+    var educatorBySubjectChartCanvas = document.getElementById('educator-by-subject-chart').getContext('2d');
+
+
+    var educatorByGradeChart = new Chart(educatorByGradeChartCanvas.getContext('2d'), {
+        type: 'doughnut',
+        data : educatorByGradeData
+    });
+    var educatorBySubjectChart = new Chart(educatorBySubjectChartCanvas, {
+        // The type of chart we want to create
+        type: 'doughnut',
+
+        // The data for our dataset
+        data : {
+            datasets: [{
+                data: [50, 40, 35, 55, 42],
+                backgroundColor: ['#f44336','#673ab7','#03a9f4','#4caf50','#607d8b']
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: [
+                'English',
+                'Math',
+                'Science',
+                'Social Studies',
+                'Other'
+            ]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+    //IDEAS
+    //limit these charts to 5 options (Math, Science, ELA, SS, and other) - then click segment for details
+    //limit grade to 'Elementary', 'Middle', and 'High' - click for details
+
+    educatorByGradeChartCanvas.onclick = function(evt) {
+        console.log("canvas click!");
+        var activePoints = educatorByGradeChart.getElementsAtEvent(evt);
+        if (activePoints[0]) {
+            var chartData = activePoints[0]['_chart'].config.data;
+            var idx = activePoints[0]['_index'];
+
+            var label = chartData.labels[idx];
+            var value = chartData.datasets[0].data[idx];
+
+            var url = "http://example.com/?label=" + label + "&value=" + value;
+            console.log(url);
+            alert(url);
+        }
+    };
+
+
+
+    //student example with working clicks
+
+    var data = {
+        datasets: [{
+            data: [300, 50, 100],
+            backgroundColor: [
+                "#F7464A",
+                "#46BFBD",
+                "#FDB45C"
+            ]
+        }],
+        labels: [
+            "Red",
+            "Green",
+            "Yellow"
+        ]
+    };
+
+    $(document).ready(
+            function() {
+                var canvas = document.getElementById("myChart");
+                var ctx = canvas.getContext("2d");
+                var myNewChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data
+                });
+
+                canvas.onclick = function(evt) {
+                    console.log("clicked canvas!");
+                    var activePoints = myNewChart.getElementsAtEvent(evt);
+                    if (activePoints[0]) {
+                        var chartData = activePoints[0]['_chart'].config.data;
+                        var idx = activePoints[0]['_index'];
+
+                        var label = chartData.labels[idx];
+                        var value = chartData.datasets[0].data[idx];
+
+                        var url = "http://example.com/?label=" + label + "&value=" + value;
+                        console.log(url);
+                        alert(url);
+                    }
+                };
+                educatorByGradeChartCanvas.onclick = function(evt) {
+                    console.log("clicked grade chart!");
+                    var activePoints = educatorByGradeChart.getElementsAtEvent(evt);
+                    if (activePoints[0]) {
+                        var chartData = activePoints[0]['_chart'].config.data;
+                        var idx = activePoints[0]['_index'];
+
+                        var label = chartData.labels[idx];
+                        var value = chartData.datasets[0].data[idx];
+
+                        var url = "http://example.com/?label=" + label + "&value=" + value;
+                        console.log(url);
+                        alert(url);
+                    }
+                };
+            }
+    );
+
+
+
+
+
+
+    //    function addData(chart, label, data) {
+//        chart.data.labels.push(label);
+//        chart.data.datasets.forEach((dataset) => {
+//            dataset.data.push(data);
+//    });
+//        chart.update();
+//    }
+//
+//    function removeData(chart) {
+//        chart.data.labels.pop();
+//        chart.data.datasets.forEach((dataset) => {
+//            dataset.data.pop();
+//    });
+//        chart.update();
+//    }
+
 </script>
+

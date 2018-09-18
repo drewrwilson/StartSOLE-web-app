@@ -16,73 +16,9 @@
         </div>
 
     </div>
-</div>
 
-
-<div class="row">
-{{#if roleData.isAdmin}}
-    <div class="col s12 m6">
-    {{else}}
-    <div class="col s12 offset-m1 m10 offset-l3 l6">
-{{/if}}
-
-    <div class="card">
-
-            <div class="card-title center-align" style="padding:5px">
-                Big Questions
-            </div>
-
-        <div class="card-tabs">
-            <ul class="tabs tabs-fixed-width" style="padding:0px 2%">
-                <li class="tab"><a href="#mine">Mine</a></li>
-                <li class="tab"><a href="#favorites">Favorites</a></li>
-            </ul>
-        </div>
-        <div class="card-content">
-            <div id="mine">
-                <ul class="collection">
-                    {{#if questions.mine}}
-                    {{#each questions.mine}}
-                        <li class="collection-item"> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a></li>
-                    {{/each}}
-                    {{else}}
-                        <li class="collection-item">no questions yetq</li>
-                    {{/if}}
-                </ul>
-            </div>
-            <div id="favorites">
-                <ul class="collection">
-                    {{#each questions.favorites}}
-                        <li class="collection-item"> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a></li>
-                    {{/each}}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-
-
-		<!--<div class="card-panel">-->
-			<!--<div class="row center-align">-->
-			<!--<h3>My questions:</h3>-->
-			<!--<ul>-->
-			<!--{{#each questions.mine}}-->
-				<!--<li> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a> </li>-->
-			<!--{{/each}}-->
-			<!--</ul>-->
-
-			<!--<h3>My favorite questions:</h3>-->
-			<!--<ul>-->
-			<!--{{#each questions.favorites}}-->
-				<!--<li> + <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a></li>-->
-			<!--{{/each}}-->
-			<!--</ul>-->
-
-			<!--</div>-->
-		<!--</div>-->
-	</div>
     {{#if roleData.isAdmin}}
-        <div class="col s12 m6">
+        <div class="col s12 offset-m1 m10 offset-l3 l6">
             <div class="card-panel">
                 <div class="row center-align">
                     <h3>Administration</h3>

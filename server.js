@@ -742,7 +742,7 @@ router.route('/questions/mine')
 (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-var myQuestionsData = {soles: [],questions:[]};
+var myQuestionsData = {soles: [], questions:[], sesh: sesh};
 
 Controllers.Question.getAll(sessionToken).then((questions)=>{
   myQuestionsData.questions.mine = questions.questions;

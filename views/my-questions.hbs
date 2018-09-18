@@ -1,10 +1,7 @@
 <div class="breadcrumb-wrapper">
     <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
-    <a class="breadcrumb">My Questions</a>
+    <a class="breadcrumb">Mine</a>
 </div>
-
-
-
 
 
 <div class="row">
@@ -19,22 +16,46 @@
                 </div>
                 <div class="col s12">
                     <div id="mine">
-                        <ul class="collection">
-                            {{#if questions.mine}}
+                        {{#if questions.mine}}
+                            <ul class="collection">
                                 {{#each questions.mine}}
-                                    <li class="collection-item"> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a></li>
+                                    <div class="card blue lighten-1 grid-item masonry-card">
+                                        <div class="card-content center-align">
+                                            <a href="/questions/{{id}}?sesh={{../sesh}}">
+                                                <div class="card-title white-text">{{text}}</div>
+                                            </a>
+                                        </div>
+                                    </div>
                                 {{/each}}
-                            {{else}}
-                                <li class="collection-item">no questions yet</li>
-                            {{/if}}
-                        </ul>
+                            </ul>
+                        {{else}}
+                            <div class="row"></div>
+                            <div class="row center-align">
+                                <p>No questions yet!</p>
+                                <a href="/questions/add?sesh={{sesh}}" class="waves-effect waves-light btn">Add A Question</a>
+                            </div>
+                        {{/if}}
                     </div>
                     <div id="favorites">
-                        <ul class="collection">
-                            {{#each questions.favorites}}
-                                <li class="collection-item"> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a></li>
-                            {{/each}}
-                        </ul>
+                            {{#if questions.favorites}}
+                            <ul class="collection">
+                                {{#each questions.favorites}}
+                                    <div class="card blue lighten-1 grid-item masonry-card">
+                                        <div class="card-content center-align">
+                                            <a href="/questions/{{id}}?sesh={{../sesh}}">
+                                                <div class="card-title white-text">{{text}}</div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </ul>
+                            {{else}}
+                                <div class="row"></div>
+                                <div class="row center-align">
+                                    <p>Nothing here yet!</p>
+                                    <a href="/questions?sesh={{sesh}}" class="waves-effect waves-light btn">Explore Questions</a>
+                                </div>
+                            {{/if}}
                     </div>
                 </div>
             </div>
@@ -42,40 +63,11 @@
     </div>
 </div>
 
-
-
-
-		<!--<div class="card-panel">-->
-			<!--<div class="row center-align">-->
-			<!--<h3>My questions:</h3>-->
-			<!--<ul>-->
-			<!--{{#each questions.mine}}-->
-				<!--<li> <a href="/questions/{{id}}?sesh={{../sesh}}">{{text}}</a> </li>-->
-			<!--{{/each}}-->
-			<!--</ul>-->
-
-			<!--<h3>My favorite questions:</h3>-->
-			<!--<ul>-->
-			<!--{{#each questions.favorites}}-->
-				<!--<li> + <a href="/questions/{{id}}?sesh={{sesh}}">{{text}}</a></li>-->
-			<!--{{/each}}-->
-			<!--</ul>-->
-
-			<!--</div>-->
-		<!--</div>-->
-	</div>
-    {{#if roleData.isAdmin}}
-        <div class="col s12 m6">
-            <div class="card-panel">
-                <div class="row center-align">
-                    <h3>Administration</h3>
-                    <a href="/dashboard/question-approval?sesh={{sesh}}" class="waves-effect waves-light btn">Question Approval</a>
-                    <br><br>
-                    <a href="/dashboard?sesh={{sesh}}" class="waves-effect waves-light btn">Dashboard</a>
-                    <!--<a href="/dashboard/sole-approval?sesh={{sesh}}" class="waves-effect waves-light btn">SOLE-->
-                        <!--Approval</a>-->
-                </div>
-            </div>
-        </div>
-    {{/if}}
-</div>
+<script type="text/javascript" src="/js/masonry-layout/dist/masonry.pkgd.min.js"></script>
+<script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
+<script>
+    $('.collection').masonry({
+        // options
+        itemSelector: '.masonry-card'
+    });
+</script>

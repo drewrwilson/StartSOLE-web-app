@@ -11,7 +11,7 @@
             <div class="row center-align">
 
             <h4>Email Verified!</h4>
-                <p>Congratulations!  You're ready to login with email address<br><strong>{{email}}</strong></p>
+                <p>Congratulations!  You're ready to login {{#if email}} with email address<br><strong>{{email}}</strong>{{/if}}</p>
             <p>
                 <a href="/login?email={{email}}" class="waves-effect waves-light btn">Log In</a>
             </p>

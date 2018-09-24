@@ -20,6 +20,13 @@ User.getRoleData = function (sessionToken) {
   })
 };
 
+//returns user ring data
+User.getRingData = function (sessionToken) {
+  return Parse.Cloud.run('webapp.getRingData', {
+    sessionToken: sessionToken
+  })
+};
+
 User.updateProfileData = function (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, schoolState, sessionToken) {
   return Parse.Cloud.run('webapp.updateProfile', {
     subjects: subjects,

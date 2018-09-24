@@ -109,18 +109,6 @@ router.route('/home')
 
     var homeData = {soles: [],questions:[]};
 
-    Controllers.Question.getAll(sessionToken).then((questions)=>{
-      console.log('questions', questions);
-      console.log('got all questions:');
-      console.log(questions);
-      console.log('---');
-      homeData.questions.mine = questions.questions;
-
-      Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
-        console.log('got fav questions:');
-        console.log(favoriteQuestions);
-        console.log('---');
-        homeData.questions.favorites = favoriteQuestions;
 
         Controllers.User.getRoleData(sessionToken).then((roleData)=>{
           console.log('got user RoleData:');
@@ -129,21 +117,21 @@ router.route('/home')
           homeData.roleData = roleData;
           homeData.sesh = sesh;
           homeData.config = soleConfig;
-          res.render('home', homeData); //display view with question data
+
+          Controllers.User.getRingData(sessionToken).then((ringData)=>{
+            console.log(ringData);
+            homeData.ringData = ringData;
+            console.log(homeData);
+            res.render('home', homeData); //display view with question data
+          }).catch((err)=>{
+              console.log('Error getting ringData for user!', err);
+          })
         }).catch((err)=>{
           console.log('Error getting roleData for user!', err);
 
           res.redirect('/home');
           })
-      }).catch((err)=>{
-        console.log('Error getting fav questions!', err);
 
-        res.redirect('/login');
-      })
-    }).catch((err)=>{
-      console.log('error getting all questions!', err);
-      res.redirect('/login');
-    });
   })
 
 // static route for History of SOLE

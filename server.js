@@ -110,27 +110,28 @@ router.route('/home')
     var homeData = {soles: [],questions:[]};
 
 
-        Controllers.User.getRoleData(sessionToken).then((roleData)=>{
-          console.log('got user RoleData:');
-          console.log(roleData);
-          console.log('---');
-          homeData.roleData = roleData;
-          homeData.sesh = sesh;
-          homeData.config = soleConfig;
+    Controllers.User.getRoleData(sessionToken).then((roleData)=>{
+      homeData.roleData = roleData;
+      homeData.sesh = sesh;
+      homeData.config = soleConfig;
 
-          Controllers.User.getRingData(sessionToken).then((ringData)=>{
-            console.log(ringData);
-            homeData.ringData = ringData;
-            console.log(homeData);
-            res.render('home', homeData); //display view with question data
-          }).catch((err)=>{
-              console.log('Error getting ringData for user!', err);
-          })
+      if (roleData.isAdmin){
+          Controllers.User.getMyRing(sessionToken).then((ring)=>{
+          homeData.ring = ring;
+          res.render('home', homeData); //display view with question data
         }).catch((err)=>{
-          console.log('Error getting roleData for user!', err);
+            console.log('Error getting ring for user!', err);
+        })
+      }
+      else {
+        res.render('home', homeData); //display view with question data
+      }
 
-          res.redirect('/home');
-          })
+    }).catch((err)=>{
+      console.log('Error getting roleData for user!', err);
+
+      res.redirect('/home');
+      })
 
   })
 
@@ -881,11 +882,17 @@ router.route('/dashboard')
 (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-Controllers.Dashboard.getUsersByMonth(sessionToken)
+const viewData = {
+  sesh: sesh,
+  config: soleConfig
+};
+
+Controllers.Dashboard.getDashboardData(sessionToken)
   .then(dashboard=>{
-  dashboard.sesh = sesh;
-  dashboard.config = soleConfig;
-  res.render('dashboard', dashboard);
+  viewData.dashboard = dashboard;
+  console.log("dashboard viewData");
+  console.log(viewData);
+  res.render('dashboard', viewData);
 }).
 catch(err => {
   console.log('oops! error getting dashboard data!', err);

@@ -116,7 +116,7 @@ router.route('/home')
       homeData.config = soleConfig;
 
       if (roleData.isRingleader){
-          Controllers.User.getMyRing(sessionToken).then((ring)=>{
+          return Controllers.User.getMyRing(sessionToken).then((ring)=>{
           homeData.ring = ring;
           res.render('home', homeData); //display view with question data
         }).catch((err)=>{
@@ -890,8 +890,6 @@ const viewData = {
 Controllers.Dashboard.getDashboardData(sessionToken)
   .then(dashboard=>{
   viewData.dashboard = dashboard;
-  console.log("dashboard viewData");
-  console.log(viewData);
   res.render('dashboard', viewData);
 }).
 catch(err => {

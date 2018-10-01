@@ -115,7 +115,7 @@ router.route('/home')
       homeData.sesh = sesh;
       homeData.config = soleConfig;
 
-      if (roleData.isAdmin){
+      if (roleData.isRingleader){
           Controllers.User.getMyRing(sessionToken).then((ring)=>{
           homeData.ring = ring;
           res.render('home', homeData); //display view with question data

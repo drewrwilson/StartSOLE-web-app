@@ -1,6 +1,7 @@
 <div class="row" style="padding-top:20px;">
+    
 
-    <div class="col s12 offset-m1 m10 {{#if roleData.isAdmin}}{{else}}offset-l3{{/if}} l6">
+    <div class="col s12 offset-m1 m10 {{#if roleData.isRingleader }}{{else}}offset-l3{{/if}} l6">
 
         <div class="card">
             <div class="card-content center-align">
@@ -17,7 +18,7 @@
 
     </div>
 
-    {{#if roleData.isAdmin}}
+    {{#if roleData.isRingleader }}
         <div class="col s12 offset-m1 m10 l6">
             <div class="card">
                 <div class="card-content center-align">
@@ -36,12 +37,12 @@
                         <div class="col s12 m6 center-align">
                             <i class="medium material-icons">assessment</i>
                             <br>
-                            <p class="flow-text">{{ring.id}} SOLEs</p>
+                            <p class="flow-text">{{ring.soleCount}} SOLEs</p>
                         </div>
                     </div>
                 </div>
                 <div class="card-action center-align">
-                    <a href="/dashboard/question-approval?sesh={{sesh}}">Question Approval</a>
+                    <!--<a href="/dashboard/question-approval?sesh={{sesh}}">Question Approval</a>-->
                     <a href="/dashboard?sesh={{sesh}}&ring={{ring.id}}">Dashboard</a>
                 </div>
             </div>

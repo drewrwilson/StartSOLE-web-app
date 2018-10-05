@@ -13,17 +13,21 @@ function onGoogleSignIn(googleUser) {
   var access_token = googleUser.Zi.access_token,
       id_token     = googleUser.getAuthResponse().id_token,
       profile      = googleUser.getBasicProfile();
-  // we have a bunch of data from Google here:
-  // console.log('Full Name: ' + profile.getName());
-  // console.log('Given Name: ' + profile.getGivenName());
-  // console.log('Family Name: ' + profile.getFamilyName());
-  // console.log("Image URL: " + profile.getImageUrl());
-  // console.log("Email: " + profile.getEmail());
   //use the Google access_token to login and/or make an account with Parse
   return Parse.Cloud.run('loginGoogleUser', {
       token: access_token
   }).then(Parse.User.become).then(function(user){
-      succesfulLogin(user);
+        setPlatform().then(data=>{
+          //Create DPVs for email, first, last, and imageURL
+          return Parse.Cloud.run('webapp.writeSocialLoginDPVs', {
+            email: profile.getEmail(),
+            first: profile.getGivenName(),
+            last: profile.getFamilyName(),
+            imageURL: profile.getImageUrl()
+          }).then(_=>{
+            successfulLogin(user);
+          });
+        });
       });
 };
 
@@ -57,20 +61,16 @@ window.fbAsyncInit = function() {
  }(document, 'script', 'facebook-jssdk'));
 
 
-function succesfulLogin(user) {
-  setPlatform().then(data=>{
-    console.log('success!');
+function successfulLogin(user) {
+  // setPlatform().then(data=>{
     $('#error').html('Success! Logging you in now...')
     sessionToken = Parse.User.current().getSessionToken();
     sessionToken = sessionToken.slice(2)
-    console.log('sessionToken:', sessionToken);
     $('#sesh').val(sessionToken);
     $('#sesh2').val(sessionToken);
-    console.log('submitting foobar with sessionToken: '+ $('#sesh').val());
     $("#login-with-session").submit();
-    console.log("sending successful login event");
     ga('send', 'event', 'onboarding.login', 'success');
-  })
+  // })
 }
 
 function login (username, password) {
@@ -78,14 +78,19 @@ function login (username, password) {
   Parse.User.logIn(username, password)
     .done(function (user){
       console.log('login success!');
-      succesfulLogin(user);
+
+      setPlatform().then(data=>{
+        successfulLogin(user);
+      });
+
     })
     .catch(function (error) {
       console.log('error! going to try lowercase version');
       Parse.User.logIn(username.toLowerCase(), password)
         .done(function (user){
-          console.log('login success!');
-          succesfulLogin(user);
+          setPlatform().then(data=> {
+            successfulLogin(user);
+        });
         })
         .catch(function (error){
           $('#error').html(error.message)
@@ -108,7 +113,9 @@ function loginFacebook () {
     } else {
       console.log("User logged in through Facebook!");
     }
-    succesfulLogin(user);
+    setPlatform().then(data=> {
+      successfulLogin(user);
+    });
   },
   error: function(user, error) {
     console.log("User cancelled the Facebook login or did not fully authorize.");

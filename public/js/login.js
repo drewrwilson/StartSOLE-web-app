@@ -1,3 +1,5 @@
+var urlParams = new URLSearchParams(window.location.search);
+
 function setPlatform() {
   return Parse.Cloud.run("platform.set", {
     app	: "web",
@@ -18,12 +20,17 @@ function onGoogleSignIn(googleUser) {
       token: access_token
   }).then(Parse.User.become).then(function(user){
         setPlatform().then(data=>{
+
+          var refer = urlParams.get('r');
+          if(!refer){refer="no-referral"}
+
           //Create DPVs for email, first, last, and imageURL
           return Parse.Cloud.run('webapp.writeSocialLoginDPVs', {
-            email: profile.getEmail(),
-            first: profile.getGivenName(),
-            last: profile.getFamilyName(),
-            imageURL: profile.getImageUrl()
+              email: profile.getEmail(),
+              first: profile.getGivenName(),
+              last: profile.getFamilyName(),
+              imageURL: profile.getImageUrl(),
+              referral: refer
           }).then(_=>{
             successfulLogin(user);
           });

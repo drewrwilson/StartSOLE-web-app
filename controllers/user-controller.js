@@ -20,9 +20,9 @@ User.getRoleData = function (sessionToken) {
   })
 };
 
-//returns user ring data
-User.getMyRing = function (sessionToken) {
-  return Parse.Cloud.run('webapp.getMyRing', {
+//returns user ring data for the first ring
+User.getMyRings = function (sessionToken) {
+  return Parse.Cloud.run('webapp.getMyRings', {
     sessionToken: sessionToken
   })
 };

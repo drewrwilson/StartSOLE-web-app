@@ -116,8 +116,8 @@ router.route('/home')
       homeData.config = soleConfig;
 
       if (roleData.isRingleader){
-          return Controllers.User.getMyRing(sessionToken).then((ring)=>{
-          homeData.ring = ring;
+          return Controllers.User.getMyRings(sessionToken).then((rings)=>{
+          homeData.rings = rings;
           res.render('home', homeData); //display view with question data
         }).catch((err)=>{
             console.log('Error getting ring for user!', err);

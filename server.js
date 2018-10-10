@@ -300,15 +300,12 @@ router.route('/complete-profile')
           console.log("get Profile Data");
           console.log(JSON.stringify(profileData));
           if( profileData.user.firstName && profileData.user.lastName ) {
-            console.log("got first and last");
           } else {
-            console.log("don't have first name and last name from db! seting them from the query param");
             profileData.user.firstName = req.query.firstname;
             profileData.user.lastName = req.query.lastname;
           }
 
           profileData.sesh = sesh;
-          console.log('profileData', profileData);
           res.render('complete-profile', {
               layout: 'no-sidebar.hbs',
               profile: profileData,

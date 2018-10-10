@@ -9,6 +9,7 @@ $("#initial-registration-form").submit(function (event) {
       last_name   = $('#last_name').val(),
       email       = $('#email').val().toLowerCase(),
       password    = $('#password').val(),
+      urlParams = new URLSearchParams(window.location.search),
       sessionToken = "";
 
   Parse.Cloud.run("user.add", {
@@ -34,7 +35,9 @@ $("#initial-registration-form").submit(function (event) {
 
     }).then(data=>{
       Parse.Cloud.run("webapp.updateEmail", {email: email, session: sessionToken}).then(data=>{
-      $( "#final-registration-form" ).submit();
+        Parse.Cloud.run("webapp.saveReferral", {referral: urlParams.get('r'), session: sessionToken}).then(data=>{
+          $( "#final-registration-form" ).submit();
+        })
     })
 
   });

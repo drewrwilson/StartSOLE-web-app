@@ -7,8 +7,10 @@ Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
 //returns data for building dashboard
-Dashboard.getDashboardData = function (sessionToken) {
+Dashboard.getDashboardData = function (ringID, sessionToken) {
+
   return Parse.Cloud.run('webapp.getDashboardData', {
+    ringID: ringID,
     sessionToken: sessionToken
   });
 }

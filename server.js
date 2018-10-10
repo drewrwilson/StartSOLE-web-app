@@ -879,6 +879,7 @@ router.route('/dashboard')
 // gets data to build a simple dashboard
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
+  const ringID = req.query.ring; //get the ring ID string from the query param
 (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
@@ -887,7 +888,7 @@ const viewData = {
   config: soleConfig
 };
 
-Controllers.Dashboard.getDashboardData(sessionToken)
+Controllers.Dashboard.getDashboardData(ringID, sessionToken)
   .then(dashboard=>{
   viewData.dashboard = dashboard;
   res.render('dashboard', viewData);

@@ -17,27 +17,29 @@ $("#initial-registration-form").submit(function (event) {
     email: email,
     pw: password
   }).then(data=>{
-    console.log('made user!');
-    console.log('now logging in as this user');
+
     Parse.User.logIn(email, password).then(data=>{
-      console.log('logged in user: ' + email);
       var currentUser = Parse.User.current();
       sessionToken = currentUser.getSessionToken();
-      console.log('current user token! ' + sessionToken);
       var sesh = sessionToken.slice(2);
-      console.log('sesh',sesh);
       $('#sesh').val(sesh);
 
       $('#firstname').val(first_name);
-      console.log('first_name',first_name);
       $('#lastname').val(last_name);
-      console.log('last_name',last_name);
 
     }).then(data=>{
       Parse.Cloud.run("webapp.updateEmail", {email: email, session: sessionToken}).then(data=>{
-        Parse.Cloud.run("webapp.saveReferral", {referral: urlParams.get('r'), session: sessionToken}).then(data=>{
-          $( "#final-registration-form" ).submit();
+        var refer = urlParams.get('r');
+        if(refer) {
+          Parse.Cloud.run("webapp.saveReferral", {referral: urlParams.get('r'), session: sessionToken}).then(data=>{
+            $( "#final-registration-form" ).submit();
         })
+        }
+        else {
+          $( "#final-registration-form" ).submit();
+        }
+
+
     })
 
   });

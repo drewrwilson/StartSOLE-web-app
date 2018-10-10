@@ -33,10 +33,12 @@ $("#initial-registration-form").submit(function (event) {
         if(refer) {
           Parse.Cloud.run("webapp.saveReferral", {referral: urlParams.get('r'), session: sessionToken}).then(data=>{
             $( "#final-registration-form" ).submit();
-        })
+          })
         }
         else {
-          $( "#final-registration-form" ).submit();
+          Parse.Cloud.run("webapp.saveReferral", {referral: 'no-referral', session: sessionToken}).then(data=>{
+            $( "#final-registration-form" ).submit();
+        })
         }
 
 

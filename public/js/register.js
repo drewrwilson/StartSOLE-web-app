@@ -41,31 +41,4 @@ function registerNewUser (first_name, last_name, email, password, refer) {
   });
 
 })
-
 }
-
-$("#initial-registration-form").submit(function (event) {
-
-  event.preventDefault();
-
-  var first_name  = $('#first_name').val(),
-      last_name   = $('#last_name').val(),
-      email       = $('#email').val().toLowerCase(),
-      password    = $('#password').val(),
-      urlParams = new URLSearchParams(window.location.search),
-      refer = urlParams.get('r');
-
-      console.log('pre-register')
-  registerNewUser (first_name, last_name, email, password, refer).then((sesh)=>{
-    console.log('post-register')
-    $('#sesh').val(sesh);
-    $('#firstname').val(first_name);
-    $('#lastname').val(last_name);
-    $( "#final-registration-form" ).submit();
-  }).catch(err=>{
-    //if there's an error signing up, eg if a user already exists with that email address, then show an error to the user
-    $('#error').html(err.message.message)
-  })
-
-
-});

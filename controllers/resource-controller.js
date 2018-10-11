@@ -422,6 +422,34 @@ Resource.getAll = function () {
       tags: [
         "investigation-help","organizer","paraphrasing"
       ]
+    },
+    {
+      file: 'SOLE_and_Gifted_Education.docx',
+      image: 'SOLE_and_Gifted_Education_matte_black.png',
+      title: 'SOLE & Gifted Education',
+      short: "A resource for employing the SOLE process to encourage gifted students.",
+      description: "The following outline has been created as a resource for Classroom Teachers and Gifted Intervention Specialists who employ the SOLE process and philosophy to encourage gifted student driven lessons that address.",
+      authors: [
+        { email: 'bgift@esclakeeriewest.org', name: 'Brenda G.'},
+        { email: 'darnold@npesc.org', name: 'Dwayne A.' }
+      ],
+      tags: [
+        "investigation-help","question-help","review-help"
+      ]
+    },
+    {
+      file: 'STARTSOLE_101_ESCLEW.pptx',
+      image: 'STARTSOLE_101_ESCLEW.png',
+      title: 'StartSOLE 101 for ESCLEW',
+      short: "An introduction to StartSOLE for the ESC of Lake Erie West in Ohio",
+      description: "This presentation was created for a training about StartSOLE for Lake Erie West ESC in Ohio",
+      authors: [
+        { email: 'bgift@esclakeeriewest.org', name: 'Brenda G.'},
+        { email: 'asmith@npesc.org', name: 'Andrea S.' }
+      ],
+      tags: [
+        "training"
+      ]
     }
   ];
   return Parse.Promise.as(resources);

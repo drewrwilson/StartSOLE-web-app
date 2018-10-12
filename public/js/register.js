@@ -1,3 +1,9 @@
+/*
+* Requires Parse
+* 
+*
+*/
+
 // connect to parse server
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
@@ -39,6 +45,5 @@ function registerNewUser (first_name, last_name, email, password, refer) {
         });
     })
   });
-
 })
 }

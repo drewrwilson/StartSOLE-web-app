@@ -114,6 +114,18 @@ main, footer {
     height: 18px;
 }
 
+.profile-badge-image {
+    float: right;
+    max-width: 7%;
+    max-height: 65px;
+}
+
+.filetype-icon-wrapper {
+    height: 100%;
+    width: 1.6em;
+    margin-left:5px;
+}
+
 /*SOLE plan cards*/
 .sole-card {
     min-height: 124px;

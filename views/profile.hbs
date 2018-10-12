@@ -13,6 +13,13 @@
                 <img src="{{user.thumb._url}}" alt="profile-picture" class="circle responsive-img profile-thumb">
             {{/if}}
             <div class="card-content">
+                {{#if user.is_trainer}}
+                    <img src="/images/profile/trainer_badge.png"
+                         class="profile-badge-image tooltipped hide-on-med-and-down"
+                         alt="trainer badge"
+                         data-position="bottom"
+                         data-tooltip="Trainer">
+                {{/if}}
                 <span class="card-title grey-text text-darken-4">{{user.name}}</span>
                 <p>Member since {{user.createdAt}}</p>
             </div>
@@ -194,4 +201,113 @@
             </div>
         </div>
     </div>
+    {{#if user.is_trainer}}
+        <div class="col s12 m10 offset-m1 l6">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <h4>Trainer Materials</h4>
+                        <hr>
+
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <div class="left-align">
+                                    <a href="https://docs.google.com/document/d/1G2ErNUcRkyHsFP6srtEqlT6q9CnyMNegDOR2OKa3chI/edit?usp=sharing"
+                                       target="_blank"
+                                       >
+                                        SOLE 101 Training Manual
+                                    </a>
+                                    <a href="https://docs.google.com/document/d/1G2ErNUcRkyHsFP6srtEqlT6q9CnyMNegDOR2OKa3chI/export?format=doc"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="Microsoft Word">
+                                        <img src="/images/profile/doc.svg" alt="">
+                                    </a>
+                                    <a href="https://docs.google.com/document/d/1G2ErNUcRkyHsFP6srtEqlT6q9CnyMNegDOR2OKa3chI/export?format=pdf"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="PDF">
+                                        <img src="/images/profile/pdf.svg" alt="">
+                                    </a>
+                                    <a href="https://docs.google.com/document/d/1G2ErNUcRkyHsFP6srtEqlT6q9CnyMNegDOR2OKa3chI/edit?usp=sharing"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="Google Doc">
+                                        <img src="/images/profile/gdoc.svg" alt="">
+                                    </a>
+                                    <!--<a href="https://docs.google.com/document/d/1G2ErNUcRkyHsFP6srtEqlT6q9CnyMNegDOR2OKa3chI/copy"-->
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="left-align">
+                                    <a href="https://docs.google.com/presentation/d/1ou5fV2BjTT69-H_rQPimMWGcZS1ucZOvh1drzjGqNP4/edit?usp=sharing"
+                                       target="_blank"
+                                       >
+                                        StartSOLE 101 Presentation
+                                    </a>
+                                    <a href="https://docs.google.com/presentation/d/1ou5fV2BjTT69-H_rQPimMWGcZS1ucZOvh1drzjGqNP4/export/ppt"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="PowerPoint">
+                                        <img src="/images/profile/ppt.svg" alt="">
+                                    </a>
+                                    <a href="https://docs.google.com/presentation/d/1ou5fV2BjTT69-H_rQPimMWGcZS1ucZOvh1drzjGqNP4/export/pdf"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="PDF">
+                                        <img src="/images/profile/pdf.svg" alt="">
+                                    </a>
+                                    <a href="https://docs.google.com/presentation/d/1ou5fV2BjTT69-H_rQPimMWGcZS1ucZOvh1drzjGqNP4/edit?usp=sharing"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="Google Doc">
+                                        <img src="/images/profile/gdoc.svg" alt="">
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="left-align">
+                                    <a href="https://docs.google.com/presentation/d/1nby61PWTdZjsP9caLB5M8rLyT5NMTYzoI5V0fJHth3w/edit?usp=sharing"
+                                       target="_blank"
+                                       >
+                                        StartSOLE 101 Presentation (1 hour version)
+                                    </a>
+                                    <a href="https://docs.google.com/presentation/d/1nby61PWTdZjsP9caLB5M8rLyT5NMTYzoI5V0fJHth3w/export/ppt"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="PowerPoint">
+                                        <img src="/images/profile/ppt.svg" alt="">
+                                    </a>
+                                    <a href="https://docs.google.com/presentation/d/1nby61PWTdZjsP9caLB5M8rLyT5NMTYzoI5V0fJHth3w/export/pdf"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="PDF">
+                                        <img src="/images/profile/pdf.svg" alt="">
+                                    </a>
+                                    <a href="https://docs.google.com/presentation/d/1nby61PWTdZjsP9caLB5M8rLyT5NMTYzoI5V0fJHth3w/edit?usp=sharing"
+                                       class="secondary-content filetype-icon-wrapper tooltipped"
+                                       target="_blank"
+                                       data-position="bottom"
+                                       data-tooltip="Google Doc">
+                                        <img src="/images/profile/gdoc.svg" alt="">
+                                    </a>
+                                </div>
+                            </li>
+
+                        </ul>
+                        <p>Please remember to share any copied content with <strong>support@startsole.org</strong> so we can learn from your experience.</p>
+                        <a href="mailto:support@startsole.org" class="btn">Get Help</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
 </div>

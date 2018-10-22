@@ -229,6 +229,8 @@ router.route('/profile')
       .then((profileData) => {
         profileData.sesh = sesh;
         profileData.config = soleConfig;
+        console.log("got this profile data!");
+        console.log(profileData);
         res.render('profile', profileData);
       });
 

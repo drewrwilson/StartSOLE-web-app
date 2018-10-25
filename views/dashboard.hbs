@@ -72,6 +72,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
 <script>
+$(document).ready(function() {
     var educatorGrowthChartCanvas = document.getElementById('educator-growth-chart').getContext('2d');
     var educatorGrowthChart = new Chart(educatorGrowthChartCanvas, {
         // The type of chart we want to create
@@ -239,7 +240,8 @@
 
         // Configuration options go here
         options: {}
-    });    
+    });
+});
     
 </script>
 

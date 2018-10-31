@@ -54,3 +54,8 @@ function initCollapsible() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems, {});
 }
+
+function initModal() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {});
+}

@@ -46,12 +46,12 @@
                     </div>
                     <div class="center col s12">
                         <br>
-                        <a href="mailto:support@startsole.org">
-                            Help! I forgot my password.
-                        </a>
-                        <!--<a data-target="password-reset-modal" class="modal-trigger">-->
+                        <!--<a href="mailto:support@startsole.org">-->
                             <!--Help! I forgot my password.-->
                         <!--</a>-->
+                        <a href="#password-reset-modal" class="modal-trigger">
+                            Help! I forgot my password.
+                        </a>
                     </div>
                 </div>
             </form>
@@ -65,8 +65,7 @@
         <p>Enter your email below and we'll send you a link to reset your password.</p>
         <div class="row">
             <div class="input-field col s12 m6 offset-m3">
-                <input type="email" class="validate" id="password-reset-email"
-                       ng-model="Login.password_reset_email">
+                <input type="email" class="validate" id="password-reset-email">
                 <label for="password-reset-email">
                     Email
                 </label>
@@ -77,12 +76,12 @@
         <a class="modal-action modal-close waves-effect waves-red btn-flat">
             Cancel
         </a>
-        <a class="modal-action modal-close waves-effect waves-green btn-flat"
-           ng-click="Login.sendPasswordReset()">
+        <a class="modal-action modal-close waves-effect waves-green btn-flat">
             Send Reset Email
         </a>
     </div>
 </div>
+
 <form id="login-with-session" action="/" method="get">
   <input type="hidden" name="sesh" id="sesh" value="">
   <input type="hidden" name="redirectURL" id="redirectURL" value="{{redirectURL}}">

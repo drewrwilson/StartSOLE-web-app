@@ -55,10 +55,3 @@ User.isProfileComplete = function (sessionToken) {
     sessionToken: sessionToken
   })
 };
-
-//reset a user's password
-User.resetPassword = function (email) {
-  return Parse.Cloud.run("webapp.resetPassword", {
-    email: email
-  })
-};

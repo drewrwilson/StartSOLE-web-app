@@ -13,6 +13,9 @@
             <div class="card-action center-align">
                 <a href="/soles?sesh={{sesh}}">View SOLEs</a>
                 <a href="/questions?sesh={{sesh}}">Explore Questions</a>
+                {{#if roleData.isAdmin }}
+                    <a class="red-text" href="/admin?sesh={{sesh}}">Admin</a>
+                {{/if}}
              </div>
         </div>
 

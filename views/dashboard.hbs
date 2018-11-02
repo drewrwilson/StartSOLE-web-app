@@ -23,7 +23,10 @@
                     <div class="col s12 m6">
                         <div class="card">
                             <div class="card-content">
-                                <span class="card-title">Educators By Grade</span>
+                                <span class="card-title">
+                                    Educators By Grade
+                                    <a id="resetEducatorByGrade" class="right waves-effect waves-light btn-small">reset</a>
+                                </span>
                                 <canvas id="educator-by-grade-chart"></canvas>
                             </div>
                         </div>
@@ -31,7 +34,10 @@
                     <div class="col s12 m6">
                         <div class="card">
                             <div class="card-content">
-                                <span class="card-title">Educators By Subject</span>
+                                <span class="card-title">
+                                    Educators By Subject
+                                    <a id="resetEducatorBySubject" class="right waves-effect waves-light btn-small">reset</a>
+                                </span>
                                 <canvas id="educator-by-subject-chart"></canvas>
                             </div>
                         </div>
@@ -102,7 +108,7 @@ $(document).ready(function() {
         options: {}
     });
 
-    var educatorByGradeChartCanvas = document.getElementById('educator-by-grade-chart').getContext('2d');
+    var educatorByGradeChartCanvas = document.getElementById('educator-by-grade-chart');
     var educatorByGradeData = {
         datasets: [{
             data: [{{dashboard.userCountByGradeBand}}],
@@ -118,25 +124,138 @@ $(document).ready(function() {
             'Other'
         ]
     };
-    var educatorByGradeChart = new Chart(educatorByGradeChartCanvas, {
+    var educatorByGradeDataKinder = {
+        datasets: [{
+            data: [{{dashboard.userCountByGrade.[edu.pre-k]}},{{dashboard.userCountByGrade.[edu.k]}}],
+            backgroundColor: ['#f44336','#673ab7']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'Pre-K',
+            'Kindergarten'
+        ]
+    };
+    var educatorByGradeDataElementary = {
+        datasets: [{
+            data: [
+                {{dashboard.userCountByGrade.[edu.1]}},
+                {{dashboard.userCountByGrade.[edu.2]}},
+                {{dashboard.userCountByGrade.[edu.3]}},
+                {{dashboard.userCountByGrade.[edu.4]}},
+                {{dashboard.userCountByGrade.[edu.5]}},
+                {{dashboard.userCountByGrade.[edu.6]}},
+            ],
+            backgroundColor: ['#f44336','#673ab7','#03a9f4','#4caf50','#607d8b','#ff9800']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            '1st grade',
+            '2nd grade',
+            '3rd grade',
+            '4th grade',
+            '5th grade',
+            '6th grade'
+        ]
+    };
+    var educatorByGradeDataMiddle = {
+        datasets: [{
+            data: [{{dashboard.userCountByGrade.[edu.7]}},{{dashboard.userCountByGrade.[edu.8]}}],
+            backgroundColor: ['#f44336','#673ab7']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            '7th grade',
+            '8th grade'
+        ]
+    };
+    var educatorByGradeDataHigh = {
+        datasets: [{
+            data: [
+                {{dashboard.userCountByGrade.[edu.9]}},
+                {{dashboard.userCountByGrade.[edu.10]}},
+                {{dashboard.userCountByGrade.[edu.11]}},
+                {{dashboard.userCountByGrade.[edu.12]}}
+            ],
+            backgroundColor: ['#f44336','#673ab7','#03a9f4','#4caf50']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            '9th grade',
+            '10th grade',
+            '11th grade',
+            '12th grade'
+        ]
+    };
+    var educatorByGradeChart = new Chart(educatorByGradeChartCanvas.getContext('2d'), {
         type: 'doughnut',
         data : educatorByGradeData
     });
-//    educatorByGradeChartCanvas.onclick = function(evt) {
-//        console.log("canvas click!");
-//        var activePoints = educatorByGradeChart.getElementsAtEvent(evt);
-//        if (activePoints[0]) {
-//            var chartData = activePoints[0]['_chart'].config.data;
-//            var idx = activePoints[0]['_index'];
-//
-//            var label = chartData.labels[idx];
-//            var value = chartData.datasets[0].data[idx];
-//
-//            var url = "http://example.com/?label=" + label + "&value=" + value;
-//            console.log(url);
-//            alert(url);
-//        }
-//    };
+
+    //handle drilldown clicks
+    educatorByGradeChartCanvas.onclick = function(evt) {
+        console.log("canvas click!");
+        var activePoints = educatorByGradeChart.getElementsAtEvent(evt);
+        if (activePoints[0]) {
+            var chartData = activePoints[0]['_chart'].config.data;
+            var idx = activePoints[0]['_index'];
+
+            var gradeBand = chartData.labels[idx];
+            var value = chartData.datasets[0].data[idx];
+
+            switch(gradeBand) {
+                case 'Pre-K & Kindergarten':
+                    educatorByGradeChart.destroy();
+                    educatorByGradeChart = new Chart(educatorByGradeChartCanvas.getContext('2d'), {
+                        type: 'doughnut',
+                        data : educatorByGradeDataKinder
+                    });
+                    $("#resetEducatorByGrade").show();
+                    break;
+                case 'Elementary':
+                    educatorByGradeChart.destroy();
+                    educatorByGradeChart = new Chart(educatorByGradeChartCanvas.getContext('2d'), {
+                        type: 'doughnut',
+                        data : educatorByGradeDataElementary
+                    });
+                    $("#resetEducatorByGrade").show();
+                    break;
+                case 'Middle':
+                    educatorByGradeChart.destroy();
+                    educatorByGradeChart = new Chart(educatorByGradeChartCanvas.getContext('2d'), {
+                        type: 'doughnut',
+                        data : educatorByGradeDataMiddle
+                    });
+                    $("#resetEducatorByGrade").show();
+                    break;
+                case 'High School':
+                    educatorByGradeChart.destroy();
+                    educatorByGradeChart = new Chart(educatorByGradeChartCanvas.getContext('2d'), {
+                        type: 'doughnut',
+                        data : educatorByGradeDataHigh
+                    });
+                    $("#resetEducatorByGrade").show();
+                    break;
+                default:
+                    console.log("default click");
+            }
+
+        }
+    };
+
+    $("#resetEducatorByGrade").hide();
+    $("#resetEducatorByGrade").click(function(){
+        educatorByGradeChart.destroy();
+        educatorByGradeChart = new Chart(educatorByGradeChartCanvas.getContext('2d'), {
+            type: 'doughnut',
+            data : educatorByGradeData
+        });
+        $("#resetEducatorByGrade").hide();
+    });
+
 
     var educatorBySubjectChartCanvas = document.getElementById('educator-by-subject-chart').getContext('2d');
     var educatorBySubjectData = {
@@ -154,6 +273,39 @@ $(document).ready(function() {
             'Other'
         ]
     };
+    var educatorsBySubjectDataOther = {
+        datasets: [{
+            data: [
+                {{dashboard.userCountBySubject.[top.engineering]}},
+                {{dashboard.userCountBySubject.[top.englishlanguagedevelopment]}},
+                {{dashboard.userCountBySubject.[top.financialliteracy]}},
+                {{dashboard.userCountBySubject.[top.health]}},
+                {{dashboard.userCountBySubject.[top.thearts]}},
+                {{dashboard.userCountBySubject.[top.libmedia-infolit]}},
+                {{dashboard.userCountBySubject.[top.lifeskills]}},
+                {{dashboard.userCountBySubject.[top.physicaleducation]}},
+                {{dashboard.userCountBySubject.[top.technology]}},
+                {{dashboard.userCountBySubject.[top.thearts]}},
+                {{dashboard.userCountBySubject.[top.foreignlanguage]}},
+            ],
+            backgroundColor: ['#f44336','#673ab7','#03a9f4','#4caf50','#607d8b']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'Engineering',
+            'English Language Development',
+            'Financial Literacy',
+            'Health',
+            'The Arts',
+            'Library/Media',
+            'Life Skills',
+            'Physical Education',
+            'Technology',
+            'The Arts',
+            'World Languages',
+        ]
+    };
     var educatorBySubjectChart = new Chart(educatorBySubjectChartCanvas, {
         // The type of chart we want to create
         type: 'doughnut',
@@ -163,6 +315,42 @@ $(document).ready(function() {
 
         // Configuration options go here
         options: {}
+    });
+
+    //handle drilldown clicks
+        educatorBySubjectChartCanvas.onclick = function(evt) {
+        var activePoints = educatorBySubjectChart.getElementsAtEvent(evt);
+        if (activePoints[0]) {
+            var chartData = activePoints[0]['_chart'].config.data;
+            var idx = activePoints[0]['_index'];
+
+            var subjectBand = chartData.labels[idx];
+            var value = chartData.datasets[0].data[idx];
+
+            switch(subjectBand) {
+                case 'Other':
+                    educatorBySubjectChart.destroy();
+                    educatorBySubjectChart = new Chart(educatorBySubjectChartCanvas.getContext('2d'), {
+                        type: 'doughnut',
+                        data : educatorBySubjectChartDataOther
+                    });
+                    $("#resetEducatorBySubject").show();
+                    break;
+                default:
+                    console.log("default click");
+            }
+
+        }
+    };
+
+    $("#resetEducatorBySubject").hide();
+    $("#resetEducatorBySubject").click(function(){
+        educatorBySubjectChart.destroy();
+        educatorBySubjectChart = new Chart(educatorBySubjectChartCanvas.getContext('2d'), {
+            type: 'doughnut',
+            data : educatorBySubjectData
+        });
+        $("#resetEducatorBySubject").hide();
     });
 
     var soleGrowthChartCanvas = document.getElementById('soles-growth-chart').getContext('2d');
@@ -242,6 +430,6 @@ $(document).ready(function() {
         options: {}
     });
 });
-    
+
 </script>
 

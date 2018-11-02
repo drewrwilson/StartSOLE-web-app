@@ -135,6 +135,19 @@ router.route('/home')
 
   })
 
+// static route for Admin Page
+router.route('/admin')
+  .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+const viewData = {sesh: sesh};
+viewData.config = soleConfig;
+res.render('admin', viewData);
+});
+
+
 // static route for History of SOLE
 router.route('/history')
     .get((req, res)=> {

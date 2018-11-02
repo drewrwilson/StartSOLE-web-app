@@ -179,7 +179,7 @@ function resetPassword () {
   }).then(function(response){
     console.log(response);
     if (response.error) {
-      var message = "Error: " + err;
+      var message = "Error: " + response.message;
       M.toast({html: message});
     } else {
       var message = "Password reset email sent to " + email;

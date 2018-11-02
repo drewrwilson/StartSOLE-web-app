@@ -1,3 +1,4 @@
+
 var urlParams = new URLSearchParams(window.location.search);
 
 function setPlatform() {
@@ -168,3 +169,22 @@ function mobileAndTabletcheck() {
   }
   return check;
 };
+
+function resetPassword () {
+  //get the email address from the modal
+  var email = document.getElementById('password-reset-email').value
+
+  Parse.Cloud.run("webapp.resetPassword", {
+    email: email
+  }).then(function(err){
+    console.log(err);
+    if (err) {
+      var message = "Error: " + err;
+      M.toast({html: message});
+    } else {
+      var message = "Password reset email sent to " + email;
+      M.toast({html: message});
+    }
+    })
+
+}

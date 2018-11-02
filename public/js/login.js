@@ -176,9 +176,9 @@ function resetPassword () {
 
   Parse.Cloud.run("webapp.resetPassword", {
     email: email
-  }).then(function(err){
-    console.log(err);
-    if (err) {
+  }).then(function(response){
+    console.log(response);
+    if (response.error) {
       var message = "Error: " + err;
       M.toast({html: message});
     } else {

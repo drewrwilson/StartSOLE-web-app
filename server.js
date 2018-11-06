@@ -100,10 +100,12 @@ router.route('/')
       })
 
 });
+// get the count of users today and display it on a slack-friendly webpage
 router.route('/userstoday')
     .get((req,  res)=> {
-        Controllers.User.usersToday().then(data=>{
-            console.log('userstoday: ', data)
+        Controllers.User.usersToday().then(numberOfUsers=>{
+            console.log('users today: ', numberOfUsers);
+            res.render('userstoday', {layout: 'blank.hbs', numberOfUsers: numberOfUsers}); //display slack-friendly webpage
         })
     })
 

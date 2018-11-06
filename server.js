@@ -100,6 +100,12 @@ router.route('/')
       })
 
 });
+router.route('/userstoday')
+    .get((req,  res)=> {
+        Controllers.User.usersToday().then(data=>{
+            console.log('userstoday: ', data)
+        })
+    })
 
 router.route('/home')
   .get((req,  res)=>{
@@ -312,6 +318,7 @@ router.route('/complete-profile')
         .then((profileData) => {
           console.log("get Profile Data");
           console.log(JSON.stringify(profileData));
+
           if( profileData.user.firstName && profileData.user.lastName ) {
           } else {
             profileData.user.firstName = req.query.firstname;

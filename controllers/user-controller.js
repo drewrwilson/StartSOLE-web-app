@@ -55,3 +55,10 @@ User.isProfileComplete = function (sessionToken) {
     sessionToken: sessionToken
   })
 };
+
+//gives number of users signed up today
+User.usersToday = function () {
+  return Parse.Cloud.run("webapp.usersToday", {
+
+  })
+};

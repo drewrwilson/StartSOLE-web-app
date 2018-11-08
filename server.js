@@ -143,16 +143,54 @@ router.route('/home')
 
   })
 
-// static route for Admin Page
+// route for Admin Page
 router.route('/admin')
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-const viewData = {sesh: sesh};
-viewData.config = soleConfig;
-res.render('admin', viewData);
+  const adminData = {sesh: sesh};
+  adminData.config = soleConfig;
+  adminData.layout = 'no-footer.hbs';
+
+  Controllers.User.getRoleData(sessionToken).then((roleData)=>{
+    adminData.roleData = roleData;
+    if(!roleData.isAdmin){
+      res.redirect('/home');
+    }
+    else {
+      Controllers.User.adminSummaryData().then((summaryData)=>{
+        adminData.usersToday = summaryData;
+        res.render('admin', adminData);
+      });
+    }
+  }).catch((err)=>{
+    res.redirect('/home');
+  })
+});
+
+// route for browsing all SOLEs.  Admin only
+router.route('/admin/browse-soles')
+  .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+  const adminData = {sesh: sesh};
+  adminData.config = soleConfig;
+
+  Controllers.User.getRoleData(sessionToken).then((roleData)=>{
+    adminData.roleData = roleData;
+    if(!roleData.isAdmin){
+      res.redirect('/home');
+    }
+    else {
+      res.render('admin-browse-soles', adminData);
+    }
+  }).catch((err)=>{
+    res.redirect('/home');
+  })
 });
 
 

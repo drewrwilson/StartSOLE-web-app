@@ -1,15 +1,149 @@
+<style>
+    #map {
+        height: 600px;
+    }
+</style>
+
 <div class="breadcrumb-wrapper">
     <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
     <a class="breadcrumb">Admin</a>
 </div>
 
-<div class="row">
-    <div class="col m12 l10 offset-l1">
-        <div class="card-panel">
-            <div data-type="AwesomeTableView" data-viewID="-LQJRGnSRSkM8ph9JXrT"></div>
+{{#if roleData.isAdmin }}
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4>{{usersToday}} new user(s) today</h4>
+                <a href="/admin/browse-soles?sesh={{sesh}}" class="waves-effect waves-light btn">Browse All SOLEs</a>
+                <br>
+                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=1228212082&amp;format=interactive"></iframe>
+
+
+                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=1173715217&amp;format=interactive"></iframe>
+
+                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=42978245&amp;format=interactive"></iframe>
+
+                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=484086850&amp;format=interactive"></iframe>
+
+            </div>
         </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div id="map"></div>
+                <div class="row">
+                    <div class="col s12 m4">
+                        <form action="#">
+                            <p class="range-field">
+                                <input type="range" id="number-of-soles" min="0" max="100" value="0" onchange="changeMap();"/>
+                                <label for="number-of-soles">Number of SOLEs</label>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="col s12 m4">
+                        <input type="text" id="start-date" class="datepicker" placeholder="Enter a Date" onchange="changeMap();">
+                        <label for="start-date-date">Start Date</label>
+                    </div>
+                    <div class="col s12 m4">
+                        <input type="text" id="end-date" class="datepicker" placeholder="Enter a Date" onchange="changeMap();">
+                        <label for="end-date">End Date</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <select id="client" onchange="changeMap();">
+                            <option value="all" disabled selected>Choose your option</option>
+                            <option value="and">Android</option>
+                            <option value="ios">iOS</option>
+                            <option value="web">Web</option>
+                            <option value="">Unknown</option>
+                            <option value="all">Show All</option>
+                        </select>
+                        <label>Client</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/materialize.min.js"></script>
+    <script>
+
+        var styleArray = [
+            { "featureType": "water", "elementType": "geometry.fill", "stylers": [{ "color": "#bae8e4" }] },
+            { "featureType": "poi", "elementType": "geometry", "stylers": [{ "visibility": "off" }] },
+            { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#fff" }] },
+            { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+            { "featureType": "administrative.province","elementType": "geometry.stroke", "stylers": [{"visibility": "on"},{"weight": 2.5}]},
+            { "featureType": "road", "stylers": [{ "visibility": "off" }] },
+            { "featureType": "landscape", "stylers": [{ "color": "#fafafa" }] }
+        ];
+        var map;
+        var layer;
+
+        $('document').ready(function(){
+            var elems = document.querySelectorAll('.datepicker');
+            M.Datepicker.init(elems, {
+                format: 'mm/dd/yy'
+            });
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems, {});
+        });
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+//            center: {lat: 40.0083672, lng: -75.7364713}, //Downingtown, PA
+//                 center: {lat: 40.3436036, lng: -82.5155287}, //Ohio
+           center: {lat: 39.8283459, lng: -98.5794797}, //US
+//                 zoom: 8, //Ohio
+               zoom: 3, //US
+//                 disableDefaultUI: true,
+                styles: styleArray
+            });
+
+            layer = new google.maps.FusionTablesLayer({
+                query: {
+                    select: '\'address\'',
+                    from: '1oESSfoDnmEG4BHCCRpDQ8-LDSGVaWJ7nLJyZSqvK'
+                }
+            });
+            layer.setMap(map);
+        }
+
+        function changeMap() {
+            console.log("map change!");
+            var whereClause = "'tester' = 'FALSE' ";
+            var searchString = document.getElementById('number-of-soles').value.replace(/'/g, "\\'");
+            var numSoles = $("#number-of-soles").val();
+            var startDate = $("#start-date").val();
+            var endDate = $("#end-date").val();
+            var client = $("#client").val();
+            if(numSoles>0){
+              whereClause += "AND 'soles' >= '" + numSoles + "' ";
+            }
+            if(startDate.length>0){
+                whereClause += "AND 'created' >= '" + startDate + "' ";
+            }
+            if(endDate.length>0){
+                whereClause += "AND 'created' <= '" + endDate + "' ";
+            }
+            if(client != "all"){
+                whereClause += "AND 'client' = '" + client + "' ";
+            }
 
 
-<script src="https://awesome-table.com/AwesomeTableInclude.js"></script>
+            layer.setOptions({
+                query: {
+                    select: "col12",
+                    from: "1oESSfoDnmEG4BHCCRpDQ8-LDSGVaWJ7nLJyZSqvK",
+                    where: whereClause
+                    // where: "'created' = '2018-10-30/30/18'"
+                }
+            });
+        }
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_4aqJcZYOl-dHZdtZSht3rOolk8JzO3I&callback=initMap">
+    </script>
+
+
+{{/if}}

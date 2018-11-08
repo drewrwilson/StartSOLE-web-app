@@ -1,0 +1,20 @@
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a href="/admin?sesh={{sesh}}" class="breadcrumb">Admin</a>
+    <a class="breadcrumb">Browse SOLEs</a>
+</div>
+
+{{#if roleData.isAdmin }}
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <div data-type="AwesomeTableView" data-viewID="-LQJRGnSRSkM8ph9JXrT"></div>
+            </div>
+
+        </div>
+    </div>
+{{/if}}
+
+
+<script src="https://awesome-table.com/AwesomeTableInclude.js"></script>

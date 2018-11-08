@@ -62,3 +62,10 @@ User.usersToday = function () {
 
   })
 };
+
+//gives a summary of all admin dashboard data
+User.adminSummaryData = function () {
+  return Parse.Cloud.run("webapp.adminSummaryData", {
+
+  })
+};

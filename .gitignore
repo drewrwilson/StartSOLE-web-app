@@ -59,3 +59,7 @@ typings/
 
 package-lock.json
 .DS_Store
+
+misc.xml
+modules.xml
+vcs.xml

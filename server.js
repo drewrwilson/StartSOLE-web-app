@@ -109,6 +109,39 @@ router.route('/userstoday')
         })
     })
 
+// on routes that end in /stats/:param
+// ----------------------------------------------------
+router.route('/stats/:param')
+  // get statistics for the requested param, or return a help message.  NB - if you're testing this locally change post to get.
+  .get((req, res)=> {
+
+    // Controllers.Stats.usersToday().then(numberOfUsers=>{
+    //   console.log('users today: ', numberOfUsers);
+    //   res.render('userstoday', {layout: 'blank.hbs', numberOfUsers: numberOfUsers}); //display slack-friendly webpage
+    // })
+
+    Controllers.Stats.getStat(req.params.param).then(responseMessage=>{
+      res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+    })
+
+
+
+    // Controllers.Sole.getByID(req.params.param, sessionToken)
+    //   .then((singleSole) => {
+    //     //in case the id of the sole is invalid
+    //     console.log(JSON.stringify(singleSole));
+    //     singleSole.sesh = sesh;
+    //     singleSole.config = soleConfig;
+    //     res.render('soles-single', singleSole);
+    //   }).catch((err)=>{
+    //   console.log('error!', err);
+    //   res.redirect('/login')
+    // })
+  });
+
+
+
+
 router.route('/home')
   .get((req,  res)=>{
     const sesh = req.query.sesh; //get the sesh token string from the query param

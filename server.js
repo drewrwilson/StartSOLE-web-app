@@ -123,13 +123,9 @@ router.route('/stats/:param')
 // ----------------------------------------------------
 router.route('/random-picture')
       .get((req, res)=> {
-        // const viewData = {picture: Controllers.Test.randomPicture()};
-        console.log("random picture!");
         const pic = Controllers.Test.randomPicture();
-        res.render('random-picture', {layout: 'blank.hbs', randomPicture: pic});
+        res.sendFile("images/test-images/"+pic,{root: __dirname + '/public/'});
       });
-
-
 
 
 router.route('/home')

@@ -107,37 +107,27 @@ router.route('/userstoday')
             console.log('users today: ', numberOfUsers);
             res.render('userstoday', {layout: 'blank.hbs', numberOfUsers: numberOfUsers}); //display slack-friendly webpage
         })
-    })
+    });
 
 // on routes that end in /stats/:param
 // ----------------------------------------------------
 router.route('/stats/:param')
   // get statistics for the requested param, or return a help message.  NB - if you're testing this locally change post to get.
   .get((req, res)=> {
-
-    // Controllers.Stats.usersToday().then(numberOfUsers=>{
-    //   console.log('users today: ', numberOfUsers);
-    //   res.render('userstoday', {layout: 'blank.hbs', numberOfUsers: numberOfUsers}); //display slack-friendly webpage
-    // })
-
-    Controllers.Stats.getStat(req.params.param).then(responseMessage=>{
+    Controllers.Stats.getStat(req.params.param).then(responseMessage => {
       res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
     })
-
-
-
-    // Controllers.Sole.getByID(req.params.param, sessionToken)
-    //   .then((singleSole) => {
-    //     //in case the id of the sole is invalid
-    //     console.log(JSON.stringify(singleSole));
-    //     singleSole.sesh = sesh;
-    //     singleSole.config = soleConfig;
-    //     res.render('soles-single', singleSole);
-    //   }).catch((err)=>{
-    //   console.log('error!', err);
-    //   res.redirect('/login')
-    // })
   });
+
+//on routes that end in /random-picture
+// ----------------------------------------------------
+router.route('/random-picture')
+      .get((req, res)=> {
+        // const viewData = {picture: Controllers.Test.randomPicture()};
+        console.log("random picture!");
+        const pic = Controllers.Test.randomPicture();
+        res.render('random-picture', {layout: 'blank.hbs', randomPicture: pic});
+      });
 
 
 

@@ -66,7 +66,7 @@
                            class="validate"
                            value="{{sole.planned_duration}}">
                     <label for="duration">How many minutes<span class="hide-on-large-only"> is your class</span>?</label>
-                    <span id="duration_helper_text" class="red-text helper-text"></span>
+                    <span id="duration_helper_text" class="red-text helper-text" data-error="SOLEs should be at least 30 minutes"></span>
                 </div>
                 <!--grade-->
                 <div class="input-field col s12 m10 offset-m1 l4">
@@ -416,6 +416,17 @@
 
 <script type="text/javascript">
 var targetObservationCheckedCount = 0;
+
+$("select[required]").css({display: "block", height: 1, padding: 0, width: 1, position: 'absolute', border:'none'});
+$('input[required]').on('invalid', function(e){
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $(":invalid:nth-child(1)").offset().top-$(":invalid:nth-child(1)").height()-25
+    }, 1000);
+
+});
+
+
+
 function updateCheckboxes () {
   targetObservationCheckedCount = $('.target-observation-col input:checked').length
 
@@ -433,7 +444,7 @@ $('.target-observation-col input').change(function () {
 $('#soles-add-form').submit(function (e) {
   if(targetObservationCheckedCount < 1) {
     e.preventDefault();
-    M.toast({html: 'Please select at least one target observation'})
+    M.toast({html: 'Please select at least one student behavior to focus on'})
   }
 })
 </script>

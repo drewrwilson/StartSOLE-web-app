@@ -17,13 +17,53 @@
             {{#if sole.observations}}
                 <h5>Review Photos</h5>
                 <div class="row">
+                    <div class="input-field col s12 m6">
+                        <input id="text-filter" type="text" class="validate">
+                        <label for="text-filter">Search Notes & Feedback</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <select id="tag-filter" onchange="filterSelection()">
+                            <option value="show-all" selected>Show All</option>
+                            {{#each sole.tags}}
+                                <option value="{{@key}}">{{this}}</option>
+                            {{/each}}
+                        </select>
+                        <label>Filter</label>
+                    </div>
+                </div>
+                <div class="row">
                     {{#each sole.observations}}
                         {{#if image.full}}
-                            <div class="col s12 m4 l3 xl2">
-                                <div class="materialbox-preview thumbnail">
-                                    <img class="materialboxed responsive-img "
-                                         src="{{ image.full }}"
-                                    >
+                            <div class="col s12 m6 l4 xl3 sole-observation-card-col show-all {{#each image.tags}}{{type}} {{/each}}">
+                                <div id="observation-{{id}}" class="card small hoverable sole-observation">
+                                    <div class="card-image">
+                                        <img class="materialboxed" width="650" src="{{ image.full }}">
+                                    </div>
+                                    <div class="card-content">
+                                        <span class="card-title activator grey-text text-darken-4">
+                                            {{ image.time }}
+                                            <i class="material-icons right">more_vert</i>
+                                            {{#each image.tags}}
+                                                <i class="observation-tag material-icons right tooltipped"
+                                                   data-position="bottom"
+                                                   data-tooltip="{{text}}"
+                                                >{{icon}}</i>
+                                            {{/each}}
+                                        </span>
+                                    </div>
+                                    <div class="card-reveal">
+                                        <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                                        {{#if image.feedback}}
+                                            <p>
+                                                <strong>Feedback: </strong>{{image.feedback}}
+                                            </p>
+                                        {{/if}}
+                                        {{#if image.notes}}
+                                            <p>
+                                                <strong>Notes: </strong>{{image.notes}}
+                                            </p>
+                                        {{/if}}
+                                    </div>
                                 </div>
                             </div>
                         {{/if}}
@@ -234,3 +274,22 @@
 {{> sole-config-frontend-js}}
 <script type="text/javascript" src="/js/dropzone.min.js"></script>
 <script type="text/javascript" src="/js/img-upload.js"></script>
+
+<script>
+
+    function filterSelection() {
+        var tag = $('#tag-filter').val();
+        $('.sole-observation-card-col').hide();
+        $('.'+tag).show();
+    }
+
+    $(document).ready(function(){
+        $("#text-filter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".sole-observation-card-col").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>

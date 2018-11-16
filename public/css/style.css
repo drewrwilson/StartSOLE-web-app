@@ -209,7 +209,7 @@ main, footer {
 }
 
 .no-bottom-margin {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
 /* slider styling */
@@ -233,6 +233,32 @@ main, footer {
 
 .noUi-horizontal .noUi-handle {
     right: -7px !important;
+}
+
+/*soles-reflect*/
+.card.sole-observation {
+    height: 200px;
+}
+
+.sole-observation .card-image {
+    max-height: 75% !important;
+}
+
+.sole-observation .card-content {
+    max-height: 25% !important;
+    padding: 6px;
+}
+
+.observation-tag {
+    opacity: 0.5;
+}
+
+.sole-observation .card-reveal {
+    padding: 12px !important;
+}
+
+.sole-observation .card-reveal p {
+    margin: auto;
 }
 
 /*questions*/

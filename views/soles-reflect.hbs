@@ -14,6 +14,8 @@
     <div class="col s12">
         <div class="card-panel">
 
+            <i class="large"></i>
+
             {{#if sole.observations}}
                 <h5>Review Photos</h5>
                 <div class="row">
@@ -44,10 +46,10 @@
                                             {{ image.time }}
                                             <i class="material-icons right">more_vert</i>
                                             {{#each image.tags}}
-                                                <i class="observation-tag material-icons right tooltipped"
+                                                <i class="{{icon}} observation-tag right tooltipped"
                                                    data-position="bottom"
                                                    data-tooltip="{{text}}"
-                                                >{{icon}}</i>
+                                                ></i>
                                             {{/each}}
                                         </span>
                                     </div>

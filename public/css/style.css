@@ -1,3 +1,110 @@
+@font-face {
+    font-family: 'startsole';
+    src:  url('../fonts/startsole.eot?cb9z2v');
+    src:  url('../fonts/startsole.eot?cb9z2v#iefix') format('embedded-opentype'),
+    url('../fonts/startsole.ttf?cb9z2v') format('truetype'),
+    url('../fonts/startsole.woff?cb9z2v') format('woff'),
+    url('../fonts/startsole.svg?cb9z2v#startsole') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="sole-icon-"], [class*=" sole-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'startsole' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.sole-icon-help-technology:before {
+    content: "\e90a";
+}
+.sole-icon-vocabulary:before {
+    content: "\e90b";
+}
+.sole-icon-desire-to-learn:before {
+    content: "\e90c";
+}
+.sole-icon-help-learn:before {
+    content: "\e90d";
+}
+.sole-icon-dialogue:before {
+    content: "\e90e";
+}
+.sole-icon-technology:before {
+    content: "\e90f";
+}
+.sole-icon-collaborate:before {
+    content: "\e911";
+}
+.sole-icon-livescreen:before {
+    content: "\e914";
+}
+.sole-icon-review-phase:before {
+    content: "\e900";
+}
+.sole-icon-question-phase:before {
+    content: "\e912";
+}
+.sole-icon-investigation-phase:before {
+    content: "\e913";
+}
+.sole-icon-logo-2:before {
+    content: "\e902";
+    color: #979797;
+}
+.sole-icon-logo-3:before {
+    content: "\e903";
+    color: #979797;
+}
+.sole-icon-logo-4:before {
+    content: "\e904";
+    color: #979797;
+}
+.sole-icon-logo-5:before {
+    content: "\e905";
+    color: #979797;
+}
+.sole-icon-logo-6:before {
+    content: "\e906";
+    color: #979797;
+}
+.sole-icon-logo-7:before {
+    content: "\e907";
+    color: #979797;
+}
+.sole-icon-logo-8:before {
+    content: "\e908";
+    color: #979797;
+}
+.sole-icon-logo-9:before {
+    content: "\e909";
+    color: #979797;
+}
+.sole-icon-logo-1:before {
+    content: "\e901";
+    color: #979797;
+}
+.sole-icon-logo-full:before {
+    content: "\e910";
+    color: #28a79a;
+}
+
+
+
+
+
+
+
 body {background-color: #f4f4f4}
 
 nav {

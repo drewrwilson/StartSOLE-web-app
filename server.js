@@ -111,7 +111,7 @@ router.route('/slackbot/users-today')
 
 router.route('/slackbot/users-range')
     .post((req, res)=> {
-        res.json({'req.params.text': req.params.text});
+        res.json({'req.params': req.params});
         // Controllers.Stats.usersRange(req.params.numberOfDays).then(responseMessage => {
         //     res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
         // })

@@ -120,9 +120,13 @@ router.route('/slackbot/users-today')
         })
     });
 
-router.route('/slackbot/users-range-detail/:numberOfDays')
+router.route('/slackbot/users-range-detail')
     .post((req, res)=> {
-        Controllers.Stats.usersRangeDetail(req.params.numberOfDays).then(responseMessage => {
+        let numberOfDays = 1;
+        if (req.body.text) {
+            numberOfDays = Number(req.body.text); //convert string to integer
+        }
+        Controllers.Stats.usersRangeDetail(numberOfDays).then(responseMessage => {
             res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
         })
     });

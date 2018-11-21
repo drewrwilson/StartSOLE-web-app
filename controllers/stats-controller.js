@@ -2,13 +2,8 @@ var Stats = module.exports = {};
 var Parse       =  require('parse/node');
 var soleConfig = require('../sole-config.js');
 
-//gives number of users signed up today
-// Stats.usersToday = function () {
-//   return Parse.Cloud.run("webapp.usersToday", {});
-// };
-
 Stats.usersToday = function() {
-    return Parse.Cloud.run("webapp.usersToday", {}).then(number=>{
+    return Parse.Cloud.run("webapp.usersDateRange", {"length":numberOfDays}).then(number=>{
         return "We've had *"+number+"* users sign up today!";
     });
 };

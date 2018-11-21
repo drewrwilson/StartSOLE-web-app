@@ -109,7 +109,7 @@ router.route('/slackbot/users-today')
         })
     });
 
-router.route('/slackbot/users-range/:numberOfDays')
+router.route('/slackbot/users-range')
     .post((req, res)=> {
         res.json({'req.params.text': req.params.text});
         // Controllers.Stats.usersRange(req.params.numberOfDays).then(responseMessage => {

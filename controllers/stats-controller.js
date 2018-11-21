@@ -4,13 +4,13 @@ var soleConfig = require('../sole-config.js');
 
 Stats.usersToday = function() {
     return Parse.Cloud.run("webapp.usersDateRange", {"length":numberOfDays}).then(number=>{
-        return "We've had *"+number+"* users sign up today!";
+        return "We have had *"+number+"* users sign up today!";
     });
 };
 
 Stats.usersRange = function(numberOfDays) {
   return Parse.Cloud.run("webapp.usersDateRange", {"length":numberOfDays}).then(number=>{
-      return "We've had *"+number+"* users sign up over the last "+numberOfDays+" days!";
+      return "We have had *"+number+"* users sign up over the last "+numberOfDays+" days!";
   });
 };
 
@@ -35,7 +35,7 @@ Stats.usersRangeDetail = function(numberOfDays) {
                 }
             }
         }
-        return "We've had *"+userDetails.userCount+"* users sign up over the last "+numberOfDays+" days!"+messageEnding;
+        return "We have had *"+userDetails.userCount+"* users sign up over the last "+numberOfDays+" days!"+messageEnding;
     });
 };
 

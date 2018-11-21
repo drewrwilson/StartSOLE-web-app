@@ -98,26 +98,40 @@ router.route('/')
           res.redirect('/home?sesh='+ sesh);
         }
       })
-
 });
-// get the count of users today and display it on a slack-friendly webpage
-router.route('/userstoday')
-    .post((req,  res)=> {
-        Controllers.User.usersToday().then(numberOfUsers=>{
-            console.log('users today: ', numberOfUsers);
-            res.render('userstoday', {layout: 'blank.hbs', numberOfUsers: numberOfUsers}); //display slack-friendly webpage
+
+// on routes that end in /stats/
+// ----------------------------------------------------
+router.route('/slackbot/users-today')
+    .post((req, res)=> {
+        Controllers.Stats.usersToday().then(responseMessage => {
+            res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
         })
     });
 
-// on routes that end in /stats/:param
-// ----------------------------------------------------
-router.route('/stats/:param')
-  // get statistics for the requested param, or return a help message.  NB - if you're testing this locally change post to get.
-  .get((req, res)=> {
-    Controllers.Stats.getStat(req.params.param).then(responseMessage => {
-      res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
-    })
-  });
+router.route('/slackbot/users-range/:numberOfDays')
+    .post((req, res)=> {
+
+        Controllers.Stats.usersRange(req.params.numberOfDays).then(responseMessage => {
+            res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+        })
+    });
+
+router.route('/slackbot/users-range-detail/:numberOfDays')
+    .post((req, res)=> {
+        Controllers.Stats.usersRangeDetail(req.params.numberOfDays).then(responseMessage => {
+            res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+        })
+    });
+
+// router.route('/stats/:param')
+//   // get statistics for the requested param, or return a help message.  NB - if you're testing this locally change post to get.
+//   .get((req, res)=> {
+//     Controllers.Stats.getStat(req.params.param).then(responseMessage => {
+//       res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+//     })
+//   });
+
 
 //on routes that end in /random-picture
 // ----------------------------------------------------

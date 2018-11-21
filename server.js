@@ -101,20 +101,23 @@ router.route('/')
 });
 
 // on routes that end in /stats/
+router.route('/slackbot/users-range')
+    .post((req, res)=> {
+        let numberOfDays = 1;
+        if (req.body.text) {
+            numberOfDays = Number(req.body.text); //convert string to integer
+        }
+        Controllers.Stats.usersRange(numberOfDays).then(responseMessage => {
+            res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+        })
+    });
+
 // ----------------------------------------------------
 router.route('/slackbot/users-today')
     .post((req, res)=> {
         Controllers.Stats.usersToday().then(responseMessage => {
             res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
         })
-    });
-
-router.route('/slackbot/users-range')
-    .post((req, res)=> {
-        res.json({'req.body': req.body});
-        // Controllers.Stats.usersRange(req.params.numberOfDays).then(responseMessage => {
-        //     res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
-        // })
     });
 
 router.route('/slackbot/users-range-detail/:numberOfDays')

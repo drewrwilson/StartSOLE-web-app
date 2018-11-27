@@ -3,7 +3,7 @@ var Parse       =  require('parse/node');
 var soleConfig = require('../sole-config.js');
 
 Stats.usersToday = function() {
-    return Parse.Cloud.run("webapp.usersDateRange", {"length":1}).then(number=>{
+    return Parse.Cloud.run("webapp.usersDateRange", {"length":0}).then(number=>{
         return "We have had *"+number+"* users sign up today!";
     });
 };

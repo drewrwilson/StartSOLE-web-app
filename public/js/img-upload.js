@@ -6,13 +6,13 @@ var imageSuffix = 0;
 // uploads an image to parse file input
 function uploadImage(file) {
   imageSuffix++;
-  var name         = "coolimage-"+imageSuffix, //TODO: Why are the first 4 characters of image name chopped off?
-      sessionToken = 'r:'+$("#sesh"),
-      soleID       = $('#soleID').val();
+  var name = "coolimage-" + imageSuffix, //TODO: Why are the first 4 characters of image name chopped off?
+    sessionToken = 'r:' + $("#sesh"),
+    soleID = $('#soleID').val();
 
   var parseFile = new Parse.File(name, file);
 
-  parseFile.save().then(function(file) {
+  parseFile.save().then(function (file) {
     //maybe disable submit button until finished uploading
     console.log('saved file, now uploading to parse');
 
@@ -21,13 +21,13 @@ function uploadImage(file) {
       id: soleID,
       imageFile: file,
       sessionToken: sessionToken
-    }).then(response=>{
+    }).then(response => {
       console.log('image uploaded', response);
       //maybe reenable submit button now since it's finished uploading
-    }).catch(error=>{
+    }).catch(error => {
       console.log('oops error calling cloud code! error: ', error);
     })
-  }, function(error) {
+  }, function (error) {
     // The file either could not be read, or could not be saved to Parse.
     console.log('error uploading image', error);
   });
@@ -43,8 +43,14 @@ Dropzone.options.myAwesomeDropzone = {
   addRemoveLinks: false,
   dictDefaultMessage: 'Click or drop files here to upload.  No more than 10 photos please!',
   acceptedFiles: 'image/*',
-  accept: function(file, done) {
+  accept: function (file, done) {
     uploadImage(file);
     console.log(file);
+  },
+  init: function () {
+    this.on("addedfile", function (file) {
+      $("#upload_photos_reminder").hide();
+      $("#save_my_sole").show();
+    });
   }
 };

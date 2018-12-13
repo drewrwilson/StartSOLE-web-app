@@ -36,7 +36,8 @@
                 <div class="row">
                     {{#each sole.observations}}
                         {{#if image.full}}
-                            <div class="col s12 m6 l4 xl3 sole-observation-card-col show-all {{#each image.tags}}{{type}} {{/each}}">
+                            <div class="col s12 m6 l4 xl3 sole-observation-card-col show-all {{#each
+                                    image.tags}}{{type}} {{/each}}">
                                 <div id="observation-{{id}}" class="card small hoverable sole-observation">
                                     <div class="card-image">
                                         <img class="materialboxed" width="650" src="{{ image.full }}">
@@ -54,7 +55,8 @@
                                         </span>
                                     </div>
                                     <div class="card-reveal">
-                                        <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                                        <span class="card-title grey-text text-darken-4"><i
+                                                class="material-icons right">close</i></span>
                                         {{#if image.feedback}}
                                             <p>
                                                 <strong>Feedback: </strong>{{image.feedback}}
@@ -72,7 +74,7 @@
                     {{/each}}
                 </div>
             {{else}}
-                <h5>Upload Photos</h5>
+                <h5>Add Photos</h5>
                 <form action="/api/upload-sole-image"
                       class="dropzone"
                       id="myAwesomeDropzone">
@@ -91,7 +93,7 @@
                 <div class="row">
                     <div class="col s12">
                         <h5>Reflect</h5>
-                        <p>1. During this SOLE, your objective was {{sole.content_objective.text}}.  Do you think you
+                        <p>1. During this SOLE, your objective was {{sole.content_objective.text}}. Do you think you
                             achieved this objective?</p>
                     </div>
                     <div class="col m12 l6">
@@ -121,8 +123,8 @@
                     <div class="col s12">
                         <p>2. What type of thinking were most students using during this SOLE?
                             <a href="http://www.aps.edu/sapr/documents/resources/Webbs_DOK_Guide.pdf" target="_blank">
-                            Learn More about Webb's Depth of Knowledge
-                        </a>
+                                Learn More about Webb's Depth of Knowledge
+                            </a>
                         </p>
                     </div>
                     <div class="col m12 l6">
@@ -131,7 +133,8 @@
                                 <option value="" disabled selected>Choose your option</option>
                                 <option value="reflection.type_of_thinking.recall">Recall and Reproduction</option>
                                 <option value="reflection.type_of_thinking.skill">Skill/Concept</option>
-                                <option value="reflection.type_of_thinking.short_strategic">Short Term Strategic</option>
+                                <option value="reflection.type_of_thinking.short_strategic">Short Term Strategic
+                                </option>
                                 <option value="reflection.type_of_thinking.long_strategic">Long Term Strategic</option>
                             </select>
                             <label>Select your response</label>
@@ -165,7 +168,8 @@
                 <!--collaboration-->
                 <div class="row">
                     <div class="col s12 m8">
-                        <p>4. What percentage of students worked effectively and respectfully together and shared responsibility?</p>
+                        <p>4. What percentage of students worked effectively and respectfully together and shared
+                            responsibility?</p>
                     </div>
                     <div class="col s12 m4">
                         <p class="range-field">
@@ -191,9 +195,6 @@
                         </p>
                     </div>
                 </div>
-
-
-
 
 
                 <!--communication-->
@@ -265,8 +266,13 @@
                             Save
                         </button>
                     {{else}}
-                        <button id="save_my_sole" type="submit" class="disabled waves-effect waves-light btn">
-                            Add at least 1 photo
+                        <a id="upload_photos_reminder"
+                           class="waves-effect waves-light btn"
+                           onclick="photoReminder()">
+                            Add Photos
+                        </a>
+                        <button id="save_my_sole" type="submit" class="waves-effect waves-light btn" style="display:none">
+                            Save
                         </button>
                     {{/if}}
                 </div>
@@ -285,27 +291,21 @@
 
 <script>
 
-        {{#unless sole.observations}}
-        Dropzone.options.myAwesomeDropzone = {
-            init: function() {
-                this.on("addedfile", function(file) {
-                    $("#save_my_sole").html('Save');
-                    $("#save_my_sole").removeClass('disabled');
-                });
-            }
-        };
-        {{/unless}}
+    function photoReminder() {
+        M.toast({html: 'Please add at least 1 photo'});
+        $("html, body").animate({scrollTop: 0}, "fast");
+    }
 
     function filterSelection() {
         var tag = $('#tag-filter').val();
         $('.sole-observation-card-col').hide();
-        $('.'+tag).show();
+        $('.' + tag).show();
     }
 
-    $(document).ready(function(){
-        $("#text-filter").on("keyup", function() {
+    $(document).ready(function () {
+        $("#text-filter").on("keyup", function () {
             var value = $(this).val().toLowerCase();
-            $(".sole-observation-card-col").filter(function() {
+            $(".sole-observation-card-col").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });

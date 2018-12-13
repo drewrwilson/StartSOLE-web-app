@@ -288,8 +288,7 @@
         {{#unless sole.observations}}
         Dropzone.options.myAwesomeDropzone = {
             init: function() {
-                this.on("complete", function(file) {
-                    console.log("complete");
+                this.on("addedfile", function(file) {
                     $("#save_my_sole").html('Save');
                     $("#save_my_sole").removeClass('disabled');
                 });

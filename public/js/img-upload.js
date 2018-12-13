@@ -46,11 +46,7 @@ Dropzone.options.myAwesomeDropzone = {
   accept: function (file, done) {
     uploadImage(file);
     console.log(file);
-  },
-  init: function () {
-    this.on("addedfile", function (file) {
-      $("#upload_photos_reminder").hide();
-      $("#save_my_sole").show();
-    });
+    $("#upload_photos_reminder").hide();
+    $("#save_my_sole").show();
   }
 };

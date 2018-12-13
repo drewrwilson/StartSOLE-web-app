@@ -16,6 +16,9 @@ function uploadImage(file) {
     //maybe disable submit button until finished uploading
     console.log('saved file, now uploading to parse');
 
+    $("#save_my_sole").html("uploading photos");
+    $("#save_my_sole").addClass("disabled");
+
     //send image to parse server
     Parse.Cloud.run('webapp.saveImage', {
       id: soleID,
@@ -24,6 +27,9 @@ function uploadImage(file) {
     }).then(response => {
       console.log('image uploaded', response);
       //maybe reenable submit button now since it's finished uploading
+
+      $("#save_my_sole").html("Save");
+      $("#save_my_sole").removeClass("disabled");
     }).catch(error => {
       console.log('oops error calling cloud code! error: ', error);
     })

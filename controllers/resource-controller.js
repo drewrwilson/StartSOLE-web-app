@@ -450,6 +450,19 @@ Resource.getAll = function () {
       tags: [
         "training"
       ]
+    },
+    {
+      file: 'SOLEInquiryMatrix.pdf',
+      image: 'SOLE_inquiry_matrix_matte_black.png',
+      title: 'SOLE Inquiry Matrix',
+      short: "A helpful matrix for scaffolding inquiry during the phases of a SOLE",
+      description: "This useful organizer offers tips and tricks for different levels of inquiry during each phase of a SOLE.  Great for teachers who are just getting started with the process!",
+      authors: [
+        { email: 'eric.daigle@hsc.on.ca', name: 'Eric D.'}
+      ],
+      tags: [
+        "training", "question-help", "investigation-help", "review-help", "posters", "rubric"
+      ]
     }
   ];
   return Parse.Promise.as(resources);

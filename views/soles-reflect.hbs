@@ -77,7 +77,7 @@
                       class="dropzone"
                       id="myAwesomeDropzone">
                     <div class="fallback">
-                        <input name="file" type="file" multiple />
+                        <input name="file" type="file" multiple required/>
                     </div>
                 </form>
             {{/if}}
@@ -260,9 +260,15 @@
                 </div>
 
                 <div class="row">
-                  <button type="submit" class="waves-effect waves-light btn">
-                        Save
-                    </button>
+                    {{#if sole.observations}}
+                        <button id="save_my_sole" type="submit" class="waves-effect waves-light btn">
+                            Save
+                        </button>
+                    {{else}}
+                        <button id="save_my_sole" type="submit" class="disabled waves-effect waves-light btn">
+                            Add at least 1 photo
+                        </button>
+                    {{/if}}
                 </div>
             </form>
 
@@ -278,6 +284,18 @@
 <script type="text/javascript" src="/js/img-upload.js"></script>
 
 <script>
+
+        {{#unless sole.observations}}
+        Dropzone.options.myAwesomeDropzone = {
+            init: function() {
+                this.on("complete", function(file) {
+                    console.log("complete");
+                    $("#save_my_sole").html('Save');
+                    $("#save_my_sole").removeClass('disabled');
+                });
+            }
+        };
+        {{/unless}}
 
     function filterSelection() {
         var tag = $('#tag-filter').val();

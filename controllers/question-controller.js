@@ -1,7 +1,7 @@
-var Question = module.exports = {};
+const Question = module.exports = {};
 
-var Parse       =  require('parse/node');
-var soleConfig = require('../sole-config.js');
+const Parse = require('parse/node');
+const soleConfig = require('../sole-config.js');
 
 
 // connect to parse server
@@ -10,14 +10,14 @@ Parse.serverURL = soleConfig.serverUrl;
 
 //returns data for a question with a given ID
 Question.getByID =  (id, sessionToken) => {
-    var result = Parse.Cloud.run('webapp.getQuestionByID', {
-      id: id,
-  		sessionToken: sessionToken
-  	})
+    const result = Parse.Cloud.run('webapp.getQuestionByID', {
+        id: id,
+        sessionToken: sessionToken
+    });
     console.log(result);
     return result;
 
-}
+};
 //returns a user's fav'ed questions
 Question.getFavorites = function (sessionToken) {
   return Parse.Cloud.run('webapp.getMyFavoriteQuestions', {
@@ -25,7 +25,7 @@ Question.getFavorites = function (sessionToken) {
     limit: 100,
 		sessionToken: sessionToken
 	})
-}
+};
 
 //returns unapproved questions for approval
 Question.getUnapproved = function (sessionToken) {
@@ -34,7 +34,7 @@ Question.getUnapproved = function (sessionToken) {
     limit: 10,
     sessionToken: sessionToken
   })
-}
+};
 
 // returns an array of recent approved questions. defaults to limit 10.
 // optional: limit is the number of questions to return
@@ -44,7 +44,7 @@ Question.getAll = function (sessionToken) {
     limit: 100,
     sessionToken: sessionToken
   })
-}
+};
 //searches questions for tags, returns results
 //param:
 // * tags - array of tags
@@ -56,14 +56,14 @@ Question.findByTags = function (tags, sessionToken) {
     tags: tags,
     sessionToken: sessionToken
   })
-}
+};
 
 Question.findByText = function (searchText, sessionToken) {
   return Parse.Cloud.run('webapp.findQuestionByText', {
     searchText: searchText,
     sessionToken: sessionToken
   })
-}
+};
 
 Question.add = function (text, tags, source, sessionToken) {
   return Parse.Cloud.run('webapp.addQuestion', {
@@ -73,14 +73,14 @@ Question.add = function (text, tags, source, sessionToken) {
 		sessionToken: sessionToken
 	});
 
-}
+};
 
 Question.favorite = function (questionID, sessionToken) {
   return Parse.Cloud.run('webapp.favQuestion', {
 		id: questionID,
 		sessionToken: sessionToken
 	});
-}
+};
 
 Question.deleteTag = function (questionID, tagID, sessionToken) {
   return Parse.Cloud.run('webapp.deleteQuestionTag', {
@@ -88,7 +88,7 @@ Question.deleteTag = function (questionID, tagID, sessionToken) {
     tag: tagID,
     sessionToken: sessionToken
   });
-}
+};
 
 //approves a questions
 Question.approve = function (questionID, sessionToken) {
@@ -96,7 +96,7 @@ Question.approve = function (questionID, sessionToken) {
     id: questionID,
     sessionToken: sessionToken
   });
-}
+};
 
 //rejects a questions
 Question.reject = function (questionID, sessionToken) {
@@ -104,10 +104,10 @@ Question.reject = function (questionID, sessionToken) {
     id: questionID,
     sessionToken: sessionToken
   });
-}
+};
 
 
 // filter down the question tags and return a list
 Question.tagPickers = function () {
 
-}
+};

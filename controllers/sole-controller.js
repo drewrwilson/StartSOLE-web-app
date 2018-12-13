@@ -1,6 +1,6 @@
-var Sole = module.exports = {};
-var Parse       =  require('parse/node');
-var soleConfig = require('../sole-config.js');
+const Sole = module.exports = {};
+const Parse = require('parse/node');
+const soleConfig = require('../sole-config.js');
 
 // connect to parse server
 Parse.initialize(soleConfig.appId);
@@ -15,7 +15,7 @@ Sole.getByID = function (id, sessionToken) {
     id: id,
     sessionToken: sessionToken
   })
-}
+};
 
 // returns an array of recent approved soles. defaults to limit 10.
 // optional: limit is the number of soles to return
@@ -25,7 +25,7 @@ Sole.getAll = function (sessionToken) {
     limit: 100,
 		sessionToken: sessionToken
 	})
-}
+};
 
 // upload a sole and save it to the database.
 Sole.add = function (sole, sessionToken) {
@@ -33,7 +33,7 @@ Sole.add = function (sole, sessionToken) {
       sole: sole,
       sessionToken: sessionToken
 	})
-}
+};
 
 // upload a sole and save it to the database.
 Sole.update = function (id, sole, sessionToken) {
@@ -42,16 +42,16 @@ Sole.update = function (id, sole, sessionToken) {
         sole: sole,
         sessionToken: sessionToken
     })
-}
+};
 
 // upload a sole and save it to the database.
 Sole.saveReflection = function (reflection, sessionToken) {
-    console.log("Now we are in saveReflection with SOLE: ",reflection.id)
+    console.log("Now we are in saveReflection with SOLE: ",reflection.id);
     return Parse.Cloud.run('webapp.completeReflection', {
         sole: reflection,
         sessionToken: sessionToken
     })
-}
+};
 
 Sole.downloadDocument = function (id, type, sessionToken) {
     return Parse.Cloud.run('webapp.getDownloadLink', {
@@ -59,7 +59,7 @@ Sole.downloadDocument = function (id, type, sessionToken) {
         type: type,
         sessionToken: sessionToken
     })
-}
+};
 
 // delete a sole and return true if done, null if not
 Sole.delete = function (id, sessionToken) {
@@ -67,7 +67,7 @@ Sole.delete = function (id, sessionToken) {
         id: id,
         sessionToken: sessionToken
     })
-}
+};
 
 Sole.copy = function (id, sessionToken) {
   return Parse.Cloud.run('webapp.getSoleByID', {
@@ -101,7 +101,7 @@ Sole.copy = function (id, sessionToken) {
       num_students: sole.num_students,
       num_devices: sole.num_devices,
       content_objective: sole.content_objective.value
-    }
+    };
 
   sole.target_observations.forEach(function(observation){
     if(observation.checked){
@@ -129,4 +129,4 @@ Sole.copy = function (id, sessionToken) {
   })
 
 
-}
+};

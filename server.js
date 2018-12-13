@@ -131,14 +131,6 @@ router.route('/slackbot/users-range-detail')
         })
     });
 
-// router.route('/stats/:param')
-//   // get statistics for the requested param, or return a help message.  NB - if you're testing this locally change post to get.
-//   .get((req, res)=> {
-//     Controllers.Stats.getStat(req.params.param).then(responseMessage => {
-//       res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
-//     })
-//   });
-
 
 //on routes that end in /random-picture
 // ----------------------------------------------------

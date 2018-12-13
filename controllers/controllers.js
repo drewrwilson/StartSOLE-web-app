@@ -1,4 +1,4 @@
-var Controllers = module.exports = {};
+const Controllers = module.exports = {};
 
 Controllers.User = require('./user-controller.js');
 Controllers.Question = require('./question-controller.js');

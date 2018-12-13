@@ -1,6 +1,6 @@
-var User = module.exports = {};
-var Parse       =  require('parse/node');
-var soleConfig = require('../sole-config.js');
+const User = module.exports = {};
+const Parse = require('parse/node');
+const soleConfig = require('../sole-config.js');
 
 // connect to parse server
 Parse.initialize(soleConfig.appId);

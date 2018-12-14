@@ -30,7 +30,7 @@ function uploadImage(file) {
     }).then(response => {
       console.log('image uploaded', response);
 
-      if(fileCount === imageSuffix){
+      if(fileCount>1 && fileCount === imageSuffix){
         doneButton.html("Save");
         doneButton.removeClass("disabled");
       }

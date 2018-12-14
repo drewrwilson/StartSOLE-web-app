@@ -34,6 +34,10 @@ function uploadImage(file) {
         doneButton.html("Save");
         doneButton.removeClass("disabled");
       }
+      else {
+        doneButton.addClass('disabled');
+        doneButton.html('Uploading Photos');
+      }
 
     }).catch(error => {
       console.log('oops error calling cloud code! error: ', error);

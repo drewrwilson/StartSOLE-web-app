@@ -2,6 +2,8 @@
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 var imageSuffix = 0;
+var fileCount = 0;
+var doneButton = $("#save_my_sole");
 
 // uploads an image to parse file input
 function uploadImage(file) {
@@ -16,8 +18,9 @@ function uploadImage(file) {
     //maybe disable submit button until finished uploading
     console.log('saved file, now uploading to parse');
 
-    $("#save_my_sole").html("uploading photos");
-    $("#save_my_sole").addClass("disabled");
+
+    doneButton.html("uploading photos");
+    doneButton.addClass("disabled");
 
     //send image to parse server
     Parse.Cloud.run('webapp.saveImage', {
@@ -26,10 +29,12 @@ function uploadImage(file) {
       sessionToken: sessionToken
     }).then(response => {
       console.log('image uploaded', response);
-      //maybe reenable submit button now since it's finished uploading
 
-      $("#save_my_sole").html("Save");
-      $("#save_my_sole").removeClass("disabled");
+      if(fileCount === imageSuffix){
+        doneButton.html("Save");
+        doneButton.removeClass("disabled");
+      }
+
     }).catch(error => {
       console.log('oops error calling cloud code! error: ', error);
     })
@@ -49,10 +54,13 @@ Dropzone.options.myAwesomeDropzone = {
   addRemoveLinks: false,
   dictDefaultMessage: 'Click or drop files here to upload.  No more than 10 photos please!',
   acceptedFiles: 'image/*',
-  accept: function (file, done) {
+  accept: function (file) {
     uploadImage(file);
     console.log(file);
     $("#upload_photos_reminder").hide();
     $("#save_my_sole").show();
+  },
+  init: function() {
+    this.on("addedfile", function() {fileCount++;});
   }
 };

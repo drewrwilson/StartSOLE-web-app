@@ -31,6 +31,8 @@ function uploadImage(file) {
       console.log('image uploaded', response);
 
       if(fileCount>1 && fileCount === imageSuffix){
+        $("#upload_photos_reminder").hide();
+        doneButton.show();
         doneButton.html("Save");
         doneButton.removeClass("disabled");
       }
@@ -57,8 +59,6 @@ Dropzone.options.myAwesomeDropzone = {
   accept: function (file) {
     uploadImage(file);
     console.log(file);
-    $("#upload_photos_reminder").hide();
-    doneButton.show();
   },
   init: function() {
     this.on("addedfile", function() {fileCount++;});

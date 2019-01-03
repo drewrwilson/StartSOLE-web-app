@@ -1,0 +1,76 @@
+<style>
+    #map {
+        height: 600px;
+    }
+</style>
+
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a class="breadcrumb" href="/admin?sesh={{sesh}}">Admin</a>
+    <a class="breadcrumb">Approve/Reject SOLEs</a>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Approve/Reject SOLEs</span>
+                <p>There are {{totalSoles}} SOLEs in the queue. </p>
+                <table class="highlight">
+                    <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Planned Date</th>
+                        <th>Reflection Date</th>
+                        <th>User</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each soles}}
+                        <tr>
+                            <td><a href="{{this.pdf}}" target="_blank">{{this.question}} (pdf)</a></td>
+                            <td>{{this.plannedDate}}</td>
+                            <td>{{this.reflectionDate}}</td>
+                            <td>{{this.fullName}}</td>
+                            <td><a class="btn-floating btn-small waves-effect waves-light green modal-trigger" href="#approve"><i class="material-icons">thumb_up</i></a> <a
+                                    class="btn-floating btn-small waves-effect waves-light red modal-trigger"
+                                    href="#reject"><i class="material-icons">thumb_down</i></a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-action">
+                <!--<a href="/admin/browse-soles?sesh={{sesh}}">Browse All SOLEs</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Structure -->
+<div id="approve" class="modal">
+    <div class="modal-content">
+        <h4>What is a sun?</h4>
+        <p>Feedback:
+            <textarea name="" id="" cols="30" rows="10"></textarea></p>
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="btn modal-close waves-effect waves-green  btn-flat">Approve & email the user</a>
+    </div>
+</div>
+
+<!-- Modal Structure -->
+<div id="reject" class="modal">
+    <div class="modal-content">
+        <h4>Reject Modal Header</h4>
+        <p>Feedback:
+            <textarea name="" id="" cols="30" rows="10"></textarea></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>

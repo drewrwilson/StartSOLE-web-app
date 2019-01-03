@@ -176,20 +176,39 @@ router.route('/home')
   })
 
 //temporary static route for making the view for approving soles
-router.route('/approve-soles')
+router.route('/pending-soles')
     .get((req, res)=> {
-        const adminData = {sesh: 'xxxxx'};
-        adminData.config = soleConfig;
-        adminData.layout = 'no-footer.hbs';
-        adminData.totalSoles = 666;
+        const adminData = {
+            sesh: 'xxxxx',
+            config: soleConfig,
+            layout: 'default.hbs',
+            totalSoles: 666
+        };
 
-        Controllers.Admin.getPendingSoles(sessionToken).then((soles)=>{
+        Controllers.Admin.getPendingSoles(sessionToken).then(soles=>{
             adminData.soles = soles;
             res.render('admin-pending-soles', adminData);
-        }).catch((err)=>{
+        }).catch(err=>{
             res.redirect('/home');
         })
-    })
+    });
+
+//temporary static route for making the view for approving soles
+router.route('/pending-sole')
+    .get((req, res)=> {
+        const adminData = {
+            sesh: 'xxxxx',
+            config: soleConfig,
+            layout: 'no-footer.hbs'
+        };
+
+        Controllers.Admin.getPendingSole(sessionToken).then(sole=>{
+            adminData.sole = sole;
+            res.render('admin-pending-sole', adminData);
+        }).catch(err=>{
+            res.redirect('/home');
+        })
+    });
 
 // route for Admin Page
 router.route('/admin')

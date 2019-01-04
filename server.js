@@ -191,6 +191,19 @@ router.route('/pending-soles')
         }).catch(err=>{
             res.redirect('/home');
         })
+    })
+
+    .post((req, res)=> {
+        Controllers.Admin.approveSole(req.body.feedback, req.body.soleId).then(soleId=>{
+            console.log('successfully approved a SOLE', soleId);
+            res.redirect('/pending-soles');
+        });
+
+
+        // Controllers.Admin.rejectSole(req.body.feedback, req.body.soleId).then(soleId=>{
+        //     console.log('successfully rejected a SOLE',soleId);
+        //     res.redirect('/pending-soles');
+        // });
     });
 
 //temporary static route for making the view for approving soles
@@ -674,7 +687,6 @@ Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
     })
 })
 .post((req, res)=> {
-    console.log("Tryna delete a SOLE!",req.body.soleID);
     const sesh = req.query.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string

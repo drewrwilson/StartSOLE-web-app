@@ -115,12 +115,18 @@ class Admin {
 
     //approve a sole and share feedback
     static approveSole (feedback, soleId) {
-        return Promise.resolve(true);
+        //do webapp call to approve a sole
+        console.log('feedback: ', feedback);
+        console.log('soleId: ', soleId);
+        return Promise.resolve(soleId);
     };
 
     //reject a sole and share feedback
     static rejectSole (feedback, soleId) {
-        return true;
+        //do a webapp call to reject a sole
+        console.log('feedback: ', feedback);
+        console.log('soleId: ', soleId);
+        return Promise.resolve(soleId);
     };
 
 }

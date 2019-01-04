@@ -10,6 +10,7 @@ class Admin {
     //gets data for any SOLE sessions that haven't been approved or rejected yet
     static getPendingSoles (session) {
         const exampleSoles = [{
+            id: '003',
             question: "How does sugar affect the body?",
             fullName: "Ms Crapapple",
             email: "drew+example@startsole.org",
@@ -41,6 +42,7 @@ class Admin {
             reflectionNotes : "Students were able to complete an exit ticket relating to the big question."
         },
             {
+                id: '002',
                 question: "What is a sun?",
                 fullName: "Mr Sigh",
                 email: "drew+example@startsole.org",
@@ -77,6 +79,7 @@ class Admin {
 
     static getPendingSole (soleId) {
         const exampleSole =  {
+            id: '001',
             question: "What is a sun?",
             fullName: "Mr Sigh",
             email: "drew+example@startsole.org",

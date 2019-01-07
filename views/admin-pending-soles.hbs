@@ -29,10 +29,10 @@
                     <tbody>
                     {{#each soles}}
                         <tr>
-                            <td>{{this.question}}</td>
+                            <td>{{this.question.text}}</td>
                             <td>{{this.plannedDate}}</td>
                             <td>{{this.reflectionDate}}</td>
-                            <td>{{this.fullName}}</td>
+                            <td>{{this.createdBy.userName}}</td>
                             <td>
                                 <a class="btn-small waves-effect waves-light modal-trigger" href="#approve-{{this.id}}">
                                 VIEW
@@ -57,8 +57,8 @@
 <!-- Modal Structure -->
 <div id="approve-{{this.id}}" class="modal">
     <div class="modal-content">
-        <h4>Approve: {{this.question}}</h4>
-        <p><a href="{{this.pdf}}" target="_blank">See the Reflection PDF</a></p>
+        <h4>Approve: {{this.question.text}}</h4>
+        <p><a href="{{this.documents.summary.file}}" target="_blank">See the Reflection PDF</a></p>
         <div class="row">
             <form class="col s12" action="/pending-soles?sesh={{sesh}}">
                 <div class="row">

@@ -8,109 +8,23 @@ Parse.serverURL = soleConfig.serverUrl;
 
 class Admin {
     //gets data for any SOLE sessions that haven't been approved or rejected yet
-    static getPendingSoles (session) {
-        const exampleSoles = [{
-            id: '003',
-            question: "How does sugar affect the body?",
-            fullName: "Ms Crapapple",
-            email: "drew+example@startsole.org",
-            plannedDate : "12/17/2018 11:41:00",
-            reflectionDate : "12/24/2018 14:25:19",
-            pdf : "https://api.startsole.net/sole/files/Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp/6df36807297f9574f5cde058f3d47c41_pdf.pdf",
-            helpRequested : false,
-            client : "web",
-            imgCount: 3,
-            observations: [
-                {
-                    img: "https://app.startsole.org/images/test-images/photo23.png",
-                    notes: "lorem ipsum 1"
-                },
-                {
-                    img: "https://app.startsole.org/images/test-images/photo2.png",
-                    notes: "lorem ipsum 2"
-                },
-                {
-                    img: "https://app.startsole.org/images/test-images/photo31.png",
-                    notes: "lorem ipsum 3"
-                }
-            ],
-            iosTime : "19",
-            eng : "",
-            col: 100,
-            tec : 100,
-            com: 90,
-            reflectionNotes : "Students were able to complete an exit ticket relating to the big question."
-        },
-            {
-                id: '002',
-                question: "What is a sun?",
-                fullName: "Mr Sigh",
-                email: "drew+example@startsole.org",
-                plannedDate : "12/17/2018 11:41:00",
-                reflectionDate : "12/24/2018 14:25:19",
-                pdf : "https://api.startsole.net/sole/files/Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp/6df36807297f9574f5cde058f3d47c41_pdf.pdf",
-                helpRequested : false,
-                client : "web",
-                imgCount: 3,
-                observations: [
-                    {
-                        img: "https://app.startsole.org/images/test-images/photo23.png",
-                        notes: "lorem ipsum 1"
-                    },
-                    {
-                        img: "https://app.startsole.org/images/test-images/photo2.png",
-                        notes: "lorem ipsum 2"
-                    },
-                    {
-                        img: "https://app.startsole.org/images/test-images/photo31.png",
-                        notes: "lorem ipsum 3"
-                    }
-                ],
-                iosTime : "19",
-                eng : "",
-                col: 100,
-                tec : 100,
-                com: 90,
-                reflectionNotes : "Students were able to complete an exit ticket relating to the big question."
-            }];
-        return Promise.resolve(exampleSoles);
+    static getPendingSoles (sessionToken) {
+        return Parse.Cloud.run('webapp.getUnapprovedSoles', {
+            limit: 400,
+            sessionToken: sessionToken
+        }).then(solesJson => {
+            return Promise.resolve(solesJson);
+        });
     }
 
 
-    static getPendingSole (soleId) {
-        const exampleSole =  {
-            id: '001',
-            question: "What is a sun?",
-            fullName: "Mr Sigh",
-            email: "drew+example@startsole.org",
-            plannedDate : "12/17/2018 11:41:00",
-            reflectionDate : "12/24/2018 14:25:19",
-            pdf : "https://api.startsole.net/sole/files/Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp/6df36807297f9574f5cde058f3d47c41_pdf.pdf",
-            helpRequested : false,
-            client : "web",
-            imgCount: 3,
-            observations: [
-                {
-                    img: "https://app.startsole.org/images/test-images/photo23.png",
-                    notes: "lorem ipsum 1"
-                },
-                {
-                    img: "https://app.startsole.org/images/test-images/photo2.png",
-                    notes: "lorem ipsum 2"
-                },
-                {
-                    img: "https://app.startsole.org/images/test-images/photo31.png",
-                    notes: "lorem ipsum 3"
-                }
-            ],
-            iosTime : "19",
-            eng : "",
-            col: 100,
-            tec : 100,
-            com: 90,
-            reflectionNotes : "Students were able to complete an exit ticket relating to the big question."
-        };
-        return Promise.resolve(exampleSole);
+    static getPendingSole (soleId, sessionToken) {
+        return Parse.Cloud.run('webapp.getSoleByIdApproveReject', {
+            id: soleId,
+            sessionToken: sessionToken
+        }).then(soleJson => {
+            return Parse.Promise.as(soleJson);
+        });
     };
 
     //approve a sole and share feedback

@@ -46,7 +46,7 @@
                 </table>
             </div>
             <div class="card-action">
-                <!--<a href="/admin/browse-soles?sesh={{sesh}}">Browse All SOLEs</a>-->
+                <!--<a href="/admin/browse-soles?sesh={{../sesh}}">Browse All SOLEs</a>-->
             </div>
         </div>
     </div>
@@ -56,11 +56,12 @@
 
 <!-- Modal Structure -->
 <div id="approve-{{this.id}}" class="modal">
+    <form action="/pending-soles" id="form-approve-{{this.id}}" method="post">
     <div class="modal-content">
-        <h4>Approve: {{this.question.text}}</h4>
+        <h4>{{this.question.text}}</h4>
         <p><a href="{{this.documents.summary.file}}" target="_blank">See the Reflection PDF</a></p>
         <div class="row">
-            <form class="col s12" action="/pending-soles?sesh={{sesh}}">
+            <div class="col s12">
                 <div class="row">
                     <div class="input-field col s12">
                         <select id="canned-response-dropdown">
@@ -125,31 +126,42 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <textarea id="feedback" name="feedback" class="materialize-textarea"></textarea>
-                        <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
-                        <input type="hidden" name="soleId" id="soleId" value="{{soleId}}">
-                        <label for="feedback">Feedback</label>
+                        <textarea id="comment" name="comment" class="materialize-textarea"></textarea>
+                        <label for="comment">Feedback</label>
                     </div>
                 </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select id="action-dropdown" name="action">
+                        <option selected>Approve</option>
+                        <option>Reject</option>
+                    </select>
+                    <label for="action">Action</label>
+                </div>
+            </div>
 
-            </form>
+                <input type="hidden" name="soleId" value="{{this.id}}">
+                <input type="hidden" name="sesh" value="{{../sesh}}">
+            <!--</form>-->
         </div>
 
 
     </div>
     <div class="modal-footer">
-
-        <a type="submit" class="btn-small waves-effect waves-light green modal-trigger"
-           href="#" id="approve-btn-{{this.id}}">
-            <i class="material-icons left">thumb_up</i> APPROVE
-        </a>
-        <a class="btn-small waves-effect waves-light red modal-trigger"
-           href="#" id="approve-btn-{{this.id}}">
-            <i class="material-icons left">thumb_down</i> REJECT
-        </a>
+        <input type="submit" class="btn-small waves-effect waves-light green modal-trigger" id="approve-btn-{{this.id}}" >
+        <!--SUBMIT-->
+        <!--</input>-->
+        <!--<a type="submit" class="btn-small waves-effect waves-light green modal-trigger"-->
+           <!--href="#" id="approve-btn-{{this.id}}" onclick="approve(event)">-->
+            <!--<i class="material-icons left">thumb_up</i> APPROVE-->
+        <!--</a>-->
+        <!--<a type="submit" class="btn-small waves-effect waves-light red modal-trigger"-->
+           <!--href="#" id="approve-btn-{{this.id}}" onclick="reject(event)">-->
+            <!--<i class="material-icons left">thumb_down</i> REJECT-->
+        <!--</a>-->
     </div>
 </div>
-
+    </form>
 {{/each}}
 
 
@@ -159,8 +171,10 @@
         $('#canned-response-dropdown').on('change', function () {
             var myText = $("#canned-response-dropdown :selected").text();
 
-            $("#feedback").val(myText);
+            $("#comment").val(myText);
         });
 
     });
+
+
 </script>

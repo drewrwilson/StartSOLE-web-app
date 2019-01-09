@@ -178,8 +178,12 @@ router.route('/home')
 //temporary static route for making the view for approving soles
 router.route('/pending-soles')
     .get((req, res)=> {
+        const sesh = req.query.sesh; //get the sesh token string from the query param
+        (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+        sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
         const adminData = {
-            sesh: 'xxxxx',
+            sesh: sesh,
             config: soleConfig,
             layout: 'default.hbs',
             totalSoles: 666
@@ -187,17 +191,38 @@ router.route('/pending-soles')
 
         Controllers.Admin.getPendingSoles(sessionToken).then(soles=>{
             adminData.soles = soles;
+            adminData.totalSoles = soles.length;
             res.render('admin-pending-soles', adminData);
+            console.log('rendering pending soles page');
         }).catch(err=>{
             res.redirect('/home');
         })
     })
 
+    /*
+        ToDo:
+        * pass sesh token back and forth
+        * connect it to Webapp.js
+        * check for isAdmin and add a link to the homepage if isAdmin
+         */
+
     .post((req, res)=> {
-        Controllers.Admin.approveSole(req.body.feedback, req.body.soleId).then(soleId=>{
+        const sesh = req.body.sesh; //get the sesh token string from the query param
+        (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+        sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+        console.log('---------');
+        console.log('action: ', req.body.action);
+        console.log('comment: ', req.body.comment);
+        console.log('soleId: ', req.body.soleId);
+        console.log('sesh: ', req.body.sesh);
+        console.log('~~~~~~~~~');
+
+        Controllers.Admin.approveSole(req.body.soleId, req.body.comment, sesh).then(soleId=>{
             console.log('successfully approved a SOLE', soleId);
-            res.redirect('/pending-soles');
+            res.redirect('/pending-soles?sesh=' + sesh);
         });
+
 
 
         // Controllers.Admin.rejectSole(req.body.feedback, req.body.soleId).then(soleId=>{
@@ -207,21 +232,21 @@ router.route('/pending-soles')
     });
 
 //temporary static route for making the view for approving soles
-router.route('/pending-sole')
-    .get((req, res)=> {
-        const adminData = {
-            sesh: 'xxxxx',
-            config: soleConfig,
-            layout: 'no-footer.hbs'
-        };
-
-        Controllers.Admin.getPendingSole(sessionToken).then(sole=>{
-            adminData.sole = sole;
-            res.render('admin-pending-sole', adminData);
-        }).catch(err=>{
-            res.redirect('/home');
-        })
-    });
+// router.route('/pending-sole')
+//     .get((req, res)=> {
+//         const adminData = {
+//             sesh: 'xxxxx',
+//             config: soleConfig,
+//             layout: 'no-footer.hbs'
+//         };
+//
+//         Controllers.Admin.getPendingSole(sessionToken).then(sole=>{
+//             adminData.sole = sole;
+//             res.render('admin-pending-sole', adminData);
+//         }).catch(err=>{
+//             res.redirect('/home');
+//         })
+//     });
 
 // route for Admin Page
 router.route('/admin')

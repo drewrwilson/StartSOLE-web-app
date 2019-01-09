@@ -18,21 +18,33 @@ class Admin {
     }
 
 
-    static getPendingSole (soleId, sessionToken) {
-        return Parse.Cloud.run('webapp.getSoleByIdApproveReject', {
-            id: soleId,
-            sessionToken: sessionToken
-        }).then(soleJson => {
-            return Parse.Promise.as(soleJson);
-        });
-    };
+    // static getPendingSole (soleId, sessionToken) {
+    //     return Parse.Cloud.run('webapp.getSoleByIdApproveReject', {
+    //         id: soleId,
+    //         sessionToken: sessionToken
+    //     }).then(soleJson => {
+    //         return Parse.Promise.as(soleJson);
+    //     });
+    // };
 
-    //approve a sole and share feedback
-    static approveSole (feedback, soleId) {
-        //do webapp call to approve a sole
-        console.log('feedback: ', feedback);
-        console.log('soleId: ', soleId);
-        return Promise.resolve(soleId);
+    //approve a sole and records comments, sends email async
+    /*
+    param:
+        soleId - string
+        comment - string
+        sessionToken - string
+     returns
+        promise with soleId
+
+     */
+    static approveSole (soleId, comment, sessionToken) {
+        return Parse.Cloud.run('webapp.approveSole', {
+            id: soleId,
+            comment: comment,
+            sessionToken: sessionToken
+        }).catch(error=>{
+            console.log('catch error!', error);
+        })
     };
 
     //reject a sole and share feedback

@@ -48,7 +48,7 @@ class Admin {
     };
 
     //reject a sole and share feedback
-    static rejectSole (feedback, soleId) {
+    static rejectSole (soleId, comment, sessionToken) {
         //do a webapp call to reject a sole
         console.log('feedback: ', feedback);
         console.log('soleId: ', soleId);

@@ -173,7 +173,7 @@ router.route('/home')
       res.redirect('/home');
       })
 
-  })
+  });
 
 //temporary static route for making the view for approving soles
 router.route('/pending-soles')
@@ -195,7 +195,7 @@ router.route('/pending-soles')
             res.render('admin-pending-soles', adminData);
             console.log('rendering pending soles page');
         }).catch(err=>{
-            res.redirect('/home');
+            res.redirect('/home?sesh=' + sesh);
         })
     })
 
@@ -262,7 +262,7 @@ router.route('/admin')
   Controllers.User.getRoleData(sessionToken).then((roleData)=>{
     adminData.roleData = roleData;
     if(!roleData.isAdmin){
-      res.redirect('/home');
+      res.redirect('/home?sesh=' + sesh);
     }
     else {
       Controllers.User.adminSummaryData().then((summaryData)=>{
@@ -271,7 +271,7 @@ router.route('/admin')
       });
     }
   }).catch((err)=>{
-    res.redirect('/home');
+    res.redirect('/home?sesh=' + sesh);
   })
 });
 
@@ -361,7 +361,7 @@ router.route('/resources')
           resources: resources,
           sesh: sesh,
           config: soleConfig
-        }
+        };
         res.render('resources', viewData);
       })
 
@@ -441,7 +441,7 @@ router.route('/register')
 router.route('/logout')
   .get((req, res)=> {
     res.render('logout', {layout: 'no-sidebar.hbs', config: soleConfig});
-  })
+  });
 
 // routes for logging in
 // ----------------------------------------------------
@@ -450,7 +450,7 @@ router.route('/login')
     .get((req, res)=> {
       const email = req.query.email;
       res.render('login', {layout: 'prelogin.hbs', config: soleConfig, email: email});
-    })
+    });
 
 // route for completing profile
 router.route('/complete-profile')
@@ -504,7 +504,7 @@ router.route('/complete-profile')
         console.log('error completing user profile', err);
         res.redirect('/error?sesh='+sesh);
       })
-  })
+  });
 
 // routes for soles
 // ----------------------------------------------------
@@ -612,7 +612,7 @@ router.route('/soles/:id/copy')
       res.redirect('/soles/?sesh=' + sesh);
     });
 
-})
+});
 
 
 // on routes that end in /soles/:sole_id/edit
@@ -678,7 +678,7 @@ router.route('/soles/:id/edit')
         num_students: req.body.num_students,
         num_devices: req.body.num_devices,
         content_objective: req.body.content_objective
-    }
+    };
 
     let id = req.body.sole_id;
 
@@ -766,7 +766,7 @@ router.route('/sole-reflect')
 
   Controllers.Sole.saveReflection(reflection, sessionToken).then(soleID=>{
     res.redirect('/soles/'+soleID+'?sesh='+sesh);
-  })
+  });
 
   console.log('req.body', JSON.stringify(req.body));
 
@@ -783,7 +783,7 @@ router.route('/sole-create')
       const question = req.query.question; //get the ID of desired question from the query param
       (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-      var viewData = {sesh: sesh}
+      var viewData = {sesh: sesh};
       viewData.config = soleConfig;
 
       //if a question is present get it and attach to viewData as part of a SOLE
@@ -846,7 +846,7 @@ router.route('/sole-create')
         num_students: req.body.num_students,
         num_devices: req.body.num_devices,
         content_objective: req.body.content_objective
-      }
+      };
 
 
             Controllers.Sole.add(sole, sessionToken).then(soleID=>{
@@ -929,7 +929,7 @@ res.redirect('/login');
   console.log('error getting all questions!', err);
 res.redirect('/login');
 });
-})
+});
 
 //add a question
 router.route('/questions/add')
@@ -957,7 +957,7 @@ router.route('/questions/add')
         text: req.body.text,
         source: req.body.source,
         tags: tags
-      }
+      };
       Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, sessionToken).then(questionID=>{
         console.log('added new question with id: ' + questionID);
         res.redirect('/questions/'+questionID+'?sesh='+sesh);

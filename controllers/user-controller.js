@@ -15,9 +15,36 @@ User.getProfileData = function (sessionToken) {
 
 //returns user profile data
 User.getRoleData = function (sessionToken) {
-  return Parse.Cloud.run('webapp.getRoleData', {
+  return Parse.Cloud.run('webapp.getRoles', {
     sessionToken: sessionToken
-  })
+  }).then(roles => {
+    return Parse.Promise.as({
+      isAdmin: roles.includes('Admin'),
+      isRingleader: roles.includes('ringleader'),
+      roles: roles
+    });
+  });
+};
+
+User.hasRole = function(roleName, sessionToken) {
+  return Parse.Cloud.run('webapp.hasRole', {
+    roleName: roleName,
+    sessionToken: sessionToken
+  });
+};
+
+User.isAdmin = function(sessionToken) {
+  return Parse.Cloud.run('webapp.hasRole', {
+    roleName: 'Admin',
+    sessionToken: sessionToken
+  });
+};
+
+User.isRingLeader = function(sessionToken) {
+  return Parse.Cloud.run('webapp.hasRole', {
+    roleName: 'ringleader',
+    sessionToken: sessionToken
+  });
 };
 
 //returns user ring data for the first ring

@@ -218,17 +218,17 @@ router.route('/pending-soles')
         console.log('sesh: ', req.body.sesh);
         console.log('~~~~~~~~~');
 
-        Controllers.Admin.approveSole(req.body.soleId, req.body.comment, sesh).then(soleId=>{
-            console.log('successfully approved a SOLE', soleId);
-            res.redirect('/pending-soles?sesh=' + sesh);
-        });
-
-
-
-        // Controllers.Admin.rejectSole(req.body.feedback, req.body.soleId).then(soleId=>{
-        //     console.log('successfully rejected a SOLE',soleId);
-        //     res.redirect('/pending-soles');
-        // });
+        if (req.body.action === 'Approve') {
+            Controllers.Admin.approveSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
+                console.log('successfully approved a SOLE', soleId);
+                res.redirect('/pending-soles?sesh=' + sesh);
+            });
+        } else {
+            Controllers.Admin.rejectSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
+                console.log('successfully rejected a SOLE',soleId);
+                res.redirect('/pending-soles?sesh=' + sesh);
+            });
+        }
     });
 
 //temporary static route for making the view for approving soles

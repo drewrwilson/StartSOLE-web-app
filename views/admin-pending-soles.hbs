@@ -64,7 +64,7 @@
             <div class="col s12">
                 <div class="row">
                     <div class="input-field col s12">
-                        <select id="canned-response-dropdown">
+                        <select class="canned-response-dropdown">
                             <option><p>I see you have requested help--what can we assist you with?</p></option>
                             <option><p>Great question! In the future, be sure to expand on your reflection a bit more</p></option>
                             <option><p>Great question! In the future, be sure to give a more complete answer to the reflection question.</p></option>
@@ -169,8 +169,8 @@
 <script>
     $(document).ready(function () {
 
-        $('#canned-response-dropdown').on('change', function () {
-            var myText = $("#canned-response-dropdown :selected").text();
+        $('.canned-response-dropdown').on('change', function () {
+            var myText = $(".canned-response-dropdown :selected").text();
 
             $("#comment").val(myText);
         });

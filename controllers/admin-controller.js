@@ -42,17 +42,16 @@ class Admin {
             id: soleId,
             comment: comment,
             sessionToken: sessionToken
-        }).catch(error=>{
-            console.log('catch error!', error);
-        })
+        });
     };
 
     //reject a sole and share feedback
     static rejectSole (soleId, comment, sessionToken) {
-        //do a webapp call to reject a sole
-        console.log('feedback: ', feedback);
-        console.log('soleId: ', soleId);
-        return Promise.resolve(soleId);
+        return Parse.Cloud.run('webapp.rejectSole', {
+            id: soleId,
+            comment: comment,
+            sessionToken: sessionToken
+        });
     };
 
 }

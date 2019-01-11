@@ -35,7 +35,7 @@
                             <td>{{this.createdBy.userName}}</td>
                             <td>
                                 <a class="btn-small waves-effect waves-light modal-trigger" href="#approve-{{this.id}}">
-                                VIEW
+                                REVIEW
                                 </a>
 
 
@@ -56,7 +56,7 @@
 
 <!-- Modal Structure -->
 <div id="approve-{{this.id}}" class="modal">
-    <form action="/pending-soles" id="form-approve-{{this.id}}" method="post">
+    <form action="/pending-soles" id="form-approve-{{this.id}}" class="form-approve" method="post">
     <div class="modal-content">
         <h4>{{this.question.text}}</h4>
         <p><a href="{{this.documents.summary.file}}" target="_blank">See the Reflection PDF</a></p>
@@ -148,7 +148,7 @@
 
     </div>
     <div class="modal-footer">
-        <input type="submit" class="btn-small waves-effect waves-light green modal-trigger" id="approve-btn-{{this.id}}" >
+        <input type="submit" class="btn-small waves-effect waves-light green modal-trigger approve-btn" id="approve-btn-{{this.id}}" >
         <!--SUBMIT-->
         <!--</input>-->
         <!--<a type="submit" class="btn-small waves-effect waves-light green modal-trigger"-->
@@ -166,6 +166,27 @@
 {{/each}}
 
 
+<style>
+    #overlay {
+        /* Height & width depends on how you want to reveal the overlay (see JS below) */
+        height: 100%;
+        width: 100%;
+        position: fixed; /* Stay in place */
+        z-index: 999; /* Sit on top */
+        left: 0;
+        top: 0;
+        background-color: rgb(0,0,0); /* Black fallback color */
+        background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+        overflow-x: hidden; /* Disable horizontal scroll */
+        transition: 0.2s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+    }
+</style>
+<div id="overlay" style="display: none;">
+    <div class="row center-align" style="padding-top:10%">
+            <img src="/images/loading03.gif">
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
 
@@ -173,6 +194,13 @@
             var myText = $(".canned-response-dropdown :selected").text();
 
             $(".comment").val(myText);
+        });
+
+
+        $('.form-approve').on('submit', function () {
+            $(this).hide();
+            document.getElementById("overlay").style.width = "100%";
+            $('#overlay').show();
         });
 
     });

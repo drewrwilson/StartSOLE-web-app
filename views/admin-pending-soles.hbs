@@ -64,7 +64,7 @@
             <div class="col s12">
                 <div class="row">
                     <div class="input-field col s12">
-                        <select class="canned-response-dropdown">
+                        <select id="comment-dropdown-{{this.id}}" class="canned-response-dropdown">
                             <option><p>I see you have requested help--what can we assist you with?</p></option>
                             <option><p>Great question! In the future, be sure to expand on your reflection a bit more</p></option>
                             <option><p>Great question! In the future, be sure to give a more complete answer to the reflection question.</p></option>
@@ -121,13 +121,13 @@
                             <option><p>This looks like a test of our tools.  If you need help with SOLE in the future feel free to email us here we're always eager to assist.</p></option>
                             <option><p>Your photos show clear evidence of student collaboration - keep up the great work!</p></option>
                         </select>
-                        <label>Pre-fill with canned response (optional)</label>
+                        <label for="comment-dropdown-{{this.id}}">Pre-fill with canned response (optional)</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <textarea id="comment" name="comment" class="materialize-textarea"></textarea>
-                        <label for="comment">Feedback</label>
+                        <textarea id="comment-{{this.id}}" name="comment" class="materialize-textarea comment"></textarea>
+                        <label for="comment-{{this.id}}">Feedback</label>
                     </div>
                 </div>
             <div class="row">
@@ -172,7 +172,7 @@
         $('.canned-response-dropdown').on('change', function () {
             var myText = $(".canned-response-dropdown :selected").text();
 
-            $("#comment").val(myText);
+            $(".comment").val(myText);
         });
 
     });

@@ -10,7 +10,7 @@ class Admin {
     //gets data for any SOLE sessions that haven't been approved or rejected yet
     static getPendingSoles (sessionToken) {
         return Parse.Cloud.run('webapp.getUnapprovedSoles', {
-            limit: 400,
+            limit: 999,
             sessionToken: sessionToken
         }).then(solesJson => {
             return Promise.resolve(solesJson);

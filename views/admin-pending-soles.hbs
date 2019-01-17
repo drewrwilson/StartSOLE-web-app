@@ -188,10 +188,11 @@
 </div>
 
 <script>
+
     $(document).ready(function () {
 
         $('.canned-response-dropdown').on('change', function () {
-            var myText = $(".canned-response-dropdown :selected").text();
+            var myText = $(this).find(":selected").text();
 
             $(".comment").val(myText);
         });

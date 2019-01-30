@@ -37,7 +37,7 @@
                             <td><a href="{{this.documents.summary.file}}" target="_blank">{{this.question.text}}</a></td>
                             <td><a href="mailto:{{this.createdBy.email}}">{{this.createdBy.userName}}</a></td>
                             <td><i class="material-icons">live_help</i></td>
-                            <td>
+                            <td class="input-field">
                                 <input type="text" id="autocomplete-input-666" class="autocomplete">
                                 <label for="autocomplete-input-666">Autocomplete</label>
                             </td>
@@ -47,11 +47,11 @@
                                 <!--SUBMIT-->
                                 <!--</a>-->
                                 <!--btn-floating btn-large waves-effect waves-light-->
-                                <a type="submit" class="btn-floating waves-effect waves-light green modal-trigger"
+                                <a class="btn-floating waves-effect waves-light green"
                                    href="#" id="approve-btn-{{this.id}}" onclick="approve(event)">
                                     <i class="material-icons left">thumb_up</i>
                                 </a>
-                                <a type="submit" class="btn-floating waves-effect waves-light red modal-trigger"
+                                <a class="btn-floating waves-effect waves-light red"
                                    href="#" id="approve-btn-{{this.id}}" onclick="reject(event)">
                                     <i class="material-icons left">thumb_down</i>
                                 </a>

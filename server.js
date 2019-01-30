@@ -192,6 +192,7 @@ router.route('/pending-soles')
 
         Controllers.Admin.getPendingSoles(sessionToken).then(soles=>{
             soles.forEach(sole=>{
+                sole.question.shortText = sole.question.text.substring(0,10);
                 sole.reflectionDate = moment(sole.reflectionDate, "YYYYMMDD").fromNow();
             });
 
@@ -223,17 +224,17 @@ router.route('/pending-soles')
         console.log('sesh: ', req.body.sesh);
         console.log('~~~~~~~~~');
 
-        if (req.body.action === 'Approve') {
+        if (req.body.action === 'approve') {
             Controllers.Admin.approveSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
                 console.log('successfully approved a SOLE', soleId);
                 res.redirect('/pending-soles?sesh=' + sesh);
             });
-        } else {
+        } else if (req.body.action === 'reject') {
             Controllers.Admin.rejectSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
                 console.log('successfully rejected a SOLE',soleId);
                 res.redirect('/pending-soles?sesh=' + sesh);
             });
-        }
+        } else {}
     });
 
 //temporary static route for making the view for approving soles

@@ -24,7 +24,7 @@
                         <th>Date</th>
                         <th>Question</th>
                         <th>User</th>
-                        <th>Help</th>
+                        <!--<th>Help</th>-->
                         <th>Comments</th>
                         <th>Actions</th>
 
@@ -34,12 +34,12 @@
                     {{#each soles}}
                         <tr>
                             <td>{{this.reflectionDate}}</td>
-                            <td><a href="{{this.documents.summary.file}}" target="_blank">{{this.question.text}}</a></td>
+                            <td><a href="{{this.documents.summary.file}}" class="tooltipped" target="_blank" data-position="bottom" data-tooltip="{{this.question.text}}">{{this.question.shortText}}</a></td>
                             <td><a href="mailto:{{this.createdBy.email}}">{{this.createdBy.userName}}</a></td>
-                            <td><i class="material-icons">live_help</i></td>
+                            <!--<td><i class="material-icons">live_help</i></td>-->
                             <td class="input-field">
-                                <input type="text" id="autocomplete-input-666" class="autocomplete">
-                                <label for="autocomplete-input-666">Autocomplete</label>
+                                <input type="text" id="autocomplete-input-{{this.id}}" class="autocomplete">
+                                <label for="autocomplete-input-{{this.id}}">Feedback</label>
                             </td>
                             <td>
 
@@ -48,11 +48,11 @@
                                 <!--</a>-->
                                 <!--btn-floating btn-large waves-effect waves-light-->
                                 <a class="btn-floating waves-effect waves-light green"
-                                   href="#" id="approve-btn-{{this.id}}" onclick="approve(event)">
+                                   href="#" id="approve-btn-{{this.id}}" onclick="approve('{{this.id}}')">
                                     <i class="material-icons left">thumb_up</i>
                                 </a>
                                 <a class="btn-floating waves-effect waves-light red"
-                                   href="#" id="approve-btn-{{this.id}}" onclick="reject(event)">
+                                   href="#" id="approve-btn-{{this.id}}" onclick="reject('{{this.id}}')">
                                     <i class="material-icons left">thumb_down</i>
                                 </a>
 
@@ -90,6 +90,18 @@
     <div class="row center-align" style="padding-top:10%">
             <img src="/images/loading03.gif">
     </div>
+</div>
+
+<!--hidden form-->
+<div style="display:none">
+    <form method="post" action="/pending-soles" id="form-approve-reject">
+        <input type="hidden" id="sesh" name="sesh" value="{{sesh}}">
+        <input type="hidden" id="soleId" name="soleId" value="none">
+        <input type="hidden" id="action" name="action" value="none">
+        <input type="hidden" id="comment" name="comment" value="none">
+
+    </form>
+
 </div>
 
 <script>
@@ -160,15 +172,45 @@
                 // minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
             });
 
-        $('.form-approve').on('submit', function () {
-            $(this).hide();
-            document.getElementById("overlay").style.width = "100%";
-            $('#overlay').show();
-        });
+
 
     });
 
+/*
+submits an approved sole to the backend to be processed.
+param:
+    soleId - string ID of a sole to be approved
+    action - string of the action to take, either "approve" or "reject"
+returns:
+    nothing
+ */
+function approveOrReject (soleId, action) {
+    $('#soleId').val(soleId);
+    $('#comment').val($('#autocomplete-input-' + soleId).val());
+    $('#action').val(action);
+    $('#form-approve-reject').submit(); //submit the form
+    document.getElementById("overlay").style.width = "100%";
+    $('#overlay').show();
+}
+/*
+wrapper for approveOrReject for approving
+param:
+    soleId - string ID of a sole to be approved
+returns:
+    nothing
+ */
+function approve(soleId) {
+    approveOrReject(soleId, 'approve');
+}
+/*
+wrapper for approveOrReject for rejecting
+param:
+    soleId - string ID of a sole to be approved
+returns:
+    nothing
+ */
+function reject(soleId) {
+    approveOrReject(soleId, 'reject');
+}
 
 </script>
-
-<script src="s"></script>

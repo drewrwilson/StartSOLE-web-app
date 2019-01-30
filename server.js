@@ -9,6 +9,7 @@ var app         = express();                 // define our app using express
 var bodyParser  = require('body-parser');
 var hbs         = require('express-hbs');
 var path        = require('path');
+var moment        = require('moment');
 var Controllers = require('./controllers/controllers.js');
 
 // var Parse       =  require('parse/node');
@@ -190,6 +191,12 @@ router.route('/pending-soles')
         };
 
         Controllers.Admin.getPendingSoles(sessionToken).then(soles=>{
+            soles.map(sole=>{
+                //sole.reflectionDate = moment(sole.reflectionDate, "YYYYMMDD").fromNow();
+                // const map1 = array1.map(x => x * 2);
+
+            })
+
             adminData.soles = soles;
             adminData.totalSoles = soles.length;
             res.render('admin-pending-soles', adminData);

@@ -13,6 +13,7 @@ class Admin {
             limit: 999,
             sessionToken: sessionToken
         }).then(solesJson => {
+            console.log('getpendingsoles: ', solesJson)
             return Promise.resolve(solesJson);
         });
     }

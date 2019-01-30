@@ -191,11 +191,9 @@ router.route('/pending-soles')
         };
 
         Controllers.Admin.getPendingSoles(sessionToken).then(soles=>{
-            soles.map(sole=>{
-                //sole.reflectionDate = moment(sole.reflectionDate, "YYYYMMDD").fromNow();
-                // const map1 = array1.map(x => x * 2);
-
-            })
+            soles.forEach(sole=>{
+                sole.reflectionDate = moment(sole.reflectionDate, "YYYYMMDD").fromNow();
+            });
 
             adminData.soles = soles;
             adminData.totalSoles = soles.length;

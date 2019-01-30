@@ -20,7 +20,12 @@
                          data-position="bottom"
                          data-tooltip="Trainer">
                 {{/if}}
-                <span class="card-title grey-text text-darken-4">{{user.name}}</span>
+                {{#if user.name}}
+                    <span class="card-title grey-text text-darken-4">{{user.name}}</span>
+                {{else}}
+                    <span class="card-title grey-text text-darken-4">{{user.firstName}} {{user.lastName}}</span>
+                {{/if}}
+
                 <p>Member since {{user.createdAt}}</p>
             </div>
             <!--<div class="card-reveal">-->

@@ -15,7 +15,7 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Approve/Reject SOLEs</span>
-                <p>There are {{totalSoles}} SOLEs in the queue. </p>
+                <p>There are <strong>{{totalSoles}} SOLEs</strong> in the queue. </p>
 
 
                 <table class="highlight">
@@ -26,6 +26,8 @@
                         <th>User</th>
                         <!--<th>Help</th>-->
                         <th>Comments</th>
+                        <th class="tooltipped" data-position="bottom" data-tooltip="Ask for social media permission?"><i class="material-icons">camera_enhance</i></th>
+
                         <th>Actions</th>
 
                     </tr>
@@ -41,12 +43,13 @@
                                 <input type="text" id="autocomplete-input-{{this.id}}" class="autocomplete">
                                 <label for="autocomplete-input-{{this.id}}">Feedback</label>
                             </td>
+                            <td class="tooltipped" data-position="bottom" data-tooltip="Ask for social media permission?">
+                                <label>
+                                    <input type="checkbox" class="filled-in" id="social-media-check" />
+                                    <span></span>
+                                </label>
+                            </td>
                             <td>
-
-                                <!--<a class="btn-small waves-effect waves-light modal-trigger" href="#approve-{{this.id}}">-->
-                                <!--SUBMIT-->
-                                <!--</a>-->
-                                <!--btn-floating btn-large waves-effect waves-light-->
                                 <a class="btn-floating waves-effect waves-light green"
                                    href="#" id="approve-btn-{{this.id}}" onclick="approve('{{this.id}}')">
                                     <i class="material-icons left">thumb_up</i>
@@ -188,6 +191,7 @@ function approveOrReject (soleId, action) {
     $('#soleId').val(soleId);
     $('#comment').val($('#autocomplete-input-' + soleId).val());
     $('#action').val(action);
+    // $('#social-media-check');
     $('#form-approve-reject').submit(); //submit the form
     document.getElementById("overlay").style.width = "100%";
     $('#overlay').show();

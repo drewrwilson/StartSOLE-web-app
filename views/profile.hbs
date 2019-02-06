@@ -395,7 +395,12 @@
                                     </a>
                                 </div>
                             </li>
-
+                            <li class="collection-item">
+                                <div class="left-align" style="height: 32.4px;">
+                                    <a class="js-copylink" target="_blank" href="https://app.startsole.org/register?r={{user.id}}">Signup for StartSOLE</a>
+                                    <a class="secondary-content waves-effect waves-light btn-small js-linkcopybtn">Copy Link</a>
+                                </div>
+                            </li>
                         </ul>
                         <p>Please remember to share any copied content with <strong>support@startsole.org</strong> so we can learn from your experience.</p>
                         <a href="mailto:support@startsole.org" class="btn">Get Help</a>
@@ -405,3 +410,29 @@
         </div>
     {{/if}}
 </div>
+
+
+<script>
+    var copyEmailBtn = document.querySelector('.js-linkcopybtn');
+    copyEmailBtn.addEventListener('click', function(event) {
+        // Select the email link anchor text  
+        var link = document.querySelector('.js-copylink');
+        var range = document.createRange();
+        range.selectNode(link);
+        window.getSelection().addRange(range);
+
+        try {
+            // Now that we've selected the anchor text, execute the copy command  
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copy email command was ' + msg);
+            M.toast({html: 'Link Copied!'});
+        } catch(err) {
+            console.log('Oops, unable to copy');
+        }
+
+        // Remove the selections - NOTE: Should use
+        // removeRange(range) when it is supported  
+        window.getSelection().removeAllRanges();
+    });
+</script>

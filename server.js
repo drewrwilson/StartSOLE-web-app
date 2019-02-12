@@ -237,23 +237,6 @@ router.route('/pending-soles')
         } else {}
     });
 
-//temporary static route for making the view for approving soles
-// router.route('/pending-sole')
-//     .get((req, res)=> {
-//         const adminData = {
-//             sesh: 'xxxxx',
-//             config: soleConfig,
-//             layout: 'no-footer.hbs'
-//         };
-//
-//         Controllers.Admin.getPendingSole(sessionToken).then(sole=>{
-//             adminData.sole = sole;
-//             res.render('admin-pending-sole', adminData);
-//         }).catch(err=>{
-//             res.redirect('/home');
-//         })
-//     });
-
 // route for Admin Page
 router.route('/admin')
   .get((req, res)=> {

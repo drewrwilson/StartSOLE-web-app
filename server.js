@@ -280,6 +280,28 @@ router.route('/admin/browse-soles')
   })
 });
 
+// route for browsing upcoming conferences and events.  Admin only
+router.route('/admin/events')
+  .get((req, res)=> {
+  const sesh = req.query.sesh; //get the sesh token string from the query param
+  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
+  const adminData = {sesh: sesh};
+  adminData.config = soleConfig;
+
+  Controllers.User.getRoleData(sessionToken).then((roleData)=>{
+    adminData.roleData = roleData;
+    if(!roleData.isAdmin){
+      res.redirect('/home');
+    }
+    else {
+      res.render('admin-conferences-and-events', adminData);
+    }
+  }).catch((err)=>{
+    res.redirect('/home');
+  })
+});
 
 // static route for History of SOLE
 router.route('/history')

@@ -217,13 +217,6 @@ router.route('/pending-soles')
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-        console.log('---------');
-        console.log('action: ', req.body.action);
-        console.log('comment: ', req.body.comment);
-        console.log('soleId: ', req.body.soleId);
-        console.log('sesh: ', req.body.sesh);
-        console.log('~~~~~~~~~');
-
         if (req.body.action === 'approve') {
             Controllers.Admin.approveSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
                 console.log('successfully approved a SOLE', soleId);

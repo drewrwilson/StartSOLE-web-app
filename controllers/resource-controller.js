@@ -463,6 +463,19 @@ Resource.getAll = function () {
             tags: [
                 "training", "question-help", "investigation-help", "review-help", "posters", "rubric"
             ]
+        },
+        {
+            file: 'StartSOLE-heart-and-sole.pdf',
+            image: 'StartSOLE-heart-and-sole.jpg',
+            title: 'Heart and SOLE',
+            short: "A one page infographic about SOLE ",
+            description: "This full color infographic explains the three main steps in the SOLE methology. This is great for introducing new teachers or administrators to SOLE.",
+            authors: [
+                { email: 'jeff@startsole.org', name: 'Jeff McClellen'}
+            ],
+            tags: [
+                "training", "question-help", "investigation-help", "review-help", "posters"
+            ]
         }
     ];
     return Parse.Promise.as(resources);

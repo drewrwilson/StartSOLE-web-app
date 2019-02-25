@@ -468,15 +468,41 @@ Resource.getAll = function () {
             file: 'StartSOLE-heart-and-sole.pdf',
             image: 'StartSOLE-heart-and-sole.jpg',
             title: 'Heart and SOLE',
-            short: "A one page infographic about SOLE ",
+            short: "A one page infographic about SOLE",
             description: "This full color infographic explains the three main steps in the SOLE methology. This is great for introducing new teachers or administrators to SOLE.",
             authors: [
-                { email: 'jeff@startsole.org', name: 'Jeff McClellen'}
+                { email: 'jeff@startsole.org', name: 'Jeff M.'}
             ],
             tags: [
                 "training", "question-help", "investigation-help", "review-help", "posters"
             ]
-        }
+        },
+        {
+            file: 'pocket-sole.pdf',
+            image: 'pocket_sole_matte_black.png',
+            title: 'Pocket SOLE',
+            short: "Scaled down SOLEs for inquisitive students",
+            description: "My students have discovered that additional SOLE questions come up at various times. We have explored this and  realized there is great value in sometimes taking a side-step and asking/researching/answering these additional questions. After much trial and error, this is the format we like best. It’s basically a scaled-down version of the full-length SOLE. Students work individually or in pairs and launch a quick Pocket SOLE by completing this mini-book and giving a brief presentation to the class about their findings.",
+            authors: [
+                { email: 'bgoodwin@monroevilleschools.org', name: 'Brandi G.'}
+            ],
+            tags: [
+                "question-help", "investigation-help", "review-help", "organizer"
+            ]
+        },
+      {
+        file: 'resource-reliability-checklist.odt',
+        image: 'resource_reliability_matte_black.png',
+        title: 'Resource Reliability',
+        short: "A checklist for determining resource reliability",
+        description: "A simple resource with categorized questions to help students determine how reliable a resource is.  Breaks down reliability by asking about publisher, author, bias, depth, accuracy, and update status.",
+        authors: [
+          { email: 'aefought@genoaschools.com', name: 'Amy F.'}
+        ],
+        tags: [
+          "investigation-help", "organizer"
+        ]
+      }
     ];
     return Parse.Promise.as(resources);
 };

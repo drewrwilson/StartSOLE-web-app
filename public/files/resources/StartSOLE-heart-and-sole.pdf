@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
+
+
+<script type="text/javascript">
+var soleConfig = {
+  "serverUrl":"http://localhost:1339/soleapp",
+  "appId":"Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp",
+  "facebookAppID": "283486318802722"
+}
+</script>
+
+<head>
+    <title>StartSOLE</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104635216-5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-104635216-5');
+        gtag('config', '136-847-7470');
+
+    </script>
+    <!--jquery - the PSL of Javascript libraries-->
+    <script async type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="/css/dropzone.min.css"  media="screen,projection"/>
+    <!--Import stylesheet-->
+    <link type="text/css" rel="stylesheet" href="/css/style.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <style>
+
+    </style>
+    <!--favicon stuff-->
+    <link rel="apple-touch-icon" sizes="180x180" href="https://StartSOLE.org/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://StartSOLE.org/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://StartSOLE.org/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="https://StartSOLE.org/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="https://StartSOLE.org/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+</head>
+
+<body>
+
+<main style="padding-left: 0px !important;">
+  <div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+		  <div class="row center-align">
+              <img class="responsive-img" src="images/404.jpg" alt="Error!">
+		  </div>
+                <div class="row center-align">
+                    <a class="red waves-effect waves-light btn" href="/login">Log In</a>
+                </div>
+            <div class="row center-align">
+                <a class="waves-effect waves-light btn" href="mailto:support@startsole.org"><i class="material-icons
+                right">mail</i>Contact Us</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<footer>
+
+</footer>
+
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="/js/materialize.min.js"></script>
+
+<script type="text/javascript" src="/js/app.js"></script>
+<!--<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>-->
+<!--<script src="js/masonry.pkgd.min.js"></script>-->
+<!--<script type="text/javascript" src="/js/galleryExpand.js"></script>-->
+<!--<script type="text/javascript" src="/js/init.js"></script>-->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initSideNav();
+        initPushPin();
+        initScrollSpy();
+        initTabs();
+        initDatePicker();
+        initTimePicker();
+        initSelect();
+        initTooltips();
+        initSlider();
+        initMaterialBoxed();
+        initCollapsible();
+        initModal();
+    });
+
+</script>
+
+<!--Track outbound link clicks-->
+<script>
+    /**
+     * Function that tracks a click on an outbound link in Analytics.
+     * This function takes a valid URL string as an argument, and uses that URL string
+     * as the event label. Setting the transport method to 'beacon' lets the hit be sent
+     * using 'navigator.sendBeacon' in browser that support it.
+     */
+    var trackOutboundLink = function(url) {
+        gtag('event', 'click', {
+            'event_category': 'outbound',
+            'event_label': url,
+            'transport_type': 'beacon',
+            'event_callback': function(){document.location = url;}
+        });
+    }
+</script>
+</body>
+</html>

@@ -204,7 +204,6 @@ function approveOrReject (soleId, action) {
     $('#comment').val($('#autocomplete-input-' + soleId).val());
     $('#action').val(action);
     $('#socialMediaCheck').val($('#social-media-check-' + soleId).is(":checked") ? "true" : "false");
-    //social-media-check-RjSzycHGzd
     $('#form-approve-reject').submit(); //submit the form
     document.getElementById("overlay").style.width = "100%";
     $('#overlay').show();

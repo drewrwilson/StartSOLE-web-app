@@ -216,12 +216,12 @@ router.route('/pending-soles')
         const sesh = req.body.sesh; //get the sesh token string from the query param
         (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
+        const requestSocialMedia = (req.body.socialMediaCheck == "true") ? true : false;//true if we need to request Social Media Approval via email, false otherwise
         if (req.body.action === 'approve') {
-            Controllers.Admin.approveSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
+            Controllers.Admin.approveSole(req.body.soleId, req.body.comment, requestSocialMedia, sessionToken).then(soleId=>{
                 console.log('successfully approved a SOLE', soleId);
                 res.redirect('/pending-soles?sesh=' + sesh);
-            });
+            })
         } else if (req.body.action === 'reject') {
             Controllers.Admin.rejectSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
                 console.log('successfully rejected a SOLE',soleId);

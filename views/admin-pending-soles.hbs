@@ -45,7 +45,7 @@
                             </td>
                             <td class="tooltipped" data-position="bottom" data-tooltip="Ask for social media permission?">
                                 <label>
-                                    <input type="checkbox" class="filled-in" id="social-media-check" />
+                                    <input type="checkbox" class="filled-in" id="social-media-check-{{this.id}}" />
                                     <span></span>
                                 </label>
                             </td>
@@ -102,6 +102,7 @@
         <input type="hidden" id="soleId" name="soleId" value="none">
         <input type="hidden" id="action" name="action" value="none">
         <input type="hidden" id="comment" name="comment" value="none">
+        <input type="hidden" id="socialMediaCheck" name="socialMediaCheck" value="false">
 
     </form>
 
@@ -202,7 +203,8 @@ function approveOrReject (soleId, action) {
     $('#soleId').val(soleId);
     $('#comment').val($('#autocomplete-input-' + soleId).val());
     $('#action').val(action);
-    // $('#social-media-check');
+    $('#socialMediaCheck').val($('#social-media-check-' + soleId).is(":checked") ? "true" : "false");
+    //social-media-check-RjSzycHGzd
     $('#form-approve-reject').submit(); //submit the form
     document.getElementById("overlay").style.width = "100%";
     $('#overlay').show();

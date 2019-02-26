@@ -27,10 +27,11 @@ class Admin {
         promise with soleId
 
      */
-    static approveSole (soleId, comment, sessionToken) {
+    static approveSole (soleId, comment, requestSocialMedia, sessionToken) {
         return Parse.Cloud.run('webapp.approveSole', {
             id: soleId,
             comment: comment,
+            requestSocialMedia: requestSocialMedia,
             sessionToken: sessionToken
         });
     };

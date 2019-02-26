@@ -24,7 +24,7 @@
                         <th>Date</th>
                         <th>Question</th>
                         <th>User</th>
-                        <!--<th>Help</th>-->
+                        <th>Help</th>
                         <th>Comments</th>
                         <th class="tooltipped" data-position="bottom" data-tooltip="Ask for social media permission?"><i class="material-icons">camera_enhance</i></th>
 
@@ -38,7 +38,7 @@
                             <td>{{this.reflectionDate}}</td>
                             <td><a href="{{this.documents.summary.file}}" class="tooltipped" target="_blank" data-position="bottom" data-tooltip="{{this.question.text}}">{{this.question.shortText}}</a></td>
                             <td><a href="mailto:{{this.createdBy.email}}">{{this.createdBy.userName}}</a></td>
-                            <!--<td><i class="material-icons">live_help</i></td>-->
+                            <td class="tooltipped" data-position="bottom" data-tooltip="Requested help">{{#if this.reflectionNeedHelp}}<i class="material-icons">live_help</i>{{/if}}</td>
                             <td class="input-field">
                                 <input type="text" id="autocomplete-input-{{this.id}}" class="autocomplete">
                                 <label for="autocomplete-input-{{this.id}}">Feedback</label>

@@ -199,7 +199,6 @@ router.route('/pending-soles')
             adminData.soles = soles;
             adminData.totalSoles = soles.length;
             res.render('admin-pending-soles', adminData);
-            console.log('rendering pending soles page');
         }).catch(err=>{
             res.redirect('/home?sesh=' + sesh);
         })

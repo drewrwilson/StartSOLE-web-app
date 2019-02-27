@@ -87,7 +87,7 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
     .get((req, res) => {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       //check if user needs to complete profile
@@ -145,7 +145,7 @@ router.route('/random-picture')
 router.route('/home')
   .get((req,  res)=>{
     const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
     var homeData = {soles: [],questions:[]};
@@ -180,7 +180,7 @@ router.route('/home')
 router.route('/pending-soles')
     .get((req, res)=> {
         const sesh = req.query.sesh; //get the sesh token string from the query param
-        (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+        (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
         const adminData = {
@@ -213,7 +213,7 @@ router.route('/pending-soles')
 
     .post((req, res)=> {
         const sesh = req.body.sesh; //get the sesh token string from the query param
-        (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+        (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res) : false; //if the sesh token doesn't exist in the URL, redirect to /login
         sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
         const requestSocialMedia = (req.body.socialMediaCheck == "true") ? true : false;//true if we need to request Social Media Approval via email, false otherwise
         // const email = req.body.email;
@@ -237,7 +237,7 @@ router.route('/pending-soles')
 router.route('/admin')
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
   const adminData = {sesh: sesh};
@@ -264,7 +264,7 @@ router.route('/admin')
 router.route('/admin/browse-soles')
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
   const adminData = {sesh: sesh};
@@ -287,7 +287,7 @@ router.route('/admin/browse-soles')
 router.route('/admin/events')
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
   const adminData = {sesh: sesh};
@@ -310,7 +310,7 @@ router.route('/admin/events')
 router.route('/history')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
@@ -322,7 +322,7 @@ router.route('/history')
 router.route('/how')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
@@ -360,7 +360,7 @@ res.render('verify-email-failure', {layout: 'no-sidebar.hbs', config: soleConfig
 router.route('/resources')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       Controllers.Resource.getAll().then(resources=>{
@@ -378,7 +378,7 @@ router.route('/resources')
 router.route('/map')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
@@ -393,7 +393,7 @@ router.route('/profile')
 // profile view
     .get((req, res) => {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       Controllers.User.getProfileData(sessionToken)
@@ -406,7 +406,7 @@ router.route('/profile')
     })
     .post((req, res)=> {
       const sesh = req.body.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res) : false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       // TODO: refactor so this accept explicit param instead of of req.body
@@ -463,7 +463,7 @@ router.route('/login')
 router.route('/complete-profile')
     .get((req, res) => {
     const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
     Controllers.User.getProfileData(sessionToken)
@@ -520,7 +520,7 @@ router.route('/soles')
 // get all the soles
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
         Controllers.Sole.getAll(sessionToken)
@@ -530,8 +530,8 @@ router.route('/soles')
           soles.config = soleConfig;
           res.render('soles', soles);
         }).catch(err=>{
-          console.log('oops! error getting all soles!', err);
-          // res.redirect('/login')
+          // console.log('oops! error getting all soles!', err);
+            showErrorPage('Could not get list of SOLEs.', false, res);
         })
 
     });
@@ -542,7 +542,7 @@ router.route('/soles/:id')
 // get the sole with that id
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       Controllers.Sole.getByID(req.params.id, sessionToken)
@@ -553,8 +553,8 @@ router.route('/soles/:id')
             singleSole.config = soleConfig;
             res.render('soles-single', singleSole);
           }).catch((err)=>{
-            console.log('error!', err);
-            res.redirect('/login')
+            // console.log('error!', err);
+            showErrorPage('Could not get a SOLE.', false, res);
           })
     });
 
@@ -565,7 +565,7 @@ router.route('/soles/:id/download-plan')
 // get the sole with that id
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       var id = req.params.id;
@@ -587,7 +587,7 @@ router.route('/soles/:id/download-summary')
 // get the sole with that id
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 var id = req.params.id;
@@ -609,7 +609,7 @@ Controllers.Sole.downloadDocument(id, type, sessionToken)
 router.route('/soles/:id/copy')
   .get((req,res)=> {
     const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
     console.log('req.params.id ', req.params.id);
@@ -628,7 +628,7 @@ router.route('/soles/:id/edit')
 // get the sole with that id
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
         Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
@@ -637,7 +637,7 @@ router.route('/soles/:id/edit')
             res.render('soles-add', singleSole);
           }).catch((err)=>{
             console.log('error!', err);
-            res.redirect('/login')
+            showErrorPage('Failed to get SOLE session from the server', false, res)
           })
     })
 .post((req, res)=> {
@@ -645,7 +645,7 @@ router.route('/soles/:id/edit')
 
     console.log("sole-edit post!");
     const sesh = req.body.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
     //push observations into this array if any are set to 'on'
@@ -695,7 +695,7 @@ router.route('/soles/:id/edit')
     res.redirect('/soles/?sesh='+sesh);
     }).catch((err)=>{
         console.log('error saving sole', err);
-    res.redirect('/login')
+        showErrorPage('Could not save SOLE session.', false, res)
     })
 
 
@@ -706,7 +706,7 @@ router.route('/soles/:id/delete')
 // get the sole with that id
     .get((req, res)=> {
     const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
@@ -715,12 +715,13 @@ Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
     res.render('soles-delete', singleSole);
     }).catch((err)=>{
         console.log('error!', err);
-    res.redirect('/login')
+        showErrorPage('Could not get SOLE session from the server. Try again later.', false, res)
+
     })
 })
 .post((req, res)=> {
     const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
     Controllers.Sole.delete(req.body.soleID, sessionToken).then(soleID=>{
         console.log('deleted SOLE',soleID);
@@ -735,7 +736,7 @@ router.route('/soles/:id/reflect')
 // get the sole with that id
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
@@ -743,15 +744,15 @@ router.route('/soles/:id/reflect')
           singleSole.config = soleConfig;
       res.render('soles-reflect', singleSole);
       }).catch((err)=>{
-          console.log('error!', err);
-      res.redirect('/login')
+          // console.log('error!', err);
+          showErrorPage('Coud not get SOLE session from the server.', false, res)
       })
     });
 
 router.route('/sole-reflect')
 .post((req, res)=>{
   const sesh = req.body.sesh; //get the sesh token string from the query param
-  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
   var reflection = {
@@ -788,8 +789,9 @@ router.route('/sole-create')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
       const question = req.query.question; //get the ID of desired question from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+
       var viewData = {sesh: sesh};
       viewData.config = soleConfig;
 
@@ -811,10 +813,8 @@ router.route('/sole-create')
 
     console.log("sole-create post!");
       const sesh = req.body.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-
 
       //push observations into this array if any are set to 'on'
       let targetObservations = [];
@@ -856,13 +856,11 @@ router.route('/sole-create')
       };
 
 
-            Controllers.Sole.add(sole, sessionToken).then(soleID=>{
-                console.log("SAVING a NEW SOLE with this ID:");
-                console.log(soleID);
+      Controllers.Sole.add(sole, sessionToken).then(soleID=>{
             res.redirect('/soles/?sesh='+sesh);
         }).catch((err)=>{
-                console.log('error saving sole', err);
-            res.redirect('/login')
+            // console.log('error saving sole', err);
+            showErrorPage('Could not save SOLE session', false, res)
         })
 
     });
@@ -874,7 +872,7 @@ router.route('/questions')
     .get((req, res)=> {
 
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
         if (req.query.q) {
@@ -884,8 +882,9 @@ router.route('/questions')
             foundQuestions.config = soleConfig;
             res.render('questions', foundQuestions);
           }).catch((err)=>{
-            console.log('error!', err);
-            res.redirect('/login')
+            // console.log('error!', err);
+            showErrorPage('Could not find question by text search.', false, res);
+
           });
         } else if (req.query.tags) {
             Controllers.Question.findByTags(req.query.tags, sessionToken).then((foundQuestions) => {
@@ -895,8 +894,8 @@ router.route('/questions')
               foundQuestions.config = soleConfig;
               res.render('questions', foundQuestions);
             }).catch((err)=>{
-              console.log('error!', err);
-              res.redirect('/login')
+              // console.log('error!', err);
+                showErrorPage('Could not find question by tags.', false, res);
             });
         } else {
           viewData = {sesh: sesh};
@@ -912,7 +911,7 @@ router.route('/questions/mine')
   .get((req,  res)=>{
   const sesh = req.query.sesh; //get the sesh token string from the query param
   const fav = req.query.fav; //optional query parameter to set fav tab as active
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 var myQuestionsData = {soles: [], questions:[], sesh: sesh, fav: fav};
@@ -928,13 +927,13 @@ myQuestionsData.config = soleConfig;
 res.render('my-questions', myQuestionsData); //display view with question data
 
 }).catch((err)=>{
-  console.log('Error getting fav questions!', err);
+  // console.log('Error getting fav questions!', err);
+    showErrorPage('Could not get your favorited questions.', false, res);
 
-res.redirect('/login');
 })
 }).catch((err)=>{
-  console.log('error getting all questions!', err);
-res.redirect('/login');
+  // console.log('error getting all questions!', err);
+    showErrorPage('Could not get list of SOLEs.', false, res)
 });
 });
 
@@ -942,7 +941,7 @@ res.redirect('/login');
 router.route('/questions/add')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       const viewData = {sesh: sesh};
@@ -953,7 +952,7 @@ router.route('/questions/add')
     .post((req, res)=>{
       console.log('body', req.body);
       const sesh = req.body.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 
@@ -966,11 +965,10 @@ router.route('/questions/add')
         tags: tags
       };
       Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, sessionToken).then(questionID=>{
-        console.log('added new question with id: ' + questionID);
         res.redirect('/questions/'+questionID+'?sesh='+sesh);
       }).catch((err)=>{
-        console.log('error adding question!', err);
-        res.redirect('/login')
+        // console.log('error adding question!', err);
+        showErrorPage('Could not add question', false, res);
       })
 
     });
@@ -982,7 +980,7 @@ router.route('/questions/:id')
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
       const favorited = req.query.fav; //is true if question was just favorited
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
       console.log("sessionToken", sessionToken);
 
@@ -997,12 +995,12 @@ router.route('/questions/:id')
             res.render('questions-single', questionData);
             })
             .catch((err)=>{
-              console.log('Error getting roleData for user!', err);
-            res.redirect('/home');
+              // console.log('Error getting roleData for user!', err);
+                showErrorPage('Could not get roleData for user.', false, res);
             })
         }).catch((err)=>{
-          console.log('error! oh noes!', err);
-          res.redirect('/login')
+          // console.log('error! oh noes!', err);
+            showErrorPage('Could not get SOLE session.', false, res);
         })
     });
 
@@ -1010,15 +1008,15 @@ router.route('/questions/:id/favorite')
 // favorite a question with a given id
     .get((req, res)=> {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
         Controllers.Question.favorite(req.params.id, sessionToken).then((questionData) => {
           console.log(JSON.stringify(questionData));
           res.redirect('/questions/'+req.params.id+'?fav=true&sesh='+sesh);
         }).catch((err)=>{
-          console.log('error!', err);
-          res.redirect('/login')
+          // console.log('error!', err);
+          showErrorPage('Could not favorite this question.', false, res);
         });
     });
 
@@ -1027,15 +1025,15 @@ router.route('/questions/:id/delete-tag/:rdn')
   .get((req, res)=> {
   console.log("looks like we're trying to delete a tag!");
   const sesh = req.query.sesh; //get the sesh token string from the query param
-  (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+  (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Question.deleteTag(req.params.id, req.params.rdn, sessionToken).then((questionData) => {
   console.log(JSON.stringify(questionData));
 res.redirect('/questions/'+req.params.id+'?sesh='+sesh);
 }).catch((err)=>{
-  console.log('error!', err);
-res.redirect('/login')
+  // console.log('error!', err);
+    showErrorPage('Could not delete a tag.', false, res);
 });
 });
 
@@ -1048,7 +1046,7 @@ router.route('/dashboard')
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
   const ringID = req.query.ring; //get the ring ID string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login') : false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res) : false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 const viewData = {
@@ -1076,7 +1074,7 @@ router.route('/dashboard/question-approval')
 // get all the unapproved questions
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Question.getUnapproved(sessionToken)
@@ -1098,14 +1096,14 @@ router.route('/questions/:id/approve')
   .get((req, res)=> {
   console.log("looks like we're trying to approve a question!");
 const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Question.approve(req.params.id, sessionToken).then((questionData) => {
   res.redirect('/dashboard/question-approval?sesh='+sesh);
 }).catch((err)=>{
-  console.log('error!', err);
-res.redirect('/login')
+  // console.log('error!', err);
+    showErrorPage('Could not approve a question.', false, res)
 });
 });
 
@@ -1115,14 +1113,15 @@ router.route('/questions/:id/reject')
   .get((req, res)=> {
   console.log("looks like we're trying to reject a question!");
 const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Question.reject(req.params.id, sessionToken).then((questionData) => {
   res.redirect('/dashboard/question-approval?sesh='+sesh);
 }).catch((err)=>{
-  console.log('error!', err);
-res.redirect('/login')
+  // console.log('error!', err);
+    showErrorPage('Could not reject a question.', false, res)
+
 });
 });
 
@@ -1133,7 +1132,7 @@ router.route('/dashboard/sole-approval')
 // get all the unapproved SOLEs
   .get((req, res)=> {
   const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Sole.getUnapproved(sessionToken)
@@ -1155,14 +1154,15 @@ router.route('/soles/:id/approve')
   .get((req, res)=> {
   console.log("looks like we're trying to approve a SOLE!");
 const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Sole.approve(req.params.id, sessionToken).then((soleData) => {
   res.redirect('/dashboard/sole-approval?sesh='+sesh);
 }).catch((err)=>{
-  console.log('error!', err);
-res.redirect('/login')
+  // console.log('error!', err);
+    showErrorPage('Could not approve a SOLE.', false, res)
+
 });
 });
 
@@ -1172,14 +1172,14 @@ router.route('/soles/:id/reject')
   .get((req, res)=> {
   console.log("looks like we're trying to reject a SOLE!");
 const sesh = req.query.sesh; //get the sesh token string from the query param
-(!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
+(!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
 sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
 Controllers.Sole.reject(req.params.id, sessionToken).then((soleData) => {
   res.redirect('/dashboard/sole-approval?sesh='+sesh);
 }).catch((err)=>{
-  console.log('error!', err);
-res.redirect('/login')
+  // console.log('error!', err);
+    showErrorPage('Could not reject a SOLE.', false, res)
 });
 });
 
@@ -1213,12 +1213,26 @@ app.get('*', function(req, res){
   const sesh = req.query.sesh; //get the sesh token string from the query param
   sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-  res.render('fail', {
-    layout: 'no-sidebar.hbs',
-    sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
-    config: soleConfig
-  });
+  showErrorPage('Oops, something went wrong. Try logging in again.', sesh, res);
 });
+
+/*
+    redirects a user to the error page, shows them a little more info about what went wrong
+    param:
+        * errorMessage - string, short text about what went wrong
+        * sesh - string, the session token
+        * res - object from the router
+    returns:
+        * nothing
+ */
+function showErrorPage (errorMessage, sesh, res) {
+    res.render('fail', {
+        layout: 'no-sidebar.hbs',
+        error: errorMessage,
+        sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
+        config: soleConfig
+    });
+}
 
 
 // START THE SERVER

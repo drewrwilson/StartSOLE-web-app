@@ -87,7 +87,7 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
     .get((req, res) => {
       const sesh = req.query.sesh; //get the sesh token string from the query param
-      (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
+      (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
       sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
       //check if user needs to complete profile

@@ -19,6 +19,10 @@ const htmlFiles = [
     path: '../views/admin-browse-soles.hbs'
   },
   {
+    name: 'admin-browse-users',
+    path: '../views/admin-browse-users.hbs'
+  },
+  {
     name: 'complete-profile',
     path: '../views/complete-profile.hbs'
   },

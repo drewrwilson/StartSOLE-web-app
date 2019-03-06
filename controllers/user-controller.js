@@ -10,7 +10,7 @@ Parse.serverURL = soleConfig.serverUrl;
 User.getProfileData = function (sessionToken) {
   return Parse.Cloud.run('webapp.getProfile', {
     sessionToken: sessionToken
-  })
+  });
 };
 
 //returns user profile data
@@ -51,7 +51,7 @@ User.isRingLeader = function(sessionToken) {
 User.getMyRings = function (sessionToken) {
   return Parse.Cloud.run('webapp.getMyRings', {
     sessionToken: sessionToken
-  })
+  });
 };
 
 User.updateProfileData = function (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, schoolState, sessionToken) {
@@ -66,33 +66,33 @@ User.updateProfileData = function (subjects, grades, role, firstName, lastName, 
     schoolPlaceID: schoolPlaceID,
     schoolState: schoolState,
     sessionToken: sessionToken
-  })
+  });
 };
 
 //after the user completes their profile, set off the Parse event
 User.completedProfile = function (sessionToken) {
-  return Parse.Cloud.run("webapp.completedProfile", {
+  return Parse.Cloud.run('webapp.completedProfile', {
     sessionToken: sessionToken
-  })
+  });
 };
 
 //check if user's profile is complete. returns true or false
 User.isProfileComplete = function (sessionToken) {
-  return Parse.Cloud.run("webapp.isProfileComplete", {
+  return Parse.Cloud.run('webapp.isProfileComplete', {
     sessionToken: sessionToken
-  })
+  });
 };
 
 //gives number of users signed up today
 User.usersToday = function () {
-  return Parse.Cloud.run("webapp.usersToday", {
+  return Parse.Cloud.run('webapp.usersToday', {
 
-  })
+  });
 };
 
 //gives a summary of all admin dashboard data
 User.adminSummaryData = function () {
-  return Parse.Cloud.run("webapp.adminSummaryData", {
+  return Parse.Cloud.run('webapp.adminSummaryData', {
 
-  })
+  });
 };

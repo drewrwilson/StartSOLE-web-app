@@ -10,12 +10,12 @@ Parse.serverURL = soleConfig.serverUrl;
 
 //returns data for a question with a given ID
 Question.getByID =  (id, sessionToken) => {
-    const result = Parse.Cloud.run('webapp.getQuestionByID', {
-        id: id,
-        sessionToken: sessionToken
-    });
-    console.log(result);
-    return result;
+  const result = Parse.Cloud.run('webapp.getQuestionByID', {
+    id: id,
+    sessionToken: sessionToken
+  });
+  console.log(result);
+  return result;
 
 };
 //returns a user's fav'ed questions
@@ -23,8 +23,8 @@ Question.getFavorites = function (sessionToken) {
   return Parse.Cloud.run('webapp.getMyFavoriteQuestions', {
     offset: 0,
     limit: 100,
-		sessionToken: sessionToken
-	})
+    sessionToken: sessionToken
+  });
 };
 
 //returns unapproved questions for approval
@@ -33,7 +33,7 @@ Question.getUnapproved = function (sessionToken) {
     offset: 0,
     limit: 10,
     sessionToken: sessionToken
-  })
+  });
 };
 
 // returns an array of recent approved questions. defaults to limit 10.
@@ -43,7 +43,7 @@ Question.getAll = function (sessionToken) {
     offset: 0,
     limit: 100,
     sessionToken: sessionToken
-  })
+  });
 };
 //searches questions for tags, returns results
 //param:
@@ -55,31 +55,31 @@ Question.findByTags = function (tags, sessionToken) {
   return Parse.Cloud.run('webapp.findQuestionByTags', {
     tags: tags,
     sessionToken: sessionToken
-  })
+  });
 };
 
 Question.findByText = function (searchText, sessionToken) {
   return Parse.Cloud.run('webapp.findQuestionByText', {
     searchText: searchText,
     sessionToken: sessionToken
-  })
+  });
 };
 
 Question.add = function (text, tags, source, sessionToken) {
   return Parse.Cloud.run('webapp.addQuestion', {
-		text: text,
-		tags: tags,
-		source: 'https://startsole.org',
-		sessionToken: sessionToken
-	});
+    text: text,
+    tags: tags,
+    source: 'https://startsole.org',
+    sessionToken: sessionToken
+  });
 
 };
 
 Question.favorite = function (questionID, sessionToken) {
   return Parse.Cloud.run('webapp.favQuestion', {
-		id: questionID,
-		sessionToken: sessionToken
-	});
+    id: questionID,
+    sessionToken: sessionToken
+  });
 };
 
 Question.deleteTag = function (questionID, tagID, sessionToken) {

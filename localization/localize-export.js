@@ -153,7 +153,7 @@ htmlFiles.forEach(function(htmlFile) {
         if(err) {
           return console.log(err);
         }
-        console.log("Saved json localization file!");
+        console.log('Saved json localization file!');
 
         //setup sheet for excel file and add header row
         let sheet = workbook.addWorksheet(htmlFile.name);

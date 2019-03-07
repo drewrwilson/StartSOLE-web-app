@@ -15,7 +15,7 @@ jobs:
     - run:
         name: Deploy Staging
         command: |
-          ssh $SSH_USER@$SSH_HOST_STAGING "cd sole/webapp2/startsole2/; git pull;"
+          ssh $SSH_USER@$SSH_HOST_STAGING "git checkout staging; cd sole/webapp2/startsole2/; git pull;"
 workflows:
   version: 2
   build-and-deploy:

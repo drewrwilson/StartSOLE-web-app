@@ -8,3 +8,39 @@ jobs:
     - checkout
     - run: npm install
     #- run: npm test
+  deploy-to-staging:
+    machine:
+      enabled: true
+    steps:
+    - run:
+        name: Deploy to Staging
+        command: |
+          ssh $SSH_USER@$SSH_HOST_STAGING "cd sole/webapp2/startsole2/; git checkout staging; git pull;"
+  deploy:
+    machine:
+      enabled: true
+    steps:
+    - run:
+        name: Deploy to Production
+        command: |
+          ssh $SSH_USER@$SSH_HOST "cd sole/webapp2/startsole2/; git checkout master; git pull;"
+workflows:
+  version: 2
+  build-and-deploy-to-staging:
+    jobs:
+    - build
+    - deploy-to-staging:
+        requires:
+        - build
+        filters:
+          branches:
+            only: staging
+  build-and-deploy-to-production:
+    jobs:
+    - build
+    - deploy:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master

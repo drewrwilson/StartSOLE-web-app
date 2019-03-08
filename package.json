@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests/tests.js",
     "lint": "eslint ."
   },
   "repository": {
@@ -28,5 +28,9 @@
     "moment": "^2.24.0",
     "parse": "^1.11.1",
     "progressbar.js": "^1.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "mocha": "^6.0.2"
   }
 }

@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/startsole/StartSOLE-web-app/tree/master.svg?style=svg)](https://circleci.com/gh/startsole/StartSOLE-web-app/tree/master)
+
 # StartSOLE2
 
 This is new version of the StartSOLE webapp. The initial version is out now in production and we're working to improve it daily.

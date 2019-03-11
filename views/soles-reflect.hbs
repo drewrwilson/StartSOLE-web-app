@@ -3,7 +3,7 @@
     <a href="/soles?sesh={{sesh}}" class="breadcrumb">My SOLEs</a>
     <a class="truncate truncate-question breadcrumb">
         {{#if sole}}
-            {{sole.question.question.text}}
+            {{question.text}}
         {{else}}
             Create
         {{/if}}
@@ -16,7 +16,7 @@
 
             <i class="large"></i>
 
-            {{#if sole.observations}}
+            {{#if observations}}
                 <h5>Review Photos</h5>
                 <div class="row">
                     <div class="input-field col s12 m6">
@@ -26,30 +26,33 @@
                     <div class="input-field col s12 m6">
                         <select id="tag-filter" onchange="filterSelection()">
                             <option value="show-all" selected>Show All</option>
-                            {{#each sole.tags}}
-                                <option value="{{@key}}">{{this}}</option>
+                            {{#each tags}}
+                                <option value="{{class}}">{{name}}</option>
                             {{/each}}
                         </select>
                         <label>Filter</label>
                     </div>
                 </div>
                 <div class="row">
-                    {{#each sole.observations}}
-                        {{#if image.full}}
+                    {{#each observations}}
                             <div class="col s12 m6 l4 xl3 sole-observation-card-col show-all {{#each
-                                    image.tags}}{{type}} {{/each}}">
+                                    tags}}{{class}} {{/each}}">
                                 <div id="observation-{{id}}" class="card small hoverable sole-observation">
                                     <div class="card-image">
-                                        <img class="materialboxed" width="650" src="{{ image.full }}">
+                                        {{#if img}}
+                                            <img class="materialboxed" width="650" src="{{ img }}">
+                                        {{else}}
+                                            <img class="materialboxed" width="650" src="http://placehold.it/650x650">
+                                        {{/if}}
                                     </div>
                                     <div class="card-content">
                                         <span class="card-title activator grey-text text-darken-4">
-                                            {{ image.time }}
+                                            {{ time }}
                                             <i class="material-icons right">more_vert</i>
-                                            {{#each image.tags}}
+                                            {{#each tags}}
                                                 <i class="{{icon}} observation-tag right tooltipped"
                                                    data-position="bottom"
-                                                   data-tooltip="{{text}}"
+                                                   data-tooltip="{{name}}"
                                                 ></i>
                                             {{/each}}
                                         </span>
@@ -57,27 +60,32 @@
                                     <div class="card-reveal">
                                         <span class="card-title grey-text text-darken-4"><i
                                                 class="material-icons right">close</i></span>
-                                        {{#if image.feedback}}
+                                        {{#if feedback}}
                                             <p>
-                                                <strong>Feedback: </strong>{{image.feedback}}
+                                                <strong>Feedback: </strong>{{feedback}}
                                             </p>
                                         {{/if}}
-                                        {{#if image.notes}}
+                                        {{#if notes}}
                                             <p>
-                                                <strong>Notes: </strong>{{image.notes}}
+                                                <strong>Notes: </strong>{{notes}}
                                             </p>
                                         {{/if}}
-                                        {{#if likert}}
-                                            <p>
-                                                <strong>Likert: </strong>
-                                                something
-                                            </p>
+                                        {{#if group.creativity}}
+                                            <strong>Creativity</strong>
+                                            <img class="responsive-img" src="/images/likert/agree-{{group.creativity}}.png" alt="">
+                                        {{/if}}
+                                        {{#if group.sourcesShared}}
+                                            <strong>Sources Shared</strong>
+                                            <img class="responsive-img" src="/images/likert/agree-{{group.sourcesShared}}.png" alt="">
+                                        {{/if}}
+                                        {{#if group.noNotes}}
+                                            <strong>No Notes</strong>
+                                            <img class="responsive-img" src="/images/likert/agree-{{group.noNotes}}.png" alt="">
                                         {{/if}}
 
                                 </div>
                                 </div>
                             </div>
-                        {{/if}}
                     {{/each}}
                 </div>
             {{else}}
@@ -93,14 +101,14 @@
 
             <form id="reflect-form" method="post" action="/sole-reflect">
                 <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
-                <input type="hidden" name="soleID" id="soleID" value="{{sole.id}}">
+                <input type="hidden" name="soleID" id="soleID" value="{{id}}">
 
 
                 <!--content knowledge objective-->
                 <div class="row">
                     <div class="col s12">
                         <h5>Reflect</h5>
-                        <p>1. During this SOLE, your objective was {{sole.content_objective.text}}. Do you think you
+                        <p>1. During this SOLE, your objective was {{contentObjective}}. Do you think you
                             achieved this objective?</p>
                     </div>
                     <div class="col m12 l6">
@@ -268,7 +276,7 @@
                 </div>
 
                 <div class="row">
-                    {{#if sole.observations}}
+                    {{#if observations}}
                         <button id="save_my_sole" type="submit" class="waves-effect waves-light btn">
                             Save
                         </button>

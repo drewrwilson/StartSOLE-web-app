@@ -762,7 +762,7 @@ router.route('/soles/:id/reflect')
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-    Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
+    Controllers.Sole.getByIdNew(req.params.id, sessionToken).then((singleSole) => {
       singleSole.sesh = sesh;
       singleSole.config = soleConfig;
       res.render('soles-reflect', singleSole);

@@ -1,4 +1,3 @@
-const Dashboard = module.exports = {};
 const Parse = require('parse/node');
 const soleConfig = require('../sole-config.js');
 
@@ -6,11 +5,15 @@ const soleConfig = require('../sole-config.js');
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-//returns data for building dashboard
-Dashboard.getDashboardData = function (ringID, sessionToken) {
+class Dashboard {
+  //returns data for building dashboard
+  static getDashboardData (ringID, sessionToken) {
+    return Parse.Cloud.run('webapp.getDashboardData', {
+      ringID: ringID,
+      sessionToken: sessionToken
+    });
+  };
+}
 
-  return Parse.Cloud.run('webapp.getDashboardData', {
-    ringID: ringID,
-    sessionToken: sessionToken
-  });
-};
+
+module.exports = Dashboard;

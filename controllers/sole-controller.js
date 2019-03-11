@@ -14,6 +14,13 @@ class Sole {
     });
   };
 
+  static getByIdNew (id, sessionToken) {
+    return Parse.Cloud.run('webapp.getSoleByIdNew', {
+      id: id,
+      sessionToken: sessionToken
+    });
+  };
+
   // returns an array of recent approved soles. defaults to limit 10.
   // optional: limit is the number of soles to return
   static getAll (sessionToken) {

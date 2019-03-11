@@ -1,4 +1,3 @@
-const User = module.exports = {};
 const Parse = require('parse/node');
 const soleConfig = require('../sole-config.js');
 
@@ -6,93 +5,96 @@ const soleConfig = require('../sole-config.js');
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-//returns user profile data
-User.getProfileData = function (sessionToken) {
-  return Parse.Cloud.run('webapp.getProfile', {
-    sessionToken: sessionToken
-  });
-};
-
-//returns user profile data
-User.getRoleData = function (sessionToken) {
-  return Parse.Cloud.run('webapp.getRoles', {
-    sessionToken: sessionToken
-  }).then(roles => {
-    return Parse.Promise.as({
-      isAdmin: roles.includes('Admin'),
-      isRingleader: roles.includes('ringleader'),
-      roles: roles
+class User {
+  //returns user profile data
+  static getProfileData (sessionToken) {
+    return Parse.Cloud.run('webapp.getProfile', {
+      sessionToken: sessionToken
     });
-  });
-};
+  };
 
-User.hasRole = function(roleName, sessionToken) {
-  return Parse.Cloud.run('webapp.hasRole', {
-    roleName: roleName,
-    sessionToken: sessionToken
-  });
-};
+  //returns user profile data
+  static getRoleData (sessionToken) {
+    return Parse.Cloud.run('webapp.getRoles', {
+      sessionToken: sessionToken
+    }).then(roles => {
+      return Parse.Promise.as({
+        isAdmin: roles.includes('Admin'),
+        isRingleader: roles.includes('ringleader'),
+        roles: roles
+      });
+    });
+  };
 
-User.isAdmin = function(sessionToken) {
-  return Parse.Cloud.run('webapp.hasRole', {
-    roleName: 'Admin',
-    sessionToken: sessionToken
-  });
-};
+  static hasRole (roleName, sessionToken) {
+    return Parse.Cloud.run('webapp.hasRole', {
+      roleName: roleName,
+      sessionToken: sessionToken
+    });
+  };
 
-User.isRingLeader = function(sessionToken) {
-  return Parse.Cloud.run('webapp.hasRole', {
-    roleName: 'ringleader',
-    sessionToken: sessionToken
-  });
-};
+  static isAdmin (sessionToken) {
+    return Parse.Cloud.run('webapp.hasRole', {
+      roleName: 'Admin',
+      sessionToken: sessionToken
+    });
+  };
 
-//returns user ring data for the first ring
-User.getMyRings = function (sessionToken) {
-  return Parse.Cloud.run('webapp.getMyRings', {
-    sessionToken: sessionToken
-  });
-};
+  static isRingLeader (sessionToken) {
+    return Parse.Cloud.run('webapp.hasRole', {
+      roleName: 'ringleader',
+      sessionToken: sessionToken
+    });
+  };
 
-User.updateProfileData = function (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, schoolState, sessionToken) {
-  return Parse.Cloud.run('webapp.updateProfile', {
-    subjects: subjects,
-    grades: grades,
-    role: role,
-    firstName: firstName,
-    lastName: lastName,
-    schoolName: schoolName,
-    schoolAddress: schoolAddress,
-    schoolPlaceID: schoolPlaceID,
-    schoolState: schoolState,
-    sessionToken: sessionToken
-  });
-};
+  //returns user ring data for the first ring
+  static getMyRings (sessionToken) {
+    return Parse.Cloud.run('webapp.getMyRings', {
+      sessionToken: sessionToken
+    });
+  };
 
-//after the user completes their profile, set off the Parse event
-User.completedProfile = function (sessionToken) {
-  return Parse.Cloud.run('webapp.completedProfile', {
-    sessionToken: sessionToken
-  });
-};
+  static updateProfileData (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, schoolState, sessionToken) {
+    return Parse.Cloud.run('webapp.updateProfile', {
+      subjects: subjects,
+      grades: grades,
+      role: role,
+      firstName: firstName,
+      lastName: lastName,
+      schoolName: schoolName,
+      schoolAddress: schoolAddress,
+      schoolPlaceID: schoolPlaceID,
+      schoolState: schoolState,
+      sessionToken: sessionToken
+    });
+  };
 
-//check if user's profile is complete. returns true or false
-User.isProfileComplete = function (sessionToken) {
-  return Parse.Cloud.run('webapp.isProfileComplete', {
-    sessionToken: sessionToken
-  });
-};
+  //after the user completes their profile, set off the Parse event
+  static completedProfile (sessionToken) {
+    return Parse.Cloud.run('webapp.completedProfile', {
+      sessionToken: sessionToken
+    });
+  };
 
-//gives number of users signed up today
-User.usersToday = function () {
-  return Parse.Cloud.run('webapp.usersToday', {
+  //check if user's profile is complete. returns true or false
+  static isProfileComplete (sessionToken) {
+    return Parse.Cloud.run('webapp.isProfileComplete', {
+      sessionToken: sessionToken
+    });
+  };
 
-  });
-};
+  //gives number of users signed up today
+  static usersToday () {
+    return Parse.Cloud.run('webapp.usersToday', {
 
-//gives a summary of all admin dashboard data
-User.adminSummaryData = function () {
-  return Parse.Cloud.run('webapp.adminSummaryData', {
+    });
+  };
 
-  });
-};
+  //gives a summary of all admin dashboard data
+  static adminSummaryData () {
+    return Parse.Cloud.run('webapp.adminSummaryData', {
+    });
+  };
+}
+
+module.exports = User;

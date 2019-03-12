@@ -1,4 +1,3 @@
-
 const Parse = require('parse/node');
 const soleConfig = require('../sole-config.js');
 
@@ -13,7 +12,6 @@ class Admin {
       limit: 999,
       sessionToken: sessionToken
     }).then(solesJson => {
-      console.log('getpendingsoles: ', solesJson);
       return Promise.resolve(solesJson);
     });
   }

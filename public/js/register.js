@@ -27,19 +27,21 @@ function registerNewUser (first_name, last_name, email, password, refer) {
     name: first_name + " " + last_name,
     email: email,
     pw: password
-  }).then(data=>{
-    return Parse.User.logIn(email, password).then(data=>{
+  }).then(_ =>{
+    return Parse.User.logIn(email, password).then(_ => {
       var currentUser = Parse.User.current();
       sessionToken = currentUser.getSessionToken();
       sesh = sessionToken.slice(2);
-    }).then(data=>{
+    }).then(_ => {
+      return setPlatform();
+    }).then(_ => {
       return Parse.Cloud.run("webapp.updateEmail", {email: email, session: sessionToken
-      }).then(data=>{
+      }).then(_ => {
         if(!refer) {
           refer = 'no-referral';
         }
         return Parse.Cloud.run("webapp.saveReferral", {referral: refer, session: sessionToken
-        }).then((data)=>{
+        }).then(_ => {
           console.log('sesh ', sesh);
           return Parse.Promise.as(sesh);
         });

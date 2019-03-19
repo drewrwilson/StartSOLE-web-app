@@ -8,7 +8,9 @@
 		"env": {
 			"PORT": 5000,
 			"RING": "regular",
-			"ENVIRONMENT": "production"
+			"ENVIRONMENT": "production",
+            "SLACK_API_TOKEN": false, //add in on production
+            "SLACK_CHANNEL": false //add in on production
 		},
 		"env_staging": {
 			"ENVIRONMENT": "staging"

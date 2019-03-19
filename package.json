@@ -27,7 +27,10 @@
     "materialize-css": "^1.0.0-rc.1",
     "moment": "^2.24.0",
     "parse": "^1.11.1",
-    "progressbar.js": "^1.0.1"
+    "performance-now": "^2.1.0",
+    "progressbar.js": "^1.0.1",
+    "slack": "^11.0.2",
+    "winston": "^2.4.4"
   },
   "devDependencies": {
     "eslint": "^5.15.1",

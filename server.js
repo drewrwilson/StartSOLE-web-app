@@ -11,6 +11,8 @@ var hbs         = require('express-hbs');
 var path        = require('path');
 var moment        = require('moment');
 var Controllers = require('./controllers/controllers.js');
+const logger = require('./logger.js');
+logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
 // var Parse       =  require('parse/node');
 var soleConfig  = require('./sole-config.js');
@@ -51,7 +53,7 @@ hbs.registerHelper('contains', function( value, array, options ){
 });
 
 hbs.registerHelper('log', function(something) {
-  console.log(something);
+  logger.log(something);
 });
 
 // ******************
@@ -163,7 +165,7 @@ router.route('/home')
           homeData.rings = rings;
           res.render('home', homeData); //display view with question data
         }).catch((err)=>{
-          console.log('Error getting ring for user!', err);
+          logger.error('Error getting ring for user!', err);
         });
       }
       else {
@@ -171,7 +173,7 @@ router.route('/home')
       }
 
     }).catch((err)=>{
-      console.log('Error getting roleData for user!', err);
+      logger.error('Error getting roleData for user!', err);
 
       res.redirect('/home');
     });
@@ -224,15 +226,15 @@ router.route('/pending-soles')
 
     if (req.body.action === 'approve') {
       Controllers.Admin.approveSole(req.body.soleId, req.body.comment, requestSocialMedia, sessionToken).then(soleId=>{
-        console.log('successfully approved a SOLE', soleId);
         res.redirect('/pending-soles?sesh=' + sesh);
       });
     } else if (req.body.action === 'reject') {
       Controllers.Admin.rejectSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
-        console.log('successfully rejected a SOLE',soleId);
         res.redirect('/pending-soles?sesh=' + sesh);
       });
-    } else {}
+    } else {
+      logger.error('Error. Got a malformed post without reject or approve.');
+    }
   });
 
 // route for Admin Page
@@ -448,8 +450,7 @@ router.route('/profile')
       .then(user=>{
         res.redirect('/soles?sesh='+sesh);
       }).catch((err)=>{
-        console.log('error updating user', err);
-        // res.redirect('/error?sesh='+sesh)
+        logger.error('Error updating user', err);
         res.render('fail', {
           layout: 'no-sidebar.hbs',
           sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
@@ -493,8 +494,6 @@ router.route('/complete-profile')
 
     Controllers.User.getProfileData(sessionToken)
       .then((profileData) => {
-        console.log('get Profile Data');
-        console.log(JSON.stringify(profileData));
 
         if( profileData.user.firstName && profileData.user.lastName ) {
         } else {
@@ -533,7 +532,7 @@ router.route('/complete-profile')
         Controllers.User.completedProfile(sessionToken);
         res.redirect('/soles?sesh='+sesh);
       }).catch((err)=>{
-        console.log('error completing user profile', err);
+        logger.error('Error completing user profile', err);
         res.redirect('/error?sesh='+sesh);
       });
   });
@@ -550,13 +549,11 @@ router.route('/soles')
 
     Controllers.Sole.getAll(sessionToken)
       .then(soles=>{
-        console.log('All soles', JSON.stringify(soles));
         soles.sesh = sesh;
         soles.config = soleConfig;
         res.render('soles', soles);
       }).catch(err=>{
-        // console.log('oops! error getting all soles!', err);
-        showErrorPage('Could not get list of SOLEs.', false, res);
+        showErrorPage('Could not get list of SOLEs.', sesh, res);
       });
 
   });
@@ -573,13 +570,11 @@ router.route('/soles/:id')
     Controllers.Sole.getByID(req.params.id, sessionToken)
       .then((singleSole) => {
         //in case the id of the sole is invalid
-        console.log(JSON.stringify(singleSole));
         singleSole.sesh = sesh;
         singleSole.config = soleConfig;
         res.render('soles-single', singleSole);
       }).catch((err)=>{
-        // console.log('error!', err);
-        showErrorPage('Could not get a SOLE.', false, res);
+        showErrorPage('Could not get a SOLE.', sesh, res);
       });
   });
 
@@ -637,10 +632,7 @@ router.route('/soles/:id/copy')
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-    console.log('req.params.id ', req.params.id);
-
     Controllers.Sole.copy(req.params.id, sessionToken).then(soleID=>{
-      console.log('soleID new copy: ', soleID);
       res.redirect('/soles/?sesh=' + sesh);
     });
 
@@ -661,14 +653,12 @@ router.route('/soles/:id/edit')
       singleSole.config = soleConfig;
       res.render('soles-add', singleSole);
     }).catch((err)=>{
-      console.log('error!', err);
-      showErrorPage('Failed to get SOLE session from the server', false, res);
+      showErrorPage('Failed to get SOLE session from the server', sesh, res);
     });
   })
   .post((req, res)=> {
     //TODO: make this reusable for copying
 
-    console.log('sole-edit post!');
     const sesh = req.body.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
@@ -715,12 +705,9 @@ router.route('/soles/:id/edit')
     let id = req.body.sole_id;
 
     Controllers.Sole.update(id, sole, sessionToken).then(soleID=>{
-      console.log('UPDATING an EXISTING SOLE with this ID:');
-      console.log(id);
       res.redirect('/soles/?sesh='+sesh);
     }).catch((err)=>{
-      console.log('error saving sole', err);
-      showErrorPage('Could not save SOLE session.', false, res);
+      showErrorPage('Could not save SOLE session.', sesh, res);
     });
 
 
@@ -739,8 +726,7 @@ router.route('/soles/:id/delete')
       singleSole.config = soleConfig;
       res.render('soles-delete', singleSole);
     }).catch((err)=>{
-      console.log('error!', err);
-      showErrorPage('Could not get SOLE session from the server. Try again later.', false, res);
+      showErrorPage('Could not get SOLE session from the server. Try again later.', sesh, res);
 
     });
   })
@@ -749,7 +735,6 @@ router.route('/soles/:id/delete')
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
     Controllers.Sole.delete(req.body.soleID, sessionToken).then(soleID=>{
-      console.log('deleted SOLE',soleID);
       res.redirect('/soles/?sesh='+sesh);
     });
   });
@@ -769,8 +754,7 @@ router.route('/soles/:id/reflect')
       singleSole.config = soleConfig;
       res.render('soles-reflect', singleSole);
     }).catch((err)=>{
-      // console.log('error!', err);
-      showErrorPage('Coud not get SOLE session from the server.', false, res);
+      showErrorPage('Coud not get SOLE session from the server.', sesh, res);
     });
   });
 
@@ -801,8 +785,6 @@ router.route('/sole-reflect')
       res.redirect('/soles/'+soleID+'?sesh='+sesh);
     });
 
-    console.log('req.body', JSON.stringify(req.body));
-
   });
 
 
@@ -826,8 +808,7 @@ router.route('/sole-create')
         viewData.sole = {question: questionData};
         res.render('soles-add', viewData);
       }).catch((err)=>{
-        console.log('error! oh noes!', err);
-        // res.render('soles-add', viewData);
+        showErrorPage('Could not load question with id: ' + question, sesh , res);
       });
     }
     else {
@@ -835,8 +816,6 @@ router.route('/sole-create')
     }
   })
   .post((req, res)=>{
-
-    console.log('sole-create post!');
     const sesh = req.body.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
@@ -884,8 +863,7 @@ router.route('/sole-create')
     Controllers.Sole.add(sole, sessionToken).then(soleID=>{
       res.redirect('/soles/?sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error saving sole', err);
-      showErrorPage('Could not save SOLE session', false, res);
+      showErrorPage('Could not save SOLE session', sesh, res);
     });
 
   });
@@ -902,25 +880,20 @@ router.route('/questions')
 
     if (req.query.q) {
       Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
-        console.log(JSON.stringify(foundQuestions));
         foundQuestions.sesh = sesh;
         foundQuestions.config = soleConfig;
         res.render('questions', foundQuestions);
       }).catch((err)=>{
-        // console.log('error!', err);
-        showErrorPage('Could not find question by text search.', false, res);
-
+        showErrorPage('Could not find question by text search.', sesh, res);
       });
     } else if (req.query.tags) {
       Controllers.Question.findByTags(req.query.tags, sessionToken).then((foundQuestions) => {
         //todo probably need to do some processing on tags to convert it from a string to an array of tags
-        console.log(JSON.stringify(foundQuestions));
         foundQuestions.sesh = sesh;
         foundQuestions.config = soleConfig;
         res.render('questions', foundQuestions);
       }).catch((err)=>{
-        // console.log('error!', err);
-        showErrorPage('Could not find question by tags.', false, res);
+        showErrorPage('Could not find question by tags.', sesh, res);
       });
     } else {
       viewData = {sesh: sesh};
@@ -952,13 +925,11 @@ router.route('/questions/mine')
         res.render('my-questions', myQuestionsData); //display view with question data
 
       }).catch((err)=>{
-        // console.log('Error getting fav questions!', err);
-        showErrorPage('Could not get your favorited questions.', false, res);
+        showErrorPage('Could not get your favorited questions.', sesh, res);
 
       });
     }).catch((err)=>{
-      // console.log('error getting all questions!', err);
-      showErrorPage('Could not get list of SOLEs.', false, res);
+      showErrorPage('Could not get list of SOLEs.', sesh, res);
     });
   });
 
@@ -975,14 +946,11 @@ router.route('/questions/add')
   })
 // TODO: add post route here to save question to DB
   .post((req, res)=>{
-    console.log('body', req.body);
     const sesh = req.body.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-
     let tags = req.body.tags.split(',');
-    console.log('tags', tags);
 
     var newQuestion = {
       text: req.body.text,
@@ -992,8 +960,7 @@ router.route('/questions/add')
     Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, sessionToken).then(questionID=>{
       res.redirect('/questions/'+questionID+'?sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error adding question!', err);
-      showErrorPage('Could not add question', false, res);
+      showErrorPage('Could not add question', sesh, res);
     });
 
   });
@@ -1007,10 +974,8 @@ router.route('/questions/:id')
     const favorited = req.query.fav; //is true if question was just favorited
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-    console.log('sessionToken', sessionToken);
 
     Controllers.Question.getByID(req.params.id, sessionToken).then((questionData) => {
-      console.log(JSON.stringify(questionData));
       questionData.sesh = sesh;
       questionData.favorited = favorited;
       questionData.config = soleConfig;
@@ -1020,12 +985,10 @@ router.route('/questions/:id')
         res.render('questions-single', questionData);
       })
         .catch((err)=>{
-          // console.log('Error getting roleData for user!', err);
-          showErrorPage('Could not get roleData for user.', false, res);
+          showErrorPage('Could not get roleData for user.', sesh, res);
         });
     }).catch((err)=>{
-      // console.log('error! oh noes!', err);
-      showErrorPage('Could not get SOLE session.', false, res);
+      showErrorPage('Could not get SOLE session.', sesh, res);
     });
   });
 
@@ -1037,28 +1000,23 @@ router.route('/questions/:id/favorite')
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
     Controllers.Question.favorite(req.params.id, sessionToken).then((questionData) => {
-      console.log(JSON.stringify(questionData));
       res.redirect('/questions/'+req.params.id+'?fav=true&sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error!', err);
-      showErrorPage('Could not favorite this question.', false, res);
+      showErrorPage('Could not favorite this question.', sesh, res);
     });
   });
 
 router.route('/questions/:id/delete-tag/:rdn')
 // remove a tag from a question
   .get((req, res)=> {
-    console.log('looks like we\'re trying to delete a tag!');
     const sesh = req.query.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
     Controllers.Question.deleteTag(req.params.id, req.params.rdn, sessionToken).then((questionData) => {
-      console.log(JSON.stringify(questionData));
       res.redirect('/questions/'+req.params.id+'?sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error!', err);
-      showErrorPage('Could not delete a tag.', false, res);
+      showErrorPage('Could not delete a tag.', sesh, res);
     });
   });
 
@@ -1085,8 +1043,7 @@ router.route('/dashboard')
         res.render('dashboard', viewData);
       }).
       catch(err => {
-        console.log('oops! error getting dashboard data!', err);
-        res.redirect('/home');
+        showErrorPage('Could not get dashboard data', sesh, res);
       });
 
 
@@ -1104,13 +1061,11 @@ router.route('/dashboard/question-approval')
 
     Controllers.Question.getUnapproved(sessionToken)
       .then(questions=>{
-        console.log('Here are the unapproved questions: ', JSON.stringify(questions));
         questions.sesh = sesh;
         questions.config = soleConfig;
         res.render('dashboard-question-approval', questions);
       }).catch(err=>{
-        console.log('oops! error getting unapproved questions!', err);
-        res.redirect('/home');
+        showErrorPage('Could not retrieve unapproved questions', sesh, res);
       });
 
   });
@@ -1119,7 +1074,6 @@ router.route('/questions/:id/approve')
 
 // approve a single question
   .get((req, res)=> {
-    console.log('looks like we\'re trying to approve a question!');
     const sesh = req.query.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
@@ -1127,8 +1081,7 @@ router.route('/questions/:id/approve')
     Controllers.Question.approve(req.params.id, sessionToken).then((questionData) => {
       res.redirect('/dashboard/question-approval?sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error!', err);
-      showErrorPage('Could not approve a question.', false, res);
+      showErrorPage('Could not approve a question.', sesh, res);
     });
   });
 
@@ -1136,7 +1089,6 @@ router.route('/questions/:id/reject')
 
 // reject a single question
   .get((req, res)=> {
-    console.log('looks like we\'re trying to reject a question!');
     const sesh = req.query.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
@@ -1144,8 +1096,7 @@ router.route('/questions/:id/reject')
     Controllers.Question.reject(req.params.id, sessionToken).then((questionData) => {
       res.redirect('/dashboard/question-approval?sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error!', err);
-      showErrorPage('Could not reject a question.', false, res);
+      showErrorPage('Could not reject a question.', sesh, res);
 
     });
   });
@@ -1162,13 +1113,11 @@ router.route('/dashboard/sole-approval')
 
     Controllers.Sole.getUnapproved(sessionToken)
       .then(soles=>{
-        console.log('Here are the unapproved SOLEs: ', JSON.stringify(soles));
         soles.sesh = sesh;
         soles.config = soleConfig;
         res.render('dashboard-sole-approval', soles);
       }).catch(err=>{
-        console.log('oops! error getting unapproved soles!', err);
-        res.redirect('/home');
+        showErrorPage('Could not retrieve unapproved soles', sesh, res);
       });
 
   });
@@ -1177,7 +1126,6 @@ router.route('/soles/:id/approve')
 
 // approve a single SOLE
   .get((req, res)=> {
-    console.log('looks like we\'re trying to approve a SOLE!');
     const sesh = req.query.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
@@ -1185,8 +1133,7 @@ router.route('/soles/:id/approve')
     Controllers.Sole.approve(req.params.id, sessionToken).then((soleData) => {
       res.redirect('/dashboard/sole-approval?sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error!', err);
-      showErrorPage('Could not approve a SOLE.', false, res);
+      showErrorPage('Could not approve a SOLE.', sesh, res);
 
     });
   });
@@ -1195,7 +1142,6 @@ router.route('/soles/:id/reject')
 
 // reject a single SOLE
   .get((req, res)=> {
-    console.log('looks like we\'re trying to reject a SOLE!');
     const sesh = req.query.sesh; //get the sesh token string from the query param
     (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
     sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
@@ -1203,8 +1149,7 @@ router.route('/soles/:id/reject')
     Controllers.Sole.reject(req.params.id, sessionToken).then((soleData) => {
       res.redirect('/dashboard/sole-approval?sesh='+sesh);
     }).catch((err)=>{
-      // console.log('error!', err);
-      showErrorPage('Could not reject a SOLE.', false, res);
+      showErrorPage('Could not reject a SOLE.', sesh, res);
     });
   });
 
@@ -1236,7 +1181,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 //custom 404 page
 app.get('*', function(req, res){
   const sesh = req.query.sesh; //get the sesh token string from the query param
-  sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
   showErrorPage('Oops, something went wrong. Try logging in again.', sesh, res);
 });
@@ -1251,6 +1195,7 @@ app.get('*', function(req, res){
         * nothing
  */
 function showErrorPage (errorMessage, sesh, res) {
+  logger.error(errorMessage + ' sesh: ' + sesh);
   res.render('fail', {
     layout: 'no-sidebar.hbs',
     error: errorMessage,
@@ -1262,14 +1207,25 @@ function showErrorPage (errorMessage, sesh, res) {
 
 // START THE SERVER
 // =============================================================================
+
+logger.log('\n\n/^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ \n');
+logger.log('           Ring: ' + soleConfig.ring);
+logger.log('    Environment: ' + soleConfig.environment);
+logger.log('   Database URL: ' + soleConfig.serverUrl);
+logger.log('Facebook App ID: ' + soleConfig.facebookAppID);
+logger.log('      Google UA: ' + soleConfig.googleAnalyticsUA);
+logger.log(' Google AdWords: ' + soleConfig.googleAdWordsID);
+logger.log(' Slack API Token: ' + soleConfig.slackToken);
+logger.log(' Slack Channel: ' + soleConfig.slackChannel);
+logger.log('\n/^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ \n\n');
+
 app.listen(port);
 
-console.log('.d8888. d888888b  .d8b.  d8888b. d888888b .d8888.  .d88b.  db      d88888b ');
-console.log('88\'  YP `~~88~~\' d8\' `8b 88  `8D `~~88~~\' 88\'  YP .8P  Y8. 88      88\'     ');
-console.log('`8bo.      88    88ooo88 88oobY\'    88    `8bo.   88    88 88      88ooooo ');
-console.log('  `Y8b.    88    88~~~88 88`8b      88      `Y8b. 88    88 88      88~~~~~ ');
-console.log('db   8D    88    88   88 88 `88.    88    db   8D `8b  d8\' 88booo. 88.     ');
-console.log('`8888Y\'    YP    YP   YP 88   YD    YP    `8888Y\'  `Y88P\'  Y88888P Y88888P \n');
+logger.log('.d8888. d888888b  .d8b.  d8888b. d888888b .d8888.  .d88b.  db      d88888b ');
+logger.log('88\'  YP `~~88~~\' d8\' `8b 88  `8D `~~88~~\' 88\'  YP .8P  Y8. 88      88\'     ');
+logger.log('`8bo.      88    88ooo88 88oobY\'    88    `8bo.   88    88 88      88ooooo ');
+logger.log('  `Y8b.    88    88~~~88 88`8b      88      `Y8b. 88    88 88      88~~~~~ ');
+logger.log('db   8D    88    88   88 88 `88.    88    db   8D `8b  d8\' 88booo. 88.     ');
+logger.log('`8888Y\'    YP    YP   YP 88   YD    YP    `8888Y\'  `Y88P\'  Y88888P Y88888P \n');
 
-
-console.log('Server running. You can view it locally at http://localhost:' + port);
+logger.log('Server running. You can view it locally at http://localhost:' + port);

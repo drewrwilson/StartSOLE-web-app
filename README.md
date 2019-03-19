@@ -10,7 +10,16 @@ This uses the following tools:
  * Node
  * Express 4
  * Handlebars for templating
+ * logger.js - our custom logging package which uses `winston` for logging and sending messages to our Slack channel
  * Some other misc frontend scripts like jquery, materialize css/js, dropzone, etc
+
+# Environmental variables
+
+In order to run the software you need to have these environmental variables set in your environment:
+ 
+ * `PORT` -  the port for the webserver. default is `8080`
+ * `SLACK_API_TOKEN` - an API key for our slack channel
+ * `SLACK_LOG_CHANNEL` - the channel where we want log messages to be posted 
 
 
 # Tips

@@ -15,7 +15,7 @@ jobs:
     - run:
         name: Deploy to Staging
         command: |
-          ssh $SSH_USER@$SSH_HOST_STAGING "cd sole/webapp2/startsole2/; git checkout staging; git pull; npm install;"
+          ssh $SSH_USER@$SSH_HOST_STAGING
   deploy:
     machine:
       enabled: true
@@ -23,7 +23,7 @@ jobs:
     - run:
         name: Deploy to Production
         command: |
-          ssh $SSH_USER@$SSH_HOST "cd sole/webapp2/startsole2/; git checkout master; git pull; npm install;"
+          ssh $SSH_USER@$SSH_HOST
 workflows:
   version: 2
   build-and-deploy-to-staging:

@@ -8,8 +8,14 @@ Parse.serverURL = soleConfig.serverUrl;
 class User {
   //returns user profile data
   static getProfileData (sessionToken) {
-    return Parse.Cloud.run('webapp.getProfile', {
-      sessionToken: sessionToken
+
+    return this.getRoleData(sessionToken).then(roleData => {
+      return Parse.Cloud.run('webapp.getProfile', {
+        sessionToken: sessionToken
+      }).then(profile => {
+        profile.roleData = roleData;
+        return profile;
+      });
     });
   };
 
@@ -21,6 +27,8 @@ class User {
       return Parse.Promise.as({
         isAdmin: roles.includes('Admin'),
         isRingleader: roles.includes('ringleader'),
+        isAmbassador: roles.includes('ambassador'),
+        isTrainer: roles.includes('trainer'),
         roles: roles
       });
     });

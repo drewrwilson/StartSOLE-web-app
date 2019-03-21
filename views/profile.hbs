@@ -13,7 +13,14 @@
                 <img src="{{user.thumb._url}}" alt="profile-picture" class="circle responsive-img profile-thumb">
             {{/if}}
             <div class="card-content">
-                {{#if user.is_trainer}}
+
+                {{#if roleData.isAmbassador}}
+                    <img src="/images/profile/ambassador_badge.png"
+                         class="profile-badge-image hide-on-med-and-down"
+                         alt="ambassador badge">
+                {{/if}}
+
+                {{#if roleData.isTrainer}}
                     <img src="/images/profile/trainer_badge.png"
                          class="profile-badge-image tooltipped hide-on-med-and-down"
                          alt="trainer badge"
@@ -206,7 +213,55 @@
             </div>
         </div>
     </div>
-    {{#if user.is_trainer}}
+
+    {{#if roleData.isAmbassador}}
+        <div class="col s12 m10 offset-m1 l6">
+            <div class="card-panel">
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <h4>Ambassadors</h4>
+                        <hr>
+
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <div class="left-align" style="height: 32.4px;">
+                                    <a target="_blank"
+                                       href="https://drive.google.com/drive/folders/1Jn-SNogqEJ6-byOCk0xsG4EQryXfpVHQ?usp=sharing"
+                                       onclick="trackOutboundLink('https://drive.google.com/drive/folders/1Jn-SNogqEJ6-byOCk0xsG4EQryXfpVHQ?usp=sharing'); return false;"
+                                    >Meeting Materials</a>
+                                    <a class="secondary-content waves-effect waves-light btn-small"
+                                       target="_blank"
+                                       href="https://drive.google.com/drive/folders/1Jn-SNogqEJ6-byOCk0xsG4EQryXfpVHQ?usp=sharing"
+                                       onclick="trackOutboundLink('https://drive.google.com/drive/folders/1Jn-SNogqEJ6-byOCk0xsG4EQryXfpVHQ?usp=sharing'); return false;"
+                                    r>View</a>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="left-align" style="height: 32.4px;">
+                                    <a href="/admin/events?sesh={{sesh}}">Conferences/Events</a>
+                                    <a class="secondary-content waves-effect waves-light btn-small" href="/admin/events?sesh={{sesh}}">Browse</a>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="left-align" style="height: 32.4px;">
+                                    <a target="_blank" href="https://get.slack.help/hc/en-us/categories/360000049043-Getting-Started">Getting Started</a>
+                                    <a class="secondary-content waves-effect waves-light btn-small" target="_blank" href="https://startsoleorg.slack.com/">Slack</a>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="left-align" style="height: 32.4px;">
+                                    <a class="js-copylink" target="_blank" href="https://app.startsole.org/register?r={{user.id}}">Signup for StartSOLE</a>
+                                    <a class="secondary-content waves-effect waves-light btn-small js-linkcopybtn">Copy Link</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <a href="mailto:support@startsole.org" class="btn">Email Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+    {{#if roleData.isTrainer}}
         <div class="col s12 m10 offset-m1 l6">
             <div class="card-panel">
                 <div class="row">

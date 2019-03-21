@@ -322,11 +322,11 @@ router.route('/admin/events')
 
     Controllers.User.getRoleData(sessionToken).then((roleData)=>{
       adminData.roleData = roleData;
-      if(!roleData.isAdmin){
-        res.redirect('/home');
+      if(roleData.isAdmin || roleData.isAmbassador){
+        res.render('admin-conferences-and-events', adminData);
       }
       else {
-        res.render('admin-conferences-and-events', adminData);
+        res.redirect('/home');
       }
     }).catch((err)=>{
       res.redirect('/home');

@@ -17,6 +17,8 @@ var soleConfig  = require('./sole-config.js');
 
 var port = process.env.PORT || 8080;                 // set our port
 
+console.log('Meaningless change to test circle ci!');
+
 // connect to parse server
 // Parse.initialize(soleConfig.appId);
 // Parse.serverURL = soleConfig.serverUrl;

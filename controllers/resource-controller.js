@@ -504,6 +504,19 @@ class Resource {
         tags: [
           'investigation-help', 'organizer'
         ]
+      },
+      {
+        file: 'SOLE_Rubric.pdf',
+        image: 'sole_rubric_matte_black.png',
+        title: 'SOLE Rubric',
+        short: 'A simple rubric for evaluating SOLE presentations',
+        description: 'A four part rubric for evaluating SOLE presentations, with a focus on how effectively the question was addressed, how collaboratively students worked, whether or not examples and explanation were included, and a check for source citations.',
+        authors: [
+          { email: 'fernando.wagner@newharmonyhigh.org', name: 'Fernando W.'}
+        ],
+        tags: [
+          'rubric', 'review-help'
+        ]
       }
     ];
     return Parse.Promise.as(resources);

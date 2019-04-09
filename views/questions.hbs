@@ -1,14 +1,9 @@
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a href="/" class="breadcrumb">Home</a>
     <a class="breadcrumb">Explore Questions</a>
 </div>
 
 <div class="row" style="padding-top:40px;">
-    {{!-- <div class="col offset-s10 s2 offset-m9 m3 offset-l8 l4">
-        <a href="/questions/add?sesh={{sesh}}" class="btn-floating btn-large waves-effect waves-light red">
-            <i class="material-icons">add</i>
-        </a>
-    </div> --}}
     <div class="col s12 offset-m1 m10 offset-l3 l6">
         <div class="card-panel" style="padding-bottom:inherit;margin-top: -30px;">
 
@@ -35,7 +30,7 @@
         <div class="card-panel">
             <div class="alert alert-danger">{{ errorText }}</div>
             <div class="row" id="no-questions-submission" style="display: none">
-                <a href="questions/add/?sesh={{sesh}}">
+                <a href="questions/add/">
                     <div class="col s12 m8 offset-m2 l6 offset-l3">
                         <div class="card red lighten-1">
                             <div class="question-card card-content center-align">
@@ -75,7 +70,7 @@
                         <div class="col s12 m6 l4">
                             <div class="card blue lighten-1">
                                 <div class="card-content center-align">
-                                    <a href="/questions/y3CR4uqF6E?sesh={{sesh}}">
+                                    <a href="/questions/y3CR4uqF6E">
                                         <span class="card-title white-text">
                                             What does power have to do with fairness and justice?
                                         </span>
@@ -86,7 +81,7 @@
                         <div class="col s12 m6 l4">
                             <div class="card blue lighten-1">
                                 <div class="card-content center-align">
-                                    <a href="/questions/EJBeKeMefK?sesh={{sesh}}">
+                                    <a href="/questions/EJBeKeMefK">
                                         <span class="card-title white-text">
                                             Why do your pupils get bigger in the dark?
                                         </span>
@@ -97,7 +92,7 @@
                         <div class="col s12 m6 l4">
                             <div class="card blue lighten-1">
                                 <div class="card-content center-align">
-                                    <a href="/questions/kM5lKUxfZh?sesh={{sesh}}">
+                                    <a href="/questions/kM5lKUxfZh">
                                         <span class="card-title white-text">
                                             What happens to energy inside of your body?
                                         </span>
@@ -129,9 +124,6 @@
 
 
 {{>question-templates}}
-
-
-<input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
 
 
 {{> sole-config-frontend-js}}

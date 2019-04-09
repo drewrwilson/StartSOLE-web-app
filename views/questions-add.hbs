@@ -1,6 +1,6 @@
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
-    <a href="/questions?sesh={{sesh}}" class="breadcrumb">Questions</a>
+    <a href="/" class="breadcrumb">Home</a>
+    <a href="/questions" class="breadcrumb">Questions</a>
     <a class="breadcrumb">Add New</a>
 </div>
 
@@ -14,10 +14,10 @@
                 </div>
             </div>
             <div class="row">
-                <form action="/questions/add?sesh={{sesh}}" method="post">
+                <form action="/questions/add" method="post">
                     <div class="row">
                         <div class="input-field col s12">
-                          <input type="hidden" name="sesh" value="{{sesh}}">
+
                             <textarea id="text" name="text" class="materialize-textarea" required
                                       placeholder="Enter your question here"></textarea>
                         </div>

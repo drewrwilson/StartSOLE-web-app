@@ -1,6 +1,6 @@
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
-    <a href="/soles?sesh={{sesh}}" class="breadcrumb">My SOLEs</a>
+    <a href="/" class="breadcrumb">Home</a>
+    <a href="/soles" class="breadcrumb">My SOLEs</a>
     <a class="truncate truncate-question breadcrumb">
         {{#if sole}}
             {{sole.question.question.text}}
@@ -85,7 +85,7 @@
             {{/if}}
 
             <form id="reflect-form" method="post" action="/sole-reflect">
-                <input type="hidden" name="sesh" id="sesh" value="{{sesh}}">
+
                 <input type="hidden" name="soleID" id="soleID" value="{{sole.id}}">
 
 

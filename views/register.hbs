@@ -92,13 +92,12 @@
 </div>
 
 <form id="final-registration-form" class="" action="/complete-profile" method="get">
-    <input type="hidden" name="sesh" id="sesh" value="">
+
     <input type="hidden" name="firstname" id="firstname" value="">
     <input type="hidden" name="lastname" id="lastname" value="">
 </form>
 
 <form id="login-with-session" action="/" method="get">
-  <input type="hidden" name="sesh" id="sesh2" value="">
   <input type="hidden" name="redirectURL" id="redirectURL" value="{{redirectURL}}">
 </form>
 
@@ -120,13 +119,12 @@ $("#initial-registration-form").submit(function (event) {
       urlParams = new URLSearchParams(window.location.search),
       refer = urlParams.get('r');
 
-  registerNewUser (first_name, last_name, email, password, refer).then((sesh)=>{
+  registerNewUser (first_name, last_name, email, password, refer).then(() => {
     console.log('post-register')
-    $('#sesh').val(sesh);
     $('#firstname').val(first_name);
     $('#lastname').val(last_name);
     $('#final-registration-form').submit();
-  }).catch(err=>{
+  }).catch(err => {
     //if there's an error signing up, eg if a user already exists with that email address, then show an error to the user
     $('#error').html(err.message.message)
   })

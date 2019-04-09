@@ -43,8 +43,8 @@ function onGoogleSignIn(googleUser) {
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
-//do a logout first to ensure
-logout();
+// //do a logout first to ensure
+// logout();
 
 $('document').ready(function (){
   console.log('document ready. logging out to start');
@@ -71,9 +71,11 @@ window.fbAsyncInit = function() {
 
 function successfulLogin(user) {
   // setPlatform().then(data=>{
-    $('#error').html('Success! Logging you in now...')
+    $('#error').html('Success! Logging you in now...');
     sessionToken = Parse.User.current().getSessionToken();
-    sessionToken = sessionToken.slice(2)
+    document.cookie = 'sessionToken='+sessionToken; //save the sessionToken in the cookie
+    sessionToken = sessionToken.slice(2);
+
     $('#sesh').val(sessionToken);
     $('#sesh2').val(sessionToken);
     $("#login-with-session").submit();
@@ -82,7 +84,7 @@ function successfulLogin(user) {
 }
 
 function login (username, password) {
-  $('#error').html('Loading...')
+  $('#error').html('Loading...');
   Parse.User.logIn(username, password)
     .done(function (user){
       console.log('login success!');
@@ -132,11 +134,12 @@ function loginFacebook () {
 });
 }
 
-function logout () {
-  return Parse.User.logOut().then(function () {
-    return Parse.User.current();  // this will now be null if logged out
-  });
-}
+// function logout () {
+//   document.cookie = "sessionToken=; Max-Age=0";//remove the sessionToken from the cookie
+//   return Parse.User.logOut().then(function () {
+//     return Parse.User.current();  // this will now be null if logged out
+//   });
+// }
 
 $('#fb-login').click(function (event){
   event.preventDefault();

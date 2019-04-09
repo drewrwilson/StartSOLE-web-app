@@ -1,6 +1,6 @@
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
-    <a href="/questions?sesh={{sesh}}" class="breadcrumb">Questions</a>
+    <a href="/" class="breadcrumb">Home</a>
+    <a href="/questions" class="breadcrumb">Questions</a>
     {{#if question}}
         <a class="truncate truncate-question breadcrumb">{{question.text}}</a>
     {{/if}}
@@ -16,11 +16,11 @@
                 <hr>
                 <div class="row hide-on-med-and-up">
                     <div class="col s12 right-align">
-                        <a href="/questions/{{question.id}}/favorite?sesh={{sesh}}" class="fav-button teal waves-effect waves-light btn">
+                        <a href="/questions/{{question.id}}/favorite" class="fav-button teal waves-effect waves-light btn">
                         <i class="material-icons left">bookmark</i>
                         Favorite
                         </a>
-                        <a href="/sole-create?sesh={{sesh}}&question={{question.id}}" class="teal waves-effect waves-light
+                        <a href="/sole-create&question={{question.id}}" class="teal waves-effect waves-light
                         btn">
                             <i class="material-icons left">assignment</i>
                             Create Lesson
@@ -35,7 +35,7 @@
                                 <a class="chip tooltipped"
                                    data-position="bottom"
                                    data-tooltip="{{this.text}}"
-                                   href="{{../question.id}}/delete-tag/{{this.rdn}}?sesh={{../sesh}}">
+                                   href="{{../question.id}}/delete-tag/{{this.rdn}}">
                                     {{this.short_text}}
                                     <i class="close material-icons">close</i>
                                 </a>
@@ -87,12 +87,12 @@
             <a class="fav-button teal btn-floating btn-large waves-effect waves-light tooltipped"
                data-position="bottom"
                data-tooltip="Save Question"
-               href="/questions/{{question.id}}/favorite?sesh={{sesh}}"
+               href="/questions/{{question.id}}/favorite"
             >
                 <i class="material-icons">bookmark</i>
             </a>
             <a class="teal btn-floating btn-large waves-effect waves-light tooltipped"
-               href="/sole-create?sesh={{sesh}}&question={{question.id}}"
+               href="/sole-create&question={{question.id}}"
                data-position="bottom"
                data-tooltip="Create Lesson Plan">
                 <i class="material-icons">assignment</i>
@@ -104,7 +104,7 @@
 {{#if favorited}}
     <script>
         $('document').ready(function(){
-            var toastHTML = '<span>Added to Saved</span><a href="mine?fav=active&sesh={{sesh}}" class="btn-flat toast-action">View</a>';
+            var toastHTML = '<span>Added to Saved</span><a href="mine?fav=active" class="btn-flat toast-action">View</a>';
             M.toast({html: toastHTML})
         });
     </script>

@@ -1,5 +1,5 @@
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a href="/" class="breadcrumb">Home</a>
     <a class="breadcrumb">My Profile</a>
 </div>
 
@@ -57,161 +57,99 @@
                     </div>
                 </div>
 
-                <form id="profile-update-form" action="/profile" method="post">
-                    <input type="hidden" name="sesh" value="{{sesh}}">
-                    <!--role-->
-                    <div class="row">
-                        <div class="input-field col s12 m10 offset-m1">
-                            <select name="role">
-                                {{#unless user.role}}
-                                    <option value="" disabled>Choose your option</option>{{/unless}}
-                                <option value="user.role.teacher"
-                                        {{#ifEquals user.role "user.role.teacher"}}selected{{/ifEquals}}
-                                >Teacher
-                                </option>
-                                <option value="user.role.preservice_teacher"
-                                        {{#ifEquals user.role "user.role.preservice_teacher"}}selected{{/ifEquals}}
-                                >Pre-service Teacher
-                                </option>
-                                <option value="user.role.administrator"
-                                        {{#ifEquals user.role "user.role.administrator"}}selected{{/ifEquals}}
-                                >Administrator
-                                </option>
-                                <option value="user.role.coach"
-                                        {{#ifEquals user.role "user.role.coach"}}selected{{/ifEquals}}
-                                >Coach
-                                </option>
-                                <option value="user.role.out_of_school_educator"
-                                        {{#ifEquals user.role "user.role.out_of_school_educator"}}selected{{/ifEquals}}
-                                >Out of School Educator
-                                </option>
-                                <option value="user.role.parent"
-                                        {{#ifEquals user.role "user.role.parent"}}selected{{/ifEquals}}
-                                >Parent
-                                </option>
-                                <option value="user.role.other"
-                                        {{#ifEquals user.role "user.role.other"}}selected{{/ifEquals}}
-                                >Other
-                                </option>
-                            </select>
-                            <label>What's your primary role?</label>
-                        </div>
+            <form id="profile-update-form" action="/profile" method="post">
+                <!--role-->
+                <div class="row">
+                    <div class="input-field col s12 m10 offset-m1">
+                        <select name="role">
+                            {{#unless user.role}}<option value="" disabled>Choose your option</option>{{/unless}}
+                            <option value="user.role.teacher"
+                                    {{#ifEquals user.role "user.role.teacher"}}selected{{/ifEquals}}
+                            >Teacher</option>
+                            <option value="user.role.preservice_teacher"
+                                    {{#ifEquals user.role "user.role.preservice_teacher"}}selected{{/ifEquals}}
+                            >Pre-service Teacher</option>
+                            <option value="user.role.administrator"
+                                    {{#ifEquals user.role "user.role.administrator"}}selected{{/ifEquals}}
+                            >Administrator</option>
+                            <option value="user.role.coach"
+                                    {{#ifEquals user.role "user.role.coach"}}selected{{/ifEquals}}
+                            >Coach</option>
+                            <option value="user.role.out_of_school_educator"
+                                    {{#ifEquals user.role "user.role.out_of_school_educator"}}selected{{/ifEquals}}
+                            >Out of School Educator</option>
+                            <option value="user.role.parent"
+                                    {{#ifEquals user.role "user.role.parent"}}selected{{/ifEquals}}
+                            >Parent</option>
+                            <option value="user.role.other"
+                                    {{#ifEquals user.role "user.role.other"}}selected{{/ifEquals}}
+                            >Other</option>
+                        </select>
+                        <label>What's your primary role?</label>
                     </div>
-                    <!--grades-->
-                    <div class="row">
-                        <div class="input-field col s12 m10 offset-m1">
-                            <select multiple name="grades">
-                                {{#unless user.grades}}
-                                    <option value="" disabled>Choose your option</option>{{/unless}}
-                                <option value="edu.pre-k"
-                                        {{#contains "edu.pre-k" user.grades}}selected{{/contains}}
-                                >Preschool
-                                </option>
-                                <option value="edu.k" {{#contains "edu.k" user.grades}}selected{{/contains}}
-                                >Kindergarten
-                                </option>
-                                <option value="edu.1" {{#contains "edu.1" user.grades}}selected{{/contains}}
-                                >First Grade
-                                </option>
-                                <option value="edu.2" {{#contains "edu.2" user.grades}}selected{{/contains}}
-                                >Second Grade
-                                </option>
-                                <option value="edu.3" {{#contains "edu.3" user.grades}}selected{{/contains}}
-                                >Third Grade
-                                </option>
-                                <option value="edu.4" {{#contains "edu.4" user.grades}}selected{{/contains}}
-                                >Fourth Grade
-                                </option>
-                                <option value="edu.5" {{#contains "edu.5" user.grades}}selected{{/contains}}
-                                >Fifth Grade
-                                </option>
-                                <option value="edu.6" {{#contains "edu.6" user.grades}}selected{{/contains}}
-                                >Sixth Grade
-                                </option>
-                                <option value="edu.7" {{#contains "edu.7" user.grades}}selected{{/contains}}
-                                >Seventh Grade
-                                </option>
-                                <option value="edu.8" {{#contains "edu.8" user.grades}}selected{{/contains}}
-                                >Eighth Grade
-                                </option>
-                                <option value="edu.9" {{#contains "edu.9" user.grades}}selected{{/contains}}
-                                >Ninth Grade
-                                </option>
-                                <option value="edu.10" {{#contains "edu.10" user.grades}}selected{{/contains}}
-                                >Tenth Grade
-                                </option>
-                                <option value="edu.11" {{#contains "edu.11" user.grades}}selected{{/contains}}
-                                >Eleventh Grade
-                                </option>
-                                <option value="edu.12" {{#contains "edu.12" user.grades}}selected{{/contains}}
-                                >Twelfth Grade
-                                </option>
-                            </select>
-                            <label>What grade(s) do you teach?</label>
-                        </div>
+                </div>
+                <!--grades-->
+                <div class="row">
+                    <div class="input-field col s12 m10 offset-m1">
+                        <select multiple name="grades">
+                            {{#unless user.grades}}<option value="" disabled>Choose your option</option>{{/unless}}
+                            <option value="edu.pre-k"
+                                    {{#contains "edu.pre-k" user.grades}}selected{{/contains}}
+                            >Preschool</option>
+                            <option value="edu.k" {{#contains "edu.k" user.grades}}selected{{/contains}}
+                            >Kindergarten</option>
+                            <option value="edu.1" {{#contains "edu.1" user.grades}}selected{{/contains}}
+                            >First Grade</option>
+                            <option value="edu.2" {{#contains "edu.2" user.grades}}selected{{/contains}}
+                            >Second Grade</option>
+                            <option value="edu.3" {{#contains "edu.3" user.grades}}selected{{/contains}}
+                            >Third Grade</option>
+                            <option value="edu.4" {{#contains "edu.4" user.grades}}selected{{/contains}}
+                            >Fourth Grade</option>
+                            <option value="edu.5" {{#contains "edu.5" user.grades}}selected{{/contains}}
+                            >Fifth Grade</option>
+                            <option value="edu.6" {{#contains "edu.6" user.grades}}selected{{/contains}}
+                            >Sixth Grade</option>
+                            <option value="edu.7" {{#contains "edu.7" user.grades}}selected{{/contains}}
+                            >Seventh Grade</option>
+                            <option value="edu.8" {{#contains "edu.8" user.grades}}selected{{/contains}}
+                            >Eighth Grade</option>
+                            <option value="edu.9" {{#contains "edu.9" user.grades}}selected{{/contains}}
+                            >Ninth Grade</option>
+                            <option value="edu.10" {{#contains "edu.10" user.grades}}selected{{/contains}}
+                            >Tenth Grade</option>
+                            <option value="edu.11" {{#contains "edu.11" user.grades}}selected{{/contains}}
+                            >Eleventh Grade</option>
+                            <option value="edu.12" {{#contains "edu.12" user.grades}}selected{{/contains}}
+                            >Twelfth Grade</option>
+                        </select>
+                        <label>What grade(s) do you teach?</label>
                     </div>
-                    <!--subjects-->
-                    <div class="row">
-                        <div class="input-field col s12 m10 offset-m1">
-                            <select multiple name="subjects">
-                                {{#unless user.subjects}}
-                                    <option value="" disabled>Choose your option</option>{{/unless}}
-                                <option value="top.careereducation"
-                                        {{#contains "top.careereducation" user.subjects}}selected{{/contains}}>Career
-                                    Education
-                                </option>
-                                <option value="top.engineering"
-                                        {{#contains "top.engineering" user.subjects}}selected{{/contains}}>Engineering
-                                </option>
-                                <option value="top.english"
-                                        {{#contains "top.english" user.subjects}}selected{{/contains}}>English
-                                </option>
-                                <option value="top.englishlanguagedevelopment"
-                                        {{#contains "top.englishlanguagedevelopment"
-                                                    user.subjects}}selected{{/contains}}>English Language Development
-                                </option>
-                                <option value="top.financialliteracy"
-                                        {{#contains "top.financialliteracy" user.subjects}}selected{{/contains}}>
-                                    Financial Literacy
-                                </option>
-                                <option value="top.health"
-                                        {{#contains "top.health" user.subjects}}selected{{/contains}}>Health
-                                </option>
-                                <option value="top.libmedia-infolit"
-                                        {{#contains "top.libmedia-infolit" user.subjects}}selected{{/contains}}>Library
-                                    Media / Information Literacy
-                                </option>
-                                <option value="top.lifeskills"
-                                        {{#contains "top.lifeskills" user.subjects}}selected{{/contains}}>Life Skills
-                                </option>
-                                <option value="top.math" {{#contains "top.math" user.subjects}}selected{{/contains}}>
-                                    Math
-                                </option>
-                                <option value="top.physicaleducation"
-                                        {{#contains "top.physicaleducation" user.subjects}}selected{{/contains}}>
-                                    Physical Education
-                                </option>
-                                <option value="top.science"
-                                        {{#contains "top.science" user.subjects}}selected{{/contains}}>Science
-                                </option>
-                                <option value="top.socialstudies"
-                                        {{#contains "top.socialstudies" user.subjects}}selected{{/contains}}>Social
-                                    Studies
-                                </option>
-                                <option value="top.technology"
-                                        {{#contains "top.technology" user.subjects}}selected{{/contains}}>Technology
-                                </option>
-                                <option value="top.thearts"
-                                        {{#contains "top.thearts" user.subjects}}selected{{/contains}}>The Arts
-                                </option>
-                                <option value="top.foreignlanguage"
-                                        {{#contains "top.foreignlanguage" user.subjects}}selected{{/contains}}>World
-                                    Languages
-                                </option>
-                            </select>
-                            <label>What subject(s) do you teach?</label>
-                        </div>
+                </div>
+                <!--subjects-->
+                <div class="row">
+                    <div class="input-field col s12 m10 offset-m1">
+                        <select multiple name="subjects">
+                            {{#unless user.subjects}}<option value="" disabled>Choose your option</option>{{/unless}}
+                            <option value="top.careereducation" {{#contains "top.careereducation" user.subjects}}selected{{/contains}}>Career Education</option>
+                            <option value="top.engineering" {{#contains "top.engineering" user.subjects}}selected{{/contains}}>Engineering</option>
+                            <option value="top.english" {{#contains "top.english" user.subjects}}selected{{/contains}}>English</option>
+                            <option value="top.englishlanguagedevelopment" {{#contains "top.englishlanguagedevelopment" user.subjects}}selected{{/contains}}>English Language Development</option>
+                            <option value="top.financialliteracy" {{#contains "top.financialliteracy" user.subjects}}selected{{/contains}}>Financial Literacy</option>
+                            <option value="top.health" {{#contains "top.health" user.subjects}}selected{{/contains}}>Health</option>
+                            <option value="top.libmedia-infolit" {{#contains "top.libmedia-infolit" user.subjects}}selected{{/contains}}>Library Media / Information Literacy</option>
+                            <option value="top.lifeskills" {{#contains "top.lifeskills" user.subjects}}selected{{/contains}}>Life Skills</option>
+                            <option value="top.math" {{#contains "top.math" user.subjects}}selected{{/contains}}>Math</option>
+                            <option value="top.physicaleducation" {{#contains "top.physicaleducation" user.subjects}}selected{{/contains}}>Physical Education</option>
+                            <option value="top.science" {{#contains "top.science" user.subjects}}selected{{/contains}}>Science</option>
+                            <option value="top.socialstudies" {{#contains "top.socialstudies" user.subjects}}selected{{/contains}}>Social Studies</option>
+                            <option value="top.technology" {{#contains "top.technology" user.subjects}}selected{{/contains}}>Technology</option>
+                            <option value="top.thearts" {{#contains "top.thearts" user.subjects}}selected{{/contains}}>The Arts</option>
+                            <option value="top.foreignlanguage" {{#contains "top.foreignlanguage" user.subjects}}selected{{/contains}}>World Languages</option>
+                        </select>
+                        <label>What subject(s) do you teach?</label>
                     </div>
+                </div>
 
                     <div class="row center-align">
                         <button class="btn waves-effect waves-light"
@@ -245,8 +183,7 @@
                         {{#if user.ceus}}
                             <p>0/2000 points to your next CEU</p>
                         {{else}}
-                            <p><em>No points yet. <a href="/sole-create?sesh={{sesh}}">Create your first SOLE lesson
-                                plan & get points.</a></em></p>
+                            <p><em>No points yet. <a href="/sole-create">Create your first SOLE lesson plan &amp; get points.</a></em></p>
                         {{/if}}
                     {{/if}}
 
@@ -263,8 +200,8 @@
                             {{/each}}
                         {{else}}
                             <li class="collection-item">
-                                <a href="/sole-create?sesh={{sesh}}">
-                                No CEUs ... yet! Create your first SOLE lesson plan & get points.
+                                <a href="/sole-create">
+                                    No CEUs ... yet! Create your first SOLE lesson plan & get points.
                                 </a>
                             </li>
                         {{/if}}

@@ -4,28 +4,20 @@
 // =============================================================================
 
 // call the packages we need
-var express     = require('express');        // call express
-var app         = express();                 // define our app using express
-var bodyParser  = require('body-parser');
-var hbs         = require('express-hbs');
-var path        = require('path');
-var moment        = require('moment');
-var Controllers = require('./controllers/controllers.js');
+const express     = require('express');        // call express
+const app         = express();                 // define our app using express
+const bodyParser  = require('body-parser');
+const hbs         = require('express-hbs');
+const path        = require('path');
+const moment        = require('moment');
+const Controllers = require('./controllers/controllers.js');
+const cookieParser = require('cookie-parser');
 const logger = require('./logger.js');
 logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
-// var Parse       =  require('parse/node');
-var soleConfig  = require('./sole-config.js');
+const soleConfig  = require('./sole-config.js');
 
-var port = process.env.PORT || 8080;                 // set our port
-
-console.log('Meaningless change to test circle ci!');
-
-// connect to parse server
-// Parse.initialize(soleConfig.appId);
-// Parse.serverURL = soleConfig.serverUrl;
-
-var sessionToken = null; //initiatize this variable so we can use it globally
+const port = process.env.PORT || 8080;                 // set our port
 
 // ******************
 // handlebars helpers
@@ -74,40 +66,45 @@ app.engine('hbs', hbs.express4({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
-
-
 // ******************
 // routes for webserver
 // ******************
 
 // =============================================================================
-var router = express.Router();              // get an instance of the express Router
+const router = express.Router();              // get an instance of the express Router
+
+router.use(cookieParser());
+
+// middleware function to check if a user is logged in
+// if not logged in, redirect to login page
+function isAuth (req, res, next) {
+  const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
+
+  if (sessionToken) {
+    //check if sessionToken is valid or parse calls might fail
+    next();
+  } else {
+    res.redirect('/login');
+  }
+}
 
 // home route
 // NOTE: this is where we can add in some welcome content. eg on first load
 //       redirect to a intro screen. Or after completing your 5 SOLE, give some
 //       nice encouraging message, etc etc
 router.route('/')
-  .get((req, res) => {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? res.redirect('/login'): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    //check if user needs to complete profile
-    // if so, show them the compete profile view
     Controllers.User.isProfileComplete(sessionToken).then(profileIsCompleted=>{
-      if (!profileIsCompleted) {
-        res.redirect('/complete-profile?sesh='+ sesh);
-      } else {
-        res.redirect('/home?sesh='+ sesh);
-      }
+      res.redirect(profileIsCompleted ? '/home' : '/complete-profile');
     });
+
   });
 
 // on routes that end in /stats/
 router.route('/slackbot/users-range')
-  .post((req, res)=> {
+  .post((req, res) => {
     let numberOfDays = 1;
     if (req.body.text) {
       numberOfDays = Number(req.body.text); //convert string to integer
@@ -119,14 +116,14 @@ router.route('/slackbot/users-range')
 
 // ----------------------------------------------------
 router.route('/slackbot/users-today')
-  .post((req, res)=> {
+  .post((req, res) => {
     Controllers.Stats.usersToday().then(responseMessage => {
       res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
     });
   });
 
 router.route('/slackbot/users-range-detail')
-  .post((req, res)=> {
+  .post((req, res) => {
     let numberOfDays = 1;
     if (req.body.text) {
       numberOfDays = Number(req.body.text); //convert string to integer
@@ -140,277 +137,222 @@ router.route('/slackbot/users-range-detail')
 //on routes that end in /random-picture
 // ----------------------------------------------------
 router.route('/random-picture')
-  .get((req, res)=> {
+  .get((req, res) => {
     const pic = Controllers.Test.randomPicture();
     res.sendFile('images/test-images/'+pic,{root: __dirname + '/public/'});
   });
 
-
 router.route('/home')
-  .get((req,  res)=>{
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    var homeData = {soles: [],questions:[]};
+    Controllers.User.getRoleData(sessionToken).then(roleData => {
+      let homeData = {
+        soles: [],
+        questions: [],
+        roleData: roleData,
+        config: soleConfig,
+      };
 
-
-    Controllers.User.getRoleData(sessionToken).then((roleData)=>{
-      homeData.roleData = roleData;
-      homeData.sesh = sesh;
-      homeData.config = soleConfig;
-
-      if (roleData.isRingleader){
-        return Controllers.User.getMyRings(sessionToken).then((rings)=>{
+      if (roleData.isRingleader) {
+        return Controllers.User.getMyRings(sessionToken).then(rings => {
           homeData.rings = rings;
-          res.render('home', homeData); //display view with question data
-        }).catch((err)=>{
-          logger.error('Error getting ring for user!', err);
+          res.render('home', homeData); //show home page with ring data
         });
+      } else {
+        res.render('home', homeData); //show home page but no ring data
       }
-      else {
-        res.render('home', homeData); //display view with question data
-      }
-
-    }).catch((err)=>{
-      logger.error('Error getting roleData for user!', err);
-
-      res.redirect('/home');
+    }).catch(err => { //catch if the Parse call for roleData didn't work
+      logger.error('Error getting ring for user!', err);
+      //TODO: show an error page to the user
     });
-
   });
 
 //temporary static route for making the view for approving soles
 router.route('/pending-soles')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    const adminData = {
-      sesh: sesh,
-      config: soleConfig,
-      layout: 'default.hbs',
-      totalSoles: 666
-    };
-
-    Controllers.Admin.getPendingSoles(sessionToken).then(soles=>{
-      soles.forEach(sole=>{
+    Controllers.Admin.getPendingSoles(sessionToken).then(soles => {
+      //format the shortText and date for each sole
+      soles.forEach(sole => {
         sole.question.shortText = sole.question.text.substring(0,10);
         sole.reflectionDate = moment(sole.reflectionDate, 'YYYYMMDD').fromNow();
       });
 
-      adminData.soles = soles;
-      adminData.totalSoles = soles.length;
-      res.render('admin-pending-soles', adminData);
-    }).catch(err=>{
-      res.redirect('/home?sesh=' + sesh);
+      //render the view
+      res.render('admin-pending-soles', {
+        config: soleConfig,
+        layout: 'default.hbs',
+        totalSoles: soles.length,
+        soles: soles
+      });
+    }).catch(err => {
+      console.error('Error getting pending soles for approval. Error: ', err);
+      res.redirect('/home');
     });
   })
 
 /*
         ToDo:
-        * pass sesh token back and forth
         * connect it to Webapp.js
         * check for isAdmin and add a link to the homepage if isAdmin
          */
 
-  .post((req, res)=> {
-    const sesh = req.body.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res) : false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-    const requestSocialMedia = (req.body.socialMediaCheck == 'true') ? true : false;//true if we need to request Social Media Approval via email, false otherwise
-    // const email = req.body.email;
-    // const pdfUrl = req.body.pdfUrl;
-    // const question req.body.question;
+  .post(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
+
+    const requestSocialMedia = (req.body.socialMediaCheck == 'true');//true if we need to request Social Media Approval via email, false otherwise
 
     if (req.body.action === 'approve') {
-      Controllers.Admin.approveSole(req.body.soleId, req.body.comment, requestSocialMedia, sessionToken).then(soleId=>{
-        res.redirect('/pending-soles?sesh=' + sesh);
+      Controllers.Admin.approveSole(req.body.soleId, req.body.comment, requestSocialMedia, sessionToken).then(soleId => {
+        res.redirect('/pending-soles');
       });
     } else if (req.body.action === 'reject') {
-      Controllers.Admin.rejectSole(req.body.soleId, req.body.comment, sessionToken).then(soleId=>{
-        res.redirect('/pending-soles?sesh=' + sesh);
+      Controllers.Admin.rejectSole(req.body.soleId, req.body.comment, sessionToken).then(soleId => {
+        res.redirect('/pending-soles');
       });
     } else {
       logger.error('Error. Got a malformed post without reject or approve.');
     }
-  });
+  })
 
 // route for Admin Page
 router.route('/admin')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    const adminData = {sesh: sesh};
-    adminData.config = soleConfig;
-    adminData.layout = 'no-footer.hbs';
-
-    Controllers.User.getRoleData(sessionToken).then((roleData)=>{
-      adminData.roleData = roleData;
-      if(!roleData.isAdmin){
-        res.redirect('/home?sesh=' + sesh);
-      }
-      else {
-        Controllers.User.adminSummaryData().then((summaryData)=>{
-          adminData.usersToday = summaryData;
-          res.render('admin', adminData);
+    Controllers.User.getRoleData(sessionToken).then(roleData => {
+      if (!roleData.isAdmin) { //TODO: make a middleware for isAdmin
+        res.redirect('/home');
+      } else {
+        Controllers.User.adminSummaryData().then(summaryData => {
+          res.render('admin', {
+            config: soleConfig,
+            layout: 'no-footer.hbs',
+            roleData: roleData,
+            usersToday: summaryData
+          });
         });
       }
-    }).catch((err)=>{
-      res.redirect('/home?sesh=' + sesh);
+    }).catch(err => {
+      console.error('Error in admin page. Error: ', err);
+      //TODO: show error to user
+      res.redirect('/home');
     });
   });
 
 // route for browsing all SOLEs.  Admin only
 router.route('/admin/browse-soles')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    const adminData = {sesh: sesh};
-    adminData.config = soleConfig;
-
-    Controllers.User.getRoleData(sessionToken).then((roleData)=>{
-      adminData.roleData = roleData;
-      if(!roleData.isAdmin){
+    Controllers.User.getRoleData(sessionToken).then(roleData => {
+      if(!roleData.isAdmin) {
         res.redirect('/home');
+      } else {
+        res.render('admin-browse-soles', {
+          config: soleConfig,
+          roleData: roleData
+        });
       }
-      else {
-        res.render('admin-browse-soles', adminData);
-      }
-    }).catch((err)=>{
+    }).catch(err => {
+      console.error('Error in admin/browse-soles. Error: ', err);
+      //TODO: show error to user
       res.redirect('/home');
     });
   });
 
 // route for browsing all SOLEs.  Admin only
 router.route('/admin/browse-users')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    const adminData = {sesh: sesh};
-    adminData.config = soleConfig;
-
-    Controllers.User.getRoleData(sessionToken).then((roleData)=>{
-      adminData.roleData = roleData;
+    Controllers.User.getRoleData(sessionToken).then(roleData => {
       if(!roleData.isAdmin){
         res.redirect('/home');
+      } else {
+        res.render('admin-browse-users', {
+          config: soleConfig,
+          roleData: roleData
+        });
       }
-      else {
-        res.render('admin-browse-users', adminData);
-      }
-    }).catch((err)=>{
+    }).catch(err => {
+      console.error('Error in admin/browse-users. Error: ', err);
+      //TODO: show error to user
       res.redirect('/home');
     });
   });
 
 // route for browsing upcoming conferences and events.  Admin only
 router.route('/admin/events')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    const adminData = {sesh: sesh};
-    adminData.config = soleConfig;
-
-    Controllers.User.getRoleData(sessionToken).then((roleData)=>{
-      adminData.roleData = roleData;
-      if(roleData.isAdmin || roleData.isAmbassador){
+    Controllers.User.getRoleData(sessionToken).then(roleData => {
+      if(roleData.isAdmin || roleData.isAmbassador) { //TODO: replace with middleware later
         res.render('admin-conferences-and-events', adminData);
+      } else {
+        res.render('admin-conferences-and-events', {
+          config: soleConfig,
+          roleData: roleData
+        });
       }
-      else {
-        res.redirect('/home');
-      }
-    }).catch((err)=>{
+    }).catch(err => {
+      //TODO: show error to user
       res.redirect('/home');
     });
   });
 
 // static route for History of SOLE
 router.route('/history')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    const viewData = {sesh: sesh};
-    viewData.config = soleConfig;
-    res.render('history', viewData);
+  .get((req, res) => {
+    res.render('history', {config: soleConfig});
   });
 
 // static route for History of SOLE
 router.route('/how')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    const viewData = {sesh: sesh};
-    viewData.config = soleConfig;
-    res.render('how-to-sole', viewData);
+  .get((req, res) => {
+    res.render('how-to-sole', {config: soleConfig});
   });
 
 // static route for ToS
 router.route('/terms-of-use')
-  .get((req, res)=> {
+  .get((req, res) => {
     res.render('terms-of-use', {layout: 'no-sidebar.hbs', config: soleConfig});
   });
 
 // static route for privacy
 router.route('/privacy')
-  .get((req, res)=> {
+  .get((req, res) => {
     res.render('privacy', {layout: 'no-sidebar.hbs', config: soleConfig});
   });
 
 // static route for email verification success
 router.route('/verify-email-success')
-  .get((req, res)=> {
+  .get((req, res) => {
     const email = req.query.email;
     res.render('verify-email-success', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
 
 // static route for email verification failure
 router.route('/verify-email-failure')
-  .get((req, res)=> {
+  .get((req, res) => {
     const email = req.query.email;
     res.render('verify-email-failure', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
 
 // routes for resources
 router.route('/resources')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get((req, res) => {
 
-    Controllers.Resource.getAll().then(resources=>{
-      const viewData = {
+    Controllers.Resource.getAll().then(resources => {
+      res.render('resources', {
         resources: resources,
-        sesh: sesh,
         config: soleConfig
-      };
-      res.render('resources', viewData);
+      });
     });
 
-  });
-
-// static route for community map
-router.route('/map')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    const viewData = {sesh: sesh};
-    viewData.config = soleConfig;
-    res.render('map', viewData);
   });
 
 // routes for profile
@@ -419,22 +361,18 @@ router.route('/profile')
 
 // profile view
   .get((req, res) => {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+    const sessionToken = req.cookies.sessionToken;
 
     Controllers.User.getProfileData(sessionToken)
       .then((profileData) => {
-        profileData.sesh = sesh;
         profileData.config = soleConfig;
         res.render('profile', profileData);
       });
 
   })
-  .post((req, res)=> {
-    const sesh = req.body.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res) : false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  //TODO: this is a mess, come back to this to make it more consistent with the rest of the app
+  .post(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
     // TODO: refactor so this accept explicit param instead of of req.body
     Controllers.User.updateProfileData(req.body.subjects || false,
@@ -447,13 +385,12 @@ router.route('/profile')
       false,
       false,
       sessionToken)
-      .then(user=>{
-        res.redirect('/soles?sesh='+sesh);
-      }).catch((err)=>{
+      .then(user => {
+        res.redirect('/soles');
+      }).catch(err => {
         logger.error('Error updating user', err);
         res.render('fail', {
           layout: 'no-sidebar.hbs',
-          sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
           config: soleConfig,
           error: 'Updating user'
         });
@@ -464,61 +401,71 @@ router.route('/profile')
 // routes for user registration
 // ----------------------------------------------------
 router.route('/register')
-
-// register view
-  .get((req, res)=> {
-    res.render('register', {layout: 'no-sidebar.hbs', config: soleConfig});
+  .get((req, res) => {
+    res.render('register', {
+      layout: 'no-sidebar.hbs',
+      config: soleConfig
+    });
   });
 
 //route for logging out
 router.route('/logout')
-  .get((req, res)=> {
-    res.render('logout', {layout: 'no-sidebar.hbs', config: soleConfig});
+  .get((req, res) => {
+    res.render('logout', {
+      layout: 'no-sidebar.hbs',
+      config: soleConfig
+    });
   });
 
-// routes for logging in
-// ----------------------------------------------------
+// route for logging in
 router.route('/login')
-// login vieww
-  .get((req, res)=> {
-    const email = req.query.email;
-    res.render('login', {layout: 'prelogin.hbs', config: soleConfig, email: email});
+  .get((req, res) => {
+    //this is a special case. this code is similar to the isAuth function, but we do
+    //it here because we want to redirect someone to /home if they're already logged in.
+    const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
+
+    if (sessionToken) {
+      res.redirect('/home');
+    } else {
+      const email = req.query.email;
+      res.render('login', {
+        layout: 'prelogin.hbs',
+        config: soleConfig,
+        email: email
+      });
+    }
+
   });
 
 // route for completing profile
+//TODO: there are lots of possible fail scenarios here. eg if profileData.user is undefined. Or if req.query.firstname is undefined
 router.route('/complete-profile')
-  .get((req, res) => {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.User.getProfileData(sessionToken)
-      .then((profileData) => {
+    Controllers.User.getProfileData(sessionToken).then(profileData => {
+      if (profileData.user.firstName && profileData.user.lastName) {
+        console.log('um, hi. whats this all about?');
+      } else {
+        profileData.user.firstName = req.query.firstname;
+        profileData.user.lastName = req.query.lastname;
+      }
 
-        if( profileData.user.firstName && profileData.user.lastName ) {
-        } else {
-          profileData.user.firstName = req.query.firstname;
-          profileData.user.lastName = req.query.lastname;
-        }
-
-        profileData.sesh = sesh;
-        res.render('complete-profile', {
-          layout: 'no-sidebar.hbs',
-          profile: profileData,
-          sesh: sesh,
-          config: soleConfig
-        });
-
+      res.render('complete-profile', {
+        layout: 'no-sidebar.hbs',
+        profile: profileData,
+        config: soleConfig
       });
 
+    });
+
   })
-  .post((req, res)=>{
+  //TODO: test that this still works
+  .post(isAuth, (req, res) =>{
+    const sessionToken = req.cookies.sessionToken;
 
-    const sesh = req.body.sesh; //get the sesh token string from the POST param
-    (!sesh || sesh === undefined) ? res.redirect('/error') : false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    Controllers.User.updateProfileData(req.body.subjects,
+    Controllers.User.updateProfileData(
+      req.body.subjects,
       req.body.grades,
       req.body.role,
       req.body.firstName,
@@ -527,13 +474,12 @@ router.route('/complete-profile')
       req.body.schoolAddress,
       req.body.schoolPlaceID,
       'jur.' + req.body.schoolState.toLowerCase(), //need to add 'jur.' to the string and lowercase it to make it work with the database
-      sessionToken)
-      .then(user=>{
+      sessionToken).then(user => {
         Controllers.User.completedProfile(sessionToken);
-        res.redirect('/soles?sesh='+sesh);
-      }).catch((err)=>{
+        res.redirect('/soles');
+      }).catch(err =>{
         logger.error('Error completing user profile', err);
-        res.redirect('/error?sesh='+sesh);
+        res.redirect('/error');
       });
   });
 
@@ -542,17 +488,14 @@ router.route('/complete-profile')
 router.route('/soles')
 
 // get all the soles
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
     Controllers.Sole.getAll(sessionToken)
       .then(soles=>{
-        soles.sesh = sesh;
         soles.config = soleConfig;
         res.render('soles', soles);
-      }).catch(err=>{
+      }).catch(err => {
         showErrorPage('Could not get list of SOLEs.', sesh, res);
       });
 
@@ -562,20 +505,16 @@ router.route('/soles')
 // ----------------------------------------------------
 router.route('/soles/:id')
 // get the sole with that id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Sole.getByID(req.params.id, sessionToken)
-      .then((singleSole) => {
-        //in case the id of the sole is invalid
-        singleSole.sesh = sesh;
-        singleSole.config = soleConfig;
-        res.render('soles-single', singleSole);
-      }).catch((err)=>{
-        showErrorPage('Could not get a SOLE.', sesh, res);
-      });
+    Controllers.Sole.getByID(req.params.id, sessionToken).then(singleSole => {
+      //in case the id of the sole is invalid
+      singleSole.config = soleConfig;
+      res.render('soles-single', singleSole);
+    }).catch(err =>{
+      showErrorPage('Could not get a SOLE.', false, res);
+    });
   });
 
 
@@ -583,20 +522,18 @@ router.route('/soles/:id')
 // ----------------------------------------------------
 router.route('/soles/:id/download-plan')
 // get the sole with that id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    var id = req.params.id;
-    var type = 'plan';
+    const id = req.params.id;
+    const type = 'plan';
 
     Controllers.Sole.downloadDocument(id, type, sessionToken)
-      .then((url) => {
+      .then(url => {
         res.redirect(soleConfig.baseURL+url);
       })
-      .catch((err)=>{
-        res.redirect('/error?sesh=' + sesh);
+      .catch(err => {
+        res.redirect('/error');
       });
   });
 
@@ -605,20 +542,18 @@ router.route('/soles/:id/download-plan')
 // ----------------------------------------------------
 router.route('/soles/:id/download-summary')
 // get the sole with that id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    var id = req.params.id;
-    var type = 'summary';
+    const id = req.params.id;
+    const type = 'summary';
 
     Controllers.Sole.downloadDocument(id, type, sessionToken)
-      .then((url) => {
+      .then(url => {
         res.redirect(soleConfig.baseURL+url);
       })
-      .catch((err)=>{
-        res.redirect('/error?sesh=' + sesh);
+      .catch(err => {
+        res.redirect('/error');
       });
   });
 
@@ -627,13 +562,11 @@ router.route('/soles/:id/download-summary')
 // 2. send it to create SOLE with that data
 // ----------------------------------------------------
 router.route('/soles/:id/copy')
-  .get((req,res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req,res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Sole.copy(req.params.id, sessionToken).then(soleID=>{
-      res.redirect('/soles/?sesh=' + sesh);
+    Controllers.Sole.copy(req.params.id, sessionToken).then(soleID => {
+      res.redirect('/soles');
     });
 
   });
@@ -643,25 +576,20 @@ router.route('/soles/:id/copy')
 // ----------------------------------------------------
 router.route('/soles/:id/edit')
 // get the sole with that id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
-      singleSole.sesh = sesh;
+    Controllers.Sole.getByID(req.params.id, sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render('soles-add', singleSole);
-    }).catch((err)=>{
+    }).catch(err => {
       showErrorPage('Failed to get SOLE session from the server', sesh, res);
     });
   })
-  .post((req, res)=> {
+  .post(isAuth, (req, res) => {
     //TODO: make this reusable for copying
 
-    const sesh = req.body.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+    const sessionToken = req.cookies.sessionToken;
 
     //push observations into this array if any are set to 'on'
     let targetObservations = [];
@@ -705,8 +633,8 @@ router.route('/soles/:id/edit')
     let id = req.body.sole_id;
 
     Controllers.Sole.update(id, sole, sessionToken).then(soleID=>{
-      res.redirect('/soles/?sesh='+sesh);
-    }).catch((err)=>{
+      res.redirect('/soles');
+    }).catch(err =>{
       showErrorPage('Could not save SOLE session.', sesh, res);
     });
 
@@ -716,26 +644,22 @@ router.route('/soles/:id/edit')
 //on routes that end in /soles/:sole_id/delete
 router.route('/soles/:id/delete')
 // get the sole with that id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
-      singleSole.sesh = sesh;
+    Controllers.Sole.getByID(req.params.id, sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render('soles-delete', singleSole);
-    }).catch((err)=>{
+    }).catch(err => {
       showErrorPage('Could not get SOLE session from the server. Try again later.', sesh, res);
 
     });
   })
-  .post((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-    Controllers.Sole.delete(req.body.soleID, sessionToken).then(soleID=>{
-      res.redirect('/soles/?sesh='+sesh);
+  .post(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
+
+    Controllers.Sole.delete(req.body.soleID, sessionToken).then(soleID => {
+      res.redirect('/soles');
     });
   });
 
@@ -744,27 +668,22 @@ router.route('/soles/:id/delete')
 // ----------------------------------------------------
 router.route('/soles/:id/reflect')
 // get the sole with that id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Sole.getByID(req.params.id, sessionToken).then((singleSole) => {
-      singleSole.sesh = sesh;
+    Controllers.Sole.getByID(req.params.id, sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render('soles-reflect', singleSole);
-    }).catch((err)=>{
+    }).catch(err => {
       showErrorPage('Coud not get SOLE session from the server.', sesh, res);
     });
   });
 
 router.route('/sole-reflect')
-  .post((req, res)=>{
-    const sesh = req.body.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .post(isAuth, (req, res) =>{
+    const sessionToken = req.cookies.sessionToken;
 
-    var reflection = {
+    const reflection = {
       id: req.body.soleID,
       achieved: req.body.content_objective_achieved, //session.reflection.content_objective.achieved
       achieved_why: req.body.content_objective_achieved_why, //session.reflection.content_objective.notes
@@ -780,9 +699,8 @@ router.route('/sole-reflect')
       notes: req.body.notes //session.reflection.notes
     };
 
-
-    Controllers.Sole.saveReflection(reflection, sessionToken).then(soleID=>{
-      res.redirect('/soles/'+soleID+'?sesh='+sesh);
+    Controllers.Sole.saveReflection(reflection, sessionToken).then(soleID => {
+      res.redirect('/soles/'+soleID);
     });
 
   });
@@ -793,32 +711,29 @@ router.route('/sole-reflect')
 // ----------------------------------------------------
 router.route('/sole-create')
 // view for adding a new sole
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
     const question = req.query.question; //get the ID of desired question from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-    var viewData = {sesh: sesh};
-    viewData.config = soleConfig;
+    viewData = {
+      config: soleConfig,
+      sole: {}
+    };
 
     //if a question is present get it and attach to viewData as part of a SOLE
-    if(question){
+    if (question) {
       Controllers.Question.getByID(question, sessionToken).then((questionData) => {
-        viewData.sole = {question: questionData};
-        res.render('soles-add', viewData);
-      }).catch((err)=>{
+        viewData.sole.question = questionData;
+        res.render('soles-add',viewData);
+      }).catch(err => {
         showErrorPage('Could not load question with id: ' + question, sesh , res);
       });
-    }
-    else {
+    } else {
       res.render('soles-add', viewData);
     }
   })
-  .post((req, res)=>{
-    const sesh = req.body.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .post(isAuth, (req, res) =>{
+    const sessionToken = req.cookies.sessionToken;
 
     //push observations into this array if any are set to 'on'
     let targetObservations = [];
@@ -861,8 +776,8 @@ router.route('/sole-create')
 
 
     Controllers.Sole.add(sole, sessionToken).then(soleID=>{
-      res.redirect('/soles/?sesh='+sesh);
-    }).catch((err)=>{
+      res.redirect('/soles');
+    }).catch(err => {
       showErrorPage('Could not save SOLE session', sesh, res);
     });
 
@@ -870,96 +785,80 @@ router.route('/sole-create')
 
 // on routes that end in /questions
 // ----------------------------------------------------
+//TODO: refactor. this is messy.
 router.route('/questions')
 // get all the soles
-  .get((req, res)=> {
-
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
     if (req.query.q) {
       Controllers.Question.findByText(req.query.q, sessionToken).then((foundQuestions) => {
-        foundQuestions.sesh = sesh;
         foundQuestions.config = soleConfig;
         res.render('questions', foundQuestions);
-      }).catch((err)=>{
+      }).catch(err => {
         showErrorPage('Could not find question by text search.', sesh, res);
       });
     } else if (req.query.tags) {
       Controllers.Question.findByTags(req.query.tags, sessionToken).then((foundQuestions) => {
         //todo probably need to do some processing on tags to convert it from a string to an array of tags
-        foundQuestions.sesh = sesh;
         foundQuestions.config = soleConfig;
         res.render('questions', foundQuestions);
-      }).catch((err)=>{
+      }).catch(err => {
         showErrorPage('Could not find question by tags.', sesh, res);
       });
     } else {
-      viewData = {sesh: sesh};
-      viewData.config = soleConfig;
-      res.render('questions', viewData);
+      res.render('questions', {config:soleConfig});
     }
   });
 
 
 // on routes that end in /questions/mine
 // ----------------------------------------------------
+//TODO: this is messy af. refactor
 router.route('/questions/mine')
-  .get((req,  res)=>{
-    const sesh = req.query.sesh; //get the sesh token string from the query param
+  .get(isAuth, (req,  res) => {
+    const sessionToken = req.cookies.sessionToken;
     const fav = req.query.fav; //optional query parameter to set fav tab as active
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-    var myQuestionsData = {soles: [], questions:[], sesh: sesh, fav: fav};
+    let myQuestionsData = {soles: [], questions:[], fav: fav};
 
-    Controllers.Question.getAll(sessionToken).then((questions)=>{
+    Controllers.Question.getAll(sessionToken).then(questions => {
       myQuestionsData.questions.mine = questions.questions;
 
-      Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions)=>{
+      Controllers.Question.getFavorites(sessionToken).then((favoriteQuestions) =>{
         myQuestionsData.questions.favorites = favoriteQuestions;
-
-        myQuestionsData.sesh = sesh;
         myQuestionsData.config = soleConfig;
         res.render('my-questions', myQuestionsData); //display view with question data
 
-      }).catch((err)=>{
+      }).catch(err => {
         showErrorPage('Could not get your favorited questions.', sesh, res);
 
       });
-    }).catch((err)=>{
+    }).catch(err => {
       showErrorPage('Could not get list of SOLEs.', sesh, res);
     });
   });
 
 //add a question
 router.route('/questions/add')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    const viewData = {sesh: sesh};
-    viewData.config = soleConfig;
-    res.render('questions-add', viewData);
+    res.render('questions-add', {config: soleConfig});
   })
 // TODO: add post route here to save question to DB
-  .post((req, res)=>{
-    const sesh = req.body.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
+  .post(isAuth, (req, res) =>{
+    const sessionToken = req.cookies.sessionToken;
     let tags = req.body.tags.split(',');
 
-    var newQuestion = {
+    const newQuestion = {
       text: req.body.text,
       source: req.body.source,
       tags: tags
     };
     Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, sessionToken).then(questionID=>{
-      res.redirect('/questions/'+questionID+'?sesh='+sesh);
-    }).catch((err)=>{
+      res.redirect('/questions/'+questionID);
+    }).catch( err =>{
       showErrorPage('Could not add question', sesh, res);
     });
 
@@ -969,53 +868,47 @@ router.route('/questions/add')
 // ----------------------------------------------------
 router.route('/questions/:id')
 // get the question data with a given id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
     const favorited = req.query.fav; //is true if question was just favorited
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
 
-    Controllers.Question.getByID(req.params.id, sessionToken).then((questionData) => {
-      questionData.sesh = sesh;
+    Controllers.Question.getByID(req.params.id, sessionToken).then(questionData => {
+
       questionData.favorited = favorited;
       questionData.config = soleConfig;
       questionData.question.favorited = true;
-      Controllers.User.getRoleData(sessionToken).then((roleData)=>{
+      Controllers.User.getRoleData(sessionToken).then(roleData => {
         questionData.roleData = roleData;
         res.render('questions-single', questionData);
       })
-        .catch((err)=>{
+        .catch(err => {
           showErrorPage('Could not get roleData for user.', sesh, res);
         });
-    }).catch((err)=>{
+    }).catch(err => {
       showErrorPage('Could not get SOLE session.', sesh, res);
     });
   });
 
 router.route('/questions/:id/favorite')
 // favorite a question with a given id
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Question.favorite(req.params.id, sessionToken).then((questionData) => {
-      res.redirect('/questions/'+req.params.id+'?fav=true&sesh='+sesh);
-    }).catch((err)=>{
+    Controllers.Question.favorite(req.params.id, sessionToken).then(questionData => {
+      res.redirect('/questions/'+req.params.id+'?fav=true');
+    }).catch(err => {
       showErrorPage('Could not favorite this question.', sesh, res);
     });
   });
 
 router.route('/questions/:id/delete-tag/:rdn')
 // remove a tag from a question
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
     Controllers.Question.deleteTag(req.params.id, req.params.rdn, sessionToken).then((questionData) => {
-      res.redirect('/questions/'+req.params.id+'?sesh='+sesh);
-    }).catch((err)=>{
+      res.redirect('/questions/'+req.params.id);
+    }).catch(err => {
       showErrorPage('Could not delete a tag.', sesh, res);
     });
   });
@@ -1026,46 +919,18 @@ router.route('/questions/:id/delete-tag/:rdn')
 router.route('/dashboard')
 
 // gets data to build a simple dashboard
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    const ringID = req.query.ring; //get the ring ID string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res) : false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    const viewData = {
-      sesh: sesh,
-      config: soleConfig
-    };
+  .get((req, res) => {
+    const sessionToken = req.cookies.sessionToken;
+    const ringID = req.query.ring; //get the ring ID string from the query param //TODO: check if exists
 
     Controllers.Dashboard.getDashboardData(ringID, sessionToken)
-      .then(dashboard=>{
-        viewData.dashboard = dashboard;
-        res.render('dashboard', viewData);
-      }).
-      catch(err => {
-        showErrorPage('Could not get dashboard data', sesh, res);
-      });
-
-
-  });
-
-// routes for question approval
-// ----------------------------------------------------
-router.route('/dashboard/question-approval')
-
-// get all the unapproved questions
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    Controllers.Question.getUnapproved(sessionToken)
-      .then(questions=>{
-        questions.sesh = sesh;
-        questions.config = soleConfig;
-        res.render('dashboard-question-approval', questions);
-      }).catch(err=>{
-        showErrorPage('Could not retrieve unapproved questions', sesh, res);
+      .then(dashboard => {
+        res.render('dashboard', {
+          config: soleConfig,
+          dashboard: dashboard
+        });
+      }).catch(err => {
+        res.redirect('/home');
       });
 
   });
@@ -1073,14 +938,12 @@ router.route('/dashboard/question-approval')
 router.route('/questions/:id/approve')
 
 // approve a single question
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Question.approve(req.params.id, sessionToken).then((questionData) => {
-      res.redirect('/dashboard/question-approval?sesh='+sesh);
-    }).catch((err)=>{
+    Controllers.Question.approve(req.params.id, sessionToken).then(questionData => {
+      res.redirect('/dashboard/question-approval');
+    }).catch(err => {
       showErrorPage('Could not approve a question.', sesh, res);
     });
   });
@@ -1088,67 +951,38 @@ router.route('/questions/:id/approve')
 router.route('/questions/:id/reject')
 
 // reject a single question
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Question.reject(req.params.id, sessionToken).then((questionData) => {
-      res.redirect('/dashboard/question-approval?sesh='+sesh);
-    }).catch((err)=>{
+    Controllers.Question.reject(req.params.id, sessionToken).then(questionData => {
+      res.redirect('/dashboard/question-approval');
+    }).catch(err => {
       showErrorPage('Could not reject a question.', sesh, res);
 
     });
   });
 
-// routes for SOLE approval
-// ----------------------------------------------------
-router.route('/dashboard/sole-approval')
-
-// get all the unapproved SOLEs
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    Controllers.Sole.getUnapproved(sessionToken)
-      .then(soles=>{
-        soles.sesh = sesh;
-        soles.config = soleConfig;
-        res.render('dashboard-sole-approval', soles);
-      }).catch(err=>{
-        showErrorPage('Could not retrieve unapproved soles', sesh, res);
-      });
-
-  });
-
-router.route('/soles/:id/approve')
-
 // approve a single SOLE
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+router.route('/soles/:id/approve')
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Sole.approve(req.params.id, sessionToken).then((soleData) => {
-      res.redirect('/dashboard/sole-approval?sesh='+sesh);
-    }).catch((err)=>{
+    Controllers.Sole.approve(req.params.id, sessionToken).then(soleData => {
+      res.redirect('/dashboard/sole-approval');
+    }).catch(err => {
       showErrorPage('Could not approve a SOLE.', sesh, res);
-
     });
   });
 
 router.route('/soles/:id/reject')
 
 // reject a single SOLE
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    (!sesh || sesh === undefined) ? showErrorPage('Oops, session token missing. Please login.', false, res): false; //if the sesh token doesn't exist in the URL, redirect to /login
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
+  .get(isAuth, (req, res) => {
+    const sessionToken = req.cookies.sessionToken;
 
-    Controllers.Sole.reject(req.params.id, sessionToken).then((soleData) => {
-      res.redirect('/dashboard/sole-approval?sesh='+sesh);
-    }).catch((err)=>{
+    Controllers.Sole.reject(req.params.id, sessionToken).then(soleData => {
+      res.redirect('/dashboard/sole-approval');
+    }).catch(err => {
       showErrorPage('Could not reject a SOLE.', sesh, res);
     });
   });
@@ -1156,15 +990,10 @@ router.route('/soles/:id/reject')
 
 // static route for fail cases (404)
 router.route('/error')
-  .get((req, res)=> {
-    const sesh = req.query.sesh; //get the sesh token string from the query param
-    sessionToken = Controllers.Helper.seshToSessionToken(sesh); //convert sesh to sessionToken string
-
-    // var errorText = 'This is example error text.';
+  .get((req, res) => {
 
     res.render('fail', {
       layout: 'no-sidebar.hbs',
-      sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
       config: soleConfig
     });
   });
@@ -1180,30 +1009,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //custom 404 page
 app.get('*', function(req, res){
-  const sesh = req.query.sesh; //get the sesh token string from the query param
 
-  showErrorPage('Oops, something went wrong. Try logging in again.', sesh, res);
+  showErrorPage('Oops, something went wrong. Try logging in again.', false, res);
 });
 
 /*
     redirects a user to the error page, shows them a little more info about what went wrong
     param:
         * errorMessage - string, short text about what went wrong
-        * sesh - string, the session token
         * res - object from the router
     returns:
         * nothing
  */
-function showErrorPage (errorMessage, sesh, res) {
-  logger.error(errorMessage + ' sesh: ' + sesh);
+function showErrorPage (errorMessage, sesh, res) { //TODO: remove sesh from all calls
   res.render('fail', {
     layout: 'no-sidebar.hbs',
     error: errorMessage,
-    sesh: sesh,//not neccesary and we might not have this, but what the heck let's send it jjuust in case
     config: soleConfig
   });
 }
-
 
 // START THE SERVER
 // =============================================================================

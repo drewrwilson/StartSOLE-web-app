@@ -1,5 +1,5 @@
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
+    <a href="/" class="breadcrumb">Home</a>
     <a class="breadcrumb">My Questions</a>
 </div>
 
@@ -21,7 +21,7 @@
                                 {{#each questions.mine}}
                                     <div class="card blue lighten-1 grid-item masonry-card">
                                         <div class="card-content center-align">
-                                            <a href="/questions/{{id}}?sesh={{../sesh}}">
+                                            <a href="/questions/{{id}}">
                                                 <div class="card-title white-text">{{text}}</div>
                                             </a>
                                         </div>
@@ -32,7 +32,7 @@
                             <div class="row"></div>
                             <div class="row center-align">
                                 <p>No questions yet!</p>
-                                <a href="/questions/add?sesh={{sesh}}" class="waves-effect waves-light btn">Add A Question</a>
+                                <a href="/questions/add" class="waves-effect waves-light btn">Add A Question</a>
                             </div>
                         {{/if}}
                     </div>
@@ -43,7 +43,7 @@
                                 {{#each questions.favorites}}
                                     <div class="card blue lighten-1 grid-item masonry-card">
                                         <div class="card-content center-align">
-                                            <a href="/questions/{{id}}?sesh={{../sesh}}">
+                                            <a href="/questions/{{id}}">
                                                 <div class="card-title white-text">{{text}}</div>
                                             </a>
                                         </div>
@@ -54,7 +54,7 @@
                                 <div class="row"></div>
                                 <div class="row center-align">
                                     <p>Nothing here yet!</p>
-                                    <a href="/questions?sesh={{sesh}}" class="waves-effect waves-light btn">Explore Questions</a>
+                                    <a href="/questions" class="waves-effect waves-light btn">Explore Questions</a>
                                 </div>
                             {{/if}}
                     </div>

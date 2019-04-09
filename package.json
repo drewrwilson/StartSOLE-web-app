@@ -20,9 +20,11 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "chart.js": "^2.7.2",
+    "cookie-parser": "^1.4.4",
     "dropzone": "^5.4.0",
     "express": "^4.16.3",
     "express-hbs": "^1.0.4",
+    "express-session": "^1.15.6",
     "masonry-layout": "^4.2.1",
     "materialize-css": "^1.0.0-rc.1",
     "moment": "^2.24.0",

@@ -5,8 +5,8 @@
 </style>
 
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
-    <a class="breadcrumb" href="/admin?sesh={{sesh}}">Admin</a>
+    <a href="/" class="breadcrumb">Home</a>
+    <a class="breadcrumb" href="/admin">Admin</a>
     <a class="breadcrumb">Approve/Reject SOLEs</a>
 </div>
 
@@ -67,7 +67,7 @@
                 </table>
             </div>
             <div class="card-action">
-                <!--<a href="/admin/browse-soles?sesh={{../sesh}}">Browse All SOLEs</a>-->
+
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@
 <!--hidden form-->
 <div style="display:none">
     <form method="post" action="/pending-soles" id="form-approve-reject">
-        <input type="hidden" id="sesh" name="sesh" value="{{sesh}}">
+
         <input type="hidden" id="soleId" name="soleId" value="none">
         <input type="hidden" id="action" name="action" value="none">
         <input type="hidden" id="comment" name="comment" value="none">

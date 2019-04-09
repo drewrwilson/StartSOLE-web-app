@@ -21,29 +21,27 @@ Parse.serverURL = soleConfig.serverUrl;
 */
 function registerNewUser (first_name, last_name, email, password, refer) {
   var sessionToken = '';
-  var sesh = '';
 
   return Parse.Cloud.run("user.add", {
     name: first_name + " " + last_name,
     email: email,
     pw: password
-  }).then(_ =>{
-    return Parse.User.logIn(email, password).then(_ => {
+  }).then(function() {
+    return Parse.User.logIn(email, password).then(function() {
       var currentUser = Parse.User.current();
       sessionToken = currentUser.getSessionToken();
-      sesh = sessionToken.slice(2);
-    }).then(_ => {
+      document.cookie = "sessionToken="+sessionToken; //save the sessionToken in a cookie
+    }).then(function() {
       return setPlatform();
-    }).then(_ => {
+    }).then(function() {
       return Parse.Cloud.run("webapp.updateEmail", {email: email, session: sessionToken
-      }).then(_ => {
+      }).then(function() {
         if(!refer) {
           refer = 'no-referral';
         }
-        return Parse.Cloud.run("webapp.saveReferral", {referral: refer, session: sessionToken
-        }).then(_ => {
-          console.log('sesh ', sesh);
-          return Parse.Promise.as(sesh);
+        return Parse.Cloud.run("webapp.saveReferral", {
+          referral: refer,
+          session: sessionToken
         });
     })
   });

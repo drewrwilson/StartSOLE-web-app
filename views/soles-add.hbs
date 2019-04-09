@@ -1,6 +1,6 @@
 <div class="breadcrumb-wrapper">
-    <a href="/?sesh={{sesh}}" class="breadcrumb">Home</a>
-    <a href="/soles?sesh={{sesh}}" class="breadcrumb">My SOLEs</a>
+    <a href="/" class="breadcrumb">Home</a>
+    <a href="/soles" class="breadcrumb">My SOLEs</a>
     <a class="truncate truncate-question breadcrumb">
         {{#if sole}}
             {{sole.question.question.text}}
@@ -16,7 +16,6 @@
             <form id="soles-add-form"
                   action="{{#if sole.id}}/soles/{{sole.id}}/edit{{else}}/sole-create{{/if}}"
                   method="post">
-              <input type="hidden" name="sesh" value="{{sesh}}">
               <input type="hidden" name="sole_id" value="{{sole.id}}">
               <div class="row" >
 

@@ -33,6 +33,7 @@ hbs.registerHelper('ifEquals',
   }
 );
 
+
 hbs.registerHelper('select', function(selected, options) {
   return options.fn(this).replace(
     new RegExp(' value=\"' + selected + '\"'),
@@ -105,7 +106,7 @@ function setLanguage (req, res, next) {
     next();
   } else {
     Controllers.User.getMyRings(req.sessionToken).then(rings => {
-      if (rings && rings.filter(ring => ring.name === 'Colombia')) {
+      if (rings && rings.filter(ring => ring.name === 'Colombia') && !rings.filter(ring => ring.name === 'SOLE Team')) {
         req.language = 'es'; //this is the name of the directory where the language views are
         next();
       } else {

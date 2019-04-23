@@ -1,0 +1,70 @@
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Inicio</a>
+    <a class="breadcrumb">Mis SOLEs</a>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s4">
+                            <a class="active" href="#planned">Planeada{{#if planned}} ({{planned.length}}){{/if}}</a>
+                        </li>
+                        <li class="tab col s4 {{#unless reflect}}disabled{{/unless}}">
+                            <a href="#reflect" {{#unless reflect}}
+                               onclick="M.toast({
+                               html: 'No SOLEs awaiting reflection',
+                               displayLength: 3000
+                               })"
+                            {{/unless}}>
+                                Reflexiona{{#if reflect}} ({{reflect.length}}){{/if}}
+                            </a>
+                        </li>
+                        <li class="tab col s4 {{#unless completed}}disabled{{/unless}}">
+                            <a href="#completed" {{#unless completed}}
+                               onclick="M.toast({
+                               html: 'No SOLEs Completado... yet',
+                               displayLength: 3000
+                               })"
+                            {{/unless}}>
+                                Completado{{#if completed}} ({{completed.length}}){{/if}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="planned" class="col s12">
+                    {{#if planned}}
+                        {{#each planned}}
+                            {{> sole-card sesh=../sesh}}
+                        {{/each}}
+                    {{else}}
+                        <br><br>
+                        <div class="row">
+                            <div class="col s12 offset-m3 m6">
+                                <div class="card-panel">
+                                    <div class="row center-align">
+                                        <img class="hide-on-small-only" src="/images/logos/logo.svg">
+                                        <h5 style="margin-bottom: 1em;">Empecemos</h5>
+                                        <a class="waves-effect waves-light btn-large" href="/sole-create?sesh={{sesh}}">Planea una sesión</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{/if}}
+                </div>
+                <div id="reflect" class="col s12">
+                    {{#each reflect}}
+                        {{> sole-card sesh=../sesh}}
+                    {{/each}}
+                </div>
+                <div id="completed" class="col s12">
+                    {{#each completed}}
+                        {{> sole-card sesh=../sesh}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

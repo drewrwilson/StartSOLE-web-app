@@ -921,7 +921,7 @@ router.route('/soles/:id/reject')
 // static route for fail cases (404)
 router.route('/error')
   .get(setLanguage, (req, res) => {
-    res.render(req.language + '/fail', {
+    res.render('/fail', {
       layout: 'no-sidebar.hbs',
       config: soleConfig
     });

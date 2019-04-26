@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+		  <div class="row center-align">
+              <img class="responsive-img" src="images/404.jpg" alt="Error!">
+		  </div>
+      {{#if error}}
+      <div class="row center-align">
+        <p style="color:red;">
+          <strong>Error:</strong>  {{error}}
+        </p>
+      </div>
+      {{/if}}
+
+                <div class="row center-align">
+                    <a class="red waves-effect waves-light btn" href="/?sesh={{sesh}}">
+                        Llevame al inicio
+                    </a>
+                </div>
+            <div class="row center-align">
+                <a class="waves-effect waves-light btn" href="mailto:support@startsole.org"><i class="material-icons
+                right">mail</i>Contáctanos</a>
+            </div>
+        </div>
+    </div>
+</div>

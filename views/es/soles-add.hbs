@@ -1,0 +1,448 @@
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Inicio</a>
+    <a href="/soles?sesh={{sesh}}" class="breadcrumb">Mis SOLEs</a>
+    <a class="truncate truncate-question breadcrumb">
+        {{#if sole}}
+            {{sole.question.question.text}}
+        {{else}}
+            Create
+        {{/if}}
+    </a>
+</div> 
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+            <form id="soles-add-form"
+                  action="{{#if sole.id}}/soles/{{sole.id}}/edit{{else}}/sole-create{{/if}}"
+                  method="post">
+              <input type="hidden" name="sesh" value="{{sesh}}">
+              <input type="hidden" name="sole_id" value="{{sole.id}}">
+              <div class="row" >
+
+
+                <!--question-->
+                <div class="input-field col s12 m10 offset-m1">
+                    <input id="question"
+                           name="question"
+                           type="text"
+                           class="validate"
+                           required
+                           value="{{sole.question.question.text}}">
+                    <label for="question">What is your big question?</label>
+                </div>
+                <!--planned date-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">today</i>
+                    <input id="planned_date"
+                           name="planned_date"
+                           type="text"
+                           class="datepicker"
+                           required
+                           value="{{sole.planned_date.dateString}}">
+                    <label for="planned_date">What is the planned date?</label>
+                    <span class="helper-text"></span>
+                </div>
+                <!--planned time-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">access_time</i>
+                    <input id="planned_time"
+                           name="planned_time"
+                           type="text"
+                           class="timepicker"
+                           required
+                           value="{{sole.planned_date.timeString}}">
+                    <label for="planned_time">What is the planned time?</label>
+                </div>
+                <!--duration-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text tooltipped" data-position="bottom"
+                       data-tooltip="45-90 minutes recommended">av_timer</i>
+                    <input id="duration"
+                           name="planned_duration"
+                           type="number"
+                           min="30"
+                           required
+                           class="validate"
+                           value="{{sole.planned_duration}}">
+                    <label for="duration">How many minutes<span class="hide-on-large-only"> is your class</span>?</label>
+                    <span id="duration_helper_text" class="red-text helper-text" data-error="SOLEs should be at least 30 minutes"></span>
+                </div>
+                <!--grade-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">class</i>
+                    <select id="grade" name="grade" required>
+                        {{#select sole.grade}}
+                        <option value="" disabled selected>Choose a grade</option>
+                        <option value="edu.pre-k">Preschool</option>
+                        <option value="edu.k">Kindergarten</option>
+                        <option value="edu.1">First Grade</option>
+                        <option value="edu.2">Second Grade</option>
+                        <option value="edu.3">Third Grade</option>
+                        <option value="edu.4">Fourth Grade</option>
+                        <option value="edu.5">Fifth Grade</option>
+                        <option value="edu.6">Sixth Grade</option>
+                        <option value="edu.7">Seventh Grade</option>
+                        <option value="edu.8">Eighth Grade</option>
+                        <option value="edu.9">Ninth Grade</option>
+                        <option value="edu.10">Tenth Grade</option>
+                        <option value="edu.11">Eleventh Grade</option>
+                        <option value="edu.12">Twelfth Grade</option>
+                        <option value="edu.adulteducation">Adult Education</option>
+                        {{/select}}
+                    </select>
+                    <label>What grade is your class?</label>
+                </div>
+                <!--subject-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">library_books</i>
+                    <select id="subject" name="subject" required>
+                        {{#select sole.subject}}
+                        <option value="" disabled selected>Choose a subject</option>
+                        <option value="top.careereducation">Career Education</option>
+                        <option value="top.engineering">Engineering</option>
+                        <option value="top.english">English</option>
+                        <option value="top.englishlanguagedevelopment">English Language Development</option>
+                        <option value="top.financialliteracy">Financial Literacy</option>
+                        <option value="top.foreignlanguage">World Languages</option>
+                        <option value="top.health">Health</option>
+                        <option value="top.libmedia-infolit">Library Media / Information Literacy</option>
+                        <option value="top.lifeskills">Life Skills</option>
+                        <option value="top.math">Math</option>
+                        <option value="top.physicaleducation">Physical Education</option>
+                        <option value="top.science">Science</option>
+                        <option value="top.socialstudies">Social Studies</option>
+                        <option value="top.thearts">The Arts</option>
+                        {{/select}}
+                    </select>
+                    <label>What subject is your class?</label>
+                </div>
+                <!--class label-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">label</i>
+                    <input id="class_label"
+                           name="class_label"
+                           type="text"
+                           value="{{sole.tag}}">
+                    <label for="class_label">Class Label (optional)</label>
+                </div>
+                <!--number of students-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">school</i>
+                    <input id="num_students"
+                           name="num_students"
+                           type="number"
+                           min="4"
+                           required
+                           class="validate"
+                           value="{{sole.num_students}}">
+                    <label for="num_students">How many students?</label>
+                    <span class="helper-text" data-error="SOLEs need at least 4 students"></span>
+                </div>
+                <!--number of devices-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">devices</i>
+                    <input id="num_devices"
+                           name="num_devices"
+                           type="number"
+                           min="2"
+                           required
+                           class="validate"
+                           value="{{sole.num_devices}}">
+                    <label for="num_devices">How many <span class="hide-on-large-only">online </span>devices?</label>
+                    <span class="helper-text" data-error="SOLEs need at least 2 devices"></span>
+                </div>
+                <!--number of groups-->
+                <div class="input-field col s12 m10 offset-m1 l4">
+                    <i class="material-icons prefix grey-text">group</i>
+                    <input id="num_groups"
+                           name="num_groups"
+                           type="number"
+                           min="2"
+                           required
+                           class="validate"
+                           value="{{sole.num_groups}}">
+                    <label for="num_groups">How many <span class="hide-on-large-only">student </span>groups?</label>
+                    <span class="helper-text" data-error="SOLEs need at least 2 groups"></span>
+                </div>
+                <!--recommended settings-->
+                <div id="recommended_row" class="hide row">
+                    <div class="col s12 m10 offset-m1 l8 offset-l2">
+                        <div class="card">
+                            <div class="card-content lp-stats">
+                                <span class="card-title center-align">Recommended Timing</span>
+                                <div class="row"></div>
+
+                                <!--<div class="row">-->
+                                    <!--<div class="col s12">-->
+                                        <!--<div id="test-slider"></div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                                <div class="row">
+                                    <div class="col m4 right-align hide-on-small-only">
+                                        <img src="images/logos/question.png" alt="question">
+                                    </div>
+                                    <div class="col s12 m8">
+                                        <div class="input-field inline">
+                                            <input id="recommended_question"
+                                                   name="time_question"
+                                                   value="5"
+                                                   type="number"
+                                                   max="10"
+                                                   class="validate recommended-values">
+                                            <span class="helper-text" data-error="no no"></span>
+                                        </div> minutes to introduce the question.
+                                    </div>
+                                    <div class="col m4 right-align hide-on-small-only">
+                                        <img src="images/logos/investigate.png" alt="question">
+                                    </div>
+                                    <div class="col s12 m8">
+                                        <div class="input-field inline">
+                                            <input id="recommended_investigation"
+                                                   name="time_investigate"
+                                                   value="45"
+                                                   type="number"
+                                                   class="validate recommended-values">
+                                            <span class="helper-text" data-error="wrong"></span>
+                                        </div> minutes to for the investigation.
+                                    </div>
+                                    <div class="col m4 right-align hide-on-small-only">
+                                        <img src="images/logos/review.png" alt="question">
+                                    </div>
+                                    <div class="col s12 m8">
+                                        <div class="input-field inline">
+                                            <input id="recommended_review"
+                                                   name="time_review"
+                                                   value="45"
+                                                   type="number"
+                                                   class="validate recommended-values">
+                                            <span class="helper-text"></span>
+                                        </div> minutes for the review phase.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--content objective-->
+                <div class="input-field col s12 m10 offset-m1">
+                    <select id="grade" name="content_objective" required>
+                        {{#select sole.content_objective.value}}
+                        <option value="" disabled selected>Choose a content knowledge objective</option>
+                        <option value="objective.content.standard">Introducing students to a new concept</option>
+                        <option value="objective.content.prior">Helping students connect prior knowledge to a current topic</option>
+                        <option value="objective.content.explore">Allowing students to discover and explore interests related to a topic</option>
+                        <option value="objective.content.deepen">Helping students deepen understanding of a current topic</option>
+                        <option value="objective.content.review">Reviewing knowledge from a current unit</option>
+                        <option value="objective.content.assess">Assessing student understanding of a current topic</option>
+                        {{/select}}
+                    </select>
+                    <label>Which of these objectives best describes your goal for this SOLE?</label>
+                </div>
+                <div class="col s12 m6">
+                        <p>How will you manage this SOLE?</p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="grouporganization" {{#if sole.grouporganization}}checked{{/if}}>
+                                <span>Los participantes formarán sus propios grupos.</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="groupsharing" {{#if sole.groupsharing}}checked{{/if}}>
+                                <span>Se permite compartir entre grupos mientras se investiga.</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input id="exit_ticket" type="checkbox" name="self_assessment" {{#if sole.self_assessment}}checked{{/if}}>
+                                <span>Participantes completarán un boleto de salida después del SOLE</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" name="useapp"  />
+                                <span>I will use the StartSOLE app to help
+                                facilitate our work</span>
+                            </label>
+                        </p>
+                        <p>
+                            <a href="http://www.startsole.org/app-home.html" target="_blank">Descarga la app de StartSOLE (en inglés)</a>
+                        </p>
+                    </div>
+                <!--materials-->
+                <div class="col s12 m6">
+                    <p>What materials will be available for students to use?</p>
+                    {{#if sole.materials}}
+                    {{#each sole.materials}}
+                        <p>
+                            <label>
+                                <input type="checkbox" name="{{this.nameText}}" {{#if this.checked}}checked{{/if}}/>
+                                <span>{{this.name}}</span>
+                            </label>
+                        </p>
+                    {{/each}}
+                    {{else}}
+                    <p>
+                       <label><input type="checkbox" name="writing_tools">
+                         <span>Writing Tools</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="poster_paper">
+                           <span>Papel para carteleras</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="physical">
+                           <span>Recursos físicos (libros, contenido de apoyo)</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="sole_organizer">
+                           <span>Organizador SOLE para Participantes</span>
+                       </label>
+                     </p>
+                     <p>
+                       <label>
+                         <input type="checkbox" name="other" >
+                         <span>Otro</span>
+                       </label>
+                     </p>
+
+                    {{/if}}
+                </div>
+                <!--materials-->
+                <div class="col s12">
+                    <p class="no-bottom-margin">Pick up to 3 student behaviors you would like to focus on during this SOLE</p>
+                    <div class="row">
+                    {{#if sole.target_observations}}
+
+                    {{#each sole.target_observations}}
+                        <div class="col s12 m6 target-observation-col">
+
+                            <label>
+                                <input type="checkbox" name="{{this.nameText}}" {{#if this.checked}}checked{{/if}}/>
+                                <span>{{this.name}}</span>
+                            </label>
+
+                        </div>
+                    {{/each}}
+                    {{else}}
+                    <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="collaborating">
+                               <span>Colaboran</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="technology">
+                               <span>Using technology well</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="respectful" >
+                               <span>Diálogo y debate respetuoso</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="desire">
+                               <span>Deseo de aprender contenido</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="vocabulary">
+                               <span>Appropriate use of vocabulary</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="help_learn">
+                               <span>Participantes enseñando a participantes</span>
+                           </label>
+
+                       </div>
+                       <div class="col s12 m6 target-observation-col">
+
+                           <label>
+                               <input type="checkbox" name="help_technology">
+                               <span>Ayudando a sus compañeros con la tecnología.</span>
+                           </label>
+
+                       </div>
+                    {{/if}}
+                    </div>
+                </div>
+
+                </div>
+
+                <div class="row">
+                    <!--<input type="submit" value="Save" class="waves-effect waves-light btn">-->
+                    <button type="submit" class="waves-effect waves-light btn">
+                        {{#if sole.id}}Update
+                        {{else}}Save
+                        {{/if}}
+                    </button>
+                </div>
+
+
+              </form>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+var targetObservationCheckedCount = 0;
+
+$("select[required]").css({display: "block", height: 1, padding: 0, width: 1, position: 'absolute', border:'none'});
+$('input[required]').on('invalid', function(e){
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $(":invalid:nth-child(1)").offset().top-$(":invalid:nth-child(1)").height()-25
+    }, 1000);
+
+});
+
+
+
+function updateCheckboxes () {
+  targetObservationCheckedCount = $('.target-observation-col input:checked').length
+
+  if(targetObservationCheckedCount >= 3) {
+  $('.target-observation-col input:not(:checked)').attr('disabled', true);
+  } else {
+   $('.target-observation-col input').attr('disabled', false);
+  }
+}
+$('document').ready(updateCheckboxes());
+$('.target-observation-col input').change(function () {
+  updateCheckboxes();
+});
+
+$('#soles-add-form').submit(function (e) {
+  if(targetObservationCheckedCount < 1) {
+    e.preventDefault();
+    M.toast({html: 'Please select at least one student behavior to focus on'})
+  }
+})
+</script>

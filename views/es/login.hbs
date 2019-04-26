@@ -19,7 +19,7 @@
                     <div class="input-field col s12">
                         <i class="material-icons prefix">email</i>
                         <input id="email" type="email" name="email" class="validate" value="{{email}}">
-                        <label for="email">Email</label>
+                        <label for="email">Correo electrónico</label>
                         <span class="helper-text" data-error="invalid email"></span>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <div class="input-field col s12">
                         <i class="material-icons prefix">security</i>
                         <input id="password" name="password" type="password" class="validate">
-                        <label for="password">Password</label>
+                        <label for="password">Constraseña</label>
                     </div>
                 </div>
                 <div class="row">
@@ -37,17 +37,17 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s12 center">
-                        <button type="submit" class="signin-db btn red waves-effect waves-light" id="login" onclick="function (e){e.preventDefault()}">Log In</button>
+                        <button type="submit" class="signin-db btn red waves-effect waves-light" id="login" onclick="function (e){e.preventDefault()}">Ingresar</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="center col s12">
-                        Need an account? <a href="/register">Sign up here.</a>
+                        Need an account? <a href="/register">Regístrate aquí</a>
                     </div>
                     <div class="center col s12">
                         <br>
                         <a href="#password-reset-modal" class="modal-trigger">
-                            Help! I forgot my password.
+                            ¡Ayuda! Olvidé mi contraseña
                         </a>
                     </div>
                 </div>
@@ -58,8 +58,8 @@
 
 <div class="modal" id="password-reset-modal">
     <div class="modal-content">
-        <h4>Reset Password</h4>
-        <p>Enter your email below and we'll send you a link to reset your password.</p>
+        <h4>Reestablecer Contraseña</h4>
+        <p>Ingresa tu correo electrónico abajo y te enviarémos un enlance para reestablecer tu contraseña.</p>
         <div class="row">
             <div class="input-field col s12 m6 offset-m3">
                 <input type="email" class="validate" id="password-reset-email">
@@ -71,10 +71,10 @@
     </div>
     <div class="modal-footer">
         <a class="modal-action modal-close waves-effect waves-red btn-flat">
-            Cancel
+            Cancelar
         </a>
         <a class="modal-action modal-close waves-effect waves-green btn-flat" onclick="resetPassword()">
-            Send Reset Email
+            Enviar Correo de reestablecimiento
         </a>
     </div>
 </div>
@@ -88,7 +88,7 @@
 <div id="app-download-modal" class="modal bottom-sheet">
     <div class="modal-content">
         <div class="row center-align">
-            <h5>Try Our App!</h5>
+            <h5>¡Prueba Nuestra App!</h5>
         </div>
 
         <!--<ul>-->
@@ -104,6 +104,6 @@
 
     </div>
     <div class="modal-footer">
-        <a class="modal-close waves-effect waves-green btn-flat">No Thanks</a>
+        <a class="modal-close waves-effect waves-green btn-flat">No Gracias</a>
     </div>
 </div>

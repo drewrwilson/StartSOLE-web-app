@@ -1,0 +1,84 @@
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Inicio</a>
+    <a href="/soles?sesh={{sesh}}" class="breadcrumb">Mis SOLEs</a>
+    <a class="truncate truncate-question breadcrumb">{{sole.question.question.text}}</a>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+            {{#if sole}}
+                <div class="row">
+                    <div class="col s12">
+                        <h3>{{sole.question.question.text}}</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    {{#each sole.observations}}
+                        {{#if image.full}}
+                        <div class="col s12 m4 l3 xl2">
+                            <div class="materialbox-preview thumbnail">
+                                <img class="materialboxed responsive-img "
+                                     src="{{ image.full }}"
+                                     data-caption="{{ image.notes }}"
+                                >
+                            </div>
+                        </div>
+                        {{/if}}
+                    {{/each}}
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6">
+                        <p>Fecha: {{sole.planned_date.dateString}}</p>
+                        <p>Asistencia: {{sole.num_students}} participantes ({{sole.num_groups}} grupos)</p>
+                        <p>Notas: {{sole.reflection.notes}}</p>
+                    </div>
+                    <div class="col s12 m6">
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.grouporganization}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Participantes formaron sus propios grupos</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.groupsharing}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Participantes compartieron con otros grupos</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.self_assessment}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Participantes completaron una auto-evaluación</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.reflection.ground_rules}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>Participantes siguieron las reglas de juego</span>
+                            </label>
+                        </p>
+                    </div>
+
+                </div>
+
+            {{else}}
+                <h2>No se encontró ningún SOLE con ese ID</h2>
+            {{/if}}
+        </div>
+    </div>
+</div>

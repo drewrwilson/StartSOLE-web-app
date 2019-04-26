@@ -6,36 +6,18 @@
         <div class="card">
             <div class="card-content center-align">
                 <img class="hide-on-small-only" src="/images/logos/logo.svg">
-                <h5 style="margin-bottom: 1em;">Let's get started</h5>
-                <a class="waves-effect waves-light btn-large" href="/sole-create">Plan A Lesson</a>
+                <h5 style="margin-bottom: 1em;">Empiecemos</h5>
+                <a class="waves-effect waves-light btn-large" href="/sole-create">Planea una sesión</a>
                 <br><br>
             </div>
             <div class="card-action center-align">
-                <a href="/soles">My SOLEs</a>
-                <a href="/questions">Explore Questions</a>
+                <a href="/soles">Mis SOLEs</a>
+                <a href="/questions">Explora Preguntas</a>
                 <!--{{#if roleData.isAdmin }}-->
                     <a class="red-text" href="/admin">Admin</a>
                 <!--{{/if}}-->
              </div>
         </div>
-        <!--{{#if roleData.isAdmin }}-->
-        <!--<div class="card">-->
-            <!--<div class="card-content center-align">-->
-                <!--<h5 style="margin-bottom: 1em;">Admin Options</h5>-->
-
-                <!--<a class="waves-effect waves-light btn-large" href="/pending-soles">Review Pending Soles</a>-->
-                <!--<br>-->
-                <!--or check out the full <a class="" href="/admin">admin dashboard</a>-->
-
-                <!--<br><br>-->
-            <!--</div>-->
-            <!--<div class="card-action center-align">-->
-                <!--<a href="/admin/browse-soles">Browse All Soles</a>-->
-                <!--<a href="/admin/browse-users">Browse Users</a>-->
-                <!--<a href="/admin/events">Conferences</a>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--{{/if}}-->
 
     </div>
 
@@ -49,7 +31,7 @@
                             <div class="col s12 m6">
                                 <i class="medium material-icons">supervisor_account</i>
                                 <br>
-                                <p class="flow-text">{{membershipCount}} Educators</p>
+                                <p class="flow-text">{{membershipCount}} Educadores</p>
                             </div>
                             <div class="col s12 m6 center-align">
                                 <i class="medium material-icons">assessment</i>
@@ -60,10 +42,14 @@
                     </div>
                     <div class="card-action center-align">
                         <!--<a href="/dashboard/question-approval">Question Approval</a>-->
-                        <a href="/dashboard?ring={{id}}">Dashboard</a>
+                        <a href="/dashboard&ring={{id}}">Tablero</a>
                     </div>
                 </div>
             </div>
         {{/each}}
     {{/if}}
 </div>
+
+<script>
+    document.cookie = 'language='+'{{config.language}}'; //save the language in the cookie
+</script>

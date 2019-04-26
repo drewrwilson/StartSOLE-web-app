@@ -1,0 +1,49 @@
+<div class="breadcrumb-wrapper">
+    <a href="/?sesh={{sesh}}" class="breadcrumb">Inicio</a>
+    <a href="/questions?sesh={{sesh}}" class="breadcrumb">Preguntas</a>
+    <a class="breadcrumb">Agrega Nueva</a>
+</div>
+
+<input type="hidden" name="showAll" value="true">
+<div class="row" style="padding-top:50px;">
+    <div class="col s12 offset-m1 m10 offset-l3 l6">
+        <div class="card-panel">
+            <div class="valign-wrapper">
+                <div class="valign center" style="width: 100%;">
+                    <img class="circle z-depth-1 white question-add-header-img" src="/images/logos/question-square.png">
+                </div>
+            </div>
+            <div class="row">
+                <form action="/questions/add?sesh={{sesh}}" method="post">
+                    <div class="row">
+                        <div class="input-field col s12">
+                          <input type="hidden" name="sesh" value="{{sesh}}">
+                            <textarea id="text" name="text" class="materialize-textarea" required
+                                      placeholder="Enter your question here"></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" name="source" id="source" value="https://startsole.org">
+                    {{!-- <standard-picker tags="Submit.tags"></standard-picker> --}}
+                    {{>standard-picker}}
+                    <input type="hidden" id="tags" name="tags" value="">
+                    <div class="row">
+                        <div class="input-field col s12 center">
+                            <button class="btn waves-effect waves-light">
+                                Enviar Pregunta
+                            </button>
+                        </div>
+                    </div>
+                    <div id="error" class="red-text">{{ errorText }}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+{{>question-templates}}
+
+{{> sole-config-frontend-js}}
+<script type="text/javascript" src="/js/questions.js"></script>

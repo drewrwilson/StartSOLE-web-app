@@ -1,0 +1,136 @@
+
+<div class="row" style="padding-top:50px;">
+    <div class="col s12 m8 offset-m2 l6 offset-l3">
+        <div class="card-panel">
+
+            <div class="row center-align">
+                <video width="165" height="165" autoplay muted>
+                    <source src="/images/logos/animated-logo-small.webm" type="video/webm">
+                    <source src="/images/logos/animated-logo-small.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="row">
+                <form id="initial-registration-form" class="col s12" action="/register" method="post">
+
+
+                        <div class="input-field col s12 m6">
+                            <input id="first_name" name="first_name" type="text" class="signup-text-field validate">
+                            <label for="first_name" class="signup-label">Nombre</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input id="last_name" name="last_name" type="text" class="signup-text-field validate">
+                            <label for="last_name" class="signup-label">Apellido</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <input id="email" type="email" class="signup-text-field validate">
+                            <label for="email" class="signup-label">Correo Electrónico</label>
+                        </div>
+
+
+                        <div class="input-field col s12">
+                            <input id="password" name="password" type="password" class="signup-text-field validate">
+                            <label for="password" class="signup-label">Contraseña</label>
+                        </div>
+                        <!--<div class="input-field col s6">-->
+                        <!--<input id="password_confirmation" name="password_confirmation" type="password" class="signup-text-field validate" ng-model="Register.newUser.password_confirmation">-->
+                        <!--<label for="password_confirmation" class="signup-label">Confirm Password</label>-->
+                        <!--</div>-->
+
+                    <div class="row no-bottom">
+                        <div class="col s12">
+                            <div class="red-text" id="error"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="red-text" id="error"></div>
+                        </div>
+                        <div class="input-field col s12 center">
+                            <button class="signin-db btn waves-effect red waves-light" id="login">
+                                <i class="mdi-login left"></i>Regístrate
+                            </button>
+                        </div>
+
+                        <div class="input-field col s12 center">
+                            {{!-- <p class="center">O regístrate con tu cuenta de Google o Facebook.</p><br> --}}
+                            <div class="col s12 l6 center">
+                              <img src="/images/facebook-login-button.png" id="fb-login" onmouseover="this.src='/images/facebook-login-button-hover.png'" onmouseout="this.src='/images/facebook-login-button.png'"  />
+                            </div>
+                            <div class="col s12 l6 center">
+                              <div class="g-signin2"
+                                   data-onsuccess="onGoogleSignIn"
+                                   data-theme="dark"
+                                   data-width="200"
+                                   data-height="50"
+                                   data-longtitle="true"></div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="input-field col s12 center">
+                            Already have an account?  <a href="login">Usuario</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr>
+                    </div>
+
+
+                </form>
+                <div class="row">
+                    <div class="col s12 center-align">
+                        <span style="font-size:0.7rem;">Al crear una cuenta e iniciar sesión, acepto los <a href="/terms-of-use" target="_blank">Términos de Uso</a> y la <a href="/privacy" target="_blank">Política de Privacidad</a>.</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<form id="final-registration-form" class="" action="/complete-profile" method="get">
+    <input type="hidden" name="sesh" id="sesh" value="">
+    <input type="hidden" name="firstname" id="firstname" value="">
+    <input type="hidden" name="lastname" id="lastname" value="">
+</form>
+
+<form id="login-with-session" action="/" method="get">
+  <input type="hidden" name="sesh" id="sesh2" value="">
+  <input type="hidden" name="redirectURL" id="redirectURL" value="{{redirectURL}}">
+</form>
+
+<script id="facebook-jssdk" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10"></script>
+<meta name="google-signin-client_id" content="824307770319-v35co4sbfui42q2a93hcccvk68hfpam7.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script type="text/javascript" src="/js/login.js"></script>
+<script type="text/javascript" src="/js/register.js"></script>
+
+<script type="text/javascript">
+$("#initial-registration-form").submit(function (event) {
+
+  event.preventDefault();
+
+  var first_name  = $('#first_name').val(),
+      last_name   = $('#last_name').val(),
+      email       = $('#email').val().toLowerCase(),
+      password    = $('#password').val(),
+      urlParams = new URLSearchParams(window.location.search),
+      refer = urlParams.get('r');
+
+  registerNewUser (first_name, last_name, email, password, refer).then((sesh)=>{
+    console.log('post-register')
+    $('#sesh').val(sesh);
+    $('#firstname').val(first_name);
+    $('#lastname').val(last_name);
+    $('#final-registration-form').submit();
+  }).catch(err=>{
+    //if there's an error signing up, eg if a user already exists with that email address, then show an error to the user
+    $('#error').html(err.message.message)
+  })
+
+});
+
+</script>

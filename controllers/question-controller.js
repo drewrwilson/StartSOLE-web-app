@@ -8,12 +8,10 @@ Parse.serverURL = soleConfig.serverUrl;
 class Question {
   //returns data for a question with a given ID
   static getByID (id, sessionToken) {
-    const result = Parse.Cloud.run('webapp.getQuestionByID', {
+    return Parse.Cloud.run('webapp.getQuestionByID', {
       id: id,
       sessionToken: sessionToken
     });
-    console.log(result);
-    return result;
   };
 
   //returns a user's fav'ed questions

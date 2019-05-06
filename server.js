@@ -33,7 +33,6 @@ hbs.registerHelper('ifEquals',
   }
 );
 
-
 hbs.registerHelper('select', function(selected, options) {
   return options.fn(this).replace(
     new RegExp(' value=\"' + selected + '\"'),
@@ -116,9 +115,62 @@ function setLanguage (req, res, next) {
       }
     });
   }
+}
 
+/**
+ * logs an error to the backend and sends a human-readable message to a slack channel
+ * @param err error object
+ * @param req request object from express
+ * @param res response object from express
+ * @param next express function to advance to the next middleware function
+ */
+function logErrors (err, req, res, next) {
+  err.sessionToken = req.sessionToken ? req.sessionToken: undefined;
+  err.originalUrl = req.originalUrl ? req.originalUrl: undefined;
 
+  if (err.postToSlack) {
+    logger.error({
+      userMessage: err.userMessage,
+      serverCode: err.code,
+      serverMessage: err.message,
+      originalUrl: err.originalUrl,
+      sessionToken: err.sessionToken
+    });
+  } else {
+    logger.warning(err); //record in the backend log but don't post to slack
+  }
+  next(err);
+}
 
+/**
+ * shows the user an error page with human-readable text
+ * @param err error object
+ * @param req request object from express
+ * @param res response object from express
+ * @param next express function to advance to the next middleware function
+ */
+function errorHandler (err, req, res, next) {
+  res.render('fail', {
+    layout: 'no-sidebar.hbs',
+    error: err.userMessage || 'Oops! Something went wrong.',
+    config: soleConfig
+  });
+}
+
+/**
+ *
+ * @param errorMessage string human-readable error text that will be displayed to the user
+ * @param err json object the error object from parse
+ * @param originUrl string the URL where the err originated
+ * @param sessionToken string sessionToken when the error happened
+ * @param next function for advancing to the next middleware
+ * @param postToSlack boolean make true if you want to post this error to slack
+ */
+function showError ({userMessage, err, originUrl, sessionToken, next, postToSlack}) {
+  if (postToSlack) {
+    logger.error();
+  }
+  next(err);
 }
 
 // home route
@@ -126,53 +178,67 @@ function setLanguage (req, res, next) {
 //       redirect to a intro screen. Or after completing your 5 SOLE, give some
 //       nice encouraging message, etc etc
 router.route('/')
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     Controllers.User.isProfileComplete(req.sessionToken).then(profileIsCompleted => {
       res.redirect(profileIsCompleted ? '/home' : '/complete-profile');
+    }).catch(err => {
+      err.userMessage = 'Failed to check if users profile is complete';
+      err.postToSlack = true;
+      
+      next(err);
     });
   });
 
 // on routes that end in /stats/
 router.route('/slackbot/users-range')
-  .post((req, res) => {
+  .post((req, res, next) => {
     let numberOfDays = 1;
     if (req.body.text) {
       numberOfDays = Number(req.body.text); //convert string to integer
     }
     Controllers.Stats.usersRange(numberOfDays).then(responseMessage => {
       res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+    }).catch(err => {
+      err.userMessage = 'Failed to get users range data.';
+      next(err);
     });
   });
 
 // ----------------------------------------------------
 router.route('/slackbot/users-today')
-  .post((req, res) => {
+  .post((req, res, next) => {
     Controllers.Stats.usersToday().then(responseMessage => {
       res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+    }).catch(err => {
+      err.userMessage = 'Failed to get users today data.';
+      next(err);
     });
   });
 
 router.route('/slackbot/users-range-detail')
-  .post((req, res) => {
+  .post((req, res, next) => {
     let numberOfDays = 1;
     if (req.body.text) {
       numberOfDays = Number(req.body.text); //convert string to integer
     }
     Controllers.Stats.usersRangeDetail(numberOfDays).then(responseMessage => {
       res.render('stats', {layout: 'blank.hbs', statsMessage: responseMessage}); //display slack-friendly webpage
+    }).catch(err => {
+      err.userMessage = 'Failed to get users range detail.';
+      next(err);
     });
   });
 
 //on routes that end in /random-picture
 // ----------------------------------------------------
 router.route('/random-picture')
-  .get((req, res) => {
+  .get((req, res, next) => {
     const pic = Controllers.Test.randomPicture();
     res.sendFile('images/test-images/'+pic,{root: __dirname + '/public/'});
   });
 
 router.route('/home')
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     soleConfig.language = req.language;
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       let homeData = {
@@ -186,20 +252,25 @@ router.route('/home')
         return Controllers.User.getMyRings(req.sessionToken).then(rings => {
           homeData.rings = rings;
           res.render(req.language + '/home', homeData); //show home page with ring data
+        }).catch(err => {
+          err.userMessage = 'Failed to ring data for user.';
+          err.postToSlack = true;
+          next(err);
         });
       } else {
         res.render(req.language + '/home', homeData); //show home page but no ring data
       }
-    }).catch(err => { //catch if the Parse call for roleData didn't work
-      logger.error('Error getting ring for user!', err);
-      //TODO: show an error page to the user
+    }).catch(err => {
+      err.userMessage = 'Failed to role data for user.';
+      err.postToSlack = true;
+      
+      next(err);
     });
   });
 
 //temporary static route for making the view for approving soles
 router.route('/pending-soles')
-  .get(isAuth, (req, res) => {
-
+  .get(isAuth, (req, res, next) => {
     Controllers.Admin.getPendingSoles(req.sessionToken).then(soles => {
       //format the shortText and date for each sole
       soles.forEach(sole => {
@@ -215,8 +286,10 @@ router.route('/pending-soles')
         soles: soles
       });
     }).catch(err => {
-      console.error('Error getting pending soles for approval. Error: ', err);
-      res.redirect('/home');
+      err.userMessage = 'Failed to get pending soles for admin approval.';
+      err.postToSlack = true;
+      
+      next(err);
     });
   })
 
@@ -226,10 +299,8 @@ router.route('/pending-soles')
         * check for isAdmin and add a link to the homepage if isAdmin
          */
 
-  .post(isAuth, (req, res) => {
-
+  .post(isAuth, (req, res, next) => {
     const requestSocialMedia = (req.body.socialMediaCheck == 'true');//true if we need to request Social Media Approval via email, false otherwise
-
     if (req.body.action === 'approve') {
       Controllers.Admin.approveSole(req.body.soleId, req.body.comment, requestSocialMedia, req.sessionToken).then(soleId => {
         res.redirect('/pending-soles');
@@ -239,14 +310,16 @@ router.route('/pending-soles')
         res.redirect('/pending-soles');
       });
     } else {
-      logger.error('Error. Got a malformed post without reject or approve.');
+      err.userMessage = 'Got a malformed post without reject or approve.';
+      err.postToSlack = true;
+      
+      next(err);
     }
-  })
+  });
 
 // route for Admin Page
 router.route('/admin')
-  .get(isAuth, (req, res) => {
-
+  .get(isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if (!roleData.isAdmin) { //TODO: make a middleware for isAdmin
         res.redirect('/home');
@@ -261,16 +334,14 @@ router.route('/admin')
         });
       }
     }).catch(err => {
-      console.error('Error in admin page. Error: ', err);
-      //TODO: show error to user
-      res.redirect('/home');
+      err.userMessage = 'Error getting role data for admin user.';
+      next(err);
     });
   });
 
 // route for browsing all SOLEs.  Admin only
 router.route('/admin/browse-soles')
-  .get(isAuth, (req, res) => {
-
+  .get(isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(!roleData.isAdmin) {
         res.redirect('/home');
@@ -281,16 +352,14 @@ router.route('/admin/browse-soles')
         });
       }
     }).catch(err => {
-      console.error('Error in admin/browse-soles. Error: ', err);
-      //TODO: show error to user
-      res.redirect('/home');
+      err.userMessage = 'Error getting role data for admin user.';
+      next(err);
     });
   });
 
 // route for browsing all SOLEs.  Admin only
 router.route('/admin/browse-users')
-  .get(isAuth, (req, res) => {
-
+  .get(isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(!roleData.isAdmin){
         res.redirect('/home');
@@ -301,16 +370,14 @@ router.route('/admin/browse-users')
         });
       }
     }).catch(err => {
-      console.error('Error in admin/browse-users. Error: ', err);
-      //TODO: show error to user
-      res.redirect('/home');
+      err.userMessage = 'Error getting role data for admin user.';
+      next(err);
     });
   });
 
 // route for browsing upcoming conferences and events.  Admin only
 router.route('/admin/events')
-  .get(isAuth, (req, res) => {
-
+  .get(isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(roleData.isAdmin || roleData.isAmbassador) { //TODO: replace with middleware later
         res.render('admin-conferences-and-events', adminData);
@@ -321,60 +388,63 @@ router.route('/admin/events')
         });
       }
     }).catch(err => {
-      //TODO: show error to user
-      res.redirect('/home');
+      err.userMessage = 'Error getting role data for admin user.';
+      next(err);
     });
   });
 
 // static route for History of SOLE
 router.route('/history')
-  .get((req, res) => {
+  .get((req, res, next) => {
     res.render('history', {config: soleConfig});
   });
 
 // static route for History of SOLE
 router.route('/how')
-  .get((req, res) => {
+  .get((req, res, next) => {
     res.render('how-to-sole', {config: soleConfig});
   });
 
 // static route for ToS
 router.route('/terms-of-use')
-  .get((req, res) => {
+  .get((req, res, next) => {
     res.render('terms-of-use', {layout: 'no-sidebar.hbs', config: soleConfig});
   });
 
 // static route for privacy
 router.route('/privacy')
-  .get((req, res) => {
+  .get((req, res, next) => {
     res.render('privacy', {layout: 'no-sidebar.hbs', config: soleConfig});
   });
 
 // static route for email verification success
 router.route('/verify-email-success')
-  .get(setLanguage, (req, res) => {
+  .get(setLanguage, (req, res, next) => {
     const email = req.query.email;
     res.render(req.language + '/verify-email-success', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
 
 // static route for email verification failure
 router.route('/verify-email-failure')
-  .get(setLanguage, (req, res) => {
+  .get(setLanguage, (req, res, next) => {
     const email = req.query.email;
     res.render(req.language + '/verify-email-failure', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
 
 // routes for resources
 router.route('/resources')
-  .get((req, res) => {
-
+  .get((req, res, next) => {
     Controllers.Resource.getAll().then(resources => {
       res.render('resources', {
         resources: resources,
         config: soleConfig
       });
+    }).catch(err => {
+      err.userMessage = 'Error getting resources.';
+      err.postToSlack = true;
+      
+      next(err);
     });
-
   });
 
 // routes for profile
@@ -382,16 +452,20 @@ router.route('/resources')
 router.route('/profile')
 
 // profile view
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     Controllers.User.getProfileData(req.sessionToken)
-      .then((profileData) => {
+      .then(profileData => {
         profileData.config = soleConfig;
         res.render(req.language + '/profile', profileData);
+      }).catch(err => {
+        err.userMessage = 'Error getting profile data.';
+        err.postToSlack = true;
+        
+        next(err);
       });
   })
   //TODO: this is a mess, come back to this to make it more consistent with the rest of the app
-  .post(isAuth, (req, res) => {
-    // TODO: refactor so this accept explicit param instead of of req.body
+  .post(isAuth, (req, res, next) => {
     Controllers.User.updateProfileData(req.body.subjects || false,
       req.body.grades || false,
       req.body.role || false,
@@ -405,19 +479,17 @@ router.route('/profile')
       .then(user => {
         res.redirect('/soles');
       }).catch(err => {
-        logger.error('Error updating user', err);
-        res.render('fail', {
-          layout: 'no-sidebar.hbs',
-          config: soleConfig,
-          error: 'Updating user'
-        });
+        err.userMessage = 'Error updating user profile.';
+        err.postToSlack = true;
+        
+        next(err);
       });
   });
 
 // routes for user registration
 // ----------------------------------------------------
 router.route('/register')
-  .get((req, res) => {
+  .get((req, res, next) => {
     res.render('en/'+ 'register', {
       layout: 'no-sidebar.hbs',
       config: soleConfig
@@ -426,7 +498,7 @@ router.route('/register')
 
 //route for logging out
 router.route('/logout')
-  .get((req, res) => {
+  .get((req, res, next) => {
     res.render('logout', {
       layout: 'no-sidebar.hbs',
       config: soleConfig
@@ -435,7 +507,7 @@ router.route('/logout')
 
 // route for logging in
 router.route('/login')
-  .get((req, res) => {
+  .get((req, res, next) => {
     //this is a special case. this code is similar to the isAuth function, but we do
     //it here because we want to redirect someone to /home if they're already logged in.
     const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
@@ -456,7 +528,7 @@ router.route('/login')
 // route for completing profile
 //TODO: there are lots of possible fail scenarios here. eg if profileData.user is undefined. Or if req.query.firstname is undefined
 router.route('/complete-profile')
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     Controllers.User.getProfileData(req.sessionToken).then(profileData => {
       if (profileData.user.firstName && profileData.user.lastName) {
         console.log('um, hi. whats this all about?');
@@ -469,10 +541,15 @@ router.route('/complete-profile')
         profile: profileData,
         config: soleConfig
       });
+    }).catch(err => {
+      err.userMessage = 'Error getting user profile data.';
+      err.postToSlack = true;
+      
+      next(err);
     });
   })
   //TODO: test that this still works
-  .post(isAuth, (req, res) =>{
+  .post(isAuth, (req, res, next) =>{
     Controllers.User.updateProfileData(
       req.body.subjects,
       req.body.grades,
@@ -484,25 +561,30 @@ router.route('/complete-profile')
       req.body.schoolPlaceID,
       'jur.' + req.body.schoolState.toLowerCase(), //need to add 'jur.' to the string and lowercase it to make it work with the database
       req.sessionToken).then(user => {
-        Controllers.User.completedProfile(req.sessionToken);
-        res.redirect('/soles');
-      }).catch(err =>{
-        logger.error('Error completing user profile', err);
-        res.redirect('/error');
-      });
+      Controllers.User.completedProfile(req.sessionToken);
+      res.redirect('/soles');
+    }).catch(err => {
+      err.userMessage = 'Error completing user profile.';
+      err.postToSlack = true;
+      
+      next(err);
+    });
   });
 
 // routes for soles
 // ----------------------------------------------------
 router.route('/soles')
 // get all the soles
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     Controllers.Sole.getAll(req.sessionToken)
       .then(soles=>{
         soles.config = soleConfig;
         res.render(req.language + '/soles', soles);
       }).catch(err => {
-        showErrorPage('Could not get list of SOLEs.', sesh, res);
+        err.userMessage = 'Could not get list of SOLEs.';
+        err.postToSlack = true;
+        
+        next(err);
       });
   });
 
@@ -510,13 +592,15 @@ router.route('/soles')
 // ----------------------------------------------------
 router.route('/soles/:id')
 // get the sole with that id
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       //in case the id of the sole is invalid
       singleSole.config = soleConfig;
       res.render(req.language + '/soles-single', singleSole);
-    }).catch(err =>{
-      showErrorPage('Could not get a SOLE.', false, res);
+    }).catch(err => {
+      err.userMessage = 'Could not get SOLE. SOLE id: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
@@ -524,15 +608,16 @@ router.route('/soles/:id')
 // ----------------------------------------------------
 router.route('/soles/:id/download-plan')
 // get the sole with that id
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     const id = req.params.id;
     const type = 'plan';
     Controllers.Sole.downloadDocument(id, type, req.sessionToken)
       .then(url => {
         res.redirect(soleConfig.baseURL+url);
-      })
-      .catch(err => {
-        res.redirect('/error');
+      }).catch(err => {
+        err.userMessage = 'Failed to download lesson plan. SOLE id: ' + req.params.id;
+        err.postToSlack = true;
+        next(err);
       });
   });
 
@@ -540,17 +625,19 @@ router.route('/soles/:id/download-plan')
 // ----------------------------------------------------
 router.route('/soles/:id/download-summary')
 // get the sole with that id
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     const id = req.params.id;
     const type = 'summary';
     Controllers.Sole.downloadDocument(id, type, req.sessionToken)
       .then(url => {
         res.redirect(soleConfig.baseURL+url);
-      })
-      .catch(err => {
-        res.redirect('/error');
+      }).catch(err => {
+        err.userMessage = 'Failed to download summary. SOLE id: ' + req.params.id;
+        err.postToSlack = true;
+        next(err);
       });
   });
+
 
 // on routes that end in /soles/:sole_id/copy
 // 1. get the data from a SOLE
@@ -560,6 +647,10 @@ router.route('/soles/:id/copy')
   .get(isAuth, (req,res) => {
     Controllers.Sole.copy(req.params.id, req.sessionToken).then(soleID => {
       res.redirect('/soles');
+    }).catch(err => {
+      err.userMessage = 'Failed to copy SOLE. SOLE id: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
@@ -567,15 +658,17 @@ router.route('/soles/:id/copy')
 // ----------------------------------------------------
 router.route('/soles/:id/edit')
 // get the sole with that id
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render(req.language + '/soles-add', singleSole);
     }).catch(err => {
-      showErrorPage('Failed to get SOLE session from the server', sesh, res);
+      err.userMessage = 'Failed to get SOLE session from the server.';
+      err.postToSlack = true;
+      next(err);
     });
   })
-  .post(isAuth, (req, res) => {
+  .post(isAuth, (req, res, next) => {
     //TODO: make this reusable for copying
     //push observations into this array if any are set to 'on'
     let targetObservations = [];
@@ -621,7 +714,9 @@ router.route('/soles/:id/edit')
     Controllers.Sole.update(id, sole, req.sessionToken).then(soleID=>{
       res.redirect('/soles');
     }).catch(err =>{
-      showErrorPage('Could not save SOLE session.', sesh, res);
+      err.userMessage = 'Could not save SOLE. SOLE id: ' + id;
+      err.postToSlack = true;
+      next(err);
     });
 
   });
@@ -629,17 +724,23 @@ router.route('/soles/:id/edit')
 //on routes that end in /soles/:sole_id/delete
 router.route('/soles/:id/delete')
 // get the sole with that id
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render(req.language + '/soles-delete', singleSole);
     }).catch(err => {
-      showErrorPage('Could not get SOLE session from the server. Try again later.', sesh, res);
+      err.userMessage = 'Could not delete SOLE session from the server. SOLE id: ' + req.param.id;
+      err.postToSlack = true;
+      next(err);
     });
   })
-  .post(isAuth, (req, res) => {
+  .post(isAuth, (req, res, next) => {
     Controllers.Sole.delete(req.body.soleID, req.sessionToken).then(soleID => {
       res.redirect('/soles');
+    }).catch(err => {
+      err.userMessage = 'Could not delete SOLE. SOLE id: ' + req.body.soleID;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
@@ -647,17 +748,19 @@ router.route('/soles/:id/delete')
 // ----------------------------------------------------
 router.route('/soles/:id/reflect')
 // get the sole with that id
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render(req.language + '/soles-reflect', singleSole);
     }).catch(err => {
-      showErrorPage('Coud not get SOLE session from the server.', sesh, res);
+      err.userMessage = 'Could not get SOLE session from the server. SOLE id: ' + req.param.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
 router.route('/sole-reflect')
-  .post(isAuth, (req, res) =>{
+  .post(isAuth, (req, res, next) =>{
     const reflection = {
       id: req.body.soleID,
       achieved: req.body.content_objective_achieved, //session.reflection.content_objective.achieved
@@ -676,15 +779,18 @@ router.route('/sole-reflect')
 
     Controllers.Sole.saveReflection(reflection, req.sessionToken).then(soleID => {
       res.redirect('/soles/'+soleID);
+    }).catch(err => {
+      err.userMessage = 'Could not save reflection. SOLE id: ' + req.body.soleID;
+      err.postToSlack = true;
+      next(err);
     });
-
   });
 
 // on routes that end in /soles/add/
 // ----------------------------------------------------
 router.route('/sole-create')
 // view for adding a new sole
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     const question = req.query.question; //get the ID of desired question from the query param
     viewData = {
       config: soleConfig,
@@ -696,13 +802,15 @@ router.route('/sole-create')
         viewData.sole.question = questionData;
         res.render(req.language + '/soles-add',viewData);
       }).catch(err => {
-        showErrorPage('Could not load question with id: ' + question, sesh , res);
+        err.userMessage = 'Could not load question with id: ' + question;
+        err.postToSlack = true;
+        next(err);
       });
     } else {
       res.render(req.language + '/soles-add', viewData);
     }
   })
-  .post(isAuth, (req, res) =>{
+  .post(isAuth, (req, res, next) =>{
     //push observations into this array if any are set to 'on'
     let targetObservations = [];
     (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
@@ -745,7 +853,9 @@ router.route('/sole-create')
     Controllers.Sole.add(sole, req.sessionToken).then(soleID=>{
       res.redirect('/soles');
     }).catch(err => {
-      showErrorPage('Could not save SOLE session', sesh, res);
+      err.userMessage = 'Could not save SOLE session.';
+      err.postToSlack = true;
+      next(err);
     });
   });
 
@@ -754,13 +864,15 @@ router.route('/sole-create')
 //TODO: refactor. this is messy.
 router.route('/questions')
 // get all the soles
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     if (req.query.q) {
       Controllers.Question.findByText(req.query.q, req.sessionToken).then((foundQuestions) => {
         foundQuestions.config = soleConfig;
         res.render(req.language + '/questions', foundQuestions);
       }).catch(err => {
-        showErrorPage('Could not find question by text search.', sesh, res);
+        err.userMessage = 'Could not find questions by text search. Search text: ' + req.query.q;
+        err.postToSlack = true;
+        next(err);
       });
     } else if (req.query.tags) {
       Controllers.Question.findByTags(req.query.tags, req.sessionToken).then((foundQuestions) => {
@@ -768,7 +880,9 @@ router.route('/questions')
         foundQuestions.config = soleConfig;
         res.render(req.language + '/questions', foundQuestions);
       }).catch(err => {
-        showErrorPage('Could not find question by tags.', sesh, res);
+        err.userMessage = 'Could not find question by tags. Search tags: ' + req.query.tags;
+        err.postToSlack = true;
+        next(err);
       });
     } else {
       res.render(req.language + '/questions', {config:soleConfig});
@@ -789,20 +903,24 @@ router.route('/questions/mine')
         myQuestionsData.config = soleConfig;
         res.render(req.language + '/my-questions', myQuestionsData); //display view with question data
       }).catch(err => {
-        showErrorPage('Could not get your favorited questions.', sesh, res);
+        err.userMessage = 'Could not get your favorited questions.';
+        err.postToSlack = true;
+        next(err);
       });
     }).catch(err => {
-      showErrorPage('Could not get list of SOLEs.', sesh, res);
+      err.userMessage = 'Could not get list of questions.';
+      err.postToSlack = true;
+      next(err);
     });
   });
 
 //add a question
 router.route('/questions/add')
-  .get(isAuth, setLanguage, (req, res) => {
+  .get(isAuth, setLanguage, (req, res, next) => {
     res.render(req.language + '/questions-add', {config: soleConfig});
   })
 // TODO: add post route here to save question to DB
-  .post(isAuth, (req, res) =>{
+  .post(isAuth, (req, res, next) => {
     let tags = req.body.tags.split(',');
     const newQuestion = {
       text: req.body.text,
@@ -811,8 +929,10 @@ router.route('/questions/add')
     };
     Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, req.sessionToken).then(questionID=>{
       res.redirect('/questions/'+questionID);
-    }).catch( err =>{
-      showErrorPage('Could not add question', sesh, res);
+    }).catch(err =>{
+      err.userMessage = 'Could not add question.';
+      err.postToSlack = true;
+      next(err);
     });
   });
 
@@ -820,7 +940,7 @@ router.route('/questions/add')
 // ----------------------------------------------------
 router.route('/questions/:id')
 // get the question data with a given id
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     const favorited = req.query.fav; //is true if question was just favorited
     Controllers.Question.getByID(req.params.id, req.sessionToken).then(questionData => {
       questionData.favorited = favorited;
@@ -829,32 +949,43 @@ router.route('/questions/:id')
       Controllers.User.getRoleData(req.sessionToken).then(roleData => {
         questionData.roleData = roleData;
         res.render('questions-single', questionData);
-      })
-        .catch(err => {
-          showErrorPage('Could not get roleData for user.', sesh, res);
+      }).catch(err => {
+        showError({
+          userMessage: 'Could not get role data.',
+          err: err,
+          next: next,
+          postToSlack: true
         });
+      });
     }).catch(err => {
-      showErrorPage('Could not get SOLE session.', sesh, res);
+      err.userMessage = 'Could not find SOLE question. Question id: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
+
 router.route('/questions/:id/favorite')
 // favorite a question with a given id
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     Controllers.Question.favorite(req.params.id, req.sessionToken).then(questionData => {
       res.redirect('/questions/'+req.params.id+'?fav=true');
     }).catch(err => {
-      showErrorPage('Could not favorite this question.', sesh, res);
+      err.userMessage = 'Could not favorite this question. Question id: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
 router.route('/questions/:id/delete-tag/:rdn')
 // remove a tag from a question
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     Controllers.Question.deleteTag(req.params.id, req.params.rdn, req.sessionToken).then((questionData) => {
-      res.redirect('/questions/'+req.params.id);
+      res.redirect('/questions/' + req.params.id);
     }).catch(err => {
-      showErrorPage('Could not delete a tag.', sesh, res);
+      err.userMessage = 'Could not delete a tag. Question id: ' + req.params.id + ' and tag id: ' + req.params.rdn;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
@@ -863,64 +994,79 @@ router.route('/questions/:id/delete-tag/:rdn')
 router.route('/dashboard')
 
 // gets data to build a simple dashboard
-  .get(isAuth, setLanguage, (req, res) => {
-    const ringID = req.query.ring; //get the ring ID string from the query param //TODO: check if exists
-    Controllers.Dashboard.getDashboardData(ringID, req.sessionToken)
-      .then(dashboard => {
-        res.render(req.language + '/dashboard', {
-          config: soleConfig,
-          dashboard: dashboard
+  .get(isAuth, setLanguage, (req, res, next) => {
+    if (req.query.ring) {
+      Controllers.Dashboard.getDashboardData(req.query.ring, req.sessionToken)
+        .then(dashboard => {
+          res.render(req.language + '/dashboard', {
+            config: soleConfig,
+            dashboard: dashboard
+          });
+        }).catch(err => {
+          err.userMessage = 'Could not load dashboard data.';
+          err.postToSlack = true;
+          next(err);
         });
-      }).catch(err => {
-        res.redirect('/home');
-      });
+    } else {
+      err.userMessage = 'Ring does not exist: ' + req.query.ring;
+      err.postToSlack = true;
+      next(err);
+    }
   });
 
 router.route('/questions/:id/approve')
 
 // approve a single question
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     Controllers.Question.approve(req.params.id, req.sessionToken).then(questionData => {
       res.redirect('/dashboard/question-approval');
     }).catch(err => {
-      showErrorPage('Could not approve a question.', sesh, res);
+      err.userMessage = 'Could not approve a question with id: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
 router.route('/questions/:id/reject')
 
 // reject a single question
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     Controllers.Question.reject(req.params.id, req.sessionToken).then(questionData => {
       res.redirect('/dashboard/question-approval');
     }).catch(err => {
-      showErrorPage('Could not reject a question.', sesh, res);
+      err.userMessage = 'Could not reject a question.';
+      err.postToSlack = true;
+      next(err);
     });
   });
 
 // approve a single SOLE
 router.route('/soles/:id/approve')
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     Controllers.Sole.approve(req.params.id, req.sessionToken).then(soleData => {
       res.redirect('/dashboard/sole-approval');
     }).catch(err => {
-      showErrorPage('Could not approve a SOLE.', sesh, res);
+      err.userMessage = 'Could not approve a SOLE with id: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
 router.route('/soles/:id/reject')
 // reject a single SOLE
-  .get(isAuth, (req, res) => {
+  .get(isAuth, (req, res, next) => {
     Controllers.Sole.reject(req.params.id, req.sessionToken).then(soleData => {
       res.redirect('/dashboard/sole-approval');
     }).catch(err => {
-      showErrorPage('Could not reject a SOLE.', sesh, res);
+      err.userMessage = 'Could not reject a SOLE with id: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
     });
   });
 
 // static route for fail cases (404)
 router.route('/error')
-  .get(setLanguage, (req, res) => {
+  .get(setLanguage, (req, res, next) => {
     res.render('/fail', {
       layout: 'no-sidebar.hbs',
       config: soleConfig
@@ -933,26 +1079,21 @@ app.use('/', router);
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));
 
-//custom 404 page
-app.get('*', function(req, res){
-  showErrorPage('Oops, something went wrong. Try logging in again.', false, res);
-});
+// enable error logging (for logging errors for troubleshooting)
+app.use(logErrors);
 
-/*
-    redirects a user to the error page, shows them a little more info about what went wrong
-    param:
-        * errorMessage - string, short text about what went wrong
-        * res - object from the router
-    returns:
-        * nothing
- */
-function showErrorPage (errorMessage, sesh, res) { //TODO: remove sesh from all calls
-  res.render('fail', {
-    layout: 'no-sidebar.hbs',
-    error: errorMessage,
-    config: soleConfig
-  });
-}
+// enable error handler (showing the user an error)
+app.use(errorHandler);
+
+
+//custom 404 page
+app.get('*', function(req, res, next){
+  const err = {
+    userMessage: '404. This page does not exist.',
+    req: req
+  };
+  errorHandler(err, req, res, next)
+});
 
 // START THE SERVER
 // =============================================================================

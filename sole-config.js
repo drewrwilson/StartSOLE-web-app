@@ -1,7 +1,7 @@
 var soleConfig = module.exports = {};
 
 var ring = process.env.RING || 'regular';        // can be "hrsa" or nothing
-var environment = process.env.ENVIRONMENT || 'localtesting';
+soleConfig.environment = process.env.ENVIRONMENT || 'localtesting';
 
 soleConfig.logo = 'logo.png'; //default
 soleConfig.tagline = 'Let learning happen'; //default
@@ -17,14 +17,15 @@ soleConfig.mapKey = 'AIzaSyA_4aqJcZYOl-dHZdtZSht3rOolk8JzO3I';
 soleConfig.slackToken = process.env.SLACK_API_TOKEN;
 soleConfig.slackChannel = process.env.SLACK_CHANNEL;
 
+
 //change some values if this is being run locally/staging/production
-if (environment.toLowerCase() == 'production') {
+if (soleConfig.environment.toLowerCase() == 'production') {
   soleConfig.serverUrl = 'https://api.startsole.net/sole/';
   soleConfig.facebookAppID = '495194740686129'; //production facebook app ID (we use the same facebook app ID for HRSA production and the webapp production)
   soleConfig.googleAnalyticsUA = 'UA-104635216-3'; //production for webapp
   soleConfig.baseURL = 'https://api.startsole.net/sole/files/';
 
-} else if (environment.toLowerCase() == 'staging') {
+} else if (soleConfig.environment.toLowerCase() == 'staging') {
   soleConfig.serverUrl = 'https://api.staging.startsole.net/sole/';
   soleConfig.facebookAppID = '480699155639280'; //staging facebook app ID (we use the same facebook app ID for HRSA staging and the webapp staging)
   soleConfig.googleAnalyticsUA = 'UA-104635216-4'; //staging for webapp
@@ -37,10 +38,10 @@ if (ring.toLowerCase() == 'hrsa') {
   soleConfig.ring = 'hrsa';
   // soleConfig.facebookAppID = ''; //
 
-  if (environment.toLowerCase() == 'production') { //if the ring is hrsa and it is production
+  if (soleConfig.environment.toLowerCase() == 'production') { //if the ring is hrsa and it is production
     //HRSA web (production)
     soleConfig.googleAnalyticsUA = 'UA-104635216-10'; //HRSA production UA
-  } else if (environment.toLowerCase() == 'staging') { //if the ring is hrsa and it is staging
+  } else if (soleConfig.environment.toLowerCase() == 'staging') { //if the ring is hrsa and it is staging
     //HRSA web (staging)
     soleConfig.googleAnalyticsUA = 'UA-104635216-11'; //HRSA staging UA
   }
@@ -49,7 +50,7 @@ if (ring.toLowerCase() == 'hrsa') {
 
 console.log('\n\n/^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ \n');
 console.log('           Ring: ' + ring);
-console.log('    Environment: ' + environment);
+console.log('    Environment: ' + soleConfig.environment);
 console.log('   Database URL: ' + soleConfig.serverUrl);
 console.log('Facebook App ID: ' + soleConfig.facebookAppID);
 console.log('      Google UA: ' + soleConfig.googleAnalyticsUA);

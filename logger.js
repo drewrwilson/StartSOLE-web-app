@@ -97,12 +97,28 @@ module.exports = {
   },
 
   slackbot: function (msg) {
-    if (this.useSlackBot) {
-      let txt = "(" + hostEnv.userInfo().username + ") " + [...arguments].join(",");
-      slackBot.chat.postMessage({
-        channel: soleConfig.slackChannel,
-        text: txt,
-      });
+    let txt = "*_Error from WebApp Client:_*"; //start slack message
+    txt += "\n • *environment:* " + soleConfig.environment; //add environment
+    txt += "\n • *serverUsername:* " + hostEnv.userInfo().username; //add user who executed it
+    if (msg[userMessage]) {
+      txt += "\n • *userMessage:* " + msg[userMessage];
     }
+    if (msg[serverCode]) {
+      txt += "\n • *serverCode:* " +  msg[serverCode];
+    }
+    if (msg[serverMessage]) {
+      txt += "\n • *serverMessage:* " + msg[serverMessage];
+    }
+    if (msg[originalUrl]) {
+      txt += "\n • *originalUrl:* " + msg[originalUrl];
+    }
+    if (msg[sessionToken]) {
+      txt += "\n • *sessionToken:* `" + msg[sessionToken] + "`";
+    }
+
+    slackBot.chat.postMessage({
+      channel: soleConfig.slackChannel,
+      text: txt,
+    });
   },
 };

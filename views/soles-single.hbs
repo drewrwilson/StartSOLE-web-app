@@ -1,0 +1,84 @@
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">{{{__ "Home"}}}</a>
+    <a href="/soles" class="breadcrumb">{{{__ "My SOLEs"}}}</a>
+    <a class="truncate truncate-question breadcrumb">{{sole.question.question.text}}</a>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+            {{#if sole}}
+                <div class="row">
+                    <div class="col s12">
+                        <h3>{{sole.question.question.text}}</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    {{#each sole.observations}}
+                        {{#if image.full}}
+                        <div class="col s12 m4 l3 xl2">
+                            <div class="materialbox-preview thumbnail">
+                                <img class="materialboxed responsive-img "
+                                     src="{{ image.full }}"
+                                     data-caption="{{ image.notes }}"
+                                >
+                            </div>
+                        </div>
+                        {{/if}}
+                    {{/each}}
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6">
+                        <p>{{{__ "Date"}}}: {{sole.planned_date.dateString}}</p>
+                        <p>{{{__ "Attendance"}}}: {{sole.num_students}} {{{__ "students"}}} ({{sole.num_groups}} {{{__ "groups"}}})</p>
+                        <p>{{{__ "Notes"}}}: {{sole.reflection.notes}}</p>
+                    </div>
+                    <div class="col s12 m6">
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.grouporganization}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>{{{__ "Students formed their own groups"}}}</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.groupsharing}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>{{{__ "Students shared across groups"}}}</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.self_assessment}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>{{{__ "Students completed a self-assessment"}}}</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox"
+                                       class="filled-in"
+                                       {{#if sole.reflection.ground_rules}}checked="checked"{{/if}}
+                                       disabled="disabled" />
+                                <span>{{{__ "Students followed the ground rules"}}}</span>
+                            </label>
+                        </p>
+                    </div>
+
+                </div>
+
+            {{else}}
+                <h2>{{{__ "No SOLE found with that ID"}}}</h2>
+            {{/if}}
+        </div>
+    </div>
+</div>

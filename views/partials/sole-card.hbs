@@ -31,18 +31,18 @@
         <a href="/soles/{{id}}/download-plan"
            class="waves-effect waves-light green btn"
            target="_blank">
-            Download Plan
+            {{{__ "Download Plan"}}}
         </a>
         {{#if completed}}
             <a class="waves-effect waves-light green btn"
                href="/soles/{{id}}/download-summary"
                target="_blank">
-                Download Summary
+                {{{__ "Download Summary"}}}
             </a>
         {{else}}
             <a class="waves-effect waves-light red btn"
                href="/soles/{{id}}/reflect">
-                Reflect
+                {{{__ "Reflect"}}}
             </a>
             <a class="btn-floating grey"
                href="/soles/{{id}}/delete">

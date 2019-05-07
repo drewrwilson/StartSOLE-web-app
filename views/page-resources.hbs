@@ -1,0 +1,102 @@
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">{{{__ "Home"}}}</a>
+    <a class="breadcrumb">{{{__ "Resources"}}}</a>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input id="text-filter" type="text" class="validate">
+                    <label for="text-filter">{{{__ "Search by keyword"}}}</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <select id="tag-filter" onchange="filterSelection()">
+                        <option value="show-all" selected>{{{__ "Show All"}}}</option>
+                        <option value="question-help">{{{__ "Help with Question phase"}}}</option>
+                        <option value="investigation-help">{{{__ "Help with Investigation phase"}}}</option>
+                        <option value="review-help">{{{__ "Help with Review phase"}}}</option>
+                        <option value="paraphrasing">{{{__ "Paraphrasing Support"}}}</option>
+                        <option value="posters">{{{__ "Posters"}}}</option>
+                        <option value="rubric">{{{__ "Rubrics"}}}</option>
+                        <option value="self-assessment">{{{__ "Self-assessments"}}}</option>
+                        <option value="sentence-starters">{{{__ "Sentence Starters"}}}</option>
+                        <option value="organizer">{{{__ "Student Organizer"}}}</option>
+                        <option value="training">{{{__ "Training Materials"}}}</option>
+                    </select>
+                    <label>{{{__ "Filter"}}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col l12">
+                    <div class="row" id="resource-cards-container">
+
+                        {{#if resources}}
+                            {{#each resources}}
+                                <div class="col m12 l6 resource-card-col show-all {{#each tags}}{{this}} {{/each}}">
+                                    <div class="resource-card card horizontal">
+                                        <div class="card-image">
+                                            <img src="images/resources/{{image}}">
+                                        </div>
+                                        <div class="card-stacked">
+                                            <div class="card-content">
+                                                <span class="card-title">{{title}}</span>
+                                                <p class="short-description">{{short}}</p>
+                                                <p class="text-description hide-on-large-only">{{description}}</p>
+                                                {{#each authors}}
+                                                <p>Created by <a href="mailto:{{email}}"
+                                                         target="_top">{{name}}</a></p>
+                                                {{/each}}
+
+                                            </div>
+                                            <div class="card-action">
+                                                <a href="files/resources/{{file}}" download>{{{__ "Download"}}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        {{/if}}
+                        <div class="col m12 l6 show-all">
+                            <div class="resource-card card horizontal">
+                                <div class="card-image">
+                                    <img src="images/resources/your_resource_here.png">
+                                </div>
+                                <div class="card-stacked">
+                                    <div class="card-content">
+                                        <span class="card-title">{{{__ "Add Your Resource"}}}</span>
+                                        <p class="short-description">{{{__ "Do you have a great resource to share? Let us know!"}}}</p>
+                                        <p class="text-description hide-on-large-only">{{{__ "If you've got a great SOLE resource, click the button below and send it our way!  We'll be happy to share it with our community and credit you for your work!"}}}</p>
+                                    </div>
+                                    <div class="card-action">
+                                        <a href="mailto:support@startsole.org">{{{__ "Contact Us"}}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function filterSelection() {
+        var tag = $('#tag-filter').val();
+        $('.resource-card-col').hide();
+        $('.'+tag).show();
+    }
+
+    $(document).ready(function(){
+        $("#text-filter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#resource-cards-container .resource-card-col").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+
+</script>

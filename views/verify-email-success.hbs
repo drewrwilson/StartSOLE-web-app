@@ -1,0 +1,21 @@
+<div class="row" style="padding-top:50px;">
+    <div class="col s12 offset-m2 m8 offset-l3 l6">
+        <div class="card-panel">
+            <div class="row center-align">
+                <video width="165" height="165" autoplay muted>
+                    <source src="/images/logos/animated-logo-small.webm" type="video/webm">
+                    <img src="/images/logos/question-square.png">
+                </video>
+            </div>
+
+            <div class="row center-align">
+
+            <h4>{{{__ "Email Verified!"}}}</h4>
+                <p>{{{__ "Congratulations! You're ready to login"}}} {{#if email}} {{{__ "with email address"}}}<br><strong>{{email}}</strong>{{/if}}</p>
+            <p>
+                <a href="/login?email={{email}}" class="waves-effect waves-light btn">{{{__ "Log In"}}}</a>
+            </p>
+            </div>
+        </div>
+    </div>
+</div>

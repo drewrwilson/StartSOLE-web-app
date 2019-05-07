@@ -1,0 +1,120 @@
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">{{{__ "Home"}}}</a>
+    <a class="breadcrumb">{{{__ "Explore Questions"}}}</a>
+</div>
+
+<div class="row" style="padding-top:40px;">
+    <div class="col s12 offset-m1 m10 offset-l3 l6">
+        <div class="card-panel" style="padding-bottom:inherit;margin-top: -30px;">
+
+            <form id="search-form" action="/questions" method="get" onsubmit="event.preventDefault(); getQuestions();">
+                <div class="row">
+                    <h5 class="center-align" style="margin-bottom: 1em;">{{{__ "Explore Our Questions"}}}</h5>
+
+                    <div class="input-field">
+                        <i class="material-icons prefix">search</i>
+                        <input id="search" name="q" type="search"
+                               class="keep-bottom"
+                               placeholder="{{{__ "Search by keyword"}}}">
+                    </div>
+
+                    {{>standard-picker}}
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <div class="card-panel">
+            <div class="alert alert-danger">{{ errorText }}</div>
+            <div class="row" id="no-questions-submission" style="display: none">
+                <a href="questions/add/">
+                    <div class="col s12 m8 offset-m2 l6 offset-l3">
+                        <div class="card red lighten-1">
+                            <div class="question-card card-content center-align">
+                                <p class="card-title white-text text-darken-4 center-align valign">{{{__ "Nothing here...yet"}}}</p>
+                                <p class="flow-text white-text text-darken-4 center-align valign"
+                                   style="margin:10px">
+        {{{__ "Share your own questions with the SOLE community."}}}<br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="row">
+
+                {{#if searchText}}
+                    <h2>{{{__ "You searched for "}}}"<strong>{{searchText}}</strong>"</h2>
+                {{else}}
+                {{/if}}
+                <div id="questions" class="grid">
+                    {{#if questions}}
+                        {{#each questions}}
+                            {{> question-card }}
+                        {{/each}}
+                    {{else}}
+                        <!-- No results -->
+                        <h5 class="center-align">{{{__ "What are Big Questions?"}}}</h5>
+                    <div class="col s12 m10 offset-m1">
+                        <p>{{{__ "Big questions do not have an easy answer, and often lead to more questions.
+                            They inspire deep conversations and encourage children to offer theories, work collaboratively,
+                            use reason and think critically.  Big questions vary; they often tie in with what children are
+                            learning at school, come from their every day experiences, or maybe even something completely new.
+                            They typically connect more than one subject area."}}}</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m6 l4">
+                            <div class="card blue lighten-1">
+                                <div class="card-content center-align">
+                                    <a href="/questions/y3CR4uqF6E">
+                                        <span class="card-title white-text">
+                        {{{__ "What does power have to do with fairness and justice?"}}}
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <div class="card blue lighten-1">
+                                <div class="card-content center-align">
+                                    <a href="/questions/EJBeKeMefK">
+                                        <span class="card-title white-text">
+                        {{{__ "Why do your pupils get bigger in the dark?"}}}
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 m6 l4">
+                            <div class="card blue lighten-1">
+                                <div class="card-content center-align">
+                                    <a href="/questions/kM5lKUxfZh">
+                                        <span class="card-title white-text">
+                        {{{__ "What happens to energy inside of your body?"}}}
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- End No results -->
+                    {{/if}}
+                </div><!-- end #questions -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+<script type="text/javascript" src="/js/masonry-layout/dist/masonry.pkgd.min.js"></script>
+<script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
+
+{{>question-templates}}
+
+{{> sole-config-frontend-js}}
+<script type="text/javascript" src="/js/questions.js"></script>

@@ -1,0 +1,24 @@
+<div class="row" style="padding-top:20px;">
+
+    <div class="col s12 offset-m1 m10 offset-l3 l6">
+        <div class="card-panel">
+            <div class="row center-align">
+                <img class="hide-on-small-only" src="/images/logos/logo.svg">
+                <h5 style="margin-bottom: 1em;">
+                    {{#if sole}}
+                        {{sole.question.question.text}}
+                    {{/if}}
+                </h5>
+                <p>{{{__ "Are you sure you want to delete this SOLE?"}}}</p>
+                <form id="delete-form" method="post">
+                    <input type="hidden" name="soleID" id="soleID" value="{{sole.id}}">
+                    <button type="submit" class="waves-effect waves-light red btn-large">
+                        Delete
+                    </button>
+                    <a class="waves-effect waves-light btn-large" href="/soles">{{{__ "Cancel"}}}</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

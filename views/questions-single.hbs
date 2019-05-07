@@ -1,6 +1,6 @@
 <div class="breadcrumb-wrapper">
-    <a href="/" class="breadcrumb">Home</a>
-    <a href="/questions" class="breadcrumb">Questions</a>
+    <a href="/" class="breadcrumb">{{{__ "Home"}}}</a>
+    <a href="/questions" class="breadcrumb">{{{__ "Questions"}}}</a>
     {{#if question}}
         <a class="truncate truncate-question breadcrumb">{{question.text}}</a>
     {{/if}}
@@ -23,7 +23,7 @@
                         <a href="/sole-create?question={{question.id}}" class="teal waves-effect waves-light
                         btn">
                             <i class="material-icons left">assignment</i>
-                            Create Lesson
+                            {{{__ "Create Lesson"}}}
                         </a>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                 {{#if question.sourceURL}}
                 <div class="row">
                     <div class="col s12">
-                        Question Source: <a href="{{question.sourceURL}}" target="_new">{{question.sourceURL}}</a>
+                        {{{__ "Question Source:"}}} <a href="{{question.sourceURL}}" target="_new">{{question.sourceURL}}</a>
                     </div>
                 </div>
                 {{/if}}
@@ -62,17 +62,16 @@
                     <div class="col s12 m6 offset-m3">
                         <div class="card-panel">
                             <div class="row center-align">
-                                <h4>Whoops!</h4>
+                                <h4>{{{__ "Whoops!"}}}</h4>
                             </div>
                             <div class="row">
                                 <div class="col m12 l10 offset-l1">
-                        <span>Looks like there is no question here with that ID.  Try searching for your next great
-                        SOLE question by clicking the button below:
+                        <span>{{{__ "Looks like there is no question here with that ID.  Try searching for your next great SOLE question by clicking the button below:"}}}
                         </span>
                                 </div>
                             </div>
                             <div class="row center-align">
-                                <a class="waves-effect waves-light btn">Explore Questions</a>
+                                <a class="waves-effect waves-light btn">{{{__ "Explore Questions"}}}</a>
                             </div>
 
                         </div>
@@ -86,7 +85,7 @@
         <div class="action-buttons-header hide-on-small-only">
             <a class="fav-button teal btn-floating btn-large waves-effect waves-light tooltipped"
                data-position="bottom"
-               data-tooltip="Save Question"
+               data-tooltip="{{{__ "Save Question"}}}"
                href="/questions/{{question.id}}/favorite"
             >
                 <i class="material-icons">bookmark</i>
@@ -94,7 +93,7 @@
             <a class="teal btn-floating btn-large waves-effect waves-light tooltipped"
                href="/sole-create?question={{question.id}}"
                data-position="bottom"
-               data-tooltip="Create Lesson Plan">
+               data-tooltip="{{{__ "Create Lesson Plan"}}}">
                 <i class="material-icons">assignment</i>
             </a>
         </div>
@@ -104,7 +103,7 @@
 {{#if favorited}}
     <script>
         $('document').ready(function(){
-            var toastHTML = '<span>Added to Saved</span><a href="mine?fav=active" class="btn-flat toast-action">View</a>';
+            var toastHTML = '<span>{{{__ "Added to Saved"}}}</span><a href="mine?fav=active" class="btn-flat toast-action">{{{__ "View"}}}</a>';
             M.toast({html: toastHTML})
         });
     </script>

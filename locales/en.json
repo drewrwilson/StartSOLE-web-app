@@ -267,5 +267,9 @@
 	"Try Our App!": "Try Our App!",
 	"No Thanks": "No Thanks",
 	"To add the StartSOLE signature to your email client, just follow the steps below:": "To add the StartSOLE signature to your email client, just follow the steps below:",
-	"Here is a preview of your signature:": "Here is a preview of your signature:"
+	"Here is a preview of your signature:": "Here is a preview of your signature:",
+	"Register": "Register",
+	"Already have an account?": "Already have an account?",
+	"Login": "Login",
+	"By creating an account and logging in, I agree to the <a href='/terms-of-use' target='_blank'>Terms of Use</a> and <a href='/privacy' target='_blank'>Privacy Policy</a>.": "By creating an account and logging in, I agree to the <a href='/terms-of-use' target='_blank'>Terms of Use</a> and <a href='/privacy' target='_blank'>Privacy Policy</a>."
 }

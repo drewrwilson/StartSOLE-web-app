@@ -75,15 +75,19 @@ function setLanguage (req, res, next) {
   if (language) {
     req.language = language; //set i18n language here in stead of putting it in the req
     next();
-  } else {
+  } else if (req.sessionToken) {
     Controllers.User.getLanguage(req.sessionToken).then(language => {
-      req.language = language; //set i18n language here in stead of putting it in the req
+      req.language = language; //set i18n language here instead of putting it in the req
       next();
     }).catch(err => {
       err.userMessage = 'idk';
       next(err);
     })
+  } else {
+    //if we don't have a sessionToken, eg if we're just viewing static pages like privacy or terms-of-service
+    next();
   }
+
 }
 
 /**

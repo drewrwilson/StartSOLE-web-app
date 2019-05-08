@@ -103,6 +103,21 @@ class User {
     return Parse.Cloud.run('webapp.adminSummaryData', {
     });
   };
+
+  /**
+   * returns a promise with the language as a string, eg 'en' or 'es'
+   * @param sessionToken string of sessionToken
+   * @returns {Promise<string>} eg 'en' or 'es'
+   */
+  static async getLanguage (sessionToken) {
+    const rings = await this.getMyRings(sessionToken);
+    if (rings && rings.filter(ring => ring.name === 'Colombia') && !rings.filter(ring => ring.name === 'SOLE Team')) {
+      return 'es'; //this is the name of the directory where the language views are
+    } else {
+      //default is none, later the default should be 'en/'
+      return 'en'; //since the views are in the same directory, no value needed
+    }
+  }
 }
 
 module.exports = User;

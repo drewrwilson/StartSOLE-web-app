@@ -1,0 +1,661 @@
+<style>
+    #map {
+        height: 600px;
+    }
+</style>
+
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">Home</a>
+    <a class="breadcrumb">Admin</a>
+</div>
+
+{{#if roleData.isAdmin }}
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Welcome to the new Dashboard!</span>
+                    <p>We've had {{usersToday}} new user(s) create accounts since yesterday.  You can view some monthly summary graphs below.</p>
+                    <ul class="collapsible popout">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">accessibility_new</i>New Users (last 2 weeks)</div>
+                            <div class="collapsible-body center-align">
+                                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=1848102389&amp;format=interactive"></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">accessibility_new</i>New Users</div>
+                            <div class="collapsible-body center-align">
+                                <iframe width="610" height="381" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=1228212082&amp;format=interactive"></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">accessibility_new</i>Sprint Goals</div>
+                            <div class="collapsible-body center-align">
+                                <iframe width="414" height="581" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubhtml?gid=1440128569&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                                <iframe width="414" height="581" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubhtml?gid=694469426&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">accessibility_new</i>Percentage Growth</div>
+                            <div class="collapsible-body center-align">
+                                <iframe width="610" height="381" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=2112691518&amp;format=interactive"></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">assignment</i>New SOLEs</div>
+                            <div class="collapsible-body center-align">
+                                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=1173715217&amp;format=interactive"></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">assignment_turned_in</i>Completed SOLEs</div>
+                            <div class="collapsible-body center-align">
+                                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=42978245&amp;format=interactive"></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">assessment</i>Users & SOLEs</div>
+                            <div class="collapsible-body center-align">
+                                <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=484086850&amp;format=interactive"></iframe>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">assessment</i>SOLE State Funnel</div>
+                            <div class="collapsible-body center-align">
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <ul class="tabs">
+                                            <li class="tab col s3"><a href="#funnel16">2016</a></li>
+                                            <li class="tab col s3"><a href="#funnel17">2017</a></li>
+                                            <li class="tab col s3 "><a href="#funnel18">2018</a></li>
+                                            <li class="tab col s3"><a class="active" href="#funnel19">2019</a></li>
+                                        </ul>
+                                    </div>
+                                    <div id="funnel16" class="col s12">
+
+                                        <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=525054901&format=interactive"></iframe>
+
+                                    </div>
+                                    <div id="funnel17" class="col s12">
+
+                                        <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=225635009&format=interactive"></iframe>
+
+                                    </div>
+                                    <div id="funnel18" class="col s12">
+
+                                        <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=1863938803&format=interactive"></iframe>
+
+                                    </div>
+                                    <div id="funnel19" class="col s12">
+
+                                        <iframe width="610" height="381" frameborder="0" src="https://docs.google.com/a/startsole.org/spreadsheets/d/e/2PACX-1vTAud3Byx20AU8cV90dYh4BkGILQJC9GjkJZwsTdgJa6fVRIURiCiVCUOxiBrfCEw3fB0YfpAilj8w_/pubchart?oid=1719793379&format=interactive"></iframe>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/browse-soles">Browse All SOLEs</a>
+                    <a href="/admin/browse-users">Browse Users</a>
+                    <a href="/admin/pending-soles">Pending SOLEs</a>
+                    <a href="/admin/events">Conferences and Events</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h4>StartSOLE Sites</h4>
+                <span class="grey-text text-darken-3"><i>NB: Each site may contain multiple users, this map only displays one per site.</i></span>
+                <br><br>
+                <div id="map"></div>
+                <div class="row">
+                    <div class="input-field col s12 m4">
+                        <form action="#">
+                            <p class="range-field">
+                                <input type="range" id="number-of-soles" min="0" max="50" value="0" onchange="changeMap();"/>
+                                <label for="number-of-soles">Number of SOLEs</label>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <form action="#">
+                            <p class="range-field">
+                                <input type="range" id="number-of-ceus" min="0" max="5" value="0" onchange="changeMap();"/>
+                                <label for="number-of-ceus">Number of CEUs</label>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <form action="#">
+                            <p class="range-field">
+                                <input type="range" id="number-of-favorites" min="0" max="50" value="0" onchange="changeMap();"/>
+                                <label for="number-of-favorites">Number of Favorite Questions</label>
+                            </p>
+                        </form>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <input type="text" id="start-date" class="datepicker" onchange="changeMap();">
+                        <label for="start-date-date">Created At Start Date</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <input type="text" id="end-date" class="datepicker" onchange="changeMap();">
+                        <label for="end-date">Created At End Date</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <select id="client" onchange="changeMap();">
+                            <option value="all" disabled selected>Choose your option</option>
+                            <option value="and">Android</option>
+                            <option value="ios">iOS</option>
+                            <option value="web">Web</option>
+                            <option value="">Unknown</option>
+                            <option value="all">Show All</option>
+                        </select>
+                        <label>Client</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <select id="country" onchange="changeMap();">
+                            <option value="all" selected>Show All</option>
+                            <option value="US">United States</option>
+                            <option value="AF">Afghanistan</option>
+                            <option value="AX">Åland Islands</option>
+                            <option value="AL">Albania</option>
+                            <option value="DZ">Algeria</option>
+                            <option value="AS">American Samoa</option>
+                            <option value="AD">Andorra</option>
+                            <option value="AO">Angola</option>
+                            <option value="AI">Anguilla</option>
+                            <option value="AQ">Antarctica</option>
+                            <option value="AG">Antigua and Barbuda</option>
+                            <option value="AR">Argentina</option>
+                            <option value="AM">Armenia</option>
+                            <option value="AW">Aruba</option>
+                            <option value="AU">Australia</option>
+                            <option value="AT">Austria</option>
+                            <option value="AZ">Azerbaijan</option>
+                            <option value="BS">Bahamas</option>
+                            <option value="BH">Bahrain</option>
+                            <option value="BD">Bangladesh</option>
+                            <option value="BB">Barbados</option>
+                            <option value="BY">Belarus</option>
+                            <option value="BE">Belgium</option>
+                            <option value="BZ">Belize</option>
+                            <option value="BJ">Benin</option>
+                            <option value="BM">Bermuda</option>
+                            <option value="BT">Bhutan</option>
+                            <option value="BO">Bolivia, Plurinational State of</option>
+                            <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                            <option value="BA">Bosnia and Herzegovina</option>
+                            <option value="BW">Botswana</option>
+                            <option value="BV">Bouvet Island</option>
+                            <option value="BR">Brazil</option>
+                            <option value="IO">British Indian Ocean Territory</option>
+                            <option value="BN">Brunei Darussalam</option>
+                            <option value="BG">Bulgaria</option>
+                            <option value="BF">Burkina Faso</option>
+                            <option value="BI">Burundi</option>
+                            <option value="KH">Cambodia</option>
+                            <option value="CM">Cameroon</option>
+                            <option value="CA">Canada</option>
+                            <option value="CV">Cape Verde</option>
+                            <option value="KY">Cayman Islands</option>
+                            <option value="CF">Central African Republic</option>
+                            <option value="TD">Chad</option>
+                            <option value="CL">Chile</option>
+                            <option value="CN">China</option>
+                            <option value="CX">Christmas Island</option>
+                            <option value="CC">Cocos (Keeling) Islands</option>
+                            <option value="CO">Colombia</option>
+                            <option value="KM">Comoros</option>
+                            <option value="CG">Congo</option>
+                            <option value="CD">Congo, the Democratic Republic of the</option>
+                            <option value="CK">Cook Islands</option>
+                            <option value="CR">Costa Rica</option>
+                            <option value="CI">Côte d'Ivoire</option>
+                            <option value="HR">Croatia</option>
+                            <option value="CU">Cuba</option>
+                            <option value="CW">Curaçao</option>
+                            <option value="CY">Cyprus</option>
+                            <option value="CZ">Czech Republic</option>
+                            <option value="DK">Denmark</option>
+                            <option value="DJ">Djibouti</option>
+                            <option value="DM">Dominica</option>
+                            <option value="DO">Dominican Republic</option>
+                            <option value="EC">Ecuador</option>
+                            <option value="EG">Egypt</option>
+                            <option value="SV">El Salvador</option>
+                            <option value="GQ">Equatorial Guinea</option>
+                            <option value="ER">Eritrea</option>
+                            <option value="EE">Estonia</option>
+                            <option value="ET">Ethiopia</option>
+                            <option value="FK">Falkland Islands (Malvinas)</option>
+                            <option value="FO">Faroe Islands</option>
+                            <option value="FJ">Fiji</option>
+                            <option value="FI">Finland</option>
+                            <option value="FR">France</option>
+                            <option value="GF">French Guiana</option>
+                            <option value="PF">French Polynesia</option>
+                            <option value="TF">French Southern Territories</option>
+                            <option value="GA">Gabon</option>
+                            <option value="GM">Gambia</option>
+                            <option value="GE">Georgia</option>
+                            <option value="DE">Germany</option>
+                            <option value="GH">Ghana</option>
+                            <option value="GI">Gibraltar</option>
+                            <option value="GR">Greece</option>
+                            <option value="GL">Greenland</option>
+                            <option value="GD">Grenada</option>
+                            <option value="GP">Guadeloupe</option>
+                            <option value="GU">Guam</option>
+                            <option value="GT">Guatemala</option>
+                            <option value="GG">Guernsey</option>
+                            <option value="GN">Guinea</option>
+                            <option value="GW">Guinea-Bissau</option>
+                            <option value="GY">Guyana</option>
+                            <option value="HT">Haiti</option>
+                            <option value="HM">Heard Island and McDonald Islands</option>
+                            <option value="VA">Holy See (Vatican City State)</option>
+                            <option value="HN">Honduras</option>
+                            <option value="HK">Hong Kong</option>
+                            <option value="HU">Hungary</option>
+                            <option value="IS">Iceland</option>
+                            <option value="IN">India</option>
+                            <option value="ID">Indonesia</option>
+                            <option value="IR">Iran, Islamic Republic of</option>
+                            <option value="IQ">Iraq</option>
+                            <option value="IE">Ireland</option>
+                            <option value="IM">Isle of Man</option>
+                            <option value="IL">Israel</option>
+                            <option value="IT">Italy</option>
+                            <option value="JM">Jamaica</option>
+                            <option value="JP">Japan</option>
+                            <option value="JE">Jersey</option>
+                            <option value="JO">Jordan</option>
+                            <option value="KZ">Kazakhstan</option>
+                            <option value="KE">Kenya</option>
+                            <option value="KI">Kiribati</option>
+                            <option value="KP">Korea, Democratic People's Republic of</option>
+                            <option value="KR">Korea, Republic of</option>
+                            <option value="KW">Kuwait</option>
+                            <option value="KG">Kyrgyzstan</option>
+                            <option value="LA">Lao People's Democratic Republic</option>
+                            <option value="LV">Latvia</option>
+                            <option value="LB">Lebanon</option>
+                            <option value="LS">Lesotho</option>
+                            <option value="LR">Liberia</option>
+                            <option value="LY">Libya</option>
+                            <option value="LI">Liechtenstein</option>
+                            <option value="LT">Lithuania</option>
+                            <option value="LU">Luxembourg</option>
+                            <option value="MO">Macao</option>
+                            <option value="MK">Macedonia, the former Yugoslav Republic of</option>
+                            <option value="MG">Madagascar</option>
+                            <option value="MW">Malawi</option>
+                            <option value="MY">Malaysia</option>
+                            <option value="MV">Maldives</option>
+                            <option value="ML">Mali</option>
+                            <option value="MT">Malta</option>
+                            <option value="MH">Marshall Islands</option>
+                            <option value="MQ">Martinique</option>
+                            <option value="MR">Mauritania</option>
+                            <option value="MU">Mauritius</option>
+                            <option value="YT">Mayotte</option>
+                            <option value="MX">Mexico</option>
+                            <option value="FM">Micronesia, Federated States of</option>
+                            <option value="MD">Moldova, Republic of</option>
+                            <option value="MC">Monaco</option>
+                            <option value="MN">Mongolia</option>
+                            <option value="ME">Montenegro</option>
+                            <option value="MS">Montserrat</option>
+                            <option value="MA">Morocco</option>
+                            <option value="MZ">Mozambique</option>
+                            <option value="MM">Myanmar</option>
+                            <option value="NA">Namibia</option>
+                            <option value="NR">Nauru</option>
+                            <option value="NP">Nepal</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="NC">New Caledonia</option>
+                            <option value="NZ">New Zealand</option>
+                            <option value="NI">Nicaragua</option>
+                            <option value="NE">Niger</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="NU">Niue</option>
+                            <option value="NF">Norfolk Island</option>
+                            <option value="MP">Northern Mariana Islands</option>
+                            <option value="NO">Norway</option>
+                            <option value="OM">Oman</option>
+                            <option value="PK">Pakistan</option>
+                            <option value="PW">Palau</option>
+                            <option value="PS">Palestinian Territory, Occupied</option>
+                            <option value="PA">Panama</option>
+                            <option value="PG">Papua New Guinea</option>
+                            <option value="PY">Paraguay</option>
+                            <option value="PE">Peru</option>
+                            <option value="PH">Philippines</option>
+                            <option value="PN">Pitcairn</option>
+                            <option value="PL">Poland</option>
+                            <option value="PT">Portugal</option>
+                            <option value="PR">Puerto Rico</option>
+                            <option value="QA">Qatar</option>
+                            <option value="RE">Réunion</option>
+                            <option value="RO">Romania</option>
+                            <option value="RU">Russian Federation</option>
+                            <option value="RW">Rwanda</option>
+                            <option value="BL">Saint Barthélemy</option>
+                            <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+                            <option value="KN">Saint Kitts and Nevis</option>
+                            <option value="LC">Saint Lucia</option>
+                            <option value="MF">Saint Martin (French part)</option>
+                            <option value="PM">Saint Pierre and Miquelon</option>
+                            <option value="VC">Saint Vincent and the Grenadines</option>
+                            <option value="WS">Samoa</option>
+                            <option value="SM">San Marino</option>
+                            <option value="ST">Sao Tome and Principe</option>
+                            <option value="SA">Saudi Arabia</option>
+                            <option value="SN">Senegal</option>
+                            <option value="RS">Serbia</option>
+                            <option value="SC">Seychelles</option>
+                            <option value="SL">Sierra Leone</option>
+                            <option value="SG">Singapore</option>
+                            <option value="SX">Sint Maarten (Dutch part)</option>
+                            <option value="SK">Slovakia</option>
+                            <option value="SI">Slovenia</option>
+                            <option value="SB">Solomon Islands</option>
+                            <option value="SO">Somalia</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="GS">South Georgia and the South Sandwich Islands</option>
+                            <option value="SS">South Sudan</option>
+                            <option value="ES">Spain</option>
+                            <option value="LK">Sri Lanka</option>
+                            <option value="SD">Sudan</option>
+                            <option value="SR">Suriname</option>
+                            <option value="SJ">Svalbard and Jan Mayen</option>
+                            <option value="SZ">Swaziland</option>
+                            <option value="SE">Sweden</option>
+                            <option value="CH">Switzerland</option>
+                            <option value="SY">Syrian Arab Republic</option>
+                            <option value="TW">Taiwan, Province of China</option>
+                            <option value="TJ">Tajikistan</option>
+                            <option value="TZ">Tanzania, United Republic of</option>
+                            <option value="TH">Thailand</option>
+                            <option value="TL">Timor-Leste</option>
+                            <option value="TG">Togo</option>
+                            <option value="TK">Tokelau</option>
+                            <option value="TO">Tonga</option>
+                            <option value="TT">Trinidad and Tobago</option>
+                            <option value="TN">Tunisia</option>
+                            <option value="TR">Turkey</option>
+                            <option value="TM">Turkmenistan</option>
+                            <option value="TC">Turks and Caicos Islands</option>
+                            <option value="TV">Tuvalu</option>
+                            <option value="UG">Uganda</option>
+                            <option value="UA">Ukraine</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="UM">United States Minor Outlying Islands</option>
+                            <option value="UY">Uruguay</option>
+                            <option value="UZ">Uzbekistan</option>
+                            <option value="VU">Vanuatu</option>
+                            <option value="VE">Venezuela, Bolivarian Republic of</option>
+                            <option value="VN">Viet Nam</option>
+                            <option value="VG">Virgin Islands, British</option>
+                            <option value="VI">Virgin Islands, U.S.</option>
+                            <option value="WF">Wallis and Futuna</option>
+                            <option value="EH">Western Sahara</option>
+                            <option value="YE">Yemen</option>
+                            <option value="ZM">Zambia</option>
+                            <option value="ZW">Zimbabwe</option>
+                        </select>
+                        <label>Country</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <select id="state" onchange="changeMap();">
+                            <option value="all" selected>Show All</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="DC">District Of Columbia</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                        </select>
+                        <label>State</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <input id="zip" type="number" class="validate" onchange="changeMap();">
+                        <label>Zip</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <select id="grade" onchange="changeMap();">
+                            <option value="all" selected>All Grades</option>
+                            <option value="edu.pre-k">Preschool</option>
+                            <option value="edu.k">Kindergarten</option>
+                            <option value="edu.1">First Grade</option>
+                            <option value="edu.2">Second Grade</option>
+                            <option value="edu.3">Third Grade</option>
+                            <option value="edu.4">Fourth Grade</option>
+                            <option value="edu.5">Fifth Grade</option>
+                            <option value="edu.6">Sixth Grade</option>
+                            <option value="edu.7">Seventh Grade</option>
+                            <option value="edu.8">Eighth Grade</option>
+                            <option value="edu.9">Ninth Grade</option>
+                            <option value="edu.10">Tenth Grade</option>
+                            <option value="edu.11">Eleventh Grade</option>
+                            <option value="edu.12">Twelfth Grade</option>
+                        </select>
+                        <label>Grade</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <select id="subjects" onchange="changeMap();">
+                            <option value="all" selected>All Subjects</option>
+                            <option value="top.careereducation">Career Education</option>
+                            <option value="top.engineering">Engineering</option>
+                            <option value="top.english">English</option>
+                            <option value="top.englishlanguagedevelopment">English Language Development</option>
+                            <option value="top.financialliteracy">Financial Literacy</option>
+                            <option value="top.health">Health</option>
+                            <option value="top.libmedia-infolit">Library Media / Information Literacy</option>
+                            <option value="top.lifeskills">Life Skills</option>
+                            <option value="top.math">Math</option>
+                            <option value="top.physicaleducation">Physical Education</option>
+                            <option value="top.science">Science</option>
+                            <option value="top.socialstudies">Social Studies</option>
+                            <option value="top.technology">Technology</option>
+                            <option value="top.thearts">The Arts</option>
+                            <option value="top.foreignlanguage">World Languages</option>
+                        </select>
+                        <label>Subject</label>
+                    </div>
+                    <div class="input-field col s12 m4">
+                        <select id="role" onchange="changeMap();">
+                            <option value="all" selected>All Roles</option>
+                            <option value="user.role.teacher">Teacher</option>
+                            <option value="user.role.preservice_teacher">Pre-service Teacher</option>
+                            <option value="user.role.administrator">Administrator</option>
+                            <option value="user.role.coach">Coach</option>
+                            <option value="user.role.out_of_school_educator">Out of School Educator</option>
+                            <option value="user.role.parent">Parent</option>
+                            <option value="user.role.other">Other</option>
+                        </select>
+                        <label>Role</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/js/materialize.min.js"></script>
+    <script>
+
+        var styleArray = [
+            { "featureType": "water", "elementType": "geometry.fill", "stylers": [{ "color": "#bae8e4" }] },
+            { "featureType": "poi", "elementType": "geometry", "stylers": [{ "visibility": "off" }] },
+            { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#fff" }] },
+            { "featureType": "poi", "stylers": [{ "visibility": "off" }] },
+            { "featureType": "administrative.province","elementType": "geometry.stroke", "stylers": [{"visibility": "on"},{"weight": 2.5}]},
+            { "featureType": "road", "stylers": [{ "visibility": "off" }] },
+            { "featureType": "landscape", "stylers": [{ "color": "#fafafa" }] }
+        ];
+        var map;
+        var layer;
+
+
+            var elems = document.querySelectorAll('.datepicker');
+            M.Datepicker.init(elems, {
+                format: 'mm/dd/yy'
+            });
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems, {});
+
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems, {});
+
+            var elems = document.querySelectorAll('.tabs');
+            M.Tabs.init(elems, {});
+
+
+
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+//            center: {lat: 40.0083672, lng: -75.7364713}, //Downingtown, PA
+//                 center: {lat: 40.3436036, lng: -82.5155287}, //Ohio
+           center: {lat: 39.8283459, lng: -98.5794797}, //US
+//                 zoom: 8, //Ohio
+               zoom: 3, //US
+//                 disableDefaultUI: true,
+                styles: styleArray
+            });
+
+            layer = new google.maps.FusionTablesLayer({
+                query: {
+                    select: '\'address\'',
+                    from: '{{config.fusionTable}}'
+                }
+            });
+            layer.setMap(map);
+        }
+
+        function changeMap() {
+            console.log("map change!");
+            var whereClause = "'tester' = 'FALSE' ";
+            var searchString = document.getElementById('number-of-soles').value.replace(/'/g, "\\'");
+            var numSoles = $("#number-of-soles").val();
+            var numCEUs = $("#number-of-ceus").val();
+            var numFavorites = $("#number-of-favorites").val();
+            var startDate = $("#start-date").val();
+            var endDate = $("#end-date").val();
+            var client = $("#client").val();
+            var country = $("#country").val();
+            var state = $("#state").val();
+            var zip = $("#zip").val();
+            var grade = $("#grade").val();
+            var subjects = $("#subjects").val();
+            var role = $("#role").val();
+            if(numSoles>0){
+              whereClause += "AND 'soles' >= '" + numSoles + "' ";
+            }
+            if(numCEUs>0){
+              whereClause += "AND 'ceus' >= '" + numCEUs + "' ";
+            }
+            if(numFavorites>0){
+              whereClause += "AND 'favorites' >= '" + numFavorites + "' ";
+            }
+            if(startDate.length>0){
+                whereClause += "AND 'created' >= '" + startDate + "' ";
+            }
+            if(endDate.length>0){
+                whereClause += "AND 'created' <= '" + endDate + "' ";
+            }
+            if(client && client != "all"){
+                whereClause += "AND 'client' = '" + client + "' ";
+            }
+            if(country && country != "all"){
+                whereClause += "AND 'country' = '" + country + "' ";
+            }
+            if(state && state != "all"){
+                whereClause += "AND 'state' = '" + state + "' ";
+            }
+            if(zip){
+                whereClause += "AND 'zip' = '" + zip + "' ";
+            }
+            if(grade && grade != "all"){
+                whereClause += "AND 'grades' CONTAINS IGNORING CASE '" + grade + "' ";
+            }
+            if(subjects && subjects != "all"){
+                whereClause += "AND 'subjects' CONTAINS IGNORING CASE '" + subjects + "' ";
+            }
+            if(role && role != "all"){
+                whereClause += "AND 'role' = '" + role + "' ";
+            }
+
+
+            layer.setOptions({
+                query: {
+                    select: "col12",
+                    from: "{{config.fusionTable}}",
+                    where: whereClause
+                }
+            });
+        }
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key={{config.mapKey}}&callback=initMap">
+    </script>
+
+
+{{/if}}
+

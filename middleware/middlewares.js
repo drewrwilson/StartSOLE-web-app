@@ -1,3 +1,5 @@
+const soleConfig  = require('../sole-config.js');
+
 module.exports = {
   /**
    * Middleware. Check if a user is logged in before showing any routes that require

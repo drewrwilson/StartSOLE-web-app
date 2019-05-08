@@ -19,14 +19,13 @@
   $(document).ready(function(){
     $('select').formSelect();
   });
-
-  //bind a trigger on changing language that updates the cookie with the new language and then reloads the page
-  $('#sidebar-language').change(function () {
-    console.log('trying to change language')
+  function changeLanguage (newLanguage) {
     //update cookie with data from form
-    var newLanguage = $('#sidebar-language').val();//get the new language from the UI
-
     document.cookie = 'language=; Max-Age=0';//remove the language from the cookie
     document.cookie = 'language='+newLanguage; //save the language in the cookie
     location.reload(); //reload the window
+  };
+  //bind a trigger on changing language that updates the cookie with the new language and then reloads the page
+  $('#sidebar-language').change(function () {
+    changeLanguage($('#sidebar-language').val()); //get the new language from the UI
   });

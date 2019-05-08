@@ -80,7 +80,7 @@ function setLanguage (req, res, next) {
       req.language = language; //set i18n language here instead of putting it in the req
       next();
     }).catch(err => {
-      err.userMessage = 'idk';
+      err.userMessage = 'Some kind of language error';
       next(err);
     })
   } else {
@@ -334,6 +334,26 @@ router.route('/login')
     }
   });
 
+
+// route for logging in (spanish
+//TODO: this isn't ideal. duplicated code from above. doing this because it's supposed to be temporary.
+router.route('/login-es')
+  .get((req, res, next) => {
+    //this is a special case. this code is similar to the isAuth function, but we do
+    //it here because we want to redirect someone to /home if they're already logged in.
+    const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
+    if (sessionToken) {
+      res.redirect('/home');
+    } else {
+      const email = req.query.email;
+      res.render('login-es', {
+        layout: 'prelogin.hbs',
+        config: soleConfig,
+        email: email
+      });
+    }
+  });
+
 // route for completing profile
 //TODO: there are lots of possible fail scenarios here. eg if profileData.user is undefined. Or if req.query.firstname is undefined
 router.route('/complete-profile')
@@ -345,6 +365,7 @@ router.route('/complete-profile')
         profileData.user.firstName = req.query.firstname;
         profileData.user.lastName = req.query.lastname;
       }
+      soleConfig.language = req.language;
       res.render('complete-profile', {
         layout: 'no-sidebar.hbs',
         profile: profileData,
@@ -1021,7 +1042,7 @@ router.route('/admin/events')
   .get(isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(roleData.isAdmin || roleData.isAmbassador) { //TODO: replace with middleware later
-        res.render('admin/admin-conferences-and-events', adminData);
+        res.render('admin/admin-conferences-and-events');
       } else {
         res.render('admin/admin-conferences-and-events', {
           config: soleConfig,

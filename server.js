@@ -1065,3 +1065,7 @@ logger.log('db   8D    88    88   88 88 `88.    88    db   8D `8b  d8\' 88booo. 
 logger.log('`8888Y\'    YP    YP   YP 88   YD    YP    `8888Y\'  `Y88P\'  Y88888P Y88888P \n');
 
 logger.log('Server running. You can view it locally at http://localhost:' + port);
+
+if (logger.useSlackBot) {
+  logger.slackbot({title: 'Just started the server!'});
+}

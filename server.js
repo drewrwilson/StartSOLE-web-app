@@ -951,7 +951,7 @@ app.get('*', function(req, res, next){
     userMessage: '404. This page does not exist.',
     req: req
   };
-  errorHandler(err, req, res, next)
+  middlewares.errorHandler(err, req, res, next)
 });
 
 // START THE SERVER

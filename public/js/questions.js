@@ -165,10 +165,10 @@ function getQuestions () {
     standards = standards.filter(standard => standard != 'all')
     console.log('standards', standards);
 
-    Parse.Cloud.run('webapp.findQuestionByTagsAndTextForLanguages', {
+    Parse.Cloud.run('webapp.findQuestionByTagsAndText', {
       tags: standards,
       text: questionText,
-      languages: [language],
+      // languages: [language],
       sessionToken: sessionToken
     }).then(response=>{
       //Ok, now that we have the questions with a given tag, let's add them to the DOM

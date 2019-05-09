@@ -21,6 +21,19 @@ var sesh         = $('#sesh').val(), //get the sesh token from the DOM
 
 var standardPickerLevel = 0;
 
+//get language
+var language = 'en';
+
+if (document.cookie) {
+  try {
+    language = document.cookie.split(';').filter(function(item) {
+      return item.trim().indexOf('language=') == 0
+    })[0].slice(10);
+  } catch {
+    language = 'en';
+  }
+}
+
 function getGrades(subject){
   if (subject == 'all') {
     subject = false;
@@ -86,17 +99,21 @@ $('#grade').change(function (){
   $(allSiblings).remove()
   getQuestions();
 
-  getStandards(rdn, grade).then(standards=>{
-    // console.log(standards);
+  if (language=='en') {
+    getStandards(rdn, grade).then(standards=>{
+      // console.log(standards);
 
-    var source   = $("#standard-picker-template").html(),
+      var source   = $("#standard-picker-template").html(),
         template = Handlebars.compile(source),
         html     = '';
 
-    html = template({standards: standards});
-    $('#standard-picker').append(html)
+      html = template({standards: standards});
+      $('#standard-picker').append(html)
 
-  })
+    })
+  }
+
+
 })
 
 //when the user changes the grade, get the corresponding standards
@@ -117,7 +134,7 @@ function itChanged (element){
   getStandards(rdn, grade).then(standards=>{
     console.log(standards);
 
-    if (standards.length > 0) {
+    if (standards.length > 0 ) {
       var source   = $("#standard-picker-template").html(),
           template = Handlebars.compile(source),
           html     = '';
@@ -148,9 +165,10 @@ function getQuestions () {
     standards = standards.filter(standard => standard != 'all')
     console.log('standards', standards);
 
-    Parse.Cloud.run('webapp.findQuestionByTagsAndText', {
+    Parse.Cloud.run('webapp.findQuestionByTagsAndTextForLanguages', {
       tags: standards,
       text: questionText,
+      languages: [language],
       sessionToken: sessionToken
     }).then(response=>{
       //Ok, now that we have the questions with a given tag, let's add them to the DOM

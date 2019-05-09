@@ -8,11 +8,12 @@ const i18n        = require('i18n');
 const Controllers = require('./controllers/controllers.js');
 const cookieParser = require('cookie-parser');
 const logger = require('./logger.js');
-require('./helpers/handlebars-helpers.js');
-logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
-
+const hbsHelper = require('./helpers/handlebars-helpers.js')(hbs);
+const middlewares = require("./middleware/middlewares.js");
 const soleConfig  = require('./sole-config.js');
 const port = process.env.PORT || 8080; // set our port
+
+logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
 i18n.configure({
   locales: ['en', 'es'],
@@ -41,110 +42,9 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(i18n.init);
 
-
-/**
- * Middleware. Check if a user is logged in before showing any routes that require
- * authentication. If user is not logged in, redirect to login page.
- * @param req
- * @param res
- * @param next
- */
-function isAuth (req, res, next) {
-  const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
-  if (sessionToken) {
-    //TODO: check if sessionToken is valid or parse calls might fail
-    req.sessionToken = sessionToken;
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
-
-/**
- * middleware to set language for user. right now this starts by checking if the language is
- * already set in cookie. if so, set language to the cookie language. if not, check the ring
- * to see if there's a language set in for the ring. right now this just works for the colombia
- * ring, but in the future we'll have language associated with the user in the backend and a way
- * to change it in the webapp and save it in the cookie.
- * @param req
- * @param res
- * @param next
- */
-function setLanguage (req, res, next) {
-  const language = req.cookies ? req.cookies.language: undefined; //check if language is saved in the cookie
-  if (language) {
-    req.language = language; //set i18n language here in stead of putting it in the req
-    next();
-  } else if (req.sessionToken) {
-    Controllers.User.getLanguage(req.sessionToken).then(language => {
-      req.language = language; //set i18n language here instead of putting it in the req
-      next();
-    }).catch(err => {
-      err.userMessage = 'idk';
-      next(err);
-    })
-  } else {
-    //if we don't have a sessionToken, eg if we're just viewing static pages like privacy or terms-of-service
-    next();
-  }
-
-}
-
-/**
- * logs an error to the backend and sends a human-readable message to a slack channel
- * @param err error object
- * @param req request object from express
- * @param res response object from express
- * @param next express function to advance to the next middleware function
- */
-function logErrors (err, req, res, next) {
-  err.sessionToken = req.sessionToken ? req.sessionToken: undefined;
-  err.originalUrl = req.originalUrl ? req.originalUrl: undefined;
-
-  if (err.postToSlack) {
-    logger.error({
-      userMessage: err.userMessage,
-      serverCode: err.code,
-      serverMessage: err.message,
-      originalUrl: err.originalUrl,
-      sessionToken: err.sessionToken
-    });
-  } else {
-    logger.warning(err); //record in the backend log but don't post to slack
-  }
-  next(err);
-}
-
-/**
- * shows the user an error page with human-readable text
- * @param err error object
- * @param req request object from express
- * @param res response object from express
- * @param next express function to advance to the next middleware function
- */
-function errorHandler (err, req, res, next) {
-  res.render('fail', {
-    layout: 'no-sidebar.hbs',
-    error: err.userMessage || 'Oops! Something went wrong.',
-    config: soleConfig
-  });
-}
-
-/**
- *
- * @param errorMessage string human-readable error text that will be displayed to the user
- * @param err json object the error object from parse
- * @param originUrl string the URL where the err originated
- * @param sessionToken string sessionToken when the error happened
- * @param next function for advancing to the next middleware
- * @param postToSlack boolean make true if you want to post this error to slack
- */
-function showError ({userMessage, err, originUrl, sessionToken, next, postToSlack}) {
-  if (postToSlack) {
-    logger.error();
-  }
-  next(err);
-}
+app.use(middlewares.setLanguage);
+app.use(middlewares.logErrors);
+app.use(middlewares.errorHandler);
 
 const router = express.Router();              // get an instance of the express Router
 
@@ -153,12 +53,6 @@ app.use('/', router);
 
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));
-
-// enable error logging (for logging errors for troubleshooting)
-app.use(logErrors);
-
-// enable error handler (showing the user an error)
-app.use(errorHandler);
 
 /**
  * ====================================
@@ -170,7 +64,7 @@ app.use(errorHandler);
  * root route (heh, heh)
  */
 router.route('/')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.User.isProfileComplete(req.sessionToken).then(profileIsCompleted => {
       res.redirect(profileIsCompleted ? '/home' : '/complete-profile');
     }).catch(err => {
@@ -182,7 +76,7 @@ router.route('/')
   });
 
 router.route('/home')
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     soleConfig.language = req.language;
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       let homeData = {
@@ -207,45 +101,44 @@ router.route('/home')
     }).catch(err => {
       err.userMessage = 'Failed to role data for user.';
       err.postToSlack = true;
-
       next(err);
     });
   });
 
 // static route for History of SOLE
 router.route('/history')
-  .get(setLanguage, (req, res, next) => {
+  .get((req, res, next) => {
     res.render('page-history', {config: soleConfig});
   });
 
 // static route for History of SOLE
 router.route('/how')
-  .get(setLanguage, (req, res, next) => {
+  .get((req, res, next) => {
     res.render('page-how-to-sole', {config: soleConfig});
   });
 
 // static route for ToS
 router.route('/terms-of-use')
-  .get(setLanguage, (req, res, next) => {
+  .get((req, res, next) => {
     res.render('page-terms-of-use', {layout: 'no-sidebar.hbs', config: soleConfig});
   });
 
 // static route for privacy
 router.route('/privacy')
-  .get(setLanguage, (req, res, next) => {
+  .get((req, res, next) => {
     res.render('page-privacy', {layout: 'no-sidebar.hbs', config: soleConfig});
   });
 
 // static route for email verification success
 router.route('/verify-email-success')
-  .get(setLanguage, (req, res, next) => {
+  .get((req, res, next) => {
     const email = req.query.email;
     res.render('verify-email-success', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
 
 // static route for email verification failure
 router.route('/verify-email-failure')
-  .get(setLanguage, (req, res, next) => {
+  .get((req, res, next) => {
     const email = req.query.email;
     res.render('verify-email-failure', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
@@ -261,13 +154,12 @@ router.route('/resources')
     }).catch(err => {
       err.userMessage = 'Error getting resources.';
       err.postToSlack = true;
-
       next(err);
     });
   });
 
 router.route('/profile')
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.User.getProfileData(req.sessionToken)
       .then(profileData => {
         profileData.config = soleConfig;
@@ -279,7 +171,7 @@ router.route('/profile')
     });
   })
   //TODO: this is a mess, come back to this to make it more consistent with the rest of the app
-  .post(isAuth, (req, res, next) => {
+  .post(middlewares.isAuth, (req, res, next) => {
     Controllers.User.updateProfileData(req.body.subjects || false,
       req.body.grades || false,
       req.body.role || false,
@@ -319,7 +211,7 @@ router.route('/logout')
 // route for logging in
 router.route('/login')
   .get((req, res, next) => {
-    //this is a special case. this code is similar to the isAuth function, but we do
+    //this is a special case. this code is similar to the middlewares.isAuth function, but we do
     //it here because we want to redirect someone to /home if they're already logged in.
     const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
     if (sessionToken) {
@@ -334,10 +226,30 @@ router.route('/login')
     }
   });
 
+
+// route for logging in (spanish
+//TODO: this isn't ideal. duplicated code from above. doing this because it's supposed to be temporary.
+router.route('/login-es')
+  .get((req, res, next) => {
+    //this is a special case. this code is similar to the middlewares.isAuth function, but we do
+    //it here because we want to redirect someone to /home if they're already logged in.
+    const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
+    if (sessionToken) {
+      res.redirect('/home');
+    } else {
+      const email = req.query.email;
+      res.render('login-es', {
+        layout: 'prelogin.hbs',
+        config: soleConfig,
+        email: email
+      });
+    }
+  });
+
 // route for completing profile
 //TODO: there are lots of possible fail scenarios here. eg if profileData.user is undefined. Or if req.query.firstname is undefined
 router.route('/complete-profile')
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.User.getProfileData(req.sessionToken).then(profileData => {
       if (profileData.user.firstName && profileData.user.lastName) {
         console.log('um, hi. whats this all about?');
@@ -345,6 +257,7 @@ router.route('/complete-profile')
         profileData.user.firstName = req.query.firstname;
         profileData.user.lastName = req.query.lastname;
       }
+      soleConfig.language = req.language;
       res.render('complete-profile', {
         layout: 'no-sidebar.hbs',
         profile: profileData,
@@ -353,12 +266,11 @@ router.route('/complete-profile')
     }).catch(err => {
       err.userMessage = 'Error getting user profile data.';
       err.postToSlack = true;
-
       next(err);
     });
   })
   //TODO: test that this still works
-  .post(isAuth, (req, res, next) =>{
+  .post(middlewares.isAuth, (req, res, next) =>{
     Controllers.User.updateProfileData(
       req.body.subjects,
       req.body.grades,
@@ -382,7 +294,7 @@ router.route('/complete-profile')
 
 router.route('/soles')
 //get all the soles
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.getAll(req.sessionToken)
       .then(soles=>{
         soles.config = soleConfig;
@@ -397,7 +309,7 @@ router.route('/soles')
 
 router.route('/soles/:id')
 //get the sole with that id
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       //in case the id of the sole is invalid
       singleSole.config = soleConfig;
@@ -411,7 +323,7 @@ router.route('/soles/:id')
 
 router.route('/soles/:id/download-plan')
 //get the sole with that id
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     const id = req.params.id;
     const type = 'plan';
     Controllers.Sole.downloadDocument(id, type, req.sessionToken)
@@ -426,7 +338,7 @@ router.route('/soles/:id/download-plan')
 
 router.route('/soles/:id/download-summary')
 //get the sole with that id
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     const id = req.params.id;
     const type = 'summary';
     Controllers.Sole.downloadDocument(id, type, req.sessionToken)
@@ -440,7 +352,7 @@ router.route('/soles/:id/download-summary')
   });
 
 router.route('/soles/:id/copy')
-  .get(isAuth, (req,res) => {
+  .get(middlewares.isAuth, (req,res) => {
     Controllers.Sole.copy(req.params.id, req.sessionToken).then(soleID => {
       res.redirect('/soles');
     }).catch(err => {
@@ -452,7 +364,7 @@ router.route('/soles/:id/copy')
 
 router.route('/soles/:id/edit')
 //get the sole with that id
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render('soles-add', singleSole);
@@ -462,7 +374,7 @@ router.route('/soles/:id/edit')
       next(err);
     });
   })
-  .post(isAuth, (req, res, next) => {
+  .post(middlewares.isAuth, (req, res, next) => {
     //TODO: make this reusable for copying
     //push observations into this array if any are set to 'on'
     let targetObservations = [];
@@ -517,7 +429,7 @@ router.route('/soles/:id/edit')
 
 router.route('/soles/:id/delete')
 //get the sole with that id
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render('soles-delete', singleSole);
@@ -527,7 +439,7 @@ router.route('/soles/:id/delete')
       next(err);
     });
   })
-  .post(isAuth, (req, res, next) => {
+  .post(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.delete(req.body.soleID, req.sessionToken).then(soleID => {
       res.redirect('/soles');
     }).catch(err => {
@@ -539,7 +451,7 @@ router.route('/soles/:id/delete')
 
 router.route('/soles/:id/reflect')
 //get the sole with that id
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
       singleSole.config = soleConfig;
       res.render('soles-reflect', singleSole);
@@ -551,7 +463,7 @@ router.route('/soles/:id/reflect')
   });
 
 router.route('/sole-reflect')
-  .post(isAuth, (req, res, next) =>{
+  .post(middlewares.isAuth, (req, res, next) =>{
     const reflection = {
       id: req.body.soleID,
       achieved: req.body.content_objective_achieved, //session.reflection.content_objective.achieved
@@ -579,7 +491,7 @@ router.route('/sole-reflect')
 
 router.route('/sole-create')
 //view for adding a new sole
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     const question = req.query.question; //get the ID of desired question from the query param
     viewData = {
       config: soleConfig,
@@ -599,7 +511,7 @@ router.route('/sole-create')
       res.render('soles-add', viewData);
     }
   })
-  .post(isAuth, (req, res, next) =>{
+  .post(middlewares.isAuth, (req, res, next) =>{
     //push observations into this array if any are set to 'on'
     let targetObservations = [];
     (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
@@ -651,7 +563,7 @@ router.route('/sole-create')
 //TODO: refactor. this is messy.
 router.route('/questions')
 //get all the questions
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     if (req.query.q) {
       Controllers.Question.findByText(req.query.q, req.sessionToken).then((foundQuestions) => {
         foundQuestions.config = soleConfig;
@@ -678,7 +590,7 @@ router.route('/questions')
 
 //TODO: this is messy af. refactor
 router.route('/questions/mine')
-  .get(isAuth, setLanguage, (req,  res) => {
+  .get(middlewares.isAuth, (req,  res) => {
     const fav = req.query.fav; //optional query parameter to set fav tab as active
     let myQuestionsData = {soles: [], questions:[], fav: fav};
     Controllers.Question.getAll(req.sessionToken).then(questions => {
@@ -701,10 +613,10 @@ router.route('/questions/mine')
 
 //add a question
 router.route('/questions/add')
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     res.render('questions-add', {config: soleConfig});
   })
-  .post(isAuth, (req, res, next) => {
+  .post(middlewares.isAuth, (req, res, next) => {
     let tags = req.body.tags.split(',');
     const newQuestion = {
       text: req.body.text,
@@ -721,7 +633,7 @@ router.route('/questions/add')
   });
 router.route('/questions/:id')
 //get the question data with a given id
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     const favorited = req.query.fav; //is true if question was just favorited
     Controllers.Question.getByID(req.params.id, req.sessionToken).then(questionData => {
       questionData.favorited = favorited;
@@ -731,12 +643,9 @@ router.route('/questions/:id')
         questionData.roleData = roleData;
         res.render('questions-single', questionData);
       }).catch(err => {
-        showError({
-          userMessage: 'Could not get role data.',
-          err: err,
-          next: next,
-          postToSlack: true
-        });
+        err.userMessage = 'Could not get role data.';
+        err.postToSlack = true;
+        next(err);
       });
     }).catch(err => {
       err.userMessage = 'Could not find SOLE question. Question id: ' + req.params.id;
@@ -748,7 +657,7 @@ router.route('/questions/:id')
 
 router.route('/questions/:id/favorite')
 //favorite a question with a given id
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Question.favorite(req.params.id, req.sessionToken).then(questionData => {
       res.redirect('/questions/'+req.params.id+'?fav=true');
     }).catch(err => {
@@ -760,7 +669,7 @@ router.route('/questions/:id/favorite')
 
 router.route('/questions/:id/delete-tag/:rdn')
 //remove a tag from a question
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Question.deleteTag(req.params.id, req.params.rdn, req.sessionToken).then((questionData) => {
       res.redirect('/questions/' + req.params.id);
     }).catch(err => {
@@ -773,7 +682,7 @@ router.route('/questions/:id/delete-tag/:rdn')
 
 router.route('/questions/:id/approve')
 //approve a single question
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Question.approve(req.params.id, req.sessionToken).then(questionData => {
       res.redirect('/dashboard/question-approval');
     }).catch(err => {
@@ -785,7 +694,7 @@ router.route('/questions/:id/approve')
 
 // reject a single question
 router.route('/questions/:id/reject')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Question.reject(req.params.id, req.sessionToken).then(questionData => {
       res.redirect('/dashboard/question-approval');
     }).catch(err => {
@@ -797,7 +706,7 @@ router.route('/questions/:id/reject')
 
 // approve a single SOLE
 router.route('/soles/:id/approve')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.approve(req.params.id, req.sessionToken).then(soleData => {
       res.redirect('/dashboard/sole-approval');
     }).catch(err => {
@@ -809,7 +718,7 @@ router.route('/soles/:id/approve')
 
 router.route('/soles/:id/reject')
 // reject a single SOLE
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Sole.reject(req.params.id, req.sessionToken).then(soleData => {
       res.redirect('/dashboard/sole-approval');
     }).catch(err => {
@@ -821,7 +730,7 @@ router.route('/soles/:id/reject')
 
 // static route for fail cases (404)
 router.route('/error')
-  .get(setLanguage, (req, res, next) => {
+  .get((req, res, next) => {
     res.render('/fail', {
       layout: 'no-sidebar.hbs',
       config: soleConfig
@@ -885,7 +794,7 @@ router.route('/random-picture')
 
 // gets data to build a simple dashboard
 router.route('/dashboard')
-  .get(isAuth, setLanguage, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     if (req.query.ring) {
       Controllers.Dashboard.getDashboardData(req.query.ring, req.sessionToken)
         .then(dashboard => {
@@ -912,7 +821,7 @@ router.route('/dashboard')
  */
 
 router.route('/admin')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if (!roleData.isAdmin) { //TODO: make a middleware for isAdmin
         res.redirect('/home');
@@ -935,7 +844,7 @@ router.route('/admin')
  * route for viewing and approving soles
  */
 router.route('/admin/pending-soles')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.Admin.getPendingSoles(req.sessionToken).then(soles => {
       //format the shortText and date for each sole
       soles.forEach(sole => {
@@ -957,7 +866,7 @@ router.route('/admin/pending-soles')
       next(err);
     });
   })
-  .post(isAuth, (req, res, next) => {
+  .post(middlewares.isAuth, (req, res, next) => {
     const requestSocialMedia = (req.body.socialMediaCheck == 'true');//true if we need to request Social Media Approval via email, false otherwise
     if (req.body.action === 'approve') {
       Controllers.Admin.approveSole(req.body.soleId, req.body.comment, requestSocialMedia, req.sessionToken).then(soleId => {
@@ -978,7 +887,7 @@ router.route('/admin/pending-soles')
  * route for browsing all SOLEs, regardless of user
  */
 router.route('/admin/browse-soles')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(!roleData.isAdmin) {
         res.redirect('/home');
@@ -998,7 +907,7 @@ router.route('/admin/browse-soles')
  * route for browsing all users
  */
 router.route('/admin/browse-users')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(!roleData.isAdmin){
         res.redirect('/home');
@@ -1018,10 +927,10 @@ router.route('/admin/browse-users')
  * route for browsing upcoming conferences and events.
  */
 router.route('/admin/events')
-  .get(isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(roleData.isAdmin || roleData.isAmbassador) { //TODO: replace with middleware later
-        res.render('admin/admin-conferences-and-events', adminData);
+        res.render('admin/admin-conferences-and-events');
       } else {
         res.render('admin/admin-conferences-and-events', {
           config: soleConfig,
@@ -1042,7 +951,7 @@ app.get('*', function(req, res, next){
     userMessage: '404. This page does not exist.',
     req: req
   };
-  errorHandler(err, req, res, next)
+  middlewares.errorHandler(err, req, res, next)
 });
 
 // START THE SERVER

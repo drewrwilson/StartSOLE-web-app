@@ -100,8 +100,7 @@ class User {
 
   //gives a summary of all admin dashboard data
   static adminSummaryData () {
-    return Parse.Cloud.run('webapp.adminSummaryData', {
-    });
+    return Parse.Cloud.run('webapp.adminSummaryData', {});
   };
 
   /**
@@ -111,8 +110,8 @@ class User {
    */
   static async getLanguage (sessionToken) {
     const rings = await this.getMyRings(sessionToken);
-    if (rings && rings.filter(ring => ring.name === 'Colombia') && !rings.filter(ring => ring.name === 'SOLE Team')) {
-      return 'es'; //this is the name of the directory where the language views are
+    if (rings && rings.find(ring => ring.name === 'Colombia') && !rings.find(ring => ring.name === 'SOLE Team')) {
+        return 'es'; //this is the name of the directory where the language views are
     } else {
       //default is none, later the default should be 'en/'
       return 'en'; //since the views are in the same directory, no value needed

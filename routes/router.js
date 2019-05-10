@@ -141,7 +141,6 @@ router.route('/profile')
     });
   });
 
-
 // route for completing profile
 //TODO: there are lots of possible fail scenarios here. eg if profileData.user is undefined. Or if req.query.firstname is undefined
 router.route('/complete-profile')
@@ -630,66 +629,6 @@ router.route('/error')
     res.render('/fail', {
       layout: 'no-sidebar.hbs',
       config: soleConfig
-    });
-  });
-
-/**
- * route for browsing all SOLEs, regardless of user
- */
-router.route('/admin/browse-soles')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.User.getRoleData(req.sessionToken).then(roleData => {
-      if(!roleData.isAdmin) {
-        res.redirect('/home');
-      } else {
-        res.render('admin/admin-browse-soles', {
-          config: soleConfig,
-          roleData: roleData
-        });
-      }
-    }).catch(err => {
-      err.userMessage = 'Error getting role data for admin user.';
-      next(err);
-    });
-  });
-
-/**
- * route for browsing all users
- */
-router.route('/admin/browse-users')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.User.getRoleData(req.sessionToken).then(roleData => {
-      if(!roleData.isAdmin){
-        res.redirect('/home');
-      } else {
-        res.render('admin/admin-browse-users', {
-          config: soleConfig,
-          roleData: roleData
-        });
-      }
-    }).catch(err => {
-      err.userMessage = 'Error getting role data for admin user.';
-      next(err);
-    });
-  });
-
-/**
- * route for browsing upcoming conferences and events.
- */
-router.route('/admin/events')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.User.getRoleData(req.sessionToken).then(roleData => {
-      if(roleData.isAdmin || roleData.isAmbassador) { //TODO: replace with middleware later
-        res.render('admin/admin-conferences-and-events');
-      } else {
-        res.render('admin/admin-conferences-and-events', {
-          config: soleConfig,
-          roleData: roleData
-        });
-      }
-    }).catch(err => {
-      err.userMessage = 'Error getting role data for admin user.';
-      next(err);
     });
   });
 

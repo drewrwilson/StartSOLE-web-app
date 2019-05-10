@@ -68,10 +68,13 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 app.get('*', function(req, res, next){
   const err = {
+    postToSlack: false,
     userMessage: '404. This page does not exist.',
-    req: req
+    sessionToken: req.sessionToken ? req.sessionToken: undefined,
+    originalUrl: req.originalUrl ? req.originalUrl: undefined
   };
-  middlewares.errorHandler(err, req, res, next)
+
+  middlewares.errorHandler(err, req, res, next);//TODO: this should probably be called via next(), but this works. -DW 2019-05-10
 });
 
 // START THE SERVER

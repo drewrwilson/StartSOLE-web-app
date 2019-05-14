@@ -1,16 +1,16 @@
-const express     = require('express');
-const app         = express();
-const bodyParser  = require('body-parser');
-const hbs         = require('express-hbs');
-const path        = require('path');
-const moment      = require('moment');
-const i18n        = require('i18n');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const hbs = require('express-hbs');
+const path = require('path');
+const moment = require('moment');
+const i18n = require('i18n');
 const Controllers = require('./controllers/controllers.js');
 const cookieParser = require('cookie-parser');
 const logger = require('./logger.js');
 const hbsHelper = require('./helpers/handlebars-helpers.js')(hbs);
 const middlewares = require("./middleware/middlewares.js");
-const soleConfig  = require('./sole-config.js');
+const soleConfig = require('./sole-config.js');
 const port = process.env.PORT || 8080; // set our port
 
 logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
@@ -37,7 +37,7 @@ app.engine('hbs', hbs.express4({
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(i18n.init);
@@ -66,12 +66,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * catch-all route for 404 errors
  */
-app.get('*', function(req, res, next){
+app.get('*', function (req, res, next) {
   const err = {
     postToSlack: false,
     userMessage: '404. This page does not exist.',
-    sessionToken: req.sessionToken ? req.sessionToken: undefined,
-    originalUrl: req.originalUrl ? req.originalUrl: undefined
+    sessionToken: req.sessionToken ? req.sessionToken : undefined,
+    originalUrl: req.originalUrl ? req.originalUrl : undefined
   };
 
   middlewares.errorHandler(err, req, res, next);//TODO: this should probably be called via next(), but this works. -DW 2019-05-10
@@ -104,4 +104,6 @@ logger.log('Server running. You can view it locally at http://localhost:' + port
 
 if (logger.useSlackBot) {
   logger.slackbot({title: 'Just started the server!'});
-}
+};
+
+module.exports = app;

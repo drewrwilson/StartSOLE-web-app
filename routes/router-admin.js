@@ -1,8 +1,9 @@
-const express = require('express');
+const express     = require('express'),
+      middlewares = require('../middleware/middlewares.js'),
+      Controllers = require('../controllers/controllers.js'),
+      soleConfig  = require('../sole-config.js'),
+      moment      = require('moment');
 let router = express.Router();
-const middlewares = require('../middleware/middlewares.js');
-const Controllers = require('../controllers/controllers.js');
-const soleConfig  = require('../sole-config.js');
 
 /**
  * ====================================

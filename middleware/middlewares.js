@@ -78,6 +78,7 @@ module.exports = {
    * @param next express function to advance to the next middleware function
    */
   errorHandler: function (err, req, res, next) {
+    res.status(404);
     res.render('fail', {
       layout: 'no-sidebar.hbs',
       error: err.userMessage || 'Oops! Something went wrong.',

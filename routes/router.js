@@ -14,21 +14,22 @@ const soleConfig  = require('../sole-config.js');
  * root route (heh, heh)
  */
 router.route('/')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.User.isProfileComplete(req.sessionToken).then(profileIsCompleted => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const profileIsCompleted = await Controllers.User.isProfileComplete(req.sessionToken);
+    try {
       res.redirect(profileIsCompleted ? '/home' : '/complete-profile');
-    }).catch(err => {
+    } catch(err) {
       err.userMessage = 'Failed to check if users profile is complete';
       err.postToSlack = true;
-
       next(err);
-    });
+    }
   });
 
 router.route('/home')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, async (req, res, next) => {
     soleConfig.language = req.language;
-    Controllers.User.getRoleData(req.sessionToken).then(roleData => {
+    const roleData = await Controllers.User.getRoleData(req.sessionToken);
+    try {
       let homeData = {
         soles: [],
         questions: [],
@@ -48,11 +49,11 @@ router.route('/home')
       } else {
         res.render('home', homeData); //show home page but no ring data
       }
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Failed to role data for user.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 // static route for History of SOLE
@@ -82,47 +83,48 @@ router.route('/privacy')
 // static route for email verification success
 router.route('/verify-email-success')
   .get((req, res, next) => {
-    const email = req.query.email;
+    const email = req.query.email; //TODO: check if email exists
     res.render('verify-email-success', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
 
 // static route for email verification failure
 router.route('/verify-email-failure')
   .get((req, res, next) => {
-    const email = req.query.email;
+    const email = req.query.email; //TODO: check if email exists
     res.render('verify-email-failure', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
   });
 
 // routes for resources
 router.route('/resources')
-  .get((req, res, next) => {
-    Controllers.Resource.getAll().then(resources => {
+  .get(async (req, res, next) => {
+    const resources = await Controllers.Resource.getAll();
+    try {
       res.render('page-resources', {
         resources: resources,
         config: soleConfig
       });
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Error getting resources.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/profile')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.User.getProfileData(req.sessionToken)
-      .then(profileData => {
-        profileData.config = soleConfig;
-        res.render('profile', profileData);
-      }).catch(err => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const profileData = await Controllers.User.getProfileData(req.sessionToken);
+    try {
+      profileData.config = soleConfig;
+      res.render('profile', profileData);
+    } catch (err) {
       err.userMessage = 'Error getting profile data.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   })
   //TODO: this is a mess, come back to this to make it more consistent with the rest of the app
-  .post(middlewares.isAuth, (req, res, next) => {
-    Controllers.User.updateProfileData(req.body.subjects || false,
+  .post(middlewares.isAuth, async (req, res, next) => {
+    const user = await Controllers.User.updateProfileData(req.body.subjects || false,
       req.body.grades || false,
       req.body.role || false,
       req.body.firstName || false,
@@ -131,42 +133,43 @@ router.route('/profile')
       false,
       false,
       false,
-      req.sessionToken)
-      .then(user => {
-        res.redirect('/soles');
-      }).catch(err => {
+      req.sessionToken);
+    try {
+      res.redirect('/soles');
+    } catch (err) {
       err.userMessage = 'Error updating user profile.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
-// route for completing profile
-//TODO: there are lots of possible fail scenarios here. eg if profileData.user is undefined. Or if req.query.firstname is undefined
 router.route('/complete-profile')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.User.getProfileData(req.sessionToken).then(profileData => {
-      if (profileData.user.firstName && profileData.user.lastName) {
-        console.log('um, hi. whats this all about?');
-      } else {
-        profileData.user.firstName = req.query.firstname;
-        profileData.user.lastName = req.query.lastname;
-      }
+  /**
+   *
+   * if there's a first name and last name in the query param, prepopulate it with those values
+   * if not, put in the first name and last name stored in the user profile (empty if undefined)
+   *
+   */
+  .get(middlewares.isAuth, async (req, res, next) => {
+    let profileData = await Controllers.User.getProfileData(req.sessionToken);
+    profileData.user.firstName = req.query.firstname ? req.query.firstname: undefined;
+    profileData.user.lastName = req.query.lastname ? req.query.lastname: undefined;
+    try {
       soleConfig.language = req.language;
       res.render('complete-profile', {
         layout: 'no-sidebar.hbs',
         profile: profileData,
         config: soleConfig
       });
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Error getting user profile data.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   })
   //TODO: test that this still works
-  .post(middlewares.isAuth, (req, res, next) =>{
-    Controllers.User.updateProfileData(
+  .post(middlewares.isAuth, async (req, res, next) => {
+    const user = await Controllers.User.updateProfileData(
       req.body.subjects,
       req.body.grades,
       req.body.role,
@@ -176,100 +179,101 @@ router.route('/complete-profile')
       req.body.schoolAddress,
       req.body.schoolPlaceID,
       'jur.' + req.body.schoolState.toLowerCase(), //need to add 'jur.' to the string and lowercase it to make it work with the database
-      req.sessionToken).then(user => {
+      req.sessionToken);
+    try {
       Controllers.User.completedProfile(req.sessionToken);
       res.redirect('/soles');
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Error completing user profile.';
       err.postToSlack = true;
-
       next(err);
-    });
+    }
   });
 
 router.route('/soles')
 //get all the soles
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.getAll(req.sessionToken)
-      .then(soles=>{
-        soles.config = soleConfig;
-        res.render('soles', soles);
-      }).catch(err => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const soles = await Controllers.Sole.getAll(req.sessionToken);
+    try {
+      soles.config = soleConfig;
+      res.render('soles', soles);
+    } catch (err) {
       err.userMessage = 'Could not get list of SOLEs.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
-
 router.route('/soles/:id')
-//get the sole with that id
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
-      //in case the id of the sole is invalid
+  //get the sole with that id
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const singleSole = await Controllers.Sole.getByID(req.params.id, req.sessionToken);
+    try {
       singleSole.config = soleConfig;
       res.render('soles-single', singleSole);
-    }).catch(err => {
+    } catch(err) {
       err.userMessage = 'Could not get SOLE. SOLE id: ' + req.params.id;
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/soles/:id/download-plan')
-//get the sole with that id
-  .get(middlewares.isAuth, (req, res, next) => {
+  //get the sole with that id
+  .get(middlewares.isAuth, async (req, res, next) => {
     const id = req.params.id;
     const type = 'plan';
-    Controllers.Sole.downloadDocument(id, type, req.sessionToken)
-      .then(url => {
-        res.redirect(soleConfig.baseURL+url);
-      }).catch(err => {
+    const url = await Controllers.Sole.downloadDocument(id, type, req.sessionToken)
+    try {
+      res.redirect(soleConfig.baseURL+url);
+    } catch (err) {
       err.userMessage = 'Failed to download lesson plan. SOLE id: ' + req.params.id;
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/soles/:id/download-summary')
 //get the sole with that id
-  .get(middlewares.isAuth, (req, res, next) => {
-    const id = req.params.id;
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const id = req.params.id;//TODO: check if this exists
     const type = 'summary';
-    Controllers.Sole.downloadDocument(id, type, req.sessionToken)
-      .then(url => {
-        res.redirect(soleConfig.baseURL+url);
-      }).catch(err => {
-      err.userMessage = 'Failed to download summary. SOLE id: ' + req.params.id;
+    const url = Controllers.Sole.downloadDocument(id, type, req.sessionToken);
+    try {
+      res.redirect(soleConfig.baseURL+url);
+    } catch (err) {
+      err.userMessage = 'Failed to download summary. SOLE id: ' + req.params.id; //TODO: check if req.param.id exists
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/soles/:id/copy')
-  .get(middlewares.isAuth, (req,res) => {
-    Controllers.Sole.copy(req.params.id, req.sessionToken).then(soleID => {
+  .get(middlewares.isAuth, async (req,res) => {
+    const soleId = await Controllers.Sole.copy(req.params.id, req.sessionToken);
+    try {
       res.redirect('/soles');
-    }).catch(err => {
-      err.userMessage = 'Failed to copy SOLE. SOLE id: ' + req.params.id;
+    } catch (err) {
+      err.userMessage = 'Failed to copy SOLE. SOLE id: ' + req.params.id; //TODO: check if req.param.id exists
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/soles/:id/edit')
 //get the sole with that id
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    let singleSole = await Controllers.Sole.getByID(req.params.id, req.sessionToken);
+    try {
       singleSole.config = soleConfig;
       res.render('soles-add', singleSole);
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Failed to get SOLE session from the server.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   })
-  .post(middlewares.isAuth, (req, res, next) => {
+  .post(middlewares.isAuth, async (req, res, next) => {
     //TODO: make this reusable for copying
     //push observations into this array if any are set to 'on'
     let targetObservations = [];
@@ -289,6 +293,7 @@ router.route('/soles/:id/edit')
     (req.body.sole_organizer == 'on') ? materials.push('material.sole_organizer') : false;
     (req.body.other == 'on') ? materials.push('material.other') : false;
 
+    //TODO: check if these req.body variables exist, could fail if they don't
     let sole = {
       //values from the frontend
       question: req.body.question,
@@ -309,56 +314,57 @@ router.route('/soles/:id/edit')
       num_devices: req.body.num_devices,
       content_objective: req.body.content_objective
     };
-
     let id = req.body.sole_id;
-
-    Controllers.Sole.update(id, sole, req.sessionToken).then(soleID=>{
+    const soleId = await Controllers.Sole.update(id, sole, req.sessionToken);
+    try {
       res.redirect('/soles');
-    }).catch(err =>{
+    } catch (err) {
       err.userMessage = 'Could not save SOLE. SOLE id: ' + id;
       err.postToSlack = true;
       next(err);
-    });
-
+    }
   });
 
 router.route('/soles/:id/delete')
 //get the sole with that id
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    let singleSole = await Controllers.Sole.getByID(req.params.id, req.sessionToken);
+    try {
       singleSole.config = soleConfig;
       res.render('soles-delete', singleSole);
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Could not delete SOLE session from the server. SOLE id: ' + req.param.id;
       err.postToSlack = true;
       next(err);
-    });
+    }
   })
-  .post(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.delete(req.body.soleID, req.sessionToken).then(soleID => {
+  .post(middlewares.isAuth, async (req, res, next) => {
+    const soleId = await Controllers.Sole.delete(req.body.soleID, req.sessionToken);
+    try {
       res.redirect('/soles');
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Could not delete SOLE. SOLE id: ' + req.body.soleID;
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/soles/:id/reflect')
 //get the sole with that id
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.getByID(req.params.id, req.sessionToken).then(singleSole => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    let singleSole = await Controllers.Sole.getByID(req.params.id, req.sessionToken)
+    try {
       singleSole.config = soleConfig;
       res.render('soles-reflect', singleSole);
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Could not get SOLE session from the server. SOLE id: ' + req.param.id;
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/sole-reflect')
-  .post(middlewares.isAuth, (req, res, next) =>{
+  .post(middlewares.isAuth, async (req, res, next) => {
     const reflection = {
       id: req.body.soleID,
       achieved: req.body.content_objective_achieved, //session.reflection.content_objective.achieved
@@ -375,39 +381,43 @@ router.route('/sole-reflect')
       notes: req.body.notes //session.reflection.notes
     };
 
-    Controllers.Sole.saveReflection(reflection, req.sessionToken).then(soleID => {
-      res.redirect('/soles/'+soleID);
-    }).catch(err => {
-      err.userMessage = 'Could not save reflection. SOLE id: ' + req.body.soleID;
+    const soleId = await Controllers.Sole.saveReflection(reflection, req.sessionToken)
+    try {
+      res.redirect('/soles/'+soleId);
+    } catch (err) {
+      err.userMessage = 'Could not save reflection. SOLE id: ' + req.body.soleId; //TODO: check if this variable exists, could fail if not defined
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/sole-create')
 //view for adding a new sole
-  .get(middlewares.isAuth, (req, res, next) => {
-    const question = req.query.question; //get the ID of desired question from the query param
-    viewData = {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    //TODO: it's strange that this uses req.query.question instead of :id in the URL. Come back to this later. -DW 2019-05-10
+    const question = req.query.question; //get the ID of desired question from the query param //TODO: check if this variable exists, could fail if not defined
+    let viewData = {
       config: soleConfig,
       sole: {}
     };
     //if a question is present get it and attach to viewData as part of a SOLE
     if (question) {
-      Controllers.Question.getByID(question, req.sessionToken).then((questionData) => {
+      const questionData = await Controllers.Question.getByID(question, req.sessionToken);
+      try {
         viewData.sole.question = questionData;
-        res.render('soles-add',viewData);
-      }).catch(err => {
+        res.render('soles-add', viewData);
+      } catch(err) {
         err.userMessage = 'Could not load question with id: ' + question;
         err.postToSlack = true;
         next(err);
-      });
+      }
     } else {
       res.render('soles-add', viewData);
     }
   })
-  .post(middlewares.isAuth, (req, res, next) =>{
+  .post(middlewares.isAuth, async (req, res, next) => {
     //push observations into this array if any are set to 'on'
+    //TODO: all this req.body stuff is risky because if they're not present the app could fail
     let targetObservations = [];
     (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
     (req.body.technology == 'on') ? targetObservations.push('session.observation.technology'): false;
@@ -446,187 +456,201 @@ router.route('/sole-create')
       content_objective: req.body.content_objective
     };
 
-    Controllers.Sole.add(sole, req.sessionToken).then(soleID=>{
+    const soleId = await Controllers.Sole.add(sole, req.sessionToken);
+    try {
       res.redirect('/soles');
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Could not save SOLE session.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
-//TODO: refactor. this is messy.
+//TODO: refactor. this is messy. UPDATE 2019-05-10 Still messy. -DW
 router.route('/questions')
 //get all the questions
-  .get(middlewares.isAuth, (req, res, next) => {
-    if (req.query.q) {
-      Controllers.Question.findByText(req.query.q, req.sessionToken).then((foundQuestions) => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    if (req.query.q) { //TODO: might be a better way to check if this exists
+      let foundQuestions = await Controllers.Question.findByText(req.query.q, req.sessionToken);
+      try {
         foundQuestions.config = soleConfig;
         res.render('questions', foundQuestions);
-      }).catch(err => {
+      } catch (err) {
         err.userMessage = 'Could not find questions by text search. Search text: ' + req.query.q;
         err.postToSlack = true;
         next(err);
-      });
-    } else if (req.query.tags) {
-      Controllers.Question.findByTags(req.query.tags, req.sessionToken).then((foundQuestions) => {
+      }
+    } else if (req.query.tags) { //TODO: check if this variable exists, possible fail if it isnt defined
+      let foundQuestions = await Controllers.Question.findByTags(req.query.tags, req.sessionToken);
+      try {
         //TODO: probably need to do some processing on tags to convert it from a string to an array of tags
         foundQuestions.config = soleConfig;
         res.render('questions', foundQuestions);
-      }).catch(err => {
-        err.userMessage = 'Could not find question by tags. Search tags: ' + req.query.tags;
+      } catch (err) {
+        err.userMessage = 'Could not find question by tags. Search tags: ' + req.query.tags; //TODO: check if defined
         err.postToSlack = true;
         next(err);
-      });
+      }
     } else {
       res.render('questions', {config:soleConfig});
     }
   });
 
-//TODO: this is messy af. refactor
+//TODO: this is messy af. refactor. UPDATE 2019-05-10: still messy. Getting better tho. -DW
 router.route('/questions/mine')
-  .get(middlewares.isAuth, (req,  res) => {
-    const fav = req.query.fav; //optional query parameter to set fav tab as active
+  .get(middlewares.isAuth, async (req,  res) => {
+    const fav = req.query.fav; //optional query parameter to set fav tab as active //TODO: check if defined
     let myQuestionsData = {soles: [], questions:[], fav: fav};
-    Controllers.Question.getAll(req.sessionToken).then(questions => {
-      myQuestionsData.questions.mine = questions.questions;
-      Controllers.Question.getFavorites(req.sessionToken).then((favoriteQuestions) =>{
+    const questions = await Controllers.Question.getAll(req.sessionToken);
+    try {
+      myQuestionsData.questions.mine = questions.questions;//TODO: WTF, DREW! WHAT. THE. FUCK! QUESTIONS.QUESTIONS?? WTF.WTF 2019-05-10 -DW
+      const favoriteQuestions = await Controllers.Question.getFavorites(req.sessionToken);
+      try {
         myQuestionsData.questions.favorites = favoriteQuestions;
         myQuestionsData.config = soleConfig;
         res.render('questions-mine', myQuestionsData); //display view with question data
-      }).catch(err => {
+      } catch (err) {
         err.userMessage = 'Could not get your favorited questions.';
         err.postToSlack = true;
         next(err);
-      });
-    }).catch(err => {
+      }
+    } catch (err) {
       err.userMessage = 'Could not get list of questions.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 //add a question
 router.route('/questions/add')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, (req, res, next) => { //doesn't need to be async because this view doesn't require any data or Parse calls
     res.render('questions-add', {config: soleConfig});
   })
-  .post(middlewares.isAuth, (req, res, next) => {
-    let tags = req.body.tags.split(',');
+  .post(middlewares.isAuth, async (req, res, next) => {
+    let tags = req.body.tags.split(','); //TODO: check if defined, could fail if not defined
     const newQuestion = {
-      text: req.body.text,
-      source: req.body.source,
+      text: req.body.text, //TODO: check if defined, could fail if not defined
+      source: req.body.source, //TODO: check if defined, could fail if not defined
       tags: tags
     };
-    Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, req.sessionToken).then(questionID=>{
-      res.redirect('/questions/'+questionID);
-    }).catch(err => {
+    const questionID = await Controllers.Question.add(newQuestion.text, newQuestion.tags, newQuestion.source, req.sessionToken);
+    try {
+      res.redirect('/questions/' + questionID);
+    } catch (err) {
       err.userMessage = 'Could not add question.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 router.route('/questions/:id')
 //get the question data with a given id
-  .get(middlewares.isAuth, (req, res, next) => {
-    const favorited = req.query.fav; //is true if question was just favorited
-    Controllers.Question.getByID(req.params.id, req.sessionToken).then(questionData => {
-      questionData.favorited = favorited;
+  .get(middlewares.isAuth, async (req, res, next) => {
+    let questionData = await Controllers.Question.getByID(req.params.id, req.sessionToken);
+    try {
+      questionData.favorited = req.query.fav; //is true if question was just favorited //TODO: check if defined, could fail if not defined
       questionData.config = soleConfig;
       questionData.question.favorited = true;
-      Controllers.User.getRoleData(req.sessionToken).then(roleData => {
+      const roleData = await Controllers.User.getRoleData(req.sessionToken); //TODO: check if defined, could fail if not defined
+      try {
         questionData.roleData = roleData;
         res.render('questions-single', questionData);
-      }).catch(err => {
+      } catch (err) {
         err.userMessage = 'Could not get role data.';
         err.postToSlack = true;
         next(err);
-      });
-    }).catch(err => {
-      err.userMessage = 'Could not find SOLE question. Question id: ' + req.params.id;
+      }
+    } catch (err) {
+      err.userMessage = 'Could not find SOLE question. Question id: ' + req.params.id; //TODO: check if defined, could fail if not defined
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 
 router.route('/questions/:id/favorite')
 //favorite a question with a given id
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Question.favorite(req.params.id, req.sessionToken).then(questionData => {
-      res.redirect('/questions/'+req.params.id+'?fav=true');
-    }).catch(err => {
-      err.userMessage = 'Could not favorite this question. Question id: ' + req.params.id;
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const questionData = await Controllers.Question.favorite(req.params.id, req.sessionToken);
+    try {
+      res.redirect('/questions/'+req.params.id+'?fav=true'); //TODO: check if defined, could fail if not defined
+    } catch (err) {
+      err.userMessage = 'Could not favorite this question. Question id: ' + req.params.id; //TODO: check if defined, could fail if not defined
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/questions/:id/delete-tag/:rdn')
 //remove a tag from a question
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Question.deleteTag(req.params.id, req.params.rdn, req.sessionToken).then((questionData) => {
-      res.redirect('/questions/' + req.params.id);
-    }).catch(err => {
-      err.userMessage = 'Could not delete a tag. Question id: ' + req.params.id + ' and tag id: ' + req.params.rdn;
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const questionData = await Controllers.Question.deleteTag(req.params.id, req.params.rdn, req.sessionToken); //TODO: check if defined, could fail if not defined
+    try {
+      res.redirect('/questions/' + req.params.id); //TODO: check if defined, could fail if not defined
+    } catch (err) {
+      err.userMessage = 'Could not delete a tag. Question id: ' + req.params.id + ' and tag id: ' + req.params.rdn; //TODO: check if defined, could fail if not defined
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 
 router.route('/questions/:id/approve')
 //approve a single question
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Question.approve(req.params.id, req.sessionToken).then(questionData => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const questionData = await Controllers.Question.approve(req.params.id, req.sessionToken); //TODO: check if defined, could fail if not defined
+    try {
       res.redirect('/dashboard/question-approval');
-    }).catch(err => {
-      err.userMessage = 'Could not approve a question with id: ' + req.params.id;
+    } catch (err) {
+      err.userMessage = 'Could not approve a question with id: ' + req.params.id; //TODO: check if defined, could fail if not defined
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 // reject a single question
 router.route('/questions/:id/reject')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Question.reject(req.params.id, req.sessionToken).then(questionData => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const questionData = await Controllers.Question.reject(req.params.id, req.sessionToken); //TODO: check if defined, could fail if not defined
+    try {
       res.redirect('/dashboard/question-approval');
-    }).catch(err => {
+    } catch (err) {
       err.userMessage = 'Could not reject a question.';
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 // approve a single SOLE
 router.route('/soles/:id/approve')
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.approve(req.params.id, req.sessionToken).then(soleData => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const soleData = await Controllers.Sole.approve(req.params.id, req.sessionToken);
+    try {
       res.redirect('/dashboard/sole-approval');
-    }).catch(err => {
-      err.userMessage = 'Could not approve a SOLE with id: ' + req.params.id;
+    } catch (err) {
+      err.userMessage = 'Could not approve a SOLE with id: ' + req.params.id; //TODO: check if defined, could fail if not defined
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 router.route('/soles/:id/reject')
 // reject a single SOLE
-  .get(middlewares.isAuth, (req, res, next) => {
-    Controllers.Sole.reject(req.params.id, req.sessionToken).then(soleData => {
+  .get(middlewares.isAuth, async (req, res, next) => {
+    const soleData = await Controllers.Sole.reject(req.params.id, req.sessionToken);
+    try {
       res.redirect('/dashboard/sole-approval');
-    }).catch(err => {
-      err.userMessage = 'Could not reject a SOLE with id: ' + req.params.id;
+    } catch (err) {
+      err.userMessage = 'Could not reject a SOLE with id: ' + req.params.id; //TODO: check if defined, could fail if not defined
       err.postToSlack = true;
       next(err);
-    });
+    }
   });
 
 // static route for fail cases (404)
+//TODO: this might be able to be handled with next() and middlewares
 router.route('/error')
   .get((req, res, next) => {
-    res.render('/fail', {
+    res.render('fail', {
       layout: 'no-sidebar.hbs',
       config: soleConfig
     });

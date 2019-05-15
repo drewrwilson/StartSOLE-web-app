@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha tests/tests.js",
+    "test": "mocha tests/tests.js --exit",
     "lint": "eslint ."
   },
   "repository": {
@@ -33,10 +33,13 @@
     "performance-now": "^2.1.0",
     "progressbar.js": "^1.0.1",
     "slack": "^11.0.2",
+    "supertest": "^4.0.2",
     "winston": "^2.4.4"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^5.15.1",
-    "mocha": "^6.0.2"
+    "mocha": "^6.1.4"
   }
 }

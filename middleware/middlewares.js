@@ -1,4 +1,5 @@
 const soleConfig  = require('../sole-config.js');
+const logger = require('../logger.js');
 
 module.exports = {
   /**
@@ -78,11 +79,20 @@ module.exports = {
    * @param next express function to advance to the next middleware function
    */
   errorHandler: function (err, req, res, next) {
-    res.status(404);
-    res.render('fail', {
-      layout: 'no-sidebar.hbs',
-      error: err.userMessage || 'Oops! Something went wrong.',
-      config: soleConfig
-    });
+    if (err.code && err.code === 209) {
+      // error 209 is a Parse error meaning invalid token
+      res.render('logout', {
+        layout: 'no-sidebar.hbs',
+        config: soleConfig,
+        errorMessage: 'Error. Session expired. Please log back in.'
+      });
+    } else {
+      res.status(404);
+      res.render('fail', {
+        layout: 'no-sidebar.hbs',
+        error: err.userMessage || 'Oops! Something went wrong.',
+        config: soleConfig
+      });
+    }
   }
-}
+};

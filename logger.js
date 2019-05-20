@@ -4,6 +4,7 @@ const sprintf = require("sprintf-js").sprintf;
 const microTime = require("performance-now");
 const slackBot = new require('slack')({token:soleConfig.slackToken});
 const hostEnv = require('os');
+logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
 function timestamp() {
   const now = new Date();

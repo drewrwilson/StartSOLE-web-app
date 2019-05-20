@@ -22,11 +22,12 @@ const logger = new (winston.Logger)({
   levels: levels
 });
 
+
+
 winston.addColors(colors);
 
 module.exports = {
-  useSlackBot = process.env.ENVIRONMENT === 'production', //true if production, false otherwise
-  // useSlackBot: true,
+  useSlackBot: true,
 
   restore:function() {
     return module.exports;

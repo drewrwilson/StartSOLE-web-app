@@ -17,7 +17,7 @@ router.route('/')
       if (!roleData.isAdmin) { //TODO: make a middleware for isAdmin
         res.redirect('/home');
       } else {
-        Controllers.User.adminSummaryData().then(summaryData => {
+        Controllers.User.adminSummaryData(req.sessionToken).then(summaryData => {
           res.render('admin/admin', {
             config: soleConfig,
             layout: 'no-footer.hbs',

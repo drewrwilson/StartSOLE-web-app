@@ -94,13 +94,15 @@ class User {
   //gives number of users signed up today
   static usersToday () {
     return Parse.Cloud.run('webapp.usersToday', {
-
+      sessionToken: sessionToken
     });
   };
 
   //gives a summary of all admin dashboard data
-  static adminSummaryData () {
-    return Parse.Cloud.run('webapp.adminSummaryData', {});
+  static adminSummaryData (sessionToken) {
+    return Parse.Cloud.run('webapp.adminSummaryData', {
+      sessionToken: sessionToken
+    });
   };
 
   /**

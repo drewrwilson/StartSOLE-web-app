@@ -22,10 +22,11 @@ const logger = new (winston.Logger)({
   levels: levels
 });
 
+
+
 winston.addColors(colors);
 
 module.exports = {
-
   useSlackBot: true,
 
   restore:function() {

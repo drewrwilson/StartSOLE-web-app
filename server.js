@@ -42,26 +42,20 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(i18n.init);
 
+// REGISTER OUR ROUTES -------------------------------
+app.use('/', require('./routes/router-prelogin.js')); //unauth'ed routers like login, logout, register
+app.use('/', require('./routes/router.js')); //default routes, all auth-required
+app.use('/', require('./routes/router-misc.js')); //misc routes, unauth'ed
+app.use('/admin', require('./routes/router-admin.js')); //admin routes, auth-required plus admin role
+app.use('/slackbot', require('./routes/router-slackbot.js')); //slackbot routes, unauth'ed
+
+// serve static content
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(middlewares.setLanguage);
 app.use(middlewares.logErrors);
 app.use(middlewares.errorHandler);
 
-const preloginRouter = require('./routes/router-prelogin.js'); //unauth'ed routers like login, logout, register
-const router = require('./routes/router.js'); //default routes, all auth-required
-const adminRouter = require('./routes/router-admin.js'); //admin routes, auth-required plus admin role
-const slackbotRouter = require('./routes/router-slackbot.js'); //slackbot routes, unauth'ed
-const miscRouter = require('./routes/router-misc.js'); //misc routes, unauth'ed
-
-// REGISTER OUR ROUTES -------------------------------
-app.use('/', preloginRouter); //unauthenticated routes
-app.use('/', router); //authenticated routes
-app.use('/', miscRouter); //authenticated routes
-app.use('/admin', adminRouter);
-app.use('/slackbot', slackbotRouter);
-
-
-// serve static content
-app.use(express.static(path.join(__dirname, 'public')));
 
 /**
  * catch-all route for 404 errors

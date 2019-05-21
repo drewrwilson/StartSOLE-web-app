@@ -10,7 +10,13 @@
 
             <div class="row center-align">
 
-            <h4>{{{__ "You're logged out!"}}}</h4>
+            <h4>
+                {{#if errorMessage }}
+                    {{errorMessage}}
+                {{else}}
+                    {{{__ "You're logged out!"}}}
+                {{/if}}
+            </h4>
             <p>
                 <a href="/login" class="waves-effect waves-light btn">{{{__ "Log Back In"}}}</a>
             </p>

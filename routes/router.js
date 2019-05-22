@@ -240,7 +240,7 @@ router.route('/soles/:id/download-summary')
     try {
       const id = req.params.id;//TODO: check if this exists
       const type = 'summary';
-      const url = Controllers.Sole.downloadDocument(id, type, req.sessionToken);
+      const url = await Controllers.Sole.downloadDocument(id, type, req.sessionToken);
       res.redirect(soleConfig.baseURL+url);
     } catch (err) {
       err.userMessage = 'Failed to download summary. SOLE id: ' + req.params.id; //TODO: check if req.param.id exists

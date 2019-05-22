@@ -1,6 +1,16 @@
 const soleConfig  = require('../sole-config.js');
 const logger = require('../logger.js');
 
+function getParseErrorCode (err) {
+  if (err.message && err.message.code) {
+    return err.message.code;
+  } else if (err.code) {
+    return err.code;
+  } else {
+    return undefined;
+  }
+}
+
 module.exports = {
   /**
    * Middleware. Check if a user is logged in before showing any routes that require
@@ -9,7 +19,7 @@ module.exports = {
    * @param res
    * @param next
    */
-  isAuth: function (req, res, next) {
+  isAuth: (req, res, next) => {
     const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
     if (sessionToken) {
       //TODO: check if sessionToken is valid or parse calls might fail
@@ -29,7 +39,7 @@ module.exports = {
    * @param res
    * @param next
    */
-  setLanguage: function (req, res, next) {
+  setLanguage: (req, res, next) => {
     const language = req.cookies ? req.cookies.language: undefined; //check if language is saved in the cookie
     if (language) {
       req.language = language; //set i18n language here in stead of putting it in the req
@@ -54,7 +64,7 @@ module.exports = {
    * @param res response object from express
    * @param next express function to advance to the next middleware function
    */
-  logErrors: function (err, req, res, next) {
+  logErrors: (err, req, res, next) => {
     err.sessionToken = req.sessionToken ? req.sessionToken: undefined;
     err.originalUrl = req.originalUrl ? req.originalUrl: undefined;
 
@@ -78,8 +88,8 @@ module.exports = {
    * @param res response object from express
    * @param next express function to advance to the next middleware function
    */
-  errorHandler: function (err, req, res, next) {
-    if (err.code && err.code === 209) {
+  errorHandler: (err, req, res, next) => {
+    if (getParseErrorCode(err) === 209) {
       // error 209 is a Parse error meaning invalid token
       res.render('logout', {
         layout: 'no-sidebar.hbs',

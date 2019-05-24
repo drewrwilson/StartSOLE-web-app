@@ -1,6 +1,13 @@
 <div class="row" style="padding-top:50px;">
     <div class="col s12 offset-m2 m8 offset-l3 l6">
         <div class="card-panel">
+            {{#if ring.logo}}
+            <div class="row">
+            <div class="col s12 center">
+                    <img src="/images/logos/{{ring.logo}}" height="165" alt="{{ring.fullName}}>
+                </div>
+                </div>
+            {{/if}}
             <div class="row">
               <div class="col s12 l6 center">
                   <img src="/images/facebook-login-button.png" id="fb-login" onmouseover="this.src='/images/facebook-login-button-hover.png'" onmouseout="this.src='/images/facebook-login-button.png'"  />
@@ -79,7 +86,7 @@
     </div>
 </div>
 
-<form id="login-with-session" action="/" method="get">
+<form id="login-with-session" action="/login" method="get">
   <input type="hidden" name="redirectURL" id="redirectURL" value="{{redirectURL}}">
 </form>
 

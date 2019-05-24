@@ -12,6 +12,7 @@ const hbsHelper = require('./helpers/handlebars-helpers.js')(hbs);
 const middlewares = require("./middleware/middlewares.js");
 const soleConfig = require('./sole-config.js');
 const port = process.env.PORT || 8080; // set our port
+let router = express.Router();
 
 logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
@@ -48,11 +49,11 @@ app.use('/', require('./routes/router.js')); //default routes, all auth-required
 app.use('/', require('./routes/router-misc.js')); //misc routes, unauth'ed
 app.use('/admin', require('./routes/router-admin.js')); //admin routes, auth-required plus admin role
 app.use('/slackbot', require('./routes/router-slackbot.js')); //slackbot routes, unauth'ed
+app.use('/', require('./routes/router-ring-colombia.js')); //colombia ring routes
 
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(middlewares.setLanguage);
 app.use(middlewares.logErrors);
 app.use(middlewares.errorHandler);
 

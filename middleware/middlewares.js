@@ -1,5 +1,6 @@
-const soleConfig  = require('../sole-config.js');
-const logger = require('../logger.js');
+const soleConfig      = require('../sole-config.js'),
+      logger          = require('../logger.js'),
+      Controllers     = require('../controllers/controllers.js');
 
 function getParseErrorCode (err) {
   if (err.message && err.message.code) {
@@ -39,19 +40,19 @@ module.exports = {
    * @param res
    * @param next
    */
-  setLanguage: (req, res, next) => {
-    const language = req.cookies ? req.cookies.language: undefined; //check if language is saved in the cookie
-    if (language) {
-      req.language = language; //set i18n language here in stead of putting it in the req
-      next();
-    } else if (req.sessionToken) {
-      Controllers.User.getLanguage(req.sessionToken).then(language => {
-        req.language = language; //set i18n language here instead of putting it in the req
+  setLanguage: async (req, res, next) => {
+    //const language = req.cookies ? req.cookies.language: undefined; //check if language is saved in the cookie
+    if (req.sessionToken) {
+      try {
+        const language = await Controllers.User.getLanguage(req.sessionToken);
+        req.language = language;
+        req.setLocale(language);
+        res.cookie('language',language);
         next();
-      }).catch(err => {
+      } catch (err) {
         err.userMessage = 'Some kind of language error';
         next(err);
-      })
+      };
     } else {
       //if we don't have a sessionToken, eg if we're just viewing static pages like privacy or terms-of-service
       next();
@@ -103,6 +104,24 @@ module.exports = {
         error: err.userMessage || 'Oops! Something went wrong.',
         config: soleConfig
       });
+    }
+  },
+  getRings: (err, req, res, next) => {
+    const rings = req.cookies ? req.cookies.rings: undefined; //check if ring is saved in the cookie
+    if (rings) {
+      req.rings = rings; //set rings to be an array in req, so we can use it in the other routes
+      next();
+    } else if (req.sessionToken) {
+      Controllers.User.getMyRings(req.sessionToken).then(rings => {
+        req.rings = rings; //set rings to be an array in req, so we can use it in the other routes
+        next();
+      }).catch(err => {
+        err.userMessage = 'Error getting rings for user';
+        next(err);
+      })
+    } else {
+      //if we don't have a sessionToken, then we also don't have a ring eg if we're just viewing static pages like privacy or terms-of-service
+      next();
     }
   }
 };

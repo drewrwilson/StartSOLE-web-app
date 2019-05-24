@@ -72,12 +72,9 @@ window.fbAsyncInit = function() {
 function successfulLogin(user) {
   // setPlatform().then(data=>{
     $('#error').html('Success! Logging you in now...');
-    sessionToken = Parse.User.current().getSessionToken();
-    document.cookie = 'sessionToken='+sessionToken; //save the sessionToken in the cookie
-    sessionToken = sessionToken.slice(2);
+    var sessionToken = Parse.User.current().getSessionToken();
+    document.cookie = 'sessionToken=' + sessionToken + ';path=/'; //save the sessionToken in the cookie
 
-    $('#sesh').val(sessionToken);
-    $('#sesh2').val(sessionToken);
     $("#login-with-session").submit();
     ga('send', 'event', 'onboarding.login', 'success');
   // })
@@ -133,13 +130,6 @@ function loginFacebook () {
   }
 });
 }
-
-// function logout () {
-//   document.cookie = "sessionToken=; Max-Age=0";//remove the sessionToken from the cookie
-//   return Parse.User.logOut().then(function () {
-//     return Parse.User.current();  // this will now be null if logged out
-//   });
-// }
 
 $('#fb-login').click(function (event){
   event.preventDefault();

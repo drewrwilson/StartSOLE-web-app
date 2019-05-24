@@ -42,23 +42,4 @@ router.route('/login')
   });
 
 
-// route for logging in (spanish
-//TODO: this isn't ideal. duplicated code from above. doing this because it's supposed to be temporary.
-router.route('/login-es')
-  .get((req, res, next) => {
-    //this is a special case. this code is similar to the middlewares.isAuth function, but we do
-    //it here because we want to redirect someone to /home if they're already logged in.
-    const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
-    if (sessionToken) {
-      res.redirect('/home');
-    } else {
-      const email = req.query.email;
-      res.render('login-es', {
-        layout: 'prelogin.hbs',
-        config: soleConfig,
-        email: email
-      });
-    }
-  });
-
 module.exports = router;

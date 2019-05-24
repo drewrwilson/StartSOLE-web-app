@@ -30,7 +30,7 @@ function registerNewUser (first_name, last_name, email, password, refer) {
     return Parse.User.logIn(email, password).then(function() {
       var currentUser = Parse.User.current();
       sessionToken = currentUser.getSessionToken();
-      document.cookie = "sessionToken="+sessionToken; //save the sessionToken in a cookie
+      document.cookie = "sessionToken="+sessionToken + ';path=/'; //save the sessionToken in a cookie
     }).then(function() {
       return setPlatform();
     }).then(function() {

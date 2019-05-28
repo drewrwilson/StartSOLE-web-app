@@ -279,7 +279,7 @@
 	"Create Lesson": "Planear la lección",
 	"Save Question": "Guardar Pregunta",
 	"Create Lesson Plan": "Planear sesión de SOLE",
-	"No SOLEs completed... yet": "No has completado SOLEs...todavía ",
+	"No SOLEs completed... yet": "No has completado SOLEs...todavía",
 	"Register": "Registro",
 	"Already have an account?": "¿Ya tienes una cuenta?",
 	"Login": "Iniciar sesión",
@@ -351,7 +351,6 @@
 	"If yes, please tell us a little more about your challenge": "Si es así, cuéntanos un poco más sobre tu reto.",
 	"Additional Notes for your Records": "Notas adicionales para tu registro",
 	"Please add at least 1 photo": "Por favor agregue al menos una foto",
-	"No SOLEs completed... yet": "No has completado SOLEs...todavía",
 	"Subject": "Materia",
 	"Filter by subject": "Filtrar por materia",
 	"All subjects": "Todos materias",
@@ -370,5 +369,6 @@
 	"Social Studies (K-8)": "Ciencias Sociales (0-8)",
 	"Visual Arts": "Artes",
 	"Grade": "Grado",
-	"(subject required)": "(materia requerido)"
+	"(subject required)": "(materia requerido)",
+	"What worked well during this SOLE? What didn't work well?": "¿Qué funcionó bien durante esta SOLE? ¿Qué no funcionó bien?"
 }

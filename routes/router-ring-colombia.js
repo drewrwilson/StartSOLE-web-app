@@ -25,6 +25,11 @@ soleConfig.language = ringData.language; //all users in colombia ring set cookie
 //     res.redirect('/colombia/login');
 //   });
 
+router.route('/colombia')
+  .get((req, res, next) => {
+    res.redirect('/colombia/register/');
+  });
+
 router.route('/colombia/register')
   .get((req, res, next) => {
     req.setLocale(ringData.language); //"hard-code" this route to be defaultly in spanish

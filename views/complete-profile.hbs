@@ -162,6 +162,9 @@ function initializeAutocomplete(){
     // bounds: defaultBounds,
     // regions: ['administrative_area1']
   };
+    {{#if config.colombia }}
+        options.componentRestrictions = {country: 'co'};
+    {{/if}}
   var autocomplete = new google.maps.places.Autocomplete(input, options);
 
 

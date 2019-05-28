@@ -4,10 +4,14 @@
         <div class="card-panel">
 
             <div class="row center-align">
-                <video width="165" height="165" autoplay muted>
+                {{#if ring.logo}}
+                    <img src="/images/logos/{{ring.logo}}" height="165" alt="{{ring.fullName}}>
+                {{else}}
+                    <video width="165" height="165" autoplay muted>
                     <source src="/images/logos/animated-logo-small.webm" type="video/webm">
                     <source src="/images/logos/animated-logo-small.mp4" type="video/mp4">
-                </video>
+                     </video>
+                {{/if}}
             </div>
 
             <div class="row">
@@ -94,6 +98,10 @@
 
     <input type="hidden" name="firstname" id="firstname" value="">
     <input type="hidden" name="lastname" id="lastname" value="">
+    {{#if ring.slug}}
+        <input type="hidden" name="ring" id="ring" value="{{ring.slug}}">
+    {{/if}}
+
 </form>
 
 <form id="login-with-session" action="/" method="get">

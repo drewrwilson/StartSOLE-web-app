@@ -26,7 +26,7 @@ router.route('/')
   });
 
 router.route('/home')
-  .get(middlewares.isAuth, async (req, res, next) => {
+  .get(middlewares.isAuth, middlewares.setLanguage, async (req, res, next) => {
     soleConfig.language = req.language;
     try {
       const roleData = await Controllers.User.getRoleData(req.sessionToken);
@@ -155,6 +155,12 @@ router.route('/complete-profile')
       let profileData = await Controllers.User.getProfileData(req.sessionToken);
       profileData.user.firstName = req.query.firstname ? req.query.firstname: undefined;
       profileData.user.lastName = req.query.lastname ? req.query.lastname: undefined;
+      soleConfig.ring = req.query.ring ? req.query.ring: undefined;
+      if (soleConfig.ring === 'Colombia') {
+        soleConfig.colombia = true;
+      } else {
+        soleConfig.colombia = false;
+      }
       soleConfig.language = req.language;
       res.render('complete-profile', {
         layout: 'no-sidebar.hbs',
@@ -183,7 +189,7 @@ router.route('/complete-profile')
         req.sessionToken);
 
       Controllers.User.completedProfile(req.sessionToken);
-      res.redirect('/soles');
+      res.redirect('/home');
     } catch (err) {
       err.userMessage = 'Error completing user profile.';
       err.postToSlack = true;

@@ -158,6 +158,7 @@ router.route('/complete-profile')
       soleConfig.ring = req.query.ring ? req.query.ring: undefined;
       if (soleConfig.ring === 'Colombia') {
         soleConfig.colombia = true;
+        req.setLocale('es');
       } else {
         soleConfig.colombia = false;
       }

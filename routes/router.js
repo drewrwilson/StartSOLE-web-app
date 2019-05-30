@@ -211,7 +211,80 @@ router.route('/soles')
       next(err);
     }
   });
+router.route('/soles/plan')
+//view for adding a new sole
+  .get(middlewares.isAuth, async (req, res, next) => {
+    //TODO: it's strange that this uses req.query.question instead of :id in the URL. Come back to this later. -DW 2019-05-10
+    const question = req.query.question; //get the ID of desired question from the query param //TODO: check if this variable exists, could fail if not defined
+    let viewData = {
+      config: soleConfig,
+      sole: {}
+    };
+    //if a question is present get it and attach to viewData as part of a SOLE
+    if (question) {
+      try {
+        const questionData = await Controllers.Question.getByID(question, req.sessionToken);
+        viewData.sole.question = questionData;
+        res.render('soles-add', viewData);
+      } catch(err) {
+        err.userMessage = 'Could not load question with id: ' + question;
+        err.postToSlack = true;
+        next(err);
+      }
+    } else {
+      res.render('soles-add', viewData);
+    }
+  })
+  .post(middlewares.isAuth, async (req, res, next) => {
+    //push observations into this array if any are set to 'on'
+    //TODO: all this req.body stuff is risky because if they're not present the app could fail
+    let targetObservations = [];
+    (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
+    (req.body.technology == 'on') ? targetObservations.push('session.observation.technology'): false;
+    (req.body.respectful == 'on') ? targetObservations.push('session.observation.respectful') : false;
+    (req.body.desire == 'on') ? targetObservations.push('session.observation.desire') : false;
+    (req.body.vocabulary == 'on') ? targetObservations.push('session.observation.vocabulary') : false;
+    (req.body.help_learn == 'on') ? targetObservations.push('session.observation.help_learn') : false;
+    (req.body.help_technology == 'on') ? targetObservations.push('session.observation.help_technology') : false;
 
+    //push materials into this array if any are set to 'on'
+    let materials = [];
+    (req.body.writing_tools == 'on') ? materials.push('material.writing_tools') : false;
+    (req.body.poster_paper == 'on') ? materials.push('material.poster_paper') : false;
+    (req.body.physical == 'on') ? materials.push('material.physical') : false;
+    (req.body.sole_organizer == 'on') ? materials.push('material.sole_organizer') : false;
+    (req.body.other == 'on') ? materials.push('material.other') : false;
+
+    let sole = {
+      //values from the frontend
+      question: req.body.question,
+      subject: req.body.subject,
+      grade: req.body.grade,
+      class_label: req.body.class_label, //optional
+      planned_date: req.body.planned_date,
+      planned_time: req.body.planned_time,
+      planned_duration: req.body.planned_duration,
+      num_groups: req.body.num_groups,
+      target_observations: targetObservations,
+      grouporganization: (req.body.grouporganization == 'on') ? true : false,
+      groupsharing: (req.body.groupsharing == 'on') ? true : false,
+      self_assessment: (req.body.self_assessment == 'on') ? true : false,
+      useapp: (req.body.useapp == 'on') ? true : false,
+      materials: materials,
+      num_students: req.body.num_students,
+      num_devices: req.body.num_devices,
+      content_objective: req.body.content_objective
+    };
+
+    try {
+      const soleId = await Controllers.Sole.add(sole, req.sessionToken);
+      res.redirect('/soles');
+    } catch (err) {
+      err.userMessage = 'Could not save SOLE session.';
+      err.postToSlack = true;
+      next(err);
+    }
+  });
 router.route('/soles/:id')
   //get the sole with that id
   .get(middlewares.isAuth, async (req, res, next) => {
@@ -268,7 +341,7 @@ router.route('/soles/:id/copy')
     }
   });
 
-router.route('/soles/:id/edit')
+router.route('/soles/:id/plan')
 //get the sole with that id
   .get(middlewares.isAuth, async (req, res, next) => {
     try {
@@ -369,13 +442,11 @@ router.route('/soles/:id/reflect')
       err.postToSlack = true;
       next(err);
     }
-  });
-
-router.route('/sole-reflect')
+  })
   .post(middlewares.isAuth, async (req, res, next) => {
     try {
       const reflection = {
-        id: req.body.soleID,
+        id: req.params.id,
         achieved: req.body.content_objective_achieved, //session.reflection.content_objective.achieved
         achieved_why: req.body.content_objective_achieved_why, //session.reflection.content_objective.notes
         type_of_thinking: req.body.dok, //session.reflection.type_of_thinking
@@ -394,81 +465,6 @@ router.route('/sole-reflect')
       res.redirect('/soles/'+soleId);
     } catch (err) {
       err.userMessage = 'Could not save reflection. SOLE id: ' + req.body.soleId; //TODO: check if this variable exists, could fail if not defined
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-router.route('/sole-create')
-//view for adding a new sole
-  .get(middlewares.isAuth, async (req, res, next) => {
-    //TODO: it's strange that this uses req.query.question instead of :id in the URL. Come back to this later. -DW 2019-05-10
-    const question = req.query.question; //get the ID of desired question from the query param //TODO: check if this variable exists, could fail if not defined
-    let viewData = {
-      config: soleConfig,
-      sole: {}
-    };
-    //if a question is present get it and attach to viewData as part of a SOLE
-    if (question) {
-      try {
-        const questionData = await Controllers.Question.getByID(question, req.sessionToken);
-        viewData.sole.question = questionData;
-        res.render('soles-add', viewData);
-      } catch(err) {
-        err.userMessage = 'Could not load question with id: ' + question;
-        err.postToSlack = true;
-        next(err);
-      }
-    } else {
-      res.render('soles-add', viewData);
-    }
-  })
-  .post(middlewares.isAuth, async (req, res, next) => {
-    //push observations into this array if any are set to 'on'
-    //TODO: all this req.body stuff is risky because if they're not present the app could fail
-    let targetObservations = [];
-    (req.body.collaborating == 'on') ? targetObservations.push('session.observation.collaborating') : false;
-    (req.body.technology == 'on') ? targetObservations.push('session.observation.technology'): false;
-    (req.body.respectful == 'on') ? targetObservations.push('session.observation.respectful') : false;
-    (req.body.desire == 'on') ? targetObservations.push('session.observation.desire') : false;
-    (req.body.vocabulary == 'on') ? targetObservations.push('session.observation.vocabulary') : false;
-    (req.body.help_learn == 'on') ? targetObservations.push('session.observation.help_learn') : false;
-    (req.body.help_technology == 'on') ? targetObservations.push('session.observation.help_technology') : false;
-
-    //push materials into this array if any are set to 'on'
-    let materials = [];
-    (req.body.writing_tools == 'on') ? materials.push('material.writing_tools') : false;
-    (req.body.poster_paper == 'on') ? materials.push('material.poster_paper') : false;
-    (req.body.physical == 'on') ? materials.push('material.physical') : false;
-    (req.body.sole_organizer == 'on') ? materials.push('material.sole_organizer') : false;
-    (req.body.other == 'on') ? materials.push('material.other') : false;
-
-    let sole = {
-      //values from the frontend
-      question: req.body.question,
-      subject: req.body.subject,
-      grade: req.body.grade,
-      class_label: req.body.class_label, //optional
-      planned_date: req.body.planned_date,
-      planned_time: req.body.planned_time,
-      planned_duration: req.body.planned_duration,
-      num_groups: req.body.num_groups,
-      target_observations: targetObservations,
-      grouporganization: (req.body.grouporganization == 'on') ? true : false,
-      groupsharing: (req.body.groupsharing == 'on') ? true : false,
-      self_assessment: (req.body.self_assessment == 'on') ? true : false,
-      useapp: (req.body.useapp == 'on') ? true : false,
-      materials: materials,
-      num_students: req.body.num_students,
-      num_devices: req.body.num_devices,
-      content_objective: req.body.content_objective
-    };
-
-    try {
-      const soleId = await Controllers.Sole.add(sole, req.sessionToken);
-      res.redirect('/soles');
-    } catch (err) {
-      err.userMessage = 'Could not save SOLE session.';
       err.postToSlack = true;
       next(err);
     }
@@ -530,7 +526,7 @@ router.route('/questions/mine')
   });
 
 //add a question
-router.route('/questions/add')
+router.route('/questions/new')
   .get(middlewares.isAuth, (req, res, next) => { //doesn't need to be async because this view doesn't require any data or Parse calls
     res.render('questions-add', {config: soleConfig});
   })
@@ -653,6 +649,8 @@ router.route('/soles/:id/reject')
       next(err);
     }
   });
+
+
 
 // static route for fail cases (404)
 //TODO: this might be able to be handled with next() and middlewares

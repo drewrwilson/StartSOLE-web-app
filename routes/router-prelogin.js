@@ -30,13 +30,18 @@ router.route('/login')
     //it here because we want to redirect someone to /home if they're already logged in.
     const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
     if (sessionToken) {
-      res.redirect('/home');
+      if (req.query.originalUrl) {
+        res.redirect(req.query.originalUrl);
+      } else {
+        res.redirect('/home');
+      }
+
     } else {
-      const email = req.query.email;
       res.render('login', {
         layout: 'prelogin.hbs',
         config: soleConfig,
-        email: email
+        email: req.query.email,
+        originalUrl: req.query.originalUrl
       });
     }
   });

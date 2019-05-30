@@ -27,7 +27,7 @@ module.exports = {
       req.sessionToken = sessionToken;
       next();
     } else {
-      res.redirect('/login');
+      res.redirect('/login?originalUrl='+req.originalUrl);
     }
   },
   /**

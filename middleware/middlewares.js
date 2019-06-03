@@ -1,6 +1,7 @@
 const soleConfig      = require('../sole-config.js'),
       logger          = require('../logger.js'),
-      Controllers     = require('../controllers/controllers.js');
+      Controllers     = require('../controllers/controllers.js'),
+      util            = require('util');
 
 function getParseErrorCode (err) {
   if (err.message && err.message.code) {
@@ -22,6 +23,15 @@ module.exports = {
    */
   isAuth: (req, res, next) => {
     const sessionToken = req.cookies ? req.cookies.sessionToken : undefined;
+    if (sessionToken === 'undefined') {
+      const ip = req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        (req.connection.socket ? req.connection.socket.remoteAddress : null);
+      const header = util.inspect(req.headers);
+      logger.slackbot({title: '• *The weird session token undefined bug appeared!!* \n \n • *IP ADDRESS:* ' + ip + '\n \n HEADER: ' + header})
+    }
+
     if (sessionToken) {
       //TODO: check if sessionToken is valid or parse calls might fail
       req.sessionToken = sessionToken;

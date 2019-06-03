@@ -225,14 +225,14 @@ router.route('/soles/plan')
       try {
         const questionData = await Controllers.Question.getByID(question, req.sessionToken);
         viewData.sole.question = questionData;
-        res.render('soles-add', viewData);
+        res.render('soles-plan', viewData);
       } catch(err) {
         err.userMessage = 'Could not load question with id: ' + question;
         err.postToSlack = true;
         next(err);
       }
     } else {
-      res.render('soles-add', viewData);
+      res.render('soles-plan', viewData);
     }
   })
   .post(middlewares.isAuth, async (req, res, next) => {
@@ -347,7 +347,7 @@ router.route('/soles/:id/plan')
     try {
       let singleSole = await Controllers.Sole.getByID(req.params.id, req.sessionToken);
       singleSole.config = soleConfig;
-      res.render('soles-add', singleSole);
+      res.render('soles-plan', singleSole);
     } catch (err) {
       err.userMessage = 'Failed to get SOLE session from the server.';
       err.postToSlack = true;

@@ -15,29 +15,43 @@ function onGoogleSignIn(googleUser) {
   ga('send', 'event', 'onboarding.login', 'google-attempt');
   var access_token = googleUser.Zi.access_token,
       id_token     = googleUser.getAuthResponse().id_token,
-      profile      = googleUser.getBasicProfile();
+      profile      = googleUser.getBasicProfile(),
+      user         = undefined;
   //use the Google access_token to login and/or make an account with Parse
   return Parse.Cloud.run('loginGoogleUser', {
-      token: access_token
-  }).then(Parse.User.become).then(function(user){
-        setPlatform().then(data=>{
-
-          var refer = urlParams.get('r');
-          if(!refer){refer="no-referral"}
-
-          //Create DPVs for email, first, last, and imageURL
-          return Parse.Cloud.run('webapp.writeSocialLoginDPVs', {
-              email: profile.getEmail(),
-              first: profile.getGivenName(),
-              last: profile.getFamilyName(),
-              imageURL: profile.getImageUrl(),
-              referral: refer
-          }).then(_=>{
-            successfulLogin(user);
-          });
-        });
-      });
-};
+    token: access_token
+  }).then(function (sessionToken) {
+    return Parse.User.become(sessionToken);
+  }).then(function (_user) {
+    user = _user; //for scope
+    return setPlatform();
+  }).then(function () {
+    var refer = urlParams.get('r');
+    if (!refer) {
+      refer = 'no-referral';
+    }
+    //Create DPVs for email, first, last, and imageURL
+    return Parse.Cloud.run('webapp.writeSocialLoginDPVs', {
+        email: profile.getEmail(),
+        first: profile.getGivenName(),
+        last: profile.getFamilyName(),
+        imageURL: profile.getImageUrl(),
+        referral: refer
+    });
+  }).then(function () {
+    if (user !== undefined) {
+      successfulLogin(user);
+    } else {
+      return Parse.Promise.error('User was undefined while google login.');
+    }
+  }).catch(function (error) {
+    console.log('Error with google login! ', error);
+    $('#error').html('Error logging in with Google. Try going to <a href="https://app.startsole.org/logout">https://app.startsole.org/logout</a> and then login again');
+    $.post('/google-login-error', { error: error }, function( response ) {
+      console.log('sent a post request to record google failed login', response)
+    });
+  });
+}
 
 // connect to parse server
 Parse.initialize(soleConfig.appId);
@@ -48,7 +62,8 @@ Parse.serverURL = soleConfig.serverUrl;
 
 $('document').ready(function (){
   console.log('document ready. logging out to start');
-})
+
+});
 
 window.fbAsyncInit = function() {
   Parse.FacebookUtils.init({

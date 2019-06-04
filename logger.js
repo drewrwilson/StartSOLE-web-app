@@ -96,7 +96,12 @@ module.exports = {
   fix: function () {
     logger.fix.apply(this, arguments);
   },
-
+  slackbotSimple: function (msg) {
+    slackBot.chat.postMessage({
+      channel: soleConfig.slackChannel,
+      text: msg,
+    });
+  },
   slackbot: function (msg) {
     let txt = "";
     if (msg.title) {

@@ -27,7 +27,8 @@ router.route('/logout')
 router.route('/google-login-error')
   .post((req, res) => {
     let msg = '*Someone just tried to login with google, but it did not work.*';
-    msg += '\n*Here\'s the error we got:* ' + util.inspect(req.body.error);
+      msg += '\n*Here\'s the error we got:* ' + util.inspect(req.body.error);
+      msg += '\n*Info:* ' + util.inspect(req.body.info);
     msg += '\n*Header data:* ' + util.inspect(req.headers);
     logger.slackbotSimple(msg);
   });

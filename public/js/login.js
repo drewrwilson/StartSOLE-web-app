@@ -17,12 +17,40 @@ function onGoogleSignIn(googleUser) {
       id_token     = googleUser.getAuthResponse().id_token,
       profile      = googleUser.getBasicProfile(),
       user         = undefined;
+
+  var info = {
+    google: {
+      profile: {
+
+      }
+    }
+  };
+
+  if (googleUser) {
+    if (googleUser.getId()) {
+      info.google.id = googleUser.getId();
+    }
+    if (profile) {
+      if (profile.getEmail()) {
+        info.google.profile.email = profile.getEmail();
+      }
+      if (profile.getGivenName()) {
+        info.google.profile.first = profile.getGivenName();
+      }
+      if (profile.getFamilyName()) {
+        info.google.profile.last = profile.getFamilyName();
+      }
+    }
+  }
+
   //use the Google access_token to login and/or make an account with Parse
   return Parse.Cloud.run('loginGoogleUser', {
     token: access_token
   }).then(function (sessionToken) {
+    info['sessionToken'] = sessionToken;
     return Parse.User.become(sessionToken);
   }).then(function (_user) {
+    info['user'] = _user;
     user = _user; //for scope
     return setPlatform();
   }).then(function () {
@@ -30,6 +58,8 @@ function onGoogleSignIn(googleUser) {
     if (!refer) {
       refer = 'no-referral';
     }
+    info['refer'] = refer;
+
     //Create DPVs for email, first, last, and imageURL
     return Parse.Cloud.run('webapp.writeSocialLoginDPVs', {
         email: profile.getEmail(),
@@ -40,6 +70,9 @@ function onGoogleSignIn(googleUser) {
     });
   }).then(function () {
     if (user !== undefined) {
+      info['userSessionToken'] = user.getSessionToken();
+      info['currentUserSessionToken'] = Parse.User.current().getSessionToken();
+
       successfulLogin(user);
     } else {
       return Parse.Promise.error('User was undefined while google login.');
@@ -47,7 +80,7 @@ function onGoogleSignIn(googleUser) {
   }).catch(function (error) {
     console.log('Error with google login! ', error);
     $('#error').html('Error logging in with Google. Try going to <a href="https://app.startsole.org/logout">https://app.startsole.org/logout</a> and then login again');
-    $.post('/google-login-error', { error: error }, function( response ) {
+    $.post('/google-login-error', { error: error, info: info }, function( response ) {
       console.log('sent a post request to record google failed login', response)
     });
   });

@@ -1,13 +1,18 @@
 <div class="row" style="padding-top:50px;">
     <div class="col s12 offset-m2 m8 offset-l3 l6">
         <div class="card-panel">
-            {{#if ring.logo}}
-            <div class="row">
-            <div class="col s12 center">
-                    <img src="/images/logos/{{ring.logo}}" height="165" alt="{{ring.fullName}}>
-                </div>
-                </div>
-            {{/if}}
+            <div class="row center-align">
+                {{#if ring.logo}}
+                    <div class="col s8 offset-s2">
+                        <img class="responsive-img" src="/images/logos/{{ring.logo}}" height="165" alt="{{ring.fullName}}">
+                    </div>
+                {{else}}
+                    <video width="165" height="165" autoplay muted>
+                        <source src="/images/logos/animated-logo-small.webm" type="video/webm">
+                        <source src="/images/logos/animated-logo-small.mp4" type="video/mp4">
+                    </video>
+                {{/if}}
+            </div>
             <div class="row">
               <div class="col s12 l6 center">
                   <img src="/images/facebook-login-button.png" id="fb-login" onmouseover="this.src='/images/facebook-login-button-hover.png'" onmouseout="this.src='/images/facebook-login-button.png'"  />

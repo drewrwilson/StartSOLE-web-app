@@ -36,7 +36,8 @@ router.route('/colombia/register')
     res.render('register', {
       layout: 'no-sidebar.hbs',
       ring: ringData,
-      config: soleConfig
+      config: soleConfig,
+      isColombia: true
     });
   });
 

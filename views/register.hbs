@@ -5,7 +5,9 @@
 
             <div class="row center-align">
                 {{#if ring.logo}}
-                    <img class="responsive-img" src="/images/logos/{{ring.logo}}" height="165" alt="{{ring.fullName}}>
+                    <div class="col s8 offset-s2">
+                        <img class="responsive-img" src="/images/logos/{{ring.logo}}" height="165" alt="{{ring.fullName}}">
+                    </div>
                 {{else}}
                     <video width="165" height="165" autoplay muted>
                     <source src="/images/logos/animated-logo-small.webm" type="video/webm">
@@ -74,7 +76,7 @@
 
 
                         <div class="input-field col s12 center">
-                            {{{__ "Already have an account?"}}}  <a href="login">{{{__ "Login"}}}</a>
+                            {{{__ "Already have an account?"}}}  <a href="{{#if isColombia}}/colombia{{/if}}/login">{{{__ "Login"}}}</a>
                         </div>
                     </div>
                     <div class="row">
@@ -105,7 +107,7 @@
 </form>
 
 <form id="login-with-session" action="/" method="get">
-  <input type="hidden" name="redirectURL" id="redirectURL" value="{{redirectURL}}">
+  <input type="hidden" name="originalUrl" id="originalUrl" value="{{originalUrl}}">
 </form>
 
 <script id="facebook-jssdk" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10"></script>

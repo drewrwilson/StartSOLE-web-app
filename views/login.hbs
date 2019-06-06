@@ -119,3 +119,15 @@
         <a class="modal-close waves-effect waves-green btn-flat">{{{__ "No Thanks"}}}</a>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Parse.initialize(soleConfig.appId);
+        Parse.serverURL = soleConfig.serverUrl;
+        Parse.User.logOut();
+        document.cookie = "sessionToken=; Max-Age=0";//remove the sessionToken from the cookie
+        document.cookie = "language=; Max-Age=0";//remove the language from the cookie
+
+        localStorage.clear();
+    });
+</script>

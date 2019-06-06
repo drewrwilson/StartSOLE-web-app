@@ -1,0 +1,30 @@
+<div class="col s12 m10 offset-m1 l6">
+    <div class="card-panel">
+        <div class="row">
+            <div class="col s12 center-align">
+                <h4>{{{__ "Email Preferences"}}}</h4>
+                <hr>
+            </div>
+        </div>
+
+        <form id="profile-update-form" action="/profile/manage-emails" method="post">
+            <!--foreach subscriptions-->
+            <div class="row">
+                <div class="input-field col s12 m10 offset-m1">
+                    <label>
+                        <input type="checkbox" name="emails-lesson-plans" id="emails-lesson-plans" class="filled-in" checked="checked" />
+                        <span>Lesson plans</span>
+                    </label>
+                </div>
+            </div>
+            <!--end foreach-->
+
+            <div class="row center-align">
+                <button class="btn waves-effect waves-light"
+                        type="submit">
+                    {{{__ "Save"}}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

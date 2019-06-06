@@ -142,6 +142,19 @@ router.route('/profile')
       next(err);
     }
   });
+router.route('/profile/manage-emails')
+  //TODO: this is a mess, come back to this to make it more consistent with the rest of the app
+  .post(middlewares.isAuth, async (req, res, next) => {
+    try {
+      const param = req.body;
+      console.log(param);
+      res.redirect('/profile');
+    } catch (err) {
+      err.userMessage = 'Error updating email notifications.';
+      err.postToSlack = true;
+      next(err);
+    }
+  });
 
 router.route('/complete-profile')
   /**

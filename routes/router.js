@@ -142,12 +142,28 @@ router.route('/profile')
       next(err);
     }
   });
+
 router.route('/profile/manage-emails')
-  //TODO: this is a mess, come back to this to make it more consistent with the rest of the app
+  .get(middlewares.isAuth, async (req, res, next) => {
+    try {
+      const subscriptions = await Controllers.User.getEmailSubscriptions(req.sessionToken);
+      res.render('partials/profile/profile-card-manage-emails', {
+          layout: 'default.hbs',
+          subscriptions: subscriptions
+        });
+    } catch (err) {
+      err.userMessage = 'Error getting profile manage email data.';
+      err.postToSlack = true;
+      next(err);
+    }
+  })
   .post(middlewares.isAuth, async (req, res, next) => {
     try {
-      const param = req.body;
-      console.log(param);
+      // const subscriptions = {
+      //
+      //   req.body
+      // };
+      // await Controllers.User.setEmailSubscriptions(req.sessionToken);
       res.redirect('/profile');
     } catch (err) {
       err.userMessage = 'Error updating email notifications.';

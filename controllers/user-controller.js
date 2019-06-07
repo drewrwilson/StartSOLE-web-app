@@ -119,6 +119,30 @@ class User {
       return 'en'; //since the views are in the same directory, no value needed
     }
   }
+
+  /**
+   *
+   * @param sessionToken
+   * @returns {Promise<Parse.Promise>}
+   */
+  static async getEmailSubscriptions (sessionToken) {
+    return Parse.Cloud.run('userpub.getSubscriptions', {
+      sessionToken: sessionToken
+    });
+  }
+
+  /**
+   *
+   * @param subscriptions - json object of subscriptions
+   * @param sessionToken
+   * @returns {Promise<Parse.Promise>}
+   */
+  static async setEmailSubscriptions (subscriptions, sessionToken) {
+    return Parse.Cloud.run('userpub.setSubscriptions', {
+      subscriptions: subscriptions,
+      sessionToken: sessionToken
+    });
+  }
 }
 
 module.exports = User;

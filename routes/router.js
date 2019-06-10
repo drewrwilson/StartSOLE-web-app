@@ -159,11 +159,14 @@ router.route('/profile/manage-emails')
   })
   .post(middlewares.isAuth, async (req, res, next) => {
     try {
-      // const subscriptions = {
-      //
-      //   req.body
-      // };
-      // await Controllers.User.setEmailSubscriptions(req.sessionToken);
+      const subscriptions = {
+        ceuDoc: req.body.ceuDoc === "on",
+        questionTips: req.body.questionTips === "on",
+        planningDoc: req.body.planningDoc === "on",
+        summaryDoc: req.body.summaryDoc === "on",
+        reflectionReminders: req.body.reflectionReminders === "on"
+      };
+      await Controllers.User.setEmailSubscriptions(req.sessionToken, subscriptions);
       res.redirect('/profile');
     } catch (err) {
       err.userMessage = 'Error updating email notifications.';

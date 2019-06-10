@@ -7,15 +7,17 @@ Parse.serverURL = soleConfig.serverUrl;
 
 class User {
   //returns user profile data
-  static getProfileData (sessionToken) {
-
+  static async getProfileData (sessionToken) {
     return this.getRoleData(sessionToken).then(roleData => {
       return Parse.Cloud.run('webapp.getProfile', {
         sessionToken: sessionToken
       }).then(profile => {
         profile.roleData = roleData;
-        return profile;
-      });
+        return this.getEmailSubscriptions(sessionToken).then(subscriptions => {
+          profile.subscriptions = subscriptions;
+          return Parse.Promise.as(profile);
+        });
+      })
     });
   };
 
@@ -137,7 +139,7 @@ class User {
    * @param sessionToken
    * @returns {Promise<Parse.Promise>}
    */
-  static async setEmailSubscriptions (subscriptions, sessionToken) {
+  static async setEmailSubscriptions (sessionToken, subscriptions) {
     return Parse.Cloud.run('userpub.setSubscriptions', {
       subscriptions: subscriptions,
       sessionToken: sessionToken

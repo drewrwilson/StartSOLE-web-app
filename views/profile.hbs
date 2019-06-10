@@ -33,7 +33,7 @@
                     <span class="card-title grey-text text-darken-4">{{user.firstName}} {{user.lastName}}</span>
                 {{/if}}
 
-                <p>Member since {{user.createdAt}}</p>
+                <p>{{{__ "Member since"}}} {{user.createdAt}}</p>
             </div>
         </div>
 
@@ -79,7 +79,7 @@
                                     {{#ifEquals user.role "user.role.other"}}selected{{/ifEquals}}
                             >{{{__ "Other"}}}</option>
                         </select>
-                        <label>What's your primary role?</label>
+                        <label>{{{__ "What's your primary role?"}}}</label>
                     </div>
                 </div>
                 <!--grades-->

@@ -1,0 +1,46 @@
+<div class="col s12 m10 offset-m1 l6">
+    <div class="card-panel">
+        <div class="row">
+            <div class="col s12 center-align">
+                <h4>{{{__ "My CEUs"}}}</h4>
+                <hr>
+
+                <div class="progress big-bar">
+                    <div class="determinate" style="width: {{user.points_progress}}%"></div>
+                </div>
+
+                {{#if user.points}}
+                    <p>{{user.points}}{{{__ "/2000 points to your next CEU"}}}</p>
+                {{else}}
+                    {{#if user.ceus}}
+                        <p>{{{__ "/2000 points to your next CEU"}}}</p>
+                    {{else}}
+                        <p><em>{{{__ "No points yet."}}} <a href="/soles/plan">{{{__ "Create your first SOLE lesson plan and get points."}}}</a></em></p>
+                    {{/if}}
+                {{/if}}
+
+                <ul class="collection">
+                    {{#if user.ceus}}
+                        {{#each user.ceus}}
+                            <li class="collection-item">
+                                <div>{{this.date}}
+                                    <a href="{{this.url}}" class="secondary-content" target="_blank">
+                                        <i class="material-icons">save_alt</i>
+                                    </a>
+                                </div>
+                            </li>
+                        {{/each}}
+                    {{else}}
+                        <li class="collection-item">
+                            <a href="/soles/plan">
+                                {{{__ "No CEUs ... yet! Create your first SOLE lesson plan & get points."}}}
+                            </a>
+                        </li>
+                    {{/if}}
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>

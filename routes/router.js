@@ -143,6 +143,38 @@ router.route('/profile')
     }
   });
 
+router.route('/profile/manage-emails')
+  .get(middlewares.isAuth, async (req, res, next) => {
+    try {
+      const subscriptions = await Controllers.User.getEmailSubscriptions(req.sessionToken);
+      res.render('partials/profile/profile-card-manage-emails', {
+          layout: 'default.hbs',
+          subscriptions: subscriptions
+        });
+    } catch (err) {
+      err.userMessage = 'Error getting profile manage email data.';
+      err.postToSlack = true;
+      next(err);
+    }
+  })
+  .post(middlewares.isAuth, async (req, res, next) => {
+    try {
+      const subscriptions = {
+        ceuDoc: req.body.ceuDoc === "on",
+        questionTips: req.body.questionTips === "on",
+        planningDoc: req.body.planningDoc === "on",
+        summaryDoc: req.body.summaryDoc === "on",
+        reflectionReminders: req.body.reflectionReminders === "on"
+      };
+      await Controllers.User.setEmailSubscriptions(req.sessionToken, subscriptions);
+      res.redirect('/profile');
+    } catch (err) {
+      err.userMessage = 'Error updating email notifications.';
+      err.postToSlack = true;
+      next(err);
+    }
+  });
+
 router.route('/complete-profile')
   /**
    *

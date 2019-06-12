@@ -9,18 +9,6 @@
 
         <form action="/profile/manage-emails" method="post">
             <div class="row">
-            <!--ceuDoc-->
-                <div class="input-field col s12 m10 offset-m1">
-                    <label>
-                        <input type="checkbox" name="ceuDoc" id="ceuDoc"
-                        {{#if subscriptions.ceuDoc}}
-                               class="filled-in" checked="checked"
-                        {{/if}}
-                        />
-                        <span>{{{__ "New CEUs Awarded"}}}</span>
-                    </label>
-                </div>
-            <!--/ceuDoc-->
 
             <!--questionTips-->
                 <div class="input-field col s12 m10 offset-m1">
@@ -43,7 +31,7 @@
                                class="filled-in" checked="checked"
                         {{/if}}
                         />
-                        <span>{{{__ "Lesson Plan Documents"}}}</span>
+                        <span>{{{__ "Planning Documents"}}}</span>
                     </label>
                 </div>
             <!--/planningDoc-->
@@ -56,7 +44,7 @@
                                    class="filled-in" checked="checked"
                             {{/if}}
                             />
-                            <span>{{{__ "Lesson Summary Documents"}}}</span>
+                            <span>{{{__ "Summary Documents"}}}</span>
                         </label>
                     </div>
             <!--/summaryDoc-->
@@ -73,6 +61,19 @@
                     </label>
                 </div>
             <!--/reflectionDoc-->
+
+            <!--ceuDoc-->
+            <div class="input-field col s12 m10 offset-m1">
+                <label>
+                    <input type="checkbox" name="ceuDoc" id="ceuDoc"
+                        {{#if subscriptions.ceuDoc}}
+                           class="filled-in" checked="checked"
+                        {{/if}}
+                    />
+                    <span>{{{__ "CEU Documents"}}}</span>
+                </label>
+            </div>
+            <!--/ceuDoc-->
             </div>
             <div class="row center-align">
                 <div class="input-field col s12 m10 offset-m1">

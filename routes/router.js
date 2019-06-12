@@ -1,9 +1,8 @@
-const express = require('express');
+const express     = require('express'),
+      middlewares = require('../middleware/middlewares.js'),
+      Controllers = require('../controllers/controllers.js'),
+      soleConfig  = require('../sole-config.js');
 let router = express.Router();
-const middlewares = require('../middleware/middlewares.js');
-const Controllers = require('../controllers/controllers.js');
-const soleConfig  = require('../sole-config.js');
-
 /**
  * ====================================
  * default routes
@@ -17,7 +16,7 @@ router.route('/')
   .get(middlewares.isAuth, async (req, res, next) => {
     try {
       const profileIsCompleted = await Controllers.User.isProfileComplete(req.sessionToken);
-      res.redirect(profileIsCompleted ? '/home' : '/complete-profile');
+      res.redirect(profileIsCompleted ? '/home' : '/profile/complete');
     } catch(err) {
       err.userMessage = 'Failed to check if users profile is complete';
       err.postToSlack = true;
@@ -105,126 +104,6 @@ router.route('/resources')
       });
     } catch (err) {
       err.userMessage = 'Error getting resources.';
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-router.route('/profile')
-  .get(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const profileData = await Controllers.User.getProfileData(req.sessionToken);
-      profileData.config = soleConfig;
-      res.render('profile', profileData);
-    } catch (err) {
-      err.userMessage = 'Error getting profile data.';
-      err.postToSlack = true;
-      next(err);
-    }
-  })
-  //TODO: this is a mess, come back to this to make it more consistent with the rest of the app
-  .post(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const user = await Controllers.User.updateProfileData(req.body.subjects || false,
-        req.body.grades || false,
-        req.body.role || false,
-        req.body.firstName || false,
-        req.body.lastName || false,
-        false,
-        false,
-        false,
-        false,
-        req.sessionToken);
-        res.redirect('/soles');
-    } catch (err) {
-      err.userMessage = 'Error updating user profile.';
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-router.route('/profile/manage-emails')
-  .get(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const subscriptions = await Controllers.User.getEmailSubscriptions(req.sessionToken);
-      res.render('partials/profile/profile-card-manage-emails', {
-          layout: 'default.hbs',
-          subscriptions: subscriptions
-        });
-    } catch (err) {
-      err.userMessage = 'Error getting profile manage email data.';
-      err.postToSlack = true;
-      next(err);
-    }
-  })
-  .post(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const subscriptions = {
-        ceuDoc: req.body.ceuDoc === "on",
-        questionTips: req.body.questionTips === "on",
-        planningDoc: req.body.planningDoc === "on",
-        summaryDoc: req.body.summaryDoc === "on",
-        reflectionReminders: req.body.reflectionReminders === "on"
-      };
-      await Controllers.User.setEmailSubscriptions(req.sessionToken, subscriptions);
-      res.redirect('/profile');
-    } catch (err) {
-      err.userMessage = 'Error updating email notifications.';
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-router.route('/complete-profile')
-  /**
-   *
-   * if there's a first name and last name in the query param, prepopulate it with those values
-   * if not, put in the first name and last name stored in the user profile (empty if undefined)
-   *
-   */
-  .get(middlewares.isAuth, async (req, res, next) => {
-    try {
-      let profileData = await Controllers.User.getProfileData(req.sessionToken);
-      profileData.user.firstName = req.query.firstname ? req.query.firstname: undefined;
-      profileData.user.lastName = req.query.lastname ? req.query.lastname: undefined;
-      soleConfig.ring = req.query.ring ? req.query.ring: undefined;
-      if (soleConfig.ring === 'Colombia') {
-        soleConfig.colombia = true;
-        req.setLocale('es');
-      } else {
-        soleConfig.colombia = false;
-      }
-      soleConfig.language = req.language;
-      res.render('complete-profile', {
-        layout: 'no-sidebar.hbs',
-        profile: profileData,
-        config: soleConfig
-      });
-    } catch (err) {
-      err.userMessage = 'Error getting user profile data.';
-      err.postToSlack = true;
-      next(err);
-    }
-  })
-  //TODO: test that this still works
-  .post(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const user = await Controllers.User.updateProfileData(
-        req.body.subjects,
-        req.body.grades,
-        req.body.role,
-        req.body.firstName,
-        req.body.lastName,
-        req.body.schoolName,
-        req.body.schoolAddress,
-        req.body.schoolPlaceID,
-        'jur.' + req.body.schoolState.toLowerCase(), //need to add 'jur.' to the string and lowercase it to make it work with the database
-        req.sessionToken);
-
-      Controllers.User.completedProfile(req.sessionToken);
-      res.redirect('/home');
-    } catch (err) {
-      err.userMessage = 'Error completing user profile.';
       err.postToSlack = true;
       next(err);
     }

@@ -9,20 +9,8 @@
 
         <form action="/profile/manage-emails" method="post">
             <div class="row">
-            <!--ceuDoc-->
-                <div class="input-field col s12 m10 offset-m1">
-                    <label>
-                        <input type="checkbox" name="ceuDoc" id="ceuDoc"
-                        {{#if subscriptions.ceuDoc}}
-                               class="filled-in" checked="checked"
-                        {{/if}}
-                        />
-                        <span>{{{__ "New CEUs Awarded"}}}</span>
-                    </label>
-                </div>
-            <!--/ceuDoc-->
 
-            <!--questionTips-->
+                <!--questionTips-->
                 <div class="input-field col s12 m10 offset-m1">
                     <label>
                         <input type="checkbox" name="questionTips" id="questionTips"
@@ -33,35 +21,35 @@
                         <span>{{{__ "Question Tips"}}}</span>
                     </label>
                 </div>
-            <!--/questionTips-->
+                <!--/questionTips-->
 
-            <!--planningDoc-->
+                <!--planningDoc-->
                 <div class="input-field col s12 m10 offset-m1">
                     <label>
                         <input type="checkbox" name="planningDoc" id="planningDoc"
-                        {{#if subscriptions.planningDoc}}
+                            {{#if subscriptions.planningDoc}}
                                class="filled-in" checked="checked"
-                        {{/if}}
+                            {{/if}}
                         />
-                        <span>{{{__ "Lesson Plan Documents"}}}</span>
+                        <span>{{{__ "Planning Documents"}}}</span>
                     </label>
                 </div>
-            <!--/planningDoc-->
+                <!--/planningDoc-->
 
-            <!--summaryDoc-->
-                    <div class="input-field col s12 m10 offset-m1">
-                        <label>
-                            <input type="checkbox" name="summaryDoc" id="summaryDoc"
+                <!--summaryDoc-->
+                <div class="input-field col s12 m10 offset-m1">
+                    <label>
+                        <input type="checkbox" name="summaryDoc" id="summaryDoc"
                             {{#if subscriptions.summaryDoc}}
-                                   class="filled-in" checked="checked"
+                               class="filled-in" checked="checked"
                             {{/if}}
-                            />
-                            <span>{{{__ "Lesson Summary Documents"}}}</span>
-                        </label>
-                    </div>
-            <!--/summaryDoc-->
+                        />
+                        <span>{{{__ "Summary Documents"}}}</span>
+                    </label>
+                </div>
+                <!--/summaryDoc-->
 
-            <!--reflectionReminders-->
+                <!--reflectionReminders-->
                 <div class="input-field col s12 m10 offset-m1">
                     <label>
                         <input type="checkbox" name="reflectionReminders" id="reflectionReminders"
@@ -72,14 +60,27 @@
                         <span>{{{__ "Reflection Reminders"}}}</span>
                     </label>
                 </div>
-            <!--/reflectionDoc-->
+                <!--/reflectionDoc-->
+
+                <!--ceuDoc-->
+                <div class="input-field col s12 m10 offset-m1">
+                    <label>
+                        <input type="checkbox" name="ceuDoc" id="ceuDoc"
+                            {{#if subscriptions.ceuDoc}}
+                               class="filled-in" checked="checked"
+                            {{/if}}
+                        />
+                        <span>{{{__ "CEU Documents"}}}</span>
+                    </label>
+                </div>
+                <!--/ceuDoc-->
             </div>
             <div class="row center-align">
                 <div class="input-field col s12 m10 offset-m1">
-                <button class="btn waves-effect waves-light"
-                        type="submit">
-                    {{{__ "Save"}}}
-                </button>
+                    <button class="btn waves-effect waves-light"
+                            type="submit">
+                        {{{__ "Save"}}}
+                    </button>
                 </div>
             </div>
         </form>

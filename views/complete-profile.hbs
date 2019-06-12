@@ -7,8 +7,8 @@
                 <h2>{{{__ "Complete your profile" }}}</h2>
             </div>
 
-          <form id="profile-update-form" action="/complete-profile" method="post" onkeypress="return event.keyCode != 13;" onsubmit="validateInputs(event)" >
-
+          <form id="profile-update-form" action="/profile" method="post" onkeypress="return event.keyCode != 13;" onsubmit="validateInputs(event)" >
+              <input type="hidden" name="src" value="completeProfilePage">
             <div class="row">
                 <div class="input-field col s6">
                     <input id="first_name"

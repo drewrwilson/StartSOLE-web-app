@@ -64,17 +64,17 @@ class User {
     });
   };
 
-  static updateProfileData (subjects, grades, role, firstName, lastName, schoolName, schoolAddress, schoolPlaceID, schoolState, sessionToken) {
+  static updateProfileData (profileObject, sessionToken) {
     return Parse.Cloud.run('webapp.updateProfile', {
-      subjects: subjects,
-      grades: grades,
-      role: role,
-      firstName: firstName,
-      lastName: lastName,
-      schoolName: schoolName,
-      schoolAddress: schoolAddress,
-      schoolPlaceID: schoolPlaceID,
-      schoolState: schoolState,
+      subjects: profileObject.subjects,
+      grades: profileObject.grades,
+      role: profileObject.role,
+      firstName: profileObject.firstName,
+      lastName: profileObject.lastName,
+      schoolName: profileObject.schoolName,
+      schoolAddress: profileObject.schoolAddress,
+      schoolPlaceID: profileObject.schoolPlaceID,
+      schoolState: profileObject.schoolState,
       sessionToken: sessionToken
     });
   };

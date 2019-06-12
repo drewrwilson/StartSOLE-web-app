@@ -1,18 +1,18 @@
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const hbs = require('express-hbs');
-const path = require('path');
-const moment = require('moment');
-const i18n = require('i18n');
-const Controllers = require('./controllers/controllers.js');
-const cookieParser = require('cookie-parser');
-const logger = require('./logger.js');
-const hbsHelper = require('./helpers/handlebars-helpers.js')(hbs);
-const middlewares = require("./middleware/middlewares.js");
-const soleConfig = require('./sole-config.js');
-const port = process.env.PORT || 8080; // set our port
-let router = express.Router();
+const express       = require('express'),
+      app           = express(),
+      bodyParser    = require('body-parser'),
+      hbs           = require('express-hbs'),
+      path          = require('path'),
+      moment        = require('moment'),
+      i18n          = require('i18n'),
+      Controllers   = require('./controllers/controllers.js'),
+      cookieParser  = require('cookie-parser'),
+      logger        = require('./logger.js'),
+      hbsHelper     = require('./helpers/handlebars-helpers.js')(hbs),
+      middlewares   = require("./middleware/middlewares.js"),
+      soleConfig    = require('./sole-config.js'),
+      port          = process.env.PORT || 8080; // set our port
+let router          = express.Router();
 
 logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
@@ -50,6 +50,7 @@ app.use('/', require('./routes/router-misc.js')); //misc routes, unauth'ed
 app.use('/admin', require('./routes/router-admin.js')); //admin routes, auth-required plus admin role
 app.use('/slackbot', require('./routes/router-slackbot.js')); //slackbot routes, unauth'ed
 app.use('/', require('./routes/router-ring-colombia.js')); //colombia ring routes
+app.use('/profile', require('./routes/router-profile.js'));
 
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));
@@ -68,7 +69,6 @@ app.get('*', function (req, res, next) {
     sessionToken: req.sessionToken ? req.sessionToken : undefined,
     originalUrl: req.originalUrl ? req.originalUrl : undefined
   };
-
   middlewares.errorHandler(err, req, res, next);//TODO: this should probably be called via next(), but this works. -DW 2019-05-10
 });
 

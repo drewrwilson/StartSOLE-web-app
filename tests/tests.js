@@ -18,7 +18,7 @@ const routes = [
   '/verify-email-failure',
   '/resources',
   '/profile',
-  '/complete-profile',
+  '/profile/complete',
   '/soles',
   // '/soles/:id',
   // '/soles/:id/download-plan',

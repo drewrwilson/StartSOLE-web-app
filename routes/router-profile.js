@@ -48,11 +48,11 @@ router.route('/')
     }
   });
 
-router.route('/manage-emails')
+router.route('/subscriptions')
   .get(middlewares.isAuth, async (req, res, next) => {
     try {
       const subscriptions = await Controllers.User.getEmailSubscriptions(req.sessionToken);
-      res.render('partials/profile/profile-card-manage-emails', {
+      res.render('partials/profile/profile-card-subscriptions', {
           layout: 'default.hbs',
           subscriptions: subscriptions,
           config: soleConfig

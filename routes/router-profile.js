@@ -114,7 +114,7 @@ router.route('/complete')
         soleConfig.colombia = false;
       }
       soleConfig.language = req.language;
-      res.render('complete-profile', {
+      res.render('profile-complete', {
         layout: 'no-sidebar.hbs',
         profile: profileData,
         config: soleConfig

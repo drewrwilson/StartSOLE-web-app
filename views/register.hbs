@@ -63,7 +63,7 @@
                             <div class="col s12 l6 center">
 
                             </div>
-                            <div class="col s12 l6 center">
+                            <div class="col s12 l12 center">
                               <div class="g-signin2"
                                    data-onsuccess="onGoogleSignIn"
                                    data-theme="dark"
@@ -72,8 +72,6 @@
                                    data-longtitle="true"></div>
                             </div>
                         </div>
-
-
 
                         <div class="input-field col s12 center">
                             {{{__ "Already have an account?"}}}  <a href="{{#if isColombia}}/colombia{{/if}}/login">{{{__ "Login"}}}</a>
@@ -128,7 +126,6 @@ $("#initial-registration-form").submit(function (event) {
       refer = urlParams.get('r');
 
   registerNewUser (first_name, last_name, email, password, refer).then(() => {
-    console.log('post-register')
     $('#firstname').val(first_name);
     $('#lastname').val(last_name);
     $('#final-registration-form').submit();

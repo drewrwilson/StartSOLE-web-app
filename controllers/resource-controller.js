@@ -517,6 +517,19 @@ class Resource {
         tags: [
           'rubric', 'review-help'
         ]
+      },
+      {
+        file: 'Collab_Group_Work_Rubric.docx',
+        image: 'collab_group_work_rubric_matte_black.png',
+        title: 'Collaborative Group Work',
+        short: 'A comprehensive rubric for evaluating collaborative group work',
+        description: 'A detailed rubric for evaluating group work in your classroom which focuses on habits of mind, lesson design & attainment, and classroom management.  This is a great tool for reflecting on your experience with SOLE and can be used more broadly as well!',
+        authors: [
+          { email: 'Marcy.Raymond@escco.org', name: 'Marcy R.'}
+        ],
+        tags: [
+          'rubric', 'investigation-help', 'review-help'
+        ]
       }
     ];
     return Parse.Promise.as(resources);

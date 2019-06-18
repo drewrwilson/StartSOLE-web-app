@@ -25,19 +25,19 @@ router.route('/')
   });
 
 router.route('/:id')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get(middlewares.isAuth, async (req, res, next) => {
     if (req.params.id) {
-      Controllers.Dashboard.getDashboardData(req.params.id, req.sessionToken)
-        .then(dashboard => {
-          res.render('dashboard', {
-            config: soleConfig,
-            dashboard: dashboard
-          });
-        }).catch(err => {
-        err.userMessage = 'Could not load dashboard data.';
+      try {
+        const dashboard = await Controllers.Dashboard.getDashboardData(req.params.id, req.sessionToken);
+        res.render('dashboard', {
+          config: soleConfig,
+          dashboard: dashboard
+        });
+      } catch (err) {
+        err.userMessage = 'Could not load dashboard data for ring: ' + req.params.id;
         err.postToSlack = true;
         next(err);
-      });
+      }
     } else {
       err.userMessage = 'Ring does not exist: ' + req.params.id;
       err.postToSlack = true;

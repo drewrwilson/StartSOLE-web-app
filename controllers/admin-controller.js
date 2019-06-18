@@ -6,7 +6,11 @@ Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
 class Admin {
-  //gets data for any SOLE sessions that haven't been approved or rejected yet
+  /**
+   * gets data for any SOLE sessions that haven't been approved or rejected yet
+   * @param sessionToken string
+   * @returns {Parse.Promise|PromiseLike<T | never>|Promise<T | never>|*} array of soles
+   */
   static getPendingSoles (sessionToken) {
     return Parse.Cloud.run('webapp.getUnapprovedSoles', {
       limit: 999,

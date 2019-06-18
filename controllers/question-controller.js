@@ -1,12 +1,11 @@
-const Parse = require('parse/node');
-const soleConfig = require('../sole-config.js');
+const Parse       = require('parse/node'),
+      soleConfig  = require('../sole-config.js');
 
 // connect to parse server
 Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
 class Question {
-  //returns data for a question with a given ID
   static getByID (id, sessionToken) {
     return Parse.Cloud.run('webapp.getQuestionByID', {
       id: id,
@@ -86,27 +85,6 @@ class Question {
     });
   };
 
-  //approves a questions
-  static approve (questionID, sessionToken) {
-    return Parse.Cloud.run('webapp.approveQuestion', {
-      id: questionID,
-      sessionToken: sessionToken
-    });
-  };
-
-  //rejects a questions
-  static reject (questionID, sessionToken) {
-    return Parse.Cloud.run('webapp.rejectQuestion', {
-      id: questionID,
-      sessionToken: sessionToken
-    });
-  };
-
-
-  // filter down the question tags and return a list
-  static tagPickers () {
-
-  };
 }
 
 module.exports = Question;

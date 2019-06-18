@@ -1,8 +1,8 @@
 const express     = require('express'),
       middlewares = require('../middleware/middlewares.js'),
       Controllers = require('../controllers/controllers.js'),
-      soleConfig  = require('../sole-config.js');
-let router = express.Router();
+      soleConfig  = require('../sole-config.js'),
+      router      = express.Router();
 /**
  * ====================================
  * default routes
@@ -307,8 +307,7 @@ router.route('/soles/:id/plan')
         num_devices: req.body.num_devices,
         content_objective: req.body.content_objective
       };
-      let id = req.body.sole_id;
-      const soleId = await Controllers.Sole.update(id, sole, req.sessionToken);
+      const soleId = await Controllers.Sole.update(req.body.sole_id, sole, req.sessionToken);
       res.redirect('/soles');
     } catch (err) {
       err.userMessage = 'Could not save SOLE. SOLE id: ' + id;
@@ -318,7 +317,6 @@ router.route('/soles/:id/plan')
   });
 
 router.route('/soles/:id/delete')
-//get the sole with that id
   .get(middlewares.isAuth, async (req, res, next) => {
     try {
       let singleSole = await Controllers.Sole.getByID(req.params.id, req.sessionToken);
@@ -342,7 +340,6 @@ router.route('/soles/:id/delete')
   });
 
 router.route('/soles/:id/reflect')
-//get the sole with that id
   .get(middlewares.isAuth, async (req, res, next) => {
     try {
       let singleSole = await Controllers.Sole.getByID(req.params.id, req.sessionToken)
@@ -372,8 +369,8 @@ router.route('/soles/:id/reflect')
         notes: req.body.notes //session.reflection.notes
       };
 
-      const soleId = await Controllers.Sole.saveReflection(reflection, req.sessionToken)
-      res.redirect('/soles/'+soleId);
+      const soleId = await Controllers.Sole.saveReflection(reflection, req.sessionToken);
+      res.redirect('/soles/' + soleId);
     } catch (err) {
       err.userMessage = 'Could not save reflection. SOLE id: ' + req.body.soleId; //TODO: check if this variable exists, could fail if not defined
       err.postToSlack = true;
@@ -387,7 +384,7 @@ router.route('/questions')
   .get(middlewares.isAuth, async (req, res, next) => {
     if (req.query.q) { //TODO: might be a better way to check if this exists
       try {
-        let foundQuestions = await Controllers.Question.findByText(req.query.q, req.sessionToken);
+        const foundQuestions = await Controllers.Question.findByText(req.query.q, req.sessionToken);
         foundQuestions.config = soleConfig;
         res.render('questions', foundQuestions);
       } catch (err) {
@@ -407,7 +404,9 @@ router.route('/questions')
         next(err);
       }
     } else {
-      res.render('questions', {config:soleConfig});
+      res.render('questions', {
+        config: soleConfig
+      });
     }
   });
 
@@ -442,7 +441,7 @@ router.route('/questions/new')
     res.render('questions-add', {config: soleConfig});
   })
   .post(middlewares.isAuth, async (req, res, next) => {
-    let tags = req.body.tags.split(','); //TODO: check if defined, could fail if not defined
+    const tags = req.body.tags.split(','); //TODO: check if defined, could fail if not defined
     const newQuestion = {
       text: req.body.text, //TODO: check if defined, could fail if not defined
       source: req.body.source, //TODO: check if defined, could fail if not defined
@@ -503,59 +502,6 @@ router.route('/questions/:id/delete-tag/:rdn')
       res.redirect('/questions/' + req.params.id); //TODO: check if defined, could fail if not defined
     } catch (err) {
       err.userMessage = 'Could not delete a tag. Question id: ' + req.params.id + ' and tag id: ' + req.params.rdn; //TODO: check if defined, could fail if not defined
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-
-router.route('/questions/:id/approve')
-//approve a single question
-  .get(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const questionData = await Controllers.Question.approve(req.params.id, req.sessionToken); //TODO: check if defined, could fail if not defined
-      res.redirect('/dashboard/question-approval');
-    } catch (err) {
-      err.userMessage = 'Could not approve a question with id: ' + req.params.id; //TODO: check if defined, could fail if not defined
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-// reject a single question
-router.route('/questions/:id/reject')
-  .get(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const questionData = await Controllers.Question.reject(req.params.id, req.sessionToken); //TODO: check if defined, could fail if not defined
-      res.redirect('/dashboard/question-approval');
-    } catch (err) {
-      err.userMessage = 'Could not reject a question.';
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-// approve a single SOLE
-router.route('/soles/:id/approve')
-  .get(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const soleData = await Controllers.Sole.approve(req.params.id, req.sessionToken);
-      res.redirect('/dashboard/sole-approval');
-    } catch (err) {
-      err.userMessage = 'Could not approve a SOLE with id: ' + req.params.id; //TODO: check if defined, could fail if not defined
-      err.postToSlack = true;
-      next(err);
-    }
-  });
-
-router.route('/soles/:id/reject')
-// reject a single SOLE
-  .get(middlewares.isAuth, async (req, res, next) => {
-    try {
-      const soleData = await Controllers.Sole.reject(req.params.id, req.sessionToken);
-      res.redirect('/dashboard/sole-approval');
-    } catch (err) {
-      err.userMessage = 'Could not reject a SOLE with id: ' + req.params.id; //TODO: check if defined, could fail if not defined
       err.postToSlack = true;
       next(err);
     }

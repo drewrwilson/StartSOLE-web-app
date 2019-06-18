@@ -1,8 +1,8 @@
 const express     = require('express'),
       middlewares = require('../middleware/middlewares.js'),
       Controllers = require('../controllers/controllers.js'),
-      soleConfig  = require('../sole-config.js');
-let router = express.Router();
+      soleConfig  = require('../sole-config.js'),
+      router      = express.Router();
 /**
  * ====================================
  * rings routes

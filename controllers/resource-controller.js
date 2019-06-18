@@ -1,5 +1,5 @@
-const Parse = require('parse/node');
-const soleConfig = require('../sole-config.js');
+const Parse       = require('parse/node'),
+      soleConfig  = require('../sole-config.js');
 
 // connect to parse server
 Parse.initialize(soleConfig.appId);

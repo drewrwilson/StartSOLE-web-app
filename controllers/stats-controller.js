@@ -1,5 +1,4 @@
 const Parse = require('parse/node');
-const soleConfig = require('../sole-config.js');
 
 class Stats {
   static usersToday () {

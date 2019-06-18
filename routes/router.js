@@ -561,8 +561,6 @@ router.route('/soles/:id/reject')
     }
   });
 
-
-
 // static route for fail cases (404)
 //TODO: this might be able to be handled with next() and middlewares
 router.route('/error')

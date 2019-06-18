@@ -51,6 +51,7 @@ app.use('/admin', require('./routes/router-admin.js')); //admin routes, auth-req
 app.use('/slackbot', require('./routes/router-slackbot.js')); //slackbot routes, unauth'ed
 app.use('/', require('./routes/router-ring-colombia.js')); //colombia ring routes
 app.use('/profile', require('./routes/router-profile.js'));
+app.use('/rings', require('./routes/router-rings.js'));
 
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));

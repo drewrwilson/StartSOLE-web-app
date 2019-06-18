@@ -1,0 +1,151 @@
+<style type="text/css">
+
+    /* On mouse hover, lighten state color */
+    path:hover {
+        fill-opacity: .7;
+    }
+
+    /* Style for Custom Tooltip */
+    div.tooltip {
+        position: absolute;
+        text-align: center;
+        /*width: 60px;*/
+        /*height: 28px;*/
+        padding: 2px 5px 2px 5px;
+        font: 1rem sans-serif;
+        background: white;
+        border: 0px;
+        border-radius: 3px;
+        pointer-events: none;
+    }
+
+    /* Legend Font Style */
+    body {
+        font: 11px sans-serif;
+    }
+
+    /* Legend Position Style */
+    .legend {
+        position:absolute;
+        left:800px;
+        top:350px;
+    }
+
+</style>
+
+
+
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">Home</a>
+    <a href="/admin" class="breadcrumb">Admin</a>
+    <a class="breadcrumb">Pennsylvania</a>
+</div>
+
+{{#if roleData.isAdmin }}
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <!-- Create an element where the map will take place -->
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script>
+
+        var map = d3.select("#map");
+        var width = map.node().getBoundingClientRect().width;
+        var height = width / 2;
+
+        var svg = map.append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+        // Append Div for tooltip to SVG
+        var div = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+
+
+
+        // // The svg
+        // var svg = d3.select("svg"),
+        //         width = +svg.attr("width"),
+        //         height = +svg.attr("height");
+
+        // Map and projection
+        var path = d3.geoPath();
+        var projection = d3.geoMercator()
+                .scale(7000)
+                // .scale(70)
+                .center([-77.45,40.9])
+                .translate([width / 2, height / 2]);
+
+        // Data and color scale
+        var data = d3.map();
+        var colorScale = d3.scaleThreshold()
+                .domain([1, 10, 50, 100, 1000, 20000])
+//                .domain([10, 100, 1000, 3000, 10000, 50000])
+                .range(d3.schemeBlues[7]);
+
+        // Load external data and boot
+        d3.queue()
+                .defer(d3.json, "/files/maps/pa.json")
+                .await(ready);
+
+        {{#each rings}}
+        data.set("{{name}}", {{membershipCount}});
+        {{/each}}
+
+        function ready(error, topo) {
+
+            // Draw the map
+            svg.append("g")
+                    .selectAll("path")
+                    .data(topo.features)
+                    .enter()
+                    .append("path")
+                    // draw each country
+                    .attr("d", d3.geoPath()
+                            .projection(projection)
+                    )
+                    // set the color of each country
+                    .attr("fill", function (d) {
+                        d.total = data.get(d.id) || 0;
+                        return colorScale(d.total);
+                    })
+                    // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks"
+                    // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+                    .on("mouseover", function(d) {
+                        div.transition()
+                                .duration(200)
+                                .style("opacity", .9);
+                        div.text(d.properties.name)
+                                .style("left", (d3.event.pageX) + "px")
+                                .style("top", (d3.event.pageY - 28) + "px");
+                    })
+
+                    // fade out tooltip on mouse out
+                    .on("mouseout", function(d) {
+                        div.transition()
+                                .duration(500)
+                                .style("opacity", 0);
+                    })
+                    .on("click", function(d){
+                        window.open("/rings/" + d.properties.ringID, "_self");
+                    });
+        }
+
+    </script>
+
+{{/if}}
+

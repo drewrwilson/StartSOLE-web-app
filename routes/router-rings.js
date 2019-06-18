@@ -16,7 +16,7 @@ router.route('/')
       res.render('rings', {
         config: soleConfig,
         rings: rings
-      }); //show home page with ring data
+      });
     } catch(err) {
       err.userMessage = 'Failed to get ring data for user.';
       err.postToSlack = true;
@@ -28,7 +28,7 @@ router.route('/:id')
   .get(middlewares.isAuth, async (req, res, next) => {
     if (req.params.id) {
       try {
-        const dashboard = await Controllers.Dashboard.getDashboardData(req.params.id, req.sessionToken);
+        const dashboard = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
         res.render('dashboard', {
           config: soleConfig,
           dashboard: dashboard

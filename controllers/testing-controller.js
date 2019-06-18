@@ -1,6 +1,3 @@
-const Parse = require('parse/node');
-const soleConfig = require('../sole-config.js');
-
 //returns a random picture for testing observations locally with the mobile client.
 class Test {
   static randomPicture () {

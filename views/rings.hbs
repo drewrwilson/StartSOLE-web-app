@@ -1,7 +1,8 @@
 <div class="row" style="padding-top:20px;">
 
 
-{{#each rings}}
+{{#if rings}}
+    {{#each rings}}
     <div class="col s12 offset-m1 m10 l6">
         <div class="card">
             <div class="card-content center-align">
@@ -25,5 +26,19 @@
         </div>
     </div>
 {{/each}}
-
+{{else}}
+    <div class="col s12 offset-m1 m10 l6 offset-l3">
+        <div class="card">
+            <div class="card-content center-align">
+                <h5>{{{__ "Oops! Nothing to show here!"}}}</h5>
+                <div class="row">
+                    <div class="col s12">
+                        <p class="flow-text">{{{__ "You're not currently a part of any rings."}}}</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
 </div>

@@ -1,0 +1,112 @@
+<div class="card">
+    <div class="card-content">
+    <span class="card-title">
+        <a href="/rings/{{ringId}}/educators-by-subject">
+        {{{__ "Educators By Subject"}}}
+        </a>
+        <a id="resetEducatorBySubject" class="right waves-effect waves-light btn-small">reset</a>
+    </span>
+    <canvas id="educator-by-subject-chart"></canvas>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+
+    var educatorBySubjectChartCanvas = document.getElementById('educator-by-subject-chart').getContext('2d');
+    var educatorBySubjectData = {
+        datasets: [{
+            data: [{{dashboard.userCountBySubjectBand}}],
+            backgroundColor: ['#f44336','#673ab7','#03a9f4','#4caf50','#607d8b']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'English',
+            'Math',
+            'Science',
+            'Social Studies',
+            'Other'
+        ]
+    };
+    var educatorsBySubjectDataOther = {
+        datasets: [{
+            data: [
+                {{dashboard.userCountBySubject.[top.engineering]}},
+                {{dashboard.userCountBySubject.[top.englishlanguagedevelopment]}},
+                {{dashboard.userCountBySubject.[top.financialliteracy]}},
+                {{dashboard.userCountBySubject.[top.health]}},
+                {{dashboard.userCountBySubject.[top.thearts]}},
+                {{dashboard.userCountBySubject.[top.libmedia-infolit]}},
+                {{dashboard.userCountBySubject.[top.lifeskills]}},
+                {{dashboard.userCountBySubject.[top.physicaleducation]}},
+                {{dashboard.userCountBySubject.[top.technology]}},
+                {{dashboard.userCountBySubject.[top.thearts]}},
+                {{dashboard.userCountBySubject.[top.foreignlanguage]}},
+            ],
+            backgroundColor: ['#f44336','#673ab7','#03a9f4','#4caf50','#607d8b']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'Engineering',
+            'English Language Development',
+            'Financial Literacy',
+            'Health',
+            'The Arts',
+            'Library/Media',
+            'Life Skills',
+            'Physical Education',
+            'Technology',
+            'The Arts',
+            'World Languages',
+        ]
+    };
+    var educatorBySubjectChart = new Chart(educatorBySubjectChartCanvas, {
+        // The type of chart we want to create
+        type: 'doughnut',
+
+        // The data for our dataset
+        data : educatorBySubjectData,
+
+        // Configuration options go here
+        options: {}
+    });
+
+    //handle drilldown clicks
+    educatorBySubjectChartCanvas.onclick = function(evt) {
+        var activePoints = educatorBySubjectChart.getElementsAtEvent(evt);
+        if (activePoints[0]) {
+            var chartData = activePoints[0]['_chart'].config.data;
+            var idx = activePoints[0]['_index'];
+
+            var subjectBand = chartData.labels[idx];
+            var value = chartData.datasets[0].data[idx];
+
+            switch(subjectBand) {
+                case 'Other':
+                    educatorBySubjectChart.destroy();
+                    educatorBySubjectChart = new Chart(educatorBySubjectChartCanvas.getContext('2d'), {
+                        type: 'doughnut',
+                        data : educatorBySubjectChartDataOther
+                    });
+                    $("#resetEducatorBySubject").show();
+                    break;
+                default:
+                    console.log("default click");
+            }
+
+        }
+    };
+
+    $("#resetEducatorBySubject").hide();
+    $("#resetEducatorBySubject").click(function(){
+        educatorBySubjectChart.destroy();
+        educatorBySubjectChart = new Chart(educatorBySubjectChartCanvas.getContext('2d'), {
+            type: 'doughnut',
+            data : educatorBySubjectData
+        });
+        $("#resetEducatorBySubject").hide();
+    });
+});
+</script>

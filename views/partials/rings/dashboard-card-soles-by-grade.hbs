@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-content">
+        <a href="/rings/{{ringId}}/soles-by-grade">
+        <span class="card-title">{{{__ "SOLEs By Grade"}}}</span>
+        </a>
+        <canvas id="soles-by-grade-chart"></canvas>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    var solesByGradeChartCanvas = document.getElementById('soles-by-grade-chart').getContext('2d');
+    var solesByGradeData = {
+        datasets: [{
+            data: [{{dashboard.soleCountByGradeBand}}],
+            backgroundColor: ['#f44336', '#673ab7', '#03a9f4', '#4caf50', '#607d8b']
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            'Pre-K & Kindergarten',
+            'Elementary',
+            'Middle',
+            'High School',
+            'Other'
+        ]
+    };
+    var solesByGradeChart = new Chart(solesByGradeChartCanvas, {
+        type: 'doughnut',
+        data: solesByGradeData
+    });
+});
+</script>

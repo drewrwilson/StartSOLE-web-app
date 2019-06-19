@@ -1,0 +1,51 @@
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">
+            <a href="/rings/{{ringId}}/educators-growth">
+            {{{__ "New User Signups"}}}
+            </a>
+            <a id="resetEducatorByGrade" class="right waves-effect waves-light btn-small">reset</a>
+        </span>
+        <canvas id="educator-growth-chart"></canvas>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    var educatorGrowthChartCanvas = document.getElementById('educator-growth-chart').getContext('2d');
+    var educatorGrowthChart = new Chart(educatorGrowthChartCanvas, {
+        // The type of chart we want to create
+        type: 'line',
+
+        // The data for our dataset
+        data: {
+            labels: ["{{{__ "January"}}}", "{{{__ "February"}}}", "{{{__ "March"}}}", "{{{__ "April"}}}", "{{{__ "May"}}}", "{{{__ "June"}}}", "{{{__ "July"}}}", "{{{__ "August"}}}", "{{{__ "September"}}}", "{{{__ "October"}}}", "{{{__ "November"}}}", "{{{__ "December"}}}"],
+            datasets: [
+                {
+                    label: "{{{__ "New Users 2017"}}}",
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [{{dashboard.userCountByMonth.[2017]}}],
+                    fill: false,
+                },
+                {
+                    label: "{{{__ "New Users 2018"}}}",
+                    backgroundColor: 'rgb(47,166,154)',
+                    borderColor: 'rgb(47,166,154)',
+                    data: [{{dashboard.userCountByMonth.[2018]}}],
+                    fill: false,
+                },
+                {
+                    label: "{{{__ "New Users 2019"}}}",
+                    backgroundColor: 'rgb(3,169,244)',
+                    borderColor: 'rgb(3,169,244)',
+                    data: [{{dashboard.userCountByMonth.[2019]}}],
+                    fill: false,
+                }]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+});
+</script>

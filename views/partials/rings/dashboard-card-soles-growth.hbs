@@ -1,0 +1,53 @@
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">
+            <a href="/rings/{{ringId}}/soles-growth">
+            {{{__ "SOLEs Growth"}}}
+            </a>
+        </span>
+        <canvas id="soles-growth-chart"></canvas>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+
+    var soleGrowthChartCanvas = document.getElementById('soles-growth-chart').getContext('2d');
+    var soleGrowthChart = new Chart(soleGrowthChartCanvas, {
+        // The type of chart we want to create
+        type: 'line',
+
+        // The data for our dataset
+        data: {
+            labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            datasets: [
+                {
+                    label: "SOLEs Created 2017",
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [{{dashboard.soleCountByMonth.[2017]}}],
+                    fill: false,
+                },
+                {
+                    label: "SOLEs Created 2018",
+                    backgroundColor: 'rgb(47,166,154)',
+                    borderColor: 'rgb(47,166,154)',
+                    data: [{{dashboard.soleCountByMonth.[2018]}}],
+                    fill: false,
+                },
+                {
+                    label: "SOLEs Created 2019",
+                    backgroundColor: 'rgb(3,169,244)',
+                    borderColor: 'rgb(3,169,244)',
+                    data: [{{dashboard.soleCountByMonth.[2019]}}],
+                    fill: false,
+                }]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+
+
+});
+</script>

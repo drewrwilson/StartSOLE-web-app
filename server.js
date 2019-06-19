@@ -3,7 +3,6 @@ const express       = require('express'),
       bodyParser    = require('body-parser'),
       hbs           = require('express-hbs'),
       path          = require('path'),
-      moment        = require('moment'),
       i18n          = require('i18n'),
       Controllers   = require('./controllers/controllers.js'),
       cookieParser  = require('cookie-parser'),
@@ -12,7 +11,7 @@ const express       = require('express'),
       middlewares   = require("./middleware/middlewares.js"),
       soleConfig    = require('./sole-config.js'),
       port          = process.env.PORT || 8080; // set our port
-let router          = express.Router();
+
 
 logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
@@ -52,6 +51,11 @@ app.use('/slackbot', require('./routes/router-slackbot.js')); //slackbot routes,
 app.use('/', require('./routes/router-ring-colombia.js')); //colombia ring routes
 app.use('/profile', require('./routes/router-profile.js'));
 app.use('/rings', require('./routes/router-rings.js'));
+
+// const ringsRouter = require('./routes/router-rings.js');
+// ringsRouter.use(middlewares.isAuth);
+// app.use('/rings', ringsRouter);
+
 
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));

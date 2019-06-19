@@ -76,12 +76,6 @@
                 .style("opacity", 0);
 
 
-
-        // // The svg
-        // var svg = d3.select("svg"),
-        //         width = +svg.attr("width"),
-        //         height = +svg.attr("height");
-
         // Map and projection
         var path = d3.geoPath();
         var projection = d3.geoMercator()
@@ -94,7 +88,6 @@
         var data = d3.map();
         var colorScale = d3.scaleThreshold()
                 .domain([1, 10, 50, 100, 1000, 20000])
-//                .domain([10, 100, 1000, 3000, 10000, 50000])
                 .range(d3.schemeBlues[7]);
 
         // Load external data and boot
@@ -104,6 +97,7 @@
 
         {{#each rings}}
         data.set("{{name}}", {{membershipCount}});
+        data.set("{{name}}-ringId", "{{id}}");
         {{/each}}
 
         function ready(error, topo) {
@@ -123,13 +117,14 @@
                         d.total = data.get(d.id) || 0;
                         return colorScale(d.total);
                     })
+                    .attr("stroke", "black")
                     // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks"
                     // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
                     .on("mouseover", function(d) {
                         div.transition()
                                 .duration(200)
                                 .style("opacity", .9);
-                        div.text(d.properties.name)
+                        div.text(d.properties.name + "(" + data.get(d.id) +" users)")
                                 .style("left", (d3.event.pageX) + "px")
                                 .style("top", (d3.event.pageY - 28) + "px");
                     })
@@ -141,7 +136,7 @@
                                 .style("opacity", 0);
                     })
                     .on("click", function(d){
-                        window.open("/rings/" + d.properties.ringID, "_self");
+                        window.open("/rings/" + data.get(d.id+"-ringId"), "_self");
                     });
         }
 

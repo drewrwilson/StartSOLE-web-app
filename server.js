@@ -77,10 +77,8 @@ app.get('*', function (req, res, next) {
 // =============================================================================
 
 logger.log('\n\n/^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ \n');
-logger.log('           Ring: ' + soleConfig.ring);
 logger.log('    Environment: ' + soleConfig.environment);
 logger.log('   Database URL: ' + soleConfig.serverUrl);
-logger.log('Facebook App ID: ' + soleConfig.facebookAppID);
 logger.log('      Google UA: ' + soleConfig.googleAnalyticsUA);
 logger.log(' Google AdWords: ' + soleConfig.googleAdWordsID);
 logger.log(' Slack API Token: ' + soleConfig.slackToken);

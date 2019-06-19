@@ -14,7 +14,7 @@ const ringData = {
   fullName: 'SOLE Colombia',      // full name in human-readable format
   slug: 'Colombia',               // the name in the database
   language: 'es',                 // language for ring (this is an ok idea, maybe change later)
-  logo: 'sole-colombia-logo.png'  // logo in /public/images/logos/ directory
+  logo: 'sole-colombia-logo-just-text.png'  // logo in /public/images/logos/ directory
 };
 
 soleConfig.language = ringData.language; //all users in colombia ring set cookie language to 'es'

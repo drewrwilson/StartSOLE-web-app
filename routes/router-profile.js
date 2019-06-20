@@ -1,15 +1,20 @@
 const express     = require('express'),
       middlewares = require('../middleware/middlewares.js'),
       Controllers = require('../controllers/controllers.js'),
-      soleConfig  = require('../sole-config.js');
-let router        = express.Router();
+      soleConfig  = require('../sole-config.js'),
+      router      = express.Router();
+
+router.use(middlewares.isAuth);
+
+
 /**
  * ====================================
  * profile routes
  * ====================================
  */
+
 router.route('/')
-  .get(middlewares.isAuth, async (req, res, next) => {
+  .get(async (req, res, next) => {
     try {
       const profileData = await Controllers.User.getProfileData(req.sessionToken);
       profileData.config = soleConfig;
@@ -20,7 +25,7 @@ router.route('/')
       next(err);
     }
   })
-  .post(middlewares.isAuth, async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
       await Controllers.User.updateProfileData({
         subjects: req.body.subjects ? req.body.subjects : false,
@@ -49,7 +54,7 @@ router.route('/')
   });
 
 router.route('/subscriptions')
-  .get(middlewares.isAuth, async (req, res, next) => {
+  .get(async (req, res, next) => {
     try {
       const subscriptions = await Controllers.User.getEmailSubscriptions(req.sessionToken);
       res.render('partials/profile/profile-card-subscriptions', {
@@ -63,7 +68,7 @@ router.route('/subscriptions')
       next(err);
     }
   })
-  .post(middlewares.isAuth, async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
       const subscriptions = {
         ceuDoc: req.body.ceuDoc === "on",
@@ -82,7 +87,7 @@ router.route('/subscriptions')
   });
 
 router.route('/about-me')
-  .get(middlewares.isAuth, async (req, res, next) => {
+  .get(async (req, res, next) => {
     try {
       const profileData = await Controllers.User.getProfileData(req.sessionToken);
       profileData.config = soleConfig;
@@ -101,7 +106,7 @@ router.route('/complete')
    * if not, put in the first name and last name stored in the user profile (empty if undefined)
    *
    */
-  .get(middlewares.isAuth, async (req, res, next) => {
+  .get(async (req, res, next) => {
     try {
       let profileData = await Controllers.User.getProfileData(req.sessionToken);
       profileData.user.firstName = req.query.firstname ? req.query.firstname: undefined;

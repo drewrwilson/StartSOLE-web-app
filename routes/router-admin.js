@@ -2,8 +2,11 @@ const express     = require('express'),
       middlewares = require('../middleware/middlewares.js'),
       Controllers = require('../controllers/controllers.js'),
       soleConfig  = require('../sole-config.js'),
-      moment      = require('moment');
-let router = express.Router();
+      moment      = require('moment'),
+      router      = express.Router();
+
+router.use(middlewares.isAuth);
+//TODO: add a middleware here that requires a user to be admin
 
 /**
  * ====================================
@@ -11,8 +14,10 @@ let router = express.Router();
  * ====================================
  */
 
+
+
 router.route('/')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get((req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if (!roleData.isAdmin) { //TODO: make a middleware for isAdmin
         res.redirect('/home');
@@ -35,7 +40,7 @@ router.route('/')
  * route for viewing and approving soles
  */
 router.route('/pending-soles')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get((req, res, next) => {
     Controllers.Admin.getPendingSoles(req.sessionToken).then(soles => {
       //format the shortText and date for each sole
       soles.forEach(sole => {
@@ -57,7 +62,7 @@ router.route('/pending-soles')
       next(err);
     });
   })
-  .post(middlewares.isAuth, (req, res, next) => {
+  .post((req, res, next) => {
     const requestSocialMedia = (req.body.socialMediaCheck == 'true');//true if we need to request Social Media Approval via email, false otherwise
     if (req.body.action === 'approve') {
       Controllers.Admin.approveSole(req.body.soleId, req.body.comment, requestSocialMedia, req.sessionToken).then(soleId => {
@@ -78,7 +83,7 @@ router.route('/pending-soles')
  * route for browsing all SOLEs, regardless of user
  */
 router.route('/browse-soles')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get((req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(!roleData.isAdmin) {
         res.redirect('/home');
@@ -98,7 +103,7 @@ router.route('/browse-soles')
  * route for browsing all users
  */
 router.route('/browse-users')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get((req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(!roleData.isAdmin){
         res.redirect('/home');
@@ -118,7 +123,7 @@ router.route('/browse-users')
  * route for browsing upcoming conferences and events.
  */
 router.route('/events')
-  .get(middlewares.isAuth, (req, res, next) => {
+  .get((req, res, next) => {
     Controllers.User.getRoleData(req.sessionToken).then(roleData => {
       if(roleData.isAdmin || roleData.isAmbassador) { //TODO: replace with middleware later
         res.render('admin/admin-conferences-and-events');
@@ -138,7 +143,7 @@ router.route('/events')
  * route for viewing Pennsylvania state as a map.
  */
 router.route('/pa')
-  .get(middlewares.isAuth, async (req, res, next) => {
+  .get(async (req, res, next) => {
       try {
           const roleData = await Controllers.User.getRoleData(req.sessionToken);
           if (!roleData.isAdmin) { //TODO: make a middleware for isAdmin

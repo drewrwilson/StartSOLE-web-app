@@ -1,9 +1,6 @@
-const express = require('express');
-let router = express.Router();
-const middlewares = require('../middleware/middlewares.js');
-const Controllers = require('../controllers/controllers.js');
-const soleConfig  = require('../sole-config.js');
-
+const express     = require('express'),
+      Controllers = require('../controllers/controllers.js'),
+      router      = express.Router();
 /**
  * ====================================
  * slackbot routes

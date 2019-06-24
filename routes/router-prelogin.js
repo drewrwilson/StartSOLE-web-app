@@ -1,11 +1,8 @@
-const express = require('express');
-let router = express.Router();
-const middlewares = require('../middleware/middlewares.js');
-const Controllers = require('../controllers/controllers.js');
-const soleConfig  = require('../sole-config.js');
-const logger = require('../logger.js');
-const util = require ('util');
-
+const express     = require('express'),
+      soleConfig  = require('../sole-config.js'),
+      logger      = require('../logger.js'),
+      util        = require ('util'),
+      router      = express.Router();
 
 router.route('/register')
   .get((req, res, next) => {
@@ -56,5 +53,31 @@ router.route('/login')
     }
   });
 
+
+// static route for ToS
+router.route('/terms-of-use')
+  .get((req, res, next) => {
+    res.render('page-terms-of-use', {layout: 'no-sidebar.hbs', config: soleConfig});
+  });
+
+// static route for privacy
+router.route('/privacy')
+  .get((req, res, next) => {
+    res.render('page-privacy', {layout: 'no-sidebar.hbs', config: soleConfig});
+  });
+
+// static route for email verification success
+router.route('/verify-email-success')
+  .get((req, res, next) => {
+    const email = req.query.email; //TODO: check if email exists
+    res.render('verify-email-success', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
+  });
+
+// static route for email verification failure
+router.route('/verify-email-failure')
+  .get((req, res, next) => {
+    const email = req.query.email; //TODO: check if email exists
+    res.render('verify-email-failure', {layout: 'no-sidebar.hbs', config: soleConfig, email: email});
+  });
 
 module.exports = router;

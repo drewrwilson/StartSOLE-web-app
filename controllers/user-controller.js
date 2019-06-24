@@ -1,5 +1,5 @@
-const Parse = require('parse/node');
-const soleConfig = require('../sole-config.js');
+const Parse       = require('parse/node'),
+      soleConfig  = require('../sole-config.js');
 
 // connect to parse server
 Parse.initialize(soleConfig.appId);
@@ -33,13 +33,6 @@ class User {
         isTrainer: roles.includes('trainer'),
         roles: roles
       });
-    });
-  };
-
-  static hasRole (roleName, sessionToken) {
-    return Parse.Cloud.run('webapp.hasRole', {
-      roleName: roleName,
-      sessionToken: sessionToken
     });
   };
 
@@ -93,13 +86,6 @@ class User {
     });
   };
 
-  //gives number of users signed up today
-  static usersToday () {
-    return Parse.Cloud.run('webapp.usersToday', {
-      sessionToken: sessionToken
-    });
-  };
-
   //gives a summary of all admin dashboard data
   static adminSummaryData (sessionToken) {
     return Parse.Cloud.run('webapp.adminSummaryData', {
@@ -135,7 +121,7 @@ class User {
 
   /**
    *
-   * @param subscriptions - json object of subscriptions
+   * @param subscriptions json object of subscriptions
    * @param sessionToken
    * @returns {Promise<Parse.Promise>}
    */

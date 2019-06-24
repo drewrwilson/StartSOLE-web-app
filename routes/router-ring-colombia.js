@@ -1,6 +1,4 @@
 const express     = require('express'),
-      middlewares = require('../middleware/middlewares.js'),
-      Controllers = require('../controllers/controllers.js'),
       soleConfig  = require('../sole-config.js'),
       router      = express.Router();
 
@@ -11,19 +9,13 @@ const express     = require('express'),
  */
 
 const ringData = {
-  fullName: 'SOLE Colombia',      // full name in human-readable format
-  slug: 'Colombia',               // the name in the database
-  language: 'es',                 // language for ring (this is an ok idea, maybe change later)
-  logo: 'sole-colombia-logo.png'  // logo in /public/images/logos/ directory
+  fullName: 'SOLE Colombia', // full name in human-readable format
+  slug: 'Colombia', // the name in the database
+  language: 'es', // language for ring (this is an ok idea, maybe change later)
+  logo: 'sole-colombia-logo-just-text.png'  // logo in /public/images/logos/ directory
 };
 
 soleConfig.language = ringData.language; //all users in colombia ring set cookie language to 'es'
-
-// router.route('/')
-//   .get((req, res, next) => {
-//     res.setLocale(ringData.language); //"hard-code" this route to be defaultly in spanish
-//     res.redirect('/colombia/login');
-//   });
 
 router.route('/colombia')
   .get((req, res, next) => {

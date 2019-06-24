@@ -3,7 +3,6 @@ const express       = require('express'),
       bodyParser    = require('body-parser'),
       hbs           = require('express-hbs'),
       path          = require('path'),
-      moment        = require('moment'),
       i18n          = require('i18n'),
       Controllers   = require('./controllers/controllers.js'),
       cookieParser  = require('cookie-parser'),
@@ -12,7 +11,7 @@ const express       = require('express'),
       middlewares   = require("./middleware/middlewares.js"),
       soleConfig    = require('./sole-config.js'),
       port          = process.env.PORT || 8080; // set our port
-let router          = express.Router();
+
 
 logger.useSlackBot = process.env.ENVIRONMENT === 'production'; //true if production, false otherwise
 
@@ -51,6 +50,9 @@ app.use('/admin', require('./routes/router-admin.js')); //admin routes, auth-req
 app.use('/slackbot', require('./routes/router-slackbot.js')); //slackbot routes, unauth'ed
 app.use('/', require('./routes/router-ring-colombia.js')); //colombia ring routes
 app.use('/profile', require('./routes/router-profile.js'));
+app.use('/soles', require('./routes/router-soles.js'));
+app.use('/questions', require('./routes/router-questions.js'));
+app.use('/rings', require('./routes/router-rings.js'));
 
 // serve static content
 app.use(express.static(path.join(__dirname, 'public')));
@@ -76,10 +78,8 @@ app.get('*', function (req, res, next) {
 // =============================================================================
 
 logger.log('\n\n/^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ /^(o.o)^\ \n');
-logger.log('           Ring: ' + soleConfig.ring);
 logger.log('    Environment: ' + soleConfig.environment);
 logger.log('   Database URL: ' + soleConfig.serverUrl);
-logger.log('Facebook App ID: ' + soleConfig.facebookAppID);
 logger.log('      Google UA: ' + soleConfig.googleAnalyticsUA);
 logger.log(' Google AdWords: ' + soleConfig.googleAdWordsID);
 logger.log(' Slack API Token: ' + soleConfig.slackToken);

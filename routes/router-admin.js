@@ -157,7 +157,7 @@ router.route('/pa')
               roleData: roleData,
               usersToday: 0
           };
-          data.rings = await Controllers.User.getMyRings(req.sessionToken);
+          data.rings = await Controllers.User.getAllRings(req.sessionToken);
           data.usersToday = await Controllers.User.adminSummaryData(req.sessionToken);
 
           res.render('admin/map-pa', data);

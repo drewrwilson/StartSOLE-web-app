@@ -14,7 +14,7 @@ router.use(middlewares.isAuth);
 router.route('/')
   .get(async (req, res, next) => {
     try {
-      const rings = await Controllers.User.getMyRings(req.sessionToken);
+      const rings = await Controllers.User.getAllRings(req.sessionToken);
       res.render('rings', {
         config: soleConfig,
         rings: rings

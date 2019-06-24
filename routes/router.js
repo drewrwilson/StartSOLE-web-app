@@ -37,18 +37,14 @@ router.route('/home')
         config: soleConfig,
       };
 
-      if (roleData.isRingleader) {
-        return Controllers.User.getMyRings(req.sessionToken).then(rings => {
+      return Controllers.User.getAllRings(req.sessionToken).then(rings => {
           homeData.rings = rings;
           res.render('home', homeData); //show home page with ring data
-        }).catch(err => {
+      }).catch(err => {
           err.userMessage = 'Failed to ring data for user.';
           err.postToSlack = true;
           next(err);
-        });
-      } else {
-        res.render('home', homeData); //show home page but no ring data
-      }
+      });
     } catch (err) {
       err.userMessage = 'Failed to role data for user.';
       err.postToSlack = true;

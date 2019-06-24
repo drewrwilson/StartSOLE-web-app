@@ -115,23 +115,5 @@ module.exports = {
         config: soleConfig
       });
     }
-  },
-  getRings: (err, req, res, next) => {
-    const rings = req.cookies ? req.cookies.rings: undefined; //check if ring is saved in the cookie
-    if (rings) {
-      req.rings = rings; //set rings to be an array in req, so we can use it in the other routes
-      next();
-    } else if (req.sessionToken) {
-      Controllers.User.getMyRings(req.sessionToken).then(rings => {
-        req.rings = rings; //set rings to be an array in req, so we can use it in the other routes
-        next();
-      }).catch(err => {
-        err.userMessage = 'Error getting rings for user';
-        next(err);
-      })
-    } else {
-      //if we don't have a sessionToken, then we also don't have a ring eg if we're just viewing static pages like privacy or terms-of-service
-      next();
-    }
   }
 };

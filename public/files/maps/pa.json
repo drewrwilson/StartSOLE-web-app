@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "name": "Intermediate Unit 1",
-        "ringID": "G5CdeBr3dr"
+        "teachers": 3381.8
       },
       "geometry": {
         "type": "Polygon",
@@ -283,7 +283,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Pittsburgh-Mount Oliver IU 2"
+        "name": "Pittsburgh-Mount Oliver IU 2",
+        "teachers": 1985
       },
       "geometry": {
         "type": "Polygon",
@@ -437,7 +438,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Allegheny IU 3"
+        "name": "Allegheny IU 3",
+        "teachers": 8093.72
       },
       "geometry": {
         "type": "Polygon",
@@ -773,7 +775,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Midwestern IU 4"
+        "name": "Midwestern IU 4",
+        "teachers": 3541.9
       },
       "geometry": {
         "type": "Polygon",
@@ -955,7 +958,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Northwest Tri-County IU 5"
+        "name": "Northwest Tri-County IU 5",
+        "teachers": 3483.72
       },
       "geometry": {
         "type": "Polygon",
@@ -1301,7 +1305,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Riverview IU 6"
+        "name": "Riverview IU 6",
+        "teachers": 1666.88
       },
       "geometry": {
         "type": "Polygon",
@@ -1739,7 +1744,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Westmoreland IU 7"
+        "name": "Westmoreland IU 7",
+        "teachers": 3042.79
       },
       "geometry": {
         "type": "Polygon",
@@ -2257,7 +2263,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Appalachia IU 8"
+        "name": "Appalachia IU 8",
+        "teachers": 3549.64
       },
       "geometry": {
         "type": "Polygon",
@@ -2671,7 +2678,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Seneca Highlands IU 9"
+        "name": "Seneca Highlands IU 9",
+        "teachers": 919.19
       },
       "geometry": {
         "type": "Polygon",
@@ -2833,7 +2841,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Central IU 10"
+        "name": "Central IU 10",
+        "teachers": 1917.32
       },
       "geometry": {
         "type": "Polygon",
@@ -3259,7 +3268,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Tuscarora IU 11"
+        "name": "Tuscarora IU 11",
+        "teachers": 1139.76
       },
       "geometry": {
         "type": "Polygon",
@@ -3729,7 +3739,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Lincoln IU 12"
+        "name": "Lincoln IU 12",
+        "teachers": 5630.47
       },
       "geometry": {
         "type": "Polygon",
@@ -4143,7 +4154,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Lancaster-Lebanon IU 13"
+        "name": "Lancaster-Lebanon IU 13",
+        "teachers": 5874.21
       },
       "geometry": {
         "type": "Polygon",
@@ -4401,7 +4413,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Berks County IU 14"
+        "name": "Berks County IU 14",
+        "teachers": 4470.79
       },
       "geometry": {
         "type": "Polygon",
@@ -4623,7 +4636,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Capital Area IU 15"
+        "name": "Capital Area IU 15",
+        "teachers": 5673.74
       },
       "geometry": {
         "type": "Polygon",
@@ -5077,7 +5091,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Central Susquehanna IU 16"
+        "name": "Central Susquehanna IU 16",
+        "teachers": 2231.97
       },
       "geometry": {
         "type": "Polygon",
@@ -5407,7 +5422,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "BlaST IU 17"
+        "name": "BlaST IU 17",
+        "teachers": 2205.6
       },
       "geometry": {
         "type": "Polygon",
@@ -5729,7 +5745,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Luzerne IU 18"
+        "name": "Luzerne IU 18",
+        "teachers": 2739.91
       },
       "geometry": {
         "type": "Polygon",
@@ -6107,7 +6124,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Northeastern Educational IU 19"
+        "name": "Northeastern Educational IU 19",
+        "teachers": 3130.34
       },
       "geometry": {
         "type": "Polygon",
@@ -6525,7 +6543,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Colonial IU 20"
+        "name": "Colonial IU 20",
+        "teachers": 5079.53
       },
       "geometry": {
         "type": "Polygon",
@@ -7027,7 +7046,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Carbon-Lehigh IU 21"
+        "name": "Carbon-Lehigh IU 21",
+        "teachers": 3617.66
       },
       "geometry": {
         "type": "Polygon",
@@ -7313,7 +7333,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Bucks County IU 22"
+        "name": "Bucks County IU 22",
+        "teachers": 5640.73
       },
       "geometry": {
         "type": "Polygon",
@@ -7555,7 +7576,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Montgomery County IU 23"
+        "name": "Montgomery County IU 23",
+        "teachers": 7713.52
       },
       "geometry": {
         "type": "Polygon",
@@ -7805,7 +7827,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Chester County IU 24"
+        "name": "Chester County IU 24",
+        "teachers": 4877.05
       },
       "geometry": {
         "type": "Polygon",
@@ -8099,7 +8122,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Delaware County IU 25"
+        "name": "Delaware County IU 25",
+        "teachers": 4867.32
       },
       "geometry": {
         "type": "Polygon",
@@ -8257,7 +8281,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "School District of Philadelphia, IU 26"
+        "name": "School District of Philadelphia, IU 26",
+        "teachers": 7951.87
       },
       "geometry": {
         "type": "Polygon",
@@ -8427,7 +8452,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Beaver Valley IU 27"
+        "name": "Beaver Valley IU 27",
+        "teachers": 1502.48
       },
       "geometry": {
         "type": "Polygon",
@@ -8497,7 +8523,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "ARIN IU 28"
+        "name": "ARIN IU 28",
+        "teachers": 1349.23
       },
       "geometry": {
         "type": "Polygon",
@@ -8899,7 +8926,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "ARIN IU 28"
+        "name": "ARIN IU 28",
+        "teachers": 1349.23
       },
       "geometry": {
         "type": "Polygon",
@@ -8977,7 +9005,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Schuylkill IU 29"
+        "name": "Schuylkill IU 29",
+        "teachers": 1334.48
       },
       "geometry": {
         "type": "Polygon",

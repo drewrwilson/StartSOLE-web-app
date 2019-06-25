@@ -98,7 +98,7 @@ class User {
    */
   static async getLanguage (sessionToken) {
     const rings = await this.getMyRings(sessionToken);
-    if (rings && rings.find(ring => ring.rdn === 'us.colombia')) {
+    if (rings && rings.find(ring => ring.rdn === 'co')) {
         return 'es'; //this is the name of the directory where the language views are
     } else {
       //default is none, later the default should be 'en/'

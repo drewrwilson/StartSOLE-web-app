@@ -1,38 +1,42 @@
-<link href="/css/admin-materialize.min.css" rel="stylesheet">
-
 <div class="container">
-    <div class="row">
-        <div class="col s12 m8 offset-m2">
+    <div class="valign-wrapper row" style="height: 100vh;">
+        <div class="col s12 m8 offset-m2 l6 offset-l3">
 
-            <div class="card card-login">
-                <div class="card-login-splash hide-on-med-and-down">
-                    {{#if ring.logo}}
-                        <img class="responsive-img" src="/images/logos/{{ring.logo}}" height="165" alt="{{ring.fullName}}" style="padding: 10%">
-                    {{else}}
-                        <video width="80%" autoplay muted>
-                            <source src="/images/logos/animated-logo-small.webm" type="video/webm">
-                            <source src="/images/logos/animated-logo-small.mp4" type="video/mp4">
-                        </video>
-                    {{/if}}
+            <div class="card">
+                <div class="valign-wrapper">
+                    <div class="valign center" style="width: 100%;">
+                        {{#if ring.logo}}
+                            <img class="responsive-img" src="/images/logos/{{ring.logo}}" height="125" alt="{{ring.fullName}}" style="padding: 10%">
+                        {{else}}
+                            <video width="125" height="125" class="circle z-depth-1 white question-add-header-img" autoplay muted>
+                                <source src="/images/logos/animated-logo-small.webm" type="video/webm">
+                                <source src="/images/logos/animated-logo-small.mp4" type="video/mp4">
+                            </video>
+                        {{/if}}
+                    </div>
                 </div>
-                <div class="card-content">
-                    <span class="card-title">{{{__ "Log In"}}}</span>
+
+                <div class="card-content" style="margin-top: -30px">
+                    <span class="center card-title">{{{__ "Welcome to StartSOLE"}}}</span>
                     <form id="login-form" action="/login" method="post">
                         <div class="input-field">
                             <input id="email" type="email" name="email" class="validate" value="{{email}}">
                             <label for="email">{{{__ "Email"}}}</label>
                             <span class="helper-text" data-error="{{{__ "invalid email"}}}"></span>
                         </div>
-                        <div class="input-field">
+                        <div class="input-field" style="margin-bottom: 0em;">
                             <input id="password" name="password" type="password" class="validate">
                             <label for="password">{{{__ "Password"}}}</label>
                         </div>
-
-                        <div class="row center">
-                            <div class="col s12">
                         <a href="#password-reset-modal" class="modal-trigger">
                             {{{__ "Help! I forgot my password."}}}
                         </a>
+
+                        <div class="row center">
+                            <div class="col s12">
+
+                                <br>
+                                <input class="btn" type="submit" value="{{{__ "Log In"}}} ⇨">
                             </div>
                         </div>
 
@@ -43,11 +47,8 @@
                         </div>
 
                         <div class="row">
-                            <div class="col s12">
-                                <input class="btn" type="submit" value="{{{__ "Log In"}}} ⇨" style="width: 100%;">
-                            </div>
                             <div class="col s12 center">
-                                <a class="waves-effect waves-teal" href="{{#if ring.slug}}/{{ring.slug}}{{/if}}/register">{{{__ "Need an account?"}}}</a>
+                                <a class="waves-effect waves-teal" href="{{#if ring.slug}}/{{ring.slug}}{{/if}}/register">{{{__ "Need an account? Register here!"}}}</a>
                             </div>
                         </div>
 
@@ -60,7 +61,6 @@
                                  data-width="175"
                                  data-height="40"
                                  data-longtitle="true"></div>
-                            <!--<div style="color: #9e9e9e; margin: 10px; font-size:.75em;">Looking for <a href="/facebook-login">the facebook login</a>?</div>-->
                         </div>
 
                     </form>

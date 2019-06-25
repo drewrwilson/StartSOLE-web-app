@@ -28,7 +28,6 @@ class User {
     }).then(roles => {
       return Parse.Promise.as({
         isAdmin: roles.includes('Admin'),
-        isRingleader: roles.includes('ringleader'),
         isAmbassador: roles.includes('ambassador'),
         isTrainer: roles.includes('trainer'),
         roles: roles
@@ -43,19 +42,18 @@ class User {
     });
   };
 
-  static isRingLeader (sessionToken) {
-    return Parse.Cloud.run('webapp.hasRole', {
-      roleName: 'ringleader',
+  //returns user ring data for the first ring
+  static getAllRings (sessionToken) {
+    return Parse.Cloud.run('webapp.getAllRings', {
       sessionToken: sessionToken
     });
   };
 
-  //returns user ring data for the first ring
-  static getMyRings (sessionToken) {
+  static getMyRings(sessionToken) {
     return Parse.Cloud.run('webapp.getMyRings', {
       sessionToken: sessionToken
     });
-  };
+  }
 
   static updateProfileData (profileObject, sessionToken) {
     return Parse.Cloud.run('webapp.updateProfile', {
@@ -100,7 +98,7 @@ class User {
    */
   static async getLanguage (sessionToken) {
     const rings = await this.getMyRings(sessionToken);
-    if (rings && rings.find(ring => ring.name === 'Colombia') && !rings.find(ring => ring.name === 'SOLE Team')) {
+    if (rings && rings.find(ring => ring.rdn === 'co')) {
         return 'es'; //this is the name of the directory where the language views are
     } else {
       //default is none, later the default should be 'en/'

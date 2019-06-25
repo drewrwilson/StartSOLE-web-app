@@ -14,7 +14,7 @@ router.use(middlewares.isAuth);
 router.route('/')
   .get(async (req, res, next) => {
     try {
-      const rings = await Controllers.User.getMyRings(req.sessionToken);
+      const rings = await Controllers.User.getAllRings(req.sessionToken);
       res.render('rings', {
         config: soleConfig,
         rings: rings
@@ -33,6 +33,7 @@ router.route('/:id')
       res.render('dashboard', {
         config: soleConfig,
         includeChartJS: true,
+        includeTableSorter: true,
         ringId: req.params.id,
         dashboard: dashboard
       });
@@ -139,6 +140,23 @@ router.route('/:id/soles-by-subject')
       });
     } catch (err) {
       err.userMessage = 'Could not load dashboard data for ring: ' + req.params.id;
+      err.postToSlack = true;
+      next(err);
+    }
+  });
+
+router.route('/:id/schools')
+  .get(async (req, res, next) => {
+    try {
+      const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
+      res.render('partials/rings/dashboard-card-table-of-schools.hbs', {
+        config: soleConfig,
+        includeTableSorter: true,
+        ringId: req.params.id,
+        dashboard: dashboardData
+      });
+    } catch (err) {
+      err.userMessage = 'Could not load dashboard data when attempting to show school table for ring: ' + req.params.id;
       err.postToSlack = true;
       next(err);
     }

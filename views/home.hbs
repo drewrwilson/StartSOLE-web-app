@@ -1,7 +1,7 @@
 <div class="row" style="padding-top:20px;">
 
 
-    <div class="col s12 offset-m1 m10 {{#if roleData.isRingleader }}{{else}}offset-l3{{/if}} l6">
+    <div class="col s12 offset-m1 m10 offset-l3 l6">
 
         <div class="card">
             <div class="card-content center-align">
@@ -21,7 +21,6 @@
 
     </div>
 
-    {{#if roleData.isRingleader }}
         {{#each rings}}
             <div class="col s12 offset-m1 m10 l6">
                 <div class="card">
@@ -46,7 +45,6 @@
                 </div>
             </div>
         {{/each}}
-    {{/if}}
 </div>
 
 {{#if config.language}}

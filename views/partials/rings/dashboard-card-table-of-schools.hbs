@@ -1,0 +1,32 @@
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">
+            <a href="/rings/{{ringId}}/schools">{{{__ "Schools"}}}</a>
+        </span>
+        <table id="myTable">
+            <thead>
+            <tr>
+                <th>Location</th>
+                <th>SOLEs</th>
+                <th>Users</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each dashboard.schools}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.nSoles}}</td>
+                    <td>{{this.nUsers}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $(function() {
+        $("#myTable").tablesorter();
+    });
+</script>

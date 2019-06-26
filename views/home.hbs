@@ -20,7 +20,30 @@
         </div>
 
     </div>
-
+        {{#if multipleRings}}
+            <div class="col s12 offset-m1 m10 offset-l3 l6">
+                <div class="card-panel">
+                    <table id="ringTable" class="highlight">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Educators</th>
+                            <th>SOLEs</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each rings}}
+                            <tr>
+                                <td><a href="/rings/{{id}}">{{name}}</a></td>
+                                <td>{{membershipCount}}</td>
+                                <td>{{soleCount}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {{else}}
         {{#each rings}}
             <div class="col s12 offset-m1 m10 l6">
                 <div class="card">
@@ -45,10 +68,19 @@
                 </div>
             </div>
         {{/each}}
+        {{/if}}
 </div>
 
 {{#if config.language}}
 <script>
     document.cookie = 'language='+'{{config.language}}' + ';path=/';
 </script>
+{{/if}}
+
+{{#if multipleRings}}
+    <script>
+        $(function() {
+            $("#ringTable").tablesorter();
+        });
+    </script>
 {{/if}}

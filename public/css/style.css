@@ -319,6 +319,21 @@ main, footer {
     margin-bottom: 0;
 }
 
+/*map styling*/
+path:hover {
+    fill-opacity: .7;
+}
+div.map-tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 2px 5px 2px 5px;
+    font: 1rem sans-serif;
+    background: white;
+    border: 0px;
+    border-radius: 3px;
+    pointer-events: none;
+}
+
 /* slider styling */
 
 .c-1-color { background: #04893C; }

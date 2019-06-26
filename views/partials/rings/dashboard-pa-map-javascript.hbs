@@ -1,0 +1,86 @@
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script>
+
+    var map = d3.select("#map");
+    var width = map.node().getBoundingClientRect().width;
+    var height = Math.max((width / 2), 600);
+
+    var svg = map.append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+    // Append Div for tooltip to SVG
+    var div = d3.select("body")
+            .append("div")
+            .attr("class", "map-tooltip")
+            .style("opacity", 0);
+
+
+    // Map and projection
+    var path = d3.geoPath();
+    var projection = d3.geoMercator()
+            .scale((width+50)*7.5)
+            // .scale(7000)
+            .center([-77.85,40.9])
+            .translate([width / 2, height / 2]);
+
+    // Data and color scale
+    var data = d3.map();
+    var colorScale = d3.scaleThreshold()
+            .domain([0.1, 0.5, 1, 5, 10, 25])
+            .range(d3.schemeBlues[7]);
+
+    // Load external data and boot
+    d3.queue()
+            .defer(d3.json, "/files/maps/pa.json")
+            .await(ready);
+
+        {{#each dashboard.rings}}
+        data.set("{{name}}", {{membershipCount}});
+        data.set("{{name}}-ringId", "{{id}}");
+        {{/each}}
+
+    function ready(error, topo) {
+
+        // Draw the map
+        svg.append("g")
+                .selectAll("path")
+                .data(topo.features)
+                .enter()
+                .append("path")
+                // draw each country
+                .attr("d", d3.geoPath()
+                        .projection(projection)
+                )
+                // set the color of each country
+                .attr("fill", function (d) {
+                    d.percentage = Math.round(10000*(data.get(d.id)/d.properties.teachers))/100 || 0;
+                    console.log(d.percentage);
+                    return colorScale(d.percentage);
+                })
+                .attr("stroke", "black")
+                // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks"
+                // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+                .on("mouseover", function(d) {
+                    div.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                    div.text(d.properties.name + " (" + d.percentage +"%)")
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+                })
+
+                // fade out tooltip on mouse out
+                .on("mouseout", function(d) {
+                    div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                })
+                .on("click", function(d){
+                    window.open("/rings/" + data.get(d.id+"-ringId"), "_self");
+                });
+    }
+
+</script>

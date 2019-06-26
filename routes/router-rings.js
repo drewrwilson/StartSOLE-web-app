@@ -30,6 +30,10 @@ router.route('/:id')
   .get(async (req, res, next) => {
     try {
       const dashboard = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
+      if(dashboard.rdn === "us.pa"){
+        console.log("Pennsylvannia!");
+        dashboard.rings = await Controllers.User.getAllRings(req.sessionToken);
+      }
       res.render('dashboard', {
         config: soleConfig,
         includeChartJS: true,

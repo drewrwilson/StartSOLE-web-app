@@ -17,7 +17,7 @@ Parse.serverURL = soleConfig.serverUrl;
 * refer - string (defined by query param)
 *
 * returns:
-* sesh - a string sesh for the user logged in
+* session - a string session for the user logged in
 */
 function registerNewUser (first_name, last_name, email, password, refer) {
   var sessionToken = '';

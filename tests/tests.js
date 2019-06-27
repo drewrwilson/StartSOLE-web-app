@@ -4,10 +4,33 @@ const server        = require('../server.js'),
       should        = chai.should(),
       Parse         = require('parse/node'),
       soleConfig    = require('../sole-config.js');
-      sessionToken  = process.env.TEST_SESSION_TOKEN; //add sessionToken to environmental variables
 
 chai.use(chaiHttp);
+const expect = chai.expect;
 
+//get session token
+const testUser = { email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD },
+      timeout  = 5000; //timeout length in milliseconds
+
+let sessionToken = '';
+
+describe('Login', function () {
+  it('Login with example account', (done) => {
+    chai.request(soleConfig.serverUrl)
+      .post('/login')
+      .set('X-Parse-Application-Id', 'Hcwnq8U7xN4Z2bXcSBdvv4bjfRNKCpPSahXgeq9xRp')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({username: testUser.email, password: testUser.password})
+      .end(function(error, response, body) {
+        if (error) {
+          done(error);
+        } else {
+          sessionToken = response.body.sessionToken;
+          done();
+        }
+      });
+  });
+});
 
 const routes = {
   prelogin: [
@@ -29,13 +52,13 @@ const routes = {
     "/history",
     "/how",
     "/resources",
-    "/random-picture",
-    "/admin",
-    "/admin/pending-soles",
-    "/admin/browse-soles",
-    "/admin/browse-users",
-    "/admin/events",
-    "/admin/pa",
+    // "/random-picture",
+    // "/admin",
+    // "/admin/pending-soles",
+    // "/admin/browse-soles",
+    // "/admin/browse-users",
+    // "/admin/events",
+    // "/admin/pa",
     "/profile",
     "/profile/subscriptions",
     "/profile/about-me",
@@ -70,7 +93,7 @@ const routes = {
 // "/users-today",
 // "/users-range-detail",
 
-describe('Load all pre-login routesload', function() {
+describe('Load all pre-login routes', function() {
   routes.prelogin.forEach(route => {
     it('GET' + route + '. Does page load?', (done) => {
       chai.request(server)
@@ -79,7 +102,7 @@ describe('Load all pre-login routesload', function() {
           res.should.have.status(200);
           done();
         });
-    }).timeout(10000);
+    }).timeout(timeout);
   });
 
   it('GET /lolwutno. It should show 404', (done) => {
@@ -89,23 +112,21 @@ describe('Load all pre-login routesload', function() {
         res.should.have.status(404);
         done();
       });
-  }).timeout(10000);
+  }).timeout(timeout);
 
 });
 
-// describe('Test if all post-login routes load', function() {
-//   routes.postlogin.forEach(route => {
-//     it('GET' + route + '. Does page load?', (done) => {
-//       chai.request(server)
-//         .get(route)
-//         .set('Cookie', 'sessionToken=' + sessionToken +' ;')
-//         .end((err, res) => {
-//           res.should.have.status(200);
-//           done();
-//         });
-//     }).timeout(10000);
-//   });
-//
-// });
-
-
+describe('Load all post-login routes', function() {
+  routes.postlogin.forEach(route => {
+    it('GET' + route + '. Does page load?', (done) => {
+      chai.request(server)
+        .get(route)
+        .set('Cookie', 'sessionToken=' + sessionToken + ' ;path=/;')
+        .end((err, res) => {
+          res.should.have.status(200);
+          expect(res.req.res.text).to.not.include('originalUrl'); //checks if this went to login page with an originalUrl redirect
+          done();
+        });
+    }).timeout(timeout);
+  });
+});

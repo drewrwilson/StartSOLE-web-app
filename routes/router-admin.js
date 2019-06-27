@@ -139,32 +139,4 @@ router.route('/events')
     });
   });
 
-/**
- * route for viewing Pennsylvania state as a map.
- */
-router.route('/pa')
-  .get(async (req, res, next) => {
-      try {
-          const roleData = await Controllers.User.getRoleData(req.sessionToken);
-          if (!roleData.isAdmin) { //TODO: make a middleware for isAdmin
-              res.redirect('/home');
-              return;
-          }
-
-          let data = {
-              config: soleConfig,
-              layout: 'no-footer.hbs',
-              roleData: roleData,
-              usersToday: 0
-          };
-          data.rings = await Controllers.User.getAllRings(req.sessionToken);
-          data.usersToday = await Controllers.User.adminSummaryData(req.sessionToken);
-
-          res.render('admin/map-pa', data);
-      } catch (error) {
-          error.userMessage = 'Error getting role data for admin user.';
-          next(error);
-      }
-  });
-
 module.exports = router;

@@ -34,11 +34,13 @@ router.route('/home')
         soles: [],
         questions: [],
         roleData: roleData,
+        includeTableSorter: true,
         config: soleConfig,
       };
 
       return Controllers.User.getAllRings(req.sessionToken).then(rings => {
           homeData.rings = rings;
+          if(rings.length>1){homeData.multipleRings=true}
           res.render('home', homeData); //show home page with ring data
       }).catch(err => {
           err.userMessage = 'Failed to ring data for user.';

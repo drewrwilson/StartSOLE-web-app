@@ -15,8 +15,7 @@ Parse.initialize(soleConfig.appId);
 Parse.serverURL = soleConfig.serverUrl;
 
 //get session info to be used later and to be passed to handlebars view
-var sesh         = $('#sesh').val(), //get the sesh token from the DOM
-    sessionToken = 'r:' + sesh,      //convert sesh token to full sessionToken string
+var sessionToken = document.cookie.split(';').filter(function(item) {return item.trim().indexOf('sessionToken=') == 0})[0].slice(14),
     showAll      = $("input[name=showAll]").val(); //this is true if we are adding a question, undefined if not
 
 var standardPickerLevel = 0;
@@ -194,7 +193,6 @@ function getQuestions () {
     //loop through all the returns questions and add each to the DOM
     response.questions.forEach(function (question){
       //handlebars stuff. this is just for the question-card. bad architecture having two handlebars (frontend and backend), but we're moving so fast! (Come back later and refactor) -DW 2018-06-22
-      question.sesh = sesh; //add sesh token to view data so we can add it to each question's link
       html = template(question);
       $('#questions').append(html);
 

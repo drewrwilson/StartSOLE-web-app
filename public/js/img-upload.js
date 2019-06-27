@@ -9,7 +9,7 @@ var doneButton = $("#save_my_sole");
 function uploadImage(file) {
   imageSuffix++;
   var name = "coolimage-" + imageSuffix, //TODO: Why are the first 4 characters of image name chopped off?
-    sessionToken = 'r:' + $("#sesh"),
+    sessionToken = document.cookie.split(';').filter(function(item) {return item.trim().indexOf('sessionToken=') == 0})[0].slice(14),
     soleID = $('#soleID').val();
 
   var parseFile = new Parse.File(name, file);

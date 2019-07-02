@@ -46,6 +46,64 @@ class Admin {
       sessionToken: sessionToken
     });
   };
+
+  // stub
+  /*
+  returns: a json object of admin data for a ring
+  users - array of users in the ring
+    user - { firstName: 'FirstNameTest',  lastName: 'LastNameTest', pubId: 'aaa', }
+  name - string name of the ring
+
+   */
+  static getAdminRingData (sessionToken) {
+    var ringData = {
+      name: 'Colombia',
+      totalUsers: 0,
+      users: []
+    };
+    for (var i = 0; i < 1 + Math.floor(Math.random() * Math.floor(25)); i++) {
+      ringData.users.push({dateJoined: 'test',
+        firstName: 'test',
+        lastName: 'test',
+        email: 'test',
+        pubId: 'test',
+        totalSolesPlanned: 'test',
+        totalSolesCompleted: 'test',
+        dateLastSole : 'test'})
+    }
+    ringData.totalUsers = ringData.users.length;
+    return Parse.Promise.as(ringData)
+  }
+  /*
+    ringId string id of ring
+    sessionToken string of sessionToken
+
+    returns array of ringleaders defined in userpub class for the given ring
+   */
+  static getRingLeaders (ringId, sessionToken) {
+    return Parse.Cloud.run('webapp.getRingLeaders', {
+      ringId: ringId,
+      limit: 999,
+      sessionToken: sessionToken
+    });
+  }
+
+  static addUserToRing (userId, ringId, sessionToken) {
+    return Parse.Cloud.run('webapp.addUserToRing', {
+        userId: userId,
+        ringId: ringId,
+        sessionToken: sessionToken
+    });
+  }
+
+  static removeUserToRing (userId, ringId, sessionToken) {
+    return Parse.Cloud.run('webapp.removeUserToRing', {
+      userId: userId,
+      ringId: ringId,
+      sessionToken: sessionToken
+    });
+  }
+
   //
   // //get any questions that haven't been approved yet
   // //stub Todo: make this

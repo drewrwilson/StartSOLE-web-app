@@ -1,0 +1,223 @@
+<style>
+    #map {
+        height: 600px;
+    }
+</style>
+
+<div class="breadcrumb-wrapper">
+    <a href="/" class="breadcrumb">Home</a>
+    <a class="breadcrumb" href="/admin">Admin</a>
+    <a class="breadcrumb">Manage Ring</a>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Manage Ring: {{ring.name}}</span>
+                <p>There are <strong>{{ring.totalUsers}} users</strong> in this ring</p>
+
+
+                <table class="highlight">
+                    <thead>
+                    <tr>
+                        <th>Date Joined</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email Address</th>
+                        <th>PubID</th>
+                        <th>SOLEs Planned</th>
+                        <th>SOLEs Completed</th>
+                        <th>Date of Last SOLE</th>
+                        <th>Remove from Ring</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each ring.users}}
+                        <tr>
+                            <td>{{this.dateJoined}}</td>
+                            <td>{{this.firstName}}</td>
+                            <td>{{this.lastName}}</td>
+                            <td><a href="mailto:{{this.email}}">{{this.email}}</a></td>
+                            <td>{{this.pubId}}</td>
+                            <td>{{this.totalSolesPlanned}}</td>
+                            <td>{{this.totalSolesCompleted}}</td>
+                            <td>{{this.dateLastSole}}</td>
+                            <td>
+                                <a class="btn waves-effect waves-light red"
+                                   href="#" id="remove-from-ring-btn-{{this.pubId}}" onclick="removeUserFromRing('{{this.pubId}}')">
+                                    Remove
+                                </a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-action center">
+                <a href="/admin/rings/{{ring.id}}">View Dashboard</a>
+                <a href="/admin/rings/{{ring.id}}/add-user">Add User</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #overlay {
+        /* Height & width depends on how you want to reveal the overlay (see JS below) */
+        height: 100%;
+        width: 100%;
+        position: fixed; /* Stay in place */
+        z-index: 999; /* Sit on top */
+        left: 0;
+        top: 0;
+        background-color: rgb(0,0,0); /* Black fallback color */
+        background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+        overflow-x: hidden; /* Disable horizontal scroll */
+        transition: 0.2s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+    }
+</style>
+<div id="overlay" style="display: none;">
+    <div class="row center-align" style="padding-top:10%">
+            <img src="/images/loading03.gif">
+    </div>
+</div>
+
+<!--hidden form-->
+<div style="display:none">
+    <form method="post" action="/admin/pending-soles" id="form-approve-reject">
+
+        <input type="hidden" id="soleId" name="soleId" value="none">
+        <input type="hidden" id="action" name="action" value="none">
+        <input type="hidden" id="comment" name="comment" value="none">
+        <input type="hidden" id="socialMediaCheck" name="socialMediaCheck" value="false">
+
+    </form>
+
+</div>
+
+<script>
+
+    var cannedResponses = {
+        "<p>I see you have requested help - could you please tell us a little bit more about what was challenging so we can better assist you?</p>": null,
+        "<p>Nice work!  This looks like an effective SOLE session</p>": null,
+        "<p>Great question! In the future, be sure to give a more complete answer to the reflection questions.</p>": null,
+        "<p>Great reflection! In the future, be sure to include photographs as further documentation of your SOLE.</p>": null,
+        "<p>Good job!  Nice to see students working well together in groups - keep it up!</p>": null,
+        "<p>Your photos show clear evidence of student collaboration - keep up the great work!</p>": null,
+        "<p>The posters produced during this SOLE look great!</p>": null,
+        "<p>Nice work!  Wonderful to see your students were so enthusiastic about the process and wanted more... keep it up!</p>": null,
+        "<p>Your observations clearly document great examples of students engagement.  Looking good!</p>": null,
+        "<p>Glad to see students were so excited to complete this SOLE - keep up the good work!</p>": null,
+        "<p>Student presentations look really good, keep up the great work!</p>": null,
+        "<p>Glad to see you achieved your objective for this SOLE\; revealing student misconceptions is an important part of formative assessment!</p>": null,
+        "<p>If you're looking to help support students with researching and citing sources, you may want to check out the 'Teacher Resources' page on our website.  We've got dozens of teacher-created printable resources there that could be useful as student organizers.  If you filter by 'Help with the Investigation phase' you should find some good options.</p>": null,
+        "<p>In order to get the most benefit out of the SOLE process, students should work in groups with less than one device per student.  This helps foster collaboration during the research phase.</p>": null,
+        "<p>Great question!  In order to get the most benefit out of the SOLE process, students should work in groups with less than one device per student.  This helps foster collaboration during the research phase.  It looks like some of the groups in this SOLE were using one device per student; please try reducing the number of devices per group, we will be looking for this in your next SOLE session.</p>": null,
+        "<p>We are unable to approve this SOLE due to missing photographic documentation.  If you have photos of student work produced during this SOLE please reply to this email and we can update your credit towards a CEU appropriately.</p>": null,
+        //below this line still under review
+        "<p>Great work! If you need resources to help students with research, please let us know</p>": null,
+        "<p>I noticed you mentioned that students struggled to dig deeper-- if you would like help with ways to counterract this, please let us know!</p>": null,
+        "<p>I see you have requested help-- what can we assist you with?</p>": null,
+        "<p>In the future, please include photos in your reflection!</p> <p>I see you requested help-- what can we assist you with?</p>": null,
+        "Is there any support we can offer you to help improve the use of Technology during your SOLE session?": null,
+        "It looks like the facilitation duration of this session was too short to be approved.  According to your iOS data your facilitation only lasted 3 minutes, and SOLE sessions should be at least 30 minutes to be effective.": null,
+        "<p>Looks like students did a great job using technology during this SOLE.  If you need help improving communication skills in your classroom during SOLE, check our resoures page for some materials produced by other teachers designed to help:</p> <p><a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a></p>": null,
+        "<p>Looks like students were very engaged in this SOLE.  If you need help improving communication skills in your classroom during SOLE, check our resoures page for some materials produced by other teachers designed to help:</p> <p><a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a></p>": null,
+        "Thank you for submitting.  In order to approve this SOLE we will need to see one of two things: a more descriptive reflection or photos that provide more convincing evidence of your use of the SOLE process.": null,
+        "<p>Thank you for submitting.  In order to approve this SOLE we will need to see one of two things: a more descriptive reflection or photos that provide more convincing evidence of your use of the SOLE process.</p> <p>We're also happy to talk with you more in person about engagement strategies.  Please give us a time that works for you and we will be happy to follow up.</p>": null,
+        "<p>Thanks for submitting.  Unfortunately, the picture provided is not a clear example of the complete SOLE process.</p> <p>Please feel free to contact us if you'd like support structuring your classrom to support the SOLE process.</p>": null,
+        "<p>Thanks for submitting.  Unfortunately, the user reflection, notes, and pictures provided are not a clear example of the complete SOLE process.</p> <p>Please feel free to contact us if you'd like support structuring your classrom to support the SOLE process.</p>": null,
+        "<p>The student work produced during this SOLE looks great, glad to see that student use of technology is increasing over time!  You noted that collaboration was low even though the students were allowed to move around the room during this SOLE.  We have some resources shared on our site which might be helpful supporting collaboration in your room, if these are not useful please let us know and we can try to offer further support:</p> <p><a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a></p>": null,
+        "<p>This appears to be a duplicate of the an approved SOLE-- perhaps there was an error submitting it and you redid it?</p>": null,
+        "<p>This looks like a great SOLE!  Is there more help we could provide you with in order to better support collaboration and communication during the process?  If you have ideas for ways we could support you and your class doing SOLE, we'd love to hear about it.  Please feel free to write back and give us your thoughts, and keep up the good work!</p>": null,
+        "<p>This looks like a great start to SOLE!  Glad to see you were using the organizers from our site during the process, is there more help we could provide you with in order to better support communication and building student independence?  If you have ideas for ways we could support you and your class doing SOLE or feedback about our app, we'd love to hear about it.  Please feel free to write back and give us your thoughts, and keep up the good work!</p>": null,
+        "<p>This SOLE looks great!</p> <p>I see that you noted there was some difficulty with the presentations. We have many resources around that on the STARTSOLE website! In addition, if you need more help, please let us know.</p>": null,
+        "<p>This SOLE looks great! I see you noted that you had difficulty keeping all students engaged-- would you like us to send you resources related to that?</p>": null,
+        "<p>This SOLE looks great! In the future, be sure to go more in depth on your reflection.</p>": null,
+        "<p>This SOLE looks great! What can we help you with?</p>": null,
+        "<p>We are unable to approve this SOLE because this question does not seem appropriate for the SOLE process.  Please feel free to contact us if you'd like support creating SOLE questions for your classroom.</p>": null,
+        "<p>We are unable to approve this SOLE due to missing photographic documentation and limited feedback on reflection</p>": null,
+        "<p>We are unable to approve this SOLE due to missing photographic documentation and limited feedback on reflection</p> <p>I see you noted that you don’t believe you met your objective for this SOLE - based on what you've learned, what would you do differently in your next SOLE?</p>": null,
+        "<p>We are unable to approve this SOLE due to missing photographic documentation and limited feedback on reflection</p> <p>If you are just testing out the program, is there anything we can help you with?</p>": null,
+        "<p>We are unable to approve this SOLE due to missing photographic documentation and limited feedback on reflection</p> <p>I see you have requested help-- what can we assist you with?</p>": null,
+        "<p>We are unable to approve this SOLE due to the lack of photographic documentation and reflection.  The photos provided seemed to be a duplicate of another SOLE.  If you are having technical difficutlies with our site, please let us know.</p>": null,
+        "<p>We are unable to approve this SOLE due to the lack of photographic documentation.  The photos provided seemed to be a duplicate of another SOLE.  If you are having technical difficutlies with our site, please let us know.</p>": null,
+        "<p>You indiciated that creativity suffered in this SOLE-- if you need resources to help increase creativity, please let us know!</p>": null,
+        "<p>Your SOLE has been approved--however, in the future, be sure to expand on your reflection a bit more!</p>": null,
+        "<p>Your SOLE reflection is great, keep up the good work!</p>": null,
+        "<p>I see students struggled a bit with this SOLE-- we recommend checking out the resources at the STARTSOLE website</p> <p><a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a></p> <p>If you need further help, please feel free to respond to this email.</p>": null,
+        "<p>This looks like a great SOLE!  Glad to see that communication skills seem to be improving.</p>": null,
+        "<p>Nice work! It's not uncommon to provide students with some resources to help them get started with the research phase, and if you'd like to see some materials compiled by other teachers, check out what's available at <a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a>.  We also just added a new Sample Presentation Rubric to help with student presentations.  It's aligned to Common Core standards and might be of interest to you in future SOLEs.</p>": null,
+        "<p>Glad to hear students were able to discover the meaning of hierarchy on their own.  If you'd like support with student communication during the presentation phase, we just added a new Sample Presentation Rubric to help with student presentations.  It's aligned to Common Core standards and might be of interest to you in future SOLEs; you can find it at <a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a></p>": null,
+        "<p>This looks like a good SOLE, and your observations show deep reflection on the process.  Our resources section has a student organizer called 'Research Notes' submitted by another teacher which is designed to help students get better at paraphrasing.  Feel free to check it out by visiting <a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a> and searching for 'Research Notes'.</p> <p>I also noticed that you were displaying a timer on your projector during the student presentations.  The new StartSOLE app allows you to wirelessly connect to your projector and display class timers, your big question, rubrics, and ground rules for students.  If you'd like to try it out, visit <a href=\"http://www.startsole.org/app-home.html\">http://www.startsole.org/app-home.html</a> to get started.</p> <p>Keep up the great work!</p>": null,
+        "<p>great work!</p>": null,
+        "<p>In the future, please include photos in your reflection... this is a great question and we'd love to see the work your students produced!</p>": null,
+        "<p>Nice work!</p>": null,
+        "<p>This also looks like a great SOLE session!  Could you tell me a little more about how you used modeling boards for this SOLE?  This may be a technique that we'd like to share with other teachers if it worked well for your class.</p>": null,
+        "<p>This looks like a great SOLE!  If you need more help with communication, check out our resources section using the link below or feel free to reply to this email for personal assistance.</p> <p><a href=\"https://app.startsole.org/#!/resources\">https://app.startsole.org/#!/resources</a></p>": null,
+        "<p>This looks like a successful SOLE, and your idea to require groups to cite 3 sources is a good support for encouraging better research practice.  Keep up the good work!</p>": null,
+        "<p>This looks like a test of our tools.  If you need help with SOLE in the future feel free to email us here we're always eager to assist.</p>": null,
+        "<p>We are unable to approve this SOLE due to missing photographic documentation and limited feedback on reflection  If you are just testing out the program is there anything we can help you with?</p>": null,
+        "<p>Don't give up!  It's not unusual that the first SOLE experience is challenging, our research has shown that it takes about 3 SOLE sessions for deeper transformation to take root.  If there are particular ideas that came out of your discussion about what you'd try differently next time we'd love to hear them... we're always trying to spread best practices through the SOLE community.</p>": null,
+        "<p>Great question!  If there is any support we can offer for in service teacher training please let us know.</p>": null,
+        "<p>Nice work!  This looks like a great SOLE session</p>": null
+    };
+
+    $(document).ready(function () {
+
+            $('input.autocomplete').autocomplete({
+                data: cannedResponses
+                // ,
+                // limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+                // onAutocomplete: function(val) {
+                //     // Callback function when value is autcompleted.
+                // },
+                // minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+            });
+
+
+
+    });
+
+/*
+submits an approved sole to the backend to be processed.
+param:
+    soleId - string ID of a sole to be approved
+    action - string of the action to take, either "approve" or "reject"
+returns:
+    nothing
+ */
+function approveOrReject (soleId, action) {
+    $('#soleId').val(soleId);
+    $('#comment').val($('#autocomplete-input-' + soleId).val());
+    $('#action').val(action);
+    $('#socialMediaCheck').val($('#social-media-check-' + soleId).is(":checked") ? "true" : "false");
+    $('#form-approve-reject').submit(); //submit the form
+    document.getElementById("overlay").style.width = "100%";
+    $('#overlay').show();
+}
+/*
+wrapper for approveOrReject for approving
+param:
+    soleId - string ID of a sole to be approved
+returns:
+    nothing
+ */
+function approve(soleId) {
+    approveOrReject(soleId, 'approve');
+}
+/*
+wrapper for approveOrReject for rejecting
+param:
+    soleId - string ID of a sole to be approved
+returns:
+    nothing
+ */
+function reject(soleId) {
+    approveOrReject(soleId, 'reject');
+}
+
+</script>

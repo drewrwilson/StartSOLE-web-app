@@ -139,4 +139,40 @@ router.route('/events')
     });
   });
 
+/**
+ * route for adding/removing someone from a ring
+ */
+
+router.route('/rings/:id')
+  .get(async (req, res, next) => {
+    try {
+      ring = await Controllers.Admin.getAdminRingData('test')
+        //render the view
+        res.render('admin/admin-ring', {
+          config: soleConfig,
+          ring: ring,
+          layout: 'default.hbs'
+        });
+    } catch (err) {
+      err.userMessage = 'Failed to load ring admin page';
+      err.postToSlack = true;
+      next(err);
+    }
+  });
+router.route('/rings/add-user')
+  .get(async (req, res, next) => {
+    try {
+      ring = await Controllers.Admin.getAdminRingData('test')
+      //render the view
+      res.render('admin/admin-ring', {
+        config: soleConfig,
+        ring: ring,
+        layout: 'default.hbs'
+      });
+    } catch (err) {
+      err.userMessage = 'Failed to load ring admin page';
+      err.postToSlack = true;
+      next(err);
+    }
+  });
 module.exports = router;

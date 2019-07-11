@@ -60,6 +60,17 @@ class Question {
     });
   };
 
+  static findByTagsAndText (text, tags, language, sessionToken) {
+    return Parse.Cloud.run('webapp.findQuestionByTagsAndTextForLanguages', {
+      text: text,
+      tags: tags,
+      languages: [language],
+      sessionToken: sessionToken
+    });
+
+  }
+
+
   static add (text, tags, source, sessionToken) {
     return Parse.Cloud.run('webapp.addQuestion', {
       text: text,

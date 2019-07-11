@@ -15,7 +15,13 @@
                         <i class="material-icons prefix">search</i>
                         <input id="search" name="q" type="search"
                                class="keep-bottom"
-                               placeholder="{{{__ "Search by keyword"}}}">
+                               placeholder="
+                               {{#if searchText}}
+                                   {{searchText}}
+                               {{else}}
+                                   {{{__ "Search by keyword"}}}
+                               {{/if}}
+                               ">
                     </div>
 
                     {{>standard-picker}}
@@ -45,12 +51,12 @@
                 </a>
             </div>
             <div class="row">
-
-                {{#if searchText}}
-                    <h2>{{{__ "You searched for "}}}"<strong>{{searchText}}</strong>"</h2>
-                {{else}}
-                {{/if}}
                 <div id="questions" class="grid">
+                    {{#if searchText}}
+                        <h2>{{{__ "You searched for "}}}"<strong>{{searchText}}</strong>"</h2>
+                    {{else}}
+                    {{/if}}
+
                     {{#if questions}}
                         {{#each questions}}
                             {{> question-card }}
@@ -111,10 +117,18 @@
 
 <script type="text/javascript" src="/js/parse.min.js"></script>
 <script type="text/javascript" src="/js/handlebars-v4.0.11.js"></script>
-<script type="text/javascript" src="/js/masonry-layout/dist/masonry.pkgd.min.js"></script>
 <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
 
 {{>question-templates}}
 
 {{> sole-config-frontend-js}}
 <script type="text/javascript" src="/js/questions.js"></script>
+
+{{#if questions}}
+<script>
+    var elem = document.querySelector('.grid');
+    var msnry = new Masonry( elem, {
+        itemSelector: '.grid-item'
+    });
+</script>
+{{/if}}

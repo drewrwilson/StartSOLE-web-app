@@ -12,36 +12,47 @@ router.use(middlewares.isAuth);
  * ====================================
  */
 
-//TODO: refactor. this is messy. UPDATE 2019-05-10 Still messy. -DW
 router.route('/')
-//get all the questions
   .get(async (req, res, next) => {
-    if (req.query.q) { //TODO: might be a better way to check if this exists
+    const searchText = req.query.q ? req.query.q : undefined;
+    let foundQuestions = [];
+    if (searchText) {
       try {
-        const foundQuestions = await Controllers.Question.findByText(req.query.q, req.sessionToken);
-        foundQuestions.config = soleConfig;
-        res.render('questions', foundQuestions);
+        foundQuestions = await Controllers.Question.findByText(searchText, req.sessionToken);
       } catch (err) {
         err.userMessage = 'Could not find questions by text search. Search text: ' + req.query.q;
         err.postToSlack = true;
         next(err);
       }
-    } else if (req.query.tags) { //TODO: check if this variable exists, possible fail if it isnt defined
-      try {
-        let foundQuestions = await Controllers.Question.findByTags(req.query.tags, req.sessionToken);
-        //TODO: probably need to do some processing on tags to convert it from a string to an array of tags
-        foundQuestions.config = soleConfig;
-        res.render('questions', foundQuestions);
-      } catch (err) {
-        err.userMessage = 'Could not find question by tags. Search tags: ' + req.query.tags; //TODO: check if defined
-        err.postToSlack = true;
-        next(err);
-      }
-    } else {
-      res.render('questions', {
-        config: soleConfig
-      });
     }
+    res.render('questions', {
+      questions: foundQuestions,
+      config: soleConfig,
+      searchText: req.query.q
+    });
+  });
+
+router.route('/subject/:subject')
+  .get(async (req, res, next) => {
+    const subject = req.params.subject;
+    // const searchText = req.query.q ? req.query.q : undefined;
+    let foundQuestions = [];
+    // if (searchText) {
+    //   try {
+    //     foundQuestions = await Controllers.Question.findByTagsAndText(searchText, tags, 'en', req.sessionToken); //TODO: use user's language instead of hardcoded 2019-07-11 -DW
+    //   } catch (err) {
+    //     err.userMessage = 'Could not find questions by text search. Search text: ' + req.query.q;
+    //     err.postToSlack = true;
+    //     next(err);
+    //   }
+    // }
+    const tags = [subject];
+    foundQuestions = await Controllers.Question.findByTags(tags, req.sessionToken);
+    res.render('questions', {
+      questions: foundQuestions,
+      config: soleConfig,
+      searchText: req.query.q
+    });
   });
 
 //TODO: this is messy af. refactor. UPDATE 2019-05-10: still messy. Getting better tho. -DW

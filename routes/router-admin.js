@@ -140,3 +140,24 @@ router.route('/events')
   });
 
 module.exports = router;
+
+
+/**
+ * route for managing questions.
+ */
+router.route('/questions')
+  .get(async (req, res, next) => {
+    try {
+      const questions = await Controllers.Admin.getLeaflessQuestions(req.sessionToken);
+      res.render('admin/questions', {
+        questions:questions,
+        config:soleConfig
+      });
+    }
+    catch(err) {
+      err.userMessage = 'Error getting role data for admin user.';
+      next(err);
+    }
+  });
+
+module.exports = router;

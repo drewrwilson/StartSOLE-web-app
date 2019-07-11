@@ -20,11 +20,25 @@
     <div class="col s6">
         <div class="card-panel">
             <h4 class="center-align">Tag</h4>
-            {{>standard-picker}}
+            {{>standard-picker-pa}}
         </div>
     </div>
     <div class="col s12">
         <div class="card-panel">
+            <form action="/admin/questions" method="post">
+                <input type="hidden" name="action" id="action" value="addTag">
+                <div class="row">
+                    <div class="col s3">
+                        <input placeholder="asn.testtag" id="selectedTag" name="selectedTag" type="text" value="asn.testtag">
+                    </div>
+                    <div class="col s9">
+                        <button class="btn waves-effect waves-light" type="submit">Add Tag
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+
+
             <table class="striped">
                 <thead>
                 <tr>
@@ -39,7 +53,7 @@
                     <tr>
                         <td>
                             <label>
-                                <input type="checkbox" />
+                                <input type="checkbox" name="questions" value="{{this.id}}"/>
                                 <span></span>
                             </label>
                         </td>
@@ -51,9 +65,7 @@
                 </tbody>
             </table>
 
-
-
-
+            </form>
         </div>
     </div>
 </div>

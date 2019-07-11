@@ -148,7 +148,9 @@ module.exports = router;
 router.route('/questions')
   .get(async (req, res, next) => {
     try {
-      const questions = await Controllers.Admin.getLeaflessQuestions(req.sessionToken);
+      const text = "dance";
+      const tags = "";
+      const questions = await Controllers.Admin.getLeaflessQuestions(tags, text, req.sessionToken);
       res.render('admin/questions', {
         questions:questions,
         config:soleConfig

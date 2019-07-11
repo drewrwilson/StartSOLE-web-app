@@ -49,7 +49,15 @@ class Admin {
 
 
   //get questions for admin management
-  static getLeaflessQuestions (sessionToken) {
+  static async getLeaflessQuestions (tags, text, sessionToken) {
+    const questions = await Parse.Cloud.run('webapp.findQuestionsByTagsAndTextWithoutLeafNodes', {
+      tags: tags,
+      text: text,
+      sessionToken: sessionToken
+    });
+    return questions;
+
+    /*
     // return Parse.Cloud.run('webapp.getLeaflessQuestions', {
     //   sessionToken: sessionToken
     // });
@@ -1416,6 +1424,7 @@ class Admin {
       }
     ];
     return Parse.Promise.as(questions);
+     */
   };
 
 

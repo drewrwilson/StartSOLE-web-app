@@ -148,7 +148,9 @@ module.exports = router;
 router.route('/questions')
   .get(async (req, res, next) => {
     try {
-      const questions = await Controllers.Admin.getLeaflessQuestions(req.sessionToken);
+      const text = "dance";
+      const tags = "";
+      const questions = await Controllers.Admin.getLeaflessQuestions(tags, text, req.sessionToken);
       res.render('admin/questions', {
         questions:questions,
         config:soleConfig
@@ -156,6 +158,23 @@ router.route('/questions')
     }
     catch(err) {
       err.userMessage = 'Error getting role data for admin user.';
+      next(err);
+    }
+  })
+  .post(async (req, res, next) => {
+    const tag = req.body.selectedTag ? req.body.selectedTag : undefined;
+    let questions = req.body.questions ? req.body.questions : undefined;
+    questions = Array.isArray(questions) ? questions : questions.split(" ");
+
+    if (req.body.action === 'addTag') {
+      await Controllers.Admin.bulkAddTagToQuestions(questions, tag, req.sessionToken);
+      res.redirect('/admin/questions');
+    } else if (req.body.action === 'removeTag') {
+      await Controllers.Admin.bulkRemoveTagFromQuestions(questions, tag, req.sessionToken);
+      res.redirect('/admin/questions');
+    } else {
+      err.userMessage = 'Failed on a bulk tag edit action';
+      err.postToSlack = true;
       next(err);
     }
   });

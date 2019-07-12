@@ -35,23 +35,12 @@ router.route('/')
 router.route('/subject/:subject')
   .get(async (req, res, next) => {
     const subject = req.params.subject;
-    // const searchText = req.query.q ? req.query.q : undefined;
     let foundQuestions = [];
-    // if (searchText) {
-    //   try {
-    //     foundQuestions = await Controllers.Question.findByTagsAndText(searchText, tags, 'en', req.sessionToken); //TODO: use user's language instead of hardcoded 2019-07-11 -DW
-    //   } catch (err) {
-    //     err.userMessage = 'Could not find questions by text search. Search text: ' + req.query.q;
-    //     err.postToSlack = true;
-    //     next(err);
-    //   }
-    // }
     const tags = [subject];
     foundQuestions = await Controllers.Question.findByTags(tags, req.sessionToken);
     res.render('questions', {
       questions: foundQuestions,
-      config: soleConfig,
-      searchText: req.query.q
+      config: soleConfig
     });
   });
 

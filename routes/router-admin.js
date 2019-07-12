@@ -164,12 +164,13 @@ router.route('/questions')
   .post(async (req, res, next) => {
     const tag = req.body.selectedTag ? req.body.selectedTag : undefined;
     let questions = req.body.questions ? req.body.questions : undefined;
+    questions = Array.isArray(questions) ? questions : questions.split(" ");
 
     if (req.body.action === 'addTag') {
       await Controllers.Admin.bulkAddTagToQuestions(questions, tag, req.sessionToken);
       res.redirect('/admin/questions');
     } else if (req.body.action === 'removeTag') {
-      await Controllers.Admin.bulkRemoveTagToQuestions(questions, tag, req.sessionToken);
+      await Controllers.Admin.bulkRemoveTagFromQuestions(questions, tag, req.sessionToken);
       res.redirect('/admin/questions');
     } else {
       err.userMessage = 'Failed on a bulk tag edit action';

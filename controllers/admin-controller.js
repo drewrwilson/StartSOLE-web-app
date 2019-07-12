@@ -58,8 +58,8 @@ class Admin {
     return questions;
   };
 
-  static async bulkAddTagToQuestipons (questions, tag, sessionToken) {
-    const success = await Parse.Cloud.run('webapp.bulkAddTagQuestions',{
+  static async bulkAddTagToQuestions (questions, tag, sessionToken) {
+    const success = await Parse.Cloud.run('webapp.bulkAddTagToQuestions',{
       questions: questions,
       tag: tag,
       sessionToken: sessionToken
@@ -67,8 +67,8 @@ class Admin {
     return success;
   }
 
-  static async bulkRemoveTagToQuestipons (questions, tag, sessionToken) {
-    const success = await Parse.Cloud.run('webapp.bulkRemoveTagQuestions',{
+  static async bulkRemoveTagFromQuestions (questions, tag, sessionToken) {
+    const success = await Parse.Cloud.run('webapp.bulkRemoveTagFromQuestions',{
       questions: questions,
       tag: tag,
       sessionToken: sessionToken

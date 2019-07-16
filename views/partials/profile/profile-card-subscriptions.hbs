@@ -1,88 +1,86 @@
-<div class="col s12 m10 offset-m1 l6">
-    <div class="card-panel">
+<div class="card-panel">
+    <div class="row">
+        <div class="col s12 center-align">
+            <h4>{{{__ "Email Preferences"}}}</h4>
+            <hr>
+        </div>
+    </div>
+
+    <form action="/profile/subscriptions" method="post">
         <div class="row">
-            <div class="col s12 center-align">
-                <h4>{{{__ "Email Preferences"}}}</h4>
-                <hr>
+
+            <!--questionTips-->
+            <div class="input-field col s12 m10 offset-m1">
+                <label>
+                    <input type="checkbox" name="questionTips" id="questionTips"
+                        {{#if subscriptions.questionTips}}
+                           class="filled-in" checked="checked"
+                        {{/if}}
+                    />
+                    <span>{{{__ "Question Tips"}}}</span>
+                </label>
+            </div>
+            <!--/questionTips-->
+
+            <!--planningDoc-->
+            <div class="input-field col s12 m10 offset-m1">
+                <label>
+                    <input type="checkbox" name="planningDoc" id="planningDoc"
+                        {{#if subscriptions.planningDoc}}
+                           class="filled-in" checked="checked"
+                        {{/if}}
+                    />
+                    <span>{{{__ "Planning Documents"}}}</span>
+                </label>
+            </div>
+            <!--/planningDoc-->
+
+            <!--summaryDoc-->
+            <div class="input-field col s12 m10 offset-m1">
+                <label>
+                    <input type="checkbox" name="summaryDoc" id="summaryDoc"
+                        {{#if subscriptions.summaryDoc}}
+                           class="filled-in" checked="checked"
+                        {{/if}}
+                    />
+                    <span>{{{__ "Summary Documents"}}}</span>
+                </label>
+            </div>
+            <!--/summaryDoc-->
+
+            <!--reflectionReminders-->
+            <div class="input-field col s12 m10 offset-m1">
+                <label>
+                    <input type="checkbox" name="reflectionReminders" id="reflectionReminders"
+                        {{#if subscriptions.reflectionReminders}}
+                           class="filled-in" checked="checked"
+                        {{/if}}
+                    />
+                    <span>{{{__ "Reflection Reminders"}}}</span>
+                </label>
+            </div>
+            <!--/reflectionDoc-->
+
+            <!--ceuDoc-->
+            <div class="input-field col s12 m10 offset-m1">
+                <label>
+                    <input type="checkbox" name="ceuDoc" id="ceuDoc"
+                        {{#if subscriptions.ceuDoc}}
+                           class="filled-in" checked="checked"
+                        {{/if}}
+                    />
+                    <span>{{{__ "CEU Documents"}}}</span>
+                </label>
+            </div>
+            <!--/ceuDoc-->
+        </div>
+        <div class="row center-align">
+            <div class="input-field col s12 m10 offset-m1">
+                <button class="btn waves-effect waves-light"
+                        type="submit">
+                    {{{__ "Save"}}}
+                </button>
             </div>
         </div>
-
-        <form action="/profile/subscriptions" method="post">
-            <div class="row">
-
-                <!--questionTips-->
-                <div class="input-field col s12 m10 offset-m1">
-                    <label>
-                        <input type="checkbox" name="questionTips" id="questionTips"
-                            {{#if subscriptions.questionTips}}
-                               class="filled-in" checked="checked"
-                            {{/if}}
-                        />
-                        <span>{{{__ "Question Tips"}}}</span>
-                    </label>
-                </div>
-                <!--/questionTips-->
-
-                <!--planningDoc-->
-                <div class="input-field col s12 m10 offset-m1">
-                    <label>
-                        <input type="checkbox" name="planningDoc" id="planningDoc"
-                            {{#if subscriptions.planningDoc}}
-                               class="filled-in" checked="checked"
-                            {{/if}}
-                        />
-                        <span>{{{__ "Planning Documents"}}}</span>
-                    </label>
-                </div>
-                <!--/planningDoc-->
-
-                <!--summaryDoc-->
-                <div class="input-field col s12 m10 offset-m1">
-                    <label>
-                        <input type="checkbox" name="summaryDoc" id="summaryDoc"
-                            {{#if subscriptions.summaryDoc}}
-                               class="filled-in" checked="checked"
-                            {{/if}}
-                        />
-                        <span>{{{__ "Summary Documents"}}}</span>
-                    </label>
-                </div>
-                <!--/summaryDoc-->
-
-                <!--reflectionReminders-->
-                <div class="input-field col s12 m10 offset-m1">
-                    <label>
-                        <input type="checkbox" name="reflectionReminders" id="reflectionReminders"
-                            {{#if subscriptions.reflectionReminders}}
-                               class="filled-in" checked="checked"
-                            {{/if}}
-                        />
-                        <span>{{{__ "Reflection Reminders"}}}</span>
-                    </label>
-                </div>
-                <!--/reflectionDoc-->
-
-                <!--ceuDoc-->
-                <div class="input-field col s12 m10 offset-m1">
-                    <label>
-                        <input type="checkbox" name="ceuDoc" id="ceuDoc"
-                            {{#if subscriptions.ceuDoc}}
-                               class="filled-in" checked="checked"
-                            {{/if}}
-                        />
-                        <span>{{{__ "CEU Documents"}}}</span>
-                    </label>
-                </div>
-                <!--/ceuDoc-->
-            </div>
-            <div class="row center-align">
-                <div class="input-field col s12 m10 offset-m1">
-                    <button class="btn waves-effect waves-light"
-                            type="submit">
-                        {{{__ "Save"}}}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
+    </form>
 </div>

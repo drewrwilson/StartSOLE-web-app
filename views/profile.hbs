@@ -42,10 +42,12 @@
 </div>
 
 <div class="row">
-    {{> profile/profile-card-subscriptions }}
-
-    {{> profile/profile-card-about-me }}
-
+    <div class="col s12 m10 offset-m1 l6">
+        {{> profile/profile-card-subscriptions }}
+    </div>
+    <div class="col s12 m10 offset-m1 l6">
+        {{> profile/profile-card-about-me }}
+    </div>
     {{> profile/profile-card-ceus }}
 
     {{#if roleData.isAmbassador}}

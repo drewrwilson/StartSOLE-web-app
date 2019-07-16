@@ -58,7 +58,7 @@ router.route('/subscriptions')
     try {
       const subscriptions = await Controllers.User.getEmailSubscriptions(req.sessionToken);
       res.render('partials/profile/profile-card-subscriptions', {
-          layout: 'default.hbs',
+          layout: 'single-card.hbs',
           subscriptions: subscriptions,
           config: soleConfig
         });
@@ -91,6 +91,7 @@ router.route('/about-me')
     try {
       const profileData = await Controllers.User.getProfileData(req.sessionToken);
       profileData.config = soleConfig;
+      profileData.layout = 'single-card.hbs';
       res.render('partials/profile/profile-card-about-me', profileData);
     } catch (err) {
       err.userMessage = 'Error displaying about me profile page.';

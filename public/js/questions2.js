@@ -395,8 +395,6 @@ class StandardPicker {
   // }
 
   removeStandardsChildrenFromDom () {
-    $(this.subjectElemSelector).empty();
-    $(this.gradeElemSelector).empty();
     $(this.standardsElemSelector).empty();
   }
 
@@ -427,24 +425,64 @@ class StandardPicker {
   build () {
     //1. empty the container
     this.removeStandardsChildrenFromDom();
-    //2a. build the subject dropdown HTML
-    // var subjectDropDownHTML = this.buildSubjectsDropDownHtml();
-    // // 2b. add the subject dropdown HTML to the DOM
-    // $(this.subjectElemSelector).html(subjectDropDownHTML);
-    // //3a. build the grade dropdown HTML
-    // var gradeDropDownHTML = this.buildGradesDropDownHtml();
-    // //3b. add the grade dropdown HTML to the DOM
-    // $(this.gradeElemSelector).html(gradeDropDownHTML);
-    // //
-    // 4a. loop through all sub standards and build dropdown HTML
+    //2. loop through all sub standards and build dropdown HTML
     var standardsDropDownsHTML = this.buildStandardsDropDownHtml(this.standardsTree);
-    console.log('final: ', standardsDropDownsHTML);
-    //4b. add sub standards HTML to DOM
     $(this.standardsElemSelector).html(standardsDropDownsHTML);
   }
 
-  addStandard (standardRdn) {
-    // this.
+  changeStandard (standardRdn) {
+    // this.standardsTree[standardRdn]
+    // selectedStandard = 'edu.6';
+    // example change the grade from 'edu.6' to 'edu.7'
+    // 1. find the standard
+    // _.find(test, function(o) { return o.selectedStandard == 'edu.6' })
+
+    // function findS (sTree, sTerm, sum, cb) {
+    //   // console.log('hey')
+    //   // debugger
+    //   if (!sum) {
+    //     //first time
+    //     console.log('first time');
+    //     sum = sTree;
+    //   }
+    //   if (sTree.selectedStandard === sTerm) {
+    //     sum.child =  {'last': 'last'}; //get standards from db;
+    //     console.log('found!');
+    //     console.log('sum', sum);
+    //     cb(sum);
+    //   } else {
+    //     if (!sTree.child || !sTree.child.selectedStandard) {
+    //       console.log('not found!');
+    //       return false;
+    //     } else {
+    //       sum.child = sTree.child;
+    //       findS(sTree.child, sTerm, sum, cb);
+    //     }
+    //   }
+    // }
+    // findS(a, 'asn.s11434ca', false, function (s) {console.log(s)})
+
+
+
+    /****
+     *
+     */
+    var standardsMap = function(sum, e) {
+      return sum.child = {
+        name: e.name,
+        selectedStandard: e.selectedStandard,
+        standards: e.standards,
+        child: e.child
+      }
+    };
+
+
+    //2. change the selected one
+
+    //3. get any new children
+    //4. update object
+    //5. update view
+
   }
 
   removeStandard (standardRdn) {

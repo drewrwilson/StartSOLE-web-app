@@ -53,6 +53,7 @@ router.route('/:id/educators-growth')
     try {
       const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
       res.render('partials/rings/dashboard-card-educators-growth.hbs', {
+        layout: 'single-card',
         config: soleConfig,
         includeChartJS: true,
         ringId: req.params.id,
@@ -70,6 +71,7 @@ router.route('/:id/educators-by-grade')
     try {
       const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
       res.render('partials/rings/dashboard-card-educators-by-grade.hbs', {
+        layout: 'single-card',
         config: soleConfig,
         includeChartJS: true,
         ringId: req.params.id,
@@ -87,6 +89,7 @@ router.route('/:id/soles-by-grade')
     try {
       const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
       res.render('partials/rings/dashboard-card-soles-by-grade.hbs', {
+        layout: 'single-card',
         config: soleConfig,
         includeChartJS: true,
         ringId: req.params.id,
@@ -103,6 +106,7 @@ router.route('/:id/soles-growth')
     try {
       const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
       res.render('partials/rings/dashboard-card-soles-growth.hbs', {
+        layout: 'single-card',
         config: soleConfig,
         includeChartJS: true,
         ringId: req.params.id,
@@ -120,6 +124,7 @@ router.route('/:id/educators-by-subject')
     try {
       const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
       res.render('partials/rings/dashboard-card-educators-by-subject.hbs', {
+        layout: 'single-card',
         config: soleConfig,
         includeChartJS: true,
         ringId: req.params.id,
@@ -137,6 +142,7 @@ router.route('/:id/soles-by-subject')
     try {
       const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
       res.render('partials/rings/dashboard-card-soles-by-subject.hbs', {
+        layout: 'single-card',
         config: soleConfig,
         includeChartJS: true,
         ringId: req.params.id,
@@ -154,6 +160,7 @@ router.route('/:id/schools')
     try {
       const dashboardData = await Controllers.Ring.getDashboardData(req.params.id, req.sessionToken);
       res.render('partials/rings/dashboard-card-table-of-schools.hbs', {
+        layout: 'single-card',
         config: soleConfig,
         includeTableSorter: true,
         ringId: req.params.id,

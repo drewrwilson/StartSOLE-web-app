@@ -17,9 +17,11 @@
                                class="keep-bottom"
                                placeholder="{{{__ "Search by keyword"}}}">
                     </div>
-
-                    {{>standard-picker}}
-
+                    {{#if isPA}}
+                        {{>standard-picker-pa}}
+                    {{else}}
+                        {{>standard-picker}}
+                    {{/if}}
                 </div>
             </form>
         </div>
@@ -109,8 +111,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="https://unpkg.com/parse@1.11.1/dist/parse.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+<script type="text/javascript" src="/js/parse.min.js"></script>
+<script type="text/javascript" src="/js/handlebars-v4.0.11.js"></script>
 <script type="text/javascript" src="/js/masonry-layout/dist/masonry.pkgd.min.js"></script>
 <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
 

@@ -102,6 +102,7 @@ module.exports = {
   errorHandler: (err, req, res, next) => {
     if (getParseErrorCode(err) === 209) {
       // error 209 is a Parse error meaning invalid token
+      res.status(401);
       res.render('logout', {
         layout: 'no-sidebar.hbs',
         config: soleConfig,

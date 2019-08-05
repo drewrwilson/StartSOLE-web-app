@@ -1,7 +1,7 @@
 <div class="row" id="standard-picker">
     <div class="col s12 m6">
         <label>{{{__ "Subject"}}}</label>
-        <select id="subject" name="subject" class="browser-default standard-picker">
+        <select id="subject" name="subject" class="browser-default standard-picker standard-picker2-subject">
             <option value="" disabled selected>{{{__ "Filter by subject"}}}</option>
             <option label="{{{__ "All subjects"}}}" value="all" >{{{__ "All Subjects"}}}</option>
             <!--<option label="AmeriCorps" value="asn.d0000003">AmeriCorps</option>-->
@@ -26,7 +26,7 @@
     </div>
     <div class="col s12 m6">
         <label>{{{__ "Grade"}}} <span style="color: pink;" >{{{__ "(subject required)"}}}</span></label>
-        <select id="grade" id="name" class="browser-default standard-picker" disabled>
+        <select id="grade" id="name" class="browser-default standard-picker standard-picker2-grade" disabled>
             <option value=""></option>
         </select>
     </div>

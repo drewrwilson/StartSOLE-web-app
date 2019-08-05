@@ -141,4 +141,29 @@ router.route('/:id/delete-tag/:rdn')
     }
   });
 
+router.route('/standards')
+/**
+ * search questions and return json object
+ */
+  .post(async (req, res, next) => {
+    try {
+      const rdn = req.body.rdn ? req.body.rdn : undefined;
+      const grade = req.body.grade ? req.body.grade : undefined;
+      const standards = await Controllers.Question.getStandards(rdn, grade, req.sessionToken);
+      res.json(standards);
+    } catch (err) {
+      res.json({err: err});
+    }
+  });
+
+router.route('/grades')
+/**
+ * search questions and return json object
+ */
+  .post(async (req, res, next) => {
+    const subject = req.body.subject ? req.body.subject : undefined;
+    const grades = await Controllers.Question.getGrades(subject);
+    res.json(grades);
+  });
+
 module.exports = router;

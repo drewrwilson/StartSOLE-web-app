@@ -85,6 +85,31 @@ class Question {
     });
   };
 
+  static async getStandards (rdn, grade, sessionToken) {
+    return Parse.Cloud.run('webapp.getStandards', {
+      rdn: rdn,
+      grade: grade,
+      showAll: false
+    });
+    //
+    // const standards = await Parse.Cloud.run('webapp.getStandards', {
+    //   rdn: rdn,
+    //   grade: grade,
+    //   showAll: false,
+    //   sessionToken: sessionToken
+    // });
+    // return standards;
+  }
+  static async getGrades (subject, sessionToken) {
+    if (subject == 'all') {
+      subject = false;
+    }
+    const grades = await Parse.Cloud.run('webapp.getGrades', {
+      subject: subject,
+      sessionToken: sessionToken
+    });
+    return grades;
+  }
 }
 
 module.exports = Question;

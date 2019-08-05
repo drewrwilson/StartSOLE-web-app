@@ -2,6 +2,7 @@ const express     = require('express'),
       soleConfig  = require('../sole-config.js'),
       logger      = require('../logger.js'),
       util        = require ('util'),
+      Controllers = require('../controllers/controllers.js'),
       router      = express.Router();
 
 router.route('/register')

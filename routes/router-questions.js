@@ -16,6 +16,15 @@ router.use(middlewares.isAuth);
 router.route('/')
 //get all the questions
   .get(async (req, res, next) => {
+    const rings = await Controllers.User.getMyRings(req.sessionToken);
+
+    let isPA = false;
+    rings.forEach(ring => {
+      if (ring.rdn === 'us.pa') {
+       isPA = true;
+      }
+    });
+
     if (req.query.q) { //TODO: might be a better way to check if this exists
       try {
         const foundQuestions = await Controllers.Question.findByText(req.query.q, req.sessionToken);
@@ -39,7 +48,8 @@ router.route('/')
       }
     } else {
       res.render('questions', {
-        config: soleConfig
+        config: soleConfig,
+        isPA: isPA
       });
     }
   });

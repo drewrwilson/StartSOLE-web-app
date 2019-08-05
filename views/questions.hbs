@@ -17,9 +17,11 @@
                                class="keep-bottom"
                                placeholder="{{{__ "Search by keyword"}}}">
                     </div>
-
-                    {{>standard-picker}}
-
+                    {{#if isPA}}
+                        {{>standard-picker-pa}}
+                    {{else}}
+                        {{>standard-picker}}
+                    {{/if}}
                 </div>
             </form>
         </div>

@@ -130,3 +130,17 @@ describe('Load all post-login routes', function() {
     }).timeout(timeout);
   });
 });
+
+describe('Users today', function() {
+  it('Userstoday slack bot', (done) => {
+    chai.request(server)
+      .post('/slackbot/users-today')
+      .end((err, res) => {
+        res.should.have.status(200);
+        //We have had *'+number+'* users sign up today!
+        expect(res.req.res.text).to.include('We have had');
+        done();
+      });
+  }).timeout(timeout);
+});
+

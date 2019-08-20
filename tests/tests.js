@@ -131,8 +131,8 @@ describe('Load all post-login routes', function() {
   });
 });
 
-describe('Users today', function() {
-  it('Userstoday slack bot', (done) => {
+describe('Slackbot tests', function() {
+  it('users-today', (done) => {
     chai.request(server)
       .post('/slackbot/users-today')
       .end((err, res) => {
@@ -142,5 +142,30 @@ describe('Users today', function() {
         done();
       });
   }).timeout(timeout);
+
+  it('/users-range 5', (done) => {
+    chai.request(server)
+      .post('/slackbot/users-range')
+      .send('5')
+      .end((err, res) => {
+        res.should.have.status(200);
+        //We have had *'+number+'* users sign up today!
+        expect(res.req.res.text).to.include('We have had');
+        done();
+      });
+  }).timeout(timeout);
+
+  it('/users-range-detail 5', (done) => {
+    chai.request(server)
+      .post('/slackbot/users-range-detail')
+      .send('5')
+      .end((err, res) => {
+        res.should.have.status(200);
+        //We have had *'+number+'* users sign up today!
+        expect(res.req.res.text).to.include('We have had');
+        done();
+      });
+  }).timeout(timeout);
+
 });
 

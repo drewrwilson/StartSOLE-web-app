@@ -69,9 +69,11 @@
         {{/if}}
 </div>
 <div class="row" style="padding-top:20px;">
-    {{#if myRings.uspa}}
-        {{> profile/profile-card-ppid }}
-    {{/if}}
+    {{#unless ceuReg}}
+        {{#if myRings.uspa}}
+        {{> profile/profile-card-ceuReg }}
+        {{/if}}
+    {{/unless}}
 </div>
 
 {{#if config.language}}

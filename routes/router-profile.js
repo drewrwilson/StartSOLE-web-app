@@ -137,13 +137,13 @@ router.route('/ceureg')
   .get(async (req, res, next) => {
     try {
       const ceuReg = await Controllers.User.getCeuReg(req.sessionToken);
-      res.render('partials/profile/profile-card-ppid', {
+      res.render('partials/profile/profile-card-ceuReg', {
         layout: 'default.hbs',
         ceuReg: ceuReg,
         config: soleConfig
       });
     } catch (err) {
-      err.userMessage = 'Error displaying ppid profile page.';
+      err.userMessage = 'Error displaying ceuReg profile page.';
       err.postToSlack = true;
       next(err);
     }

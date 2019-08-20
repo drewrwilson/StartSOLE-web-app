@@ -116,5 +116,19 @@ module.exports = {
         config: soleConfig
       });
     }
+  },
+  getMyRings: async (req, res, next) => {
+
+    const myRings = await Controllers.User.getMyRings(req.sessionToken)
+    req.myRings = {};
+    myRings.forEach(ring => {
+      if (ring.rdn === 'us.pa') {
+        req.myRings.uspa = true;
+      }
+      if (ring.rdn === 'co') {
+        req.myRings.co = true;
+      }
+    });
+    next();
   }
 };

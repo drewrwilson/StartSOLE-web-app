@@ -26,18 +26,19 @@ router.route('/')
   });
 
 router.route('/home')
-  .get(middlewares.isAuth, middlewares.setLanguage, async (req, res, next) => {
+  .get(middlewares.isAuth, middlewares.getMyRings, middlewares.setLanguage, async (req, res, next) => {
     soleConfig.language = req.language;
     try {
       const roleData = await Controllers.User.getRoleData(req.sessionToken);
+
       let homeData = {
         soles: [],
         questions: [],
         roleData: roleData,
         includeTableSorter: true,
         config: soleConfig,
+        myRings: req.myRings
       };
-
       return Controllers.User.getAllRings(req.sessionToken).then(rings => {
           homeData.rings = rings;
           if(rings.length>1){homeData.multipleRings=true}

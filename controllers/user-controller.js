@@ -8,55 +8,49 @@ Parse.serverURL = soleConfig.serverUrl;
 class User {
   //returns user profile data
   static async getProfileData (sessionToken) {
-    return this.getRoleData(sessionToken).then(roleData => {
-      return Parse.Cloud.run('webapp.getProfile', {
+    const profile = await Parse.Cloud.run('webapp.getProfile', {
         sessionToken: sessionToken
-      }).then(profile => {
-        profile.roleData = roleData;
-        return this.getEmailSubscriptions(sessionToken).then(subscriptions => {
-          profile.subscriptions = subscriptions;
-          return Parse.Promise.as(profile);
-        });
-      })
-    });
+      });
+    profile.roleData = await this.getRoleData(sessionToken);
+    profile.subscriptions = await this.getEmailSubscriptions(sessionToken);
+    return profile;
   };
 
   //returns user profile data
-  static getRoleData (sessionToken) {
-    return Parse.Cloud.run('webapp.getRoles', {
+  static async getRoleData (sessionToken) {
+    const roles = await Parse.Cloud.run('webapp.getRoles', {
       sessionToken: sessionToken
-    }).then(roles => {
-      return Parse.Promise.as({
-        isAdmin: roles.includes('Admin'),
-        isAmbassador: roles.includes('ambassador'),
-        isTrainer: roles.includes('trainer'),
-        roles: roles
-      });
     });
+    return {
+      isAdmin: roles.includes('Admin'),
+      isAmbassador: roles.includes('ambassador'),
+      isTrainer: roles.includes('trainer'),
+      roles: roles
+    };
   };
 
-  static isAdmin (sessionToken) {
-    return Parse.Cloud.run('webapp.hasRole', {
+  static async isAdmin (sessionToken) {
+    return await Parse.Cloud.run('webapp.hasRole', {
       roleName: 'Admin',
       sessionToken: sessionToken
     });
   };
 
   //returns user ring data for the first ring
-  static getAllRings (sessionToken) {
-    return Parse.Cloud.run('webapp.getAllRings', {
+  static async getAllRings (sessionToken) {
+    return await Parse.Cloud.run('webapp.getAllRings', {
       sessionToken: sessionToken
     });
   };
 
-  static getMyRings(sessionToken) {
-    return Parse.Cloud.run('webapp.getMyRings', {
+  static async getMyRings(sessionToken) {
+    return await Parse.Cloud.run('webapp.getMyRings', {
       sessionToken: sessionToken
     });
   }
 
-  static updateProfileData (profileObject, sessionToken) {
-    return Parse.Cloud.run('webapp.updateProfile', {
+  static async updateProfileData (profileObject, sessionToken) {
+    return await Parse.Cloud.run('webapp.updateProfile', {
       subjects: profileObject.subjects,
       grades: profileObject.grades,
       role: profileObject.role,
@@ -71,22 +65,22 @@ class User {
   };
 
   //after the user completes their profile, set off the Parse event
-  static completedProfile (sessionToken) {
-    return Parse.Cloud.run('webapp.completedProfile', {
+  static async completedProfile (sessionToken) {
+    return await Parse.Cloud.run('webapp.completedProfile', {
       sessionToken: sessionToken
     });
   };
 
   //check if user's profile is complete. returns true or false
-  static isProfileComplete (sessionToken) {
-    return Parse.Cloud.run('webapp.isProfileComplete', {
+  static async isProfileComplete (sessionToken) {
+    return await Parse.Cloud.run('webapp.isProfileComplete', {
       sessionToken: sessionToken
     });
   };
 
   //gives a summary of all admin dashboard data
-  static adminSummaryData (sessionToken) {
-    return Parse.Cloud.run('webapp.adminSummaryData', {
+  static async adminSummaryData (sessionToken) {
+    return await Parse.Cloud.run('webapp.adminSummaryData', {
       sessionToken: sessionToken
     });
   };
@@ -112,7 +106,7 @@ class User {
    * @returns {Promise<Parse.Promise>}
    */
   static async getEmailSubscriptions (sessionToken) {
-    return Parse.Cloud.run('userpub.getSubscriptions', {
+    return await Parse.Cloud.run('userpub.getSubscriptions', {
       sessionToken: sessionToken
     });
   }
@@ -124,8 +118,21 @@ class User {
    * @returns {Promise<Parse.Promise>}
    */
   static async setEmailSubscriptions (sessionToken, subscriptions) {
-    return Parse.Cloud.run('userpub.setSubscriptions', {
+    return await Parse.Cloud.run('userpub.setSubscriptions', {
       subscriptions: subscriptions,
+      sessionToken: sessionToken
+    });
+  }
+
+  static async updateCeuReg (sessionToken, ceuReg) {
+    return await Parse.Cloud.run('webapp.updateCeuReg', {
+      ceuReg: ceuReg,
+      sessionToken: sessionToken
+    });
+  }
+
+  static async getCeuReg (sessionToken) {
+    return await Parse.Cloud.run('webapp.getCeuReg', {
       sessionToken: sessionToken
     });
   }

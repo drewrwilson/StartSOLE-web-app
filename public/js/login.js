@@ -103,7 +103,7 @@ function login (username, password) {
     .done(function (user){
       console.log('login success!');
 
-      setPlatform().then(data=>{
+      setPlatform().then(function(data) {
         successfulLogin(user);
       });
 
@@ -112,7 +112,7 @@ function login (username, password) {
       console.log('error! going to try lowercase version');
       Parse.User.logIn(username.toLowerCase(), password)
         .done(function (user){
-          setPlatform().then(data=> {
+          setPlatform().then(function (data) {
             successfulLogin(user);
         });
         })

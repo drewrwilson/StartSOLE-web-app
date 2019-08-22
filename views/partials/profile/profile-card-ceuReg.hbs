@@ -1,0 +1,37 @@
+<div class="col s12 m10 offset-m1 l6">
+    <div class="card-panel">
+        <div class="row">
+            <div class="col s12 center-align">
+                <h4>{{{__ "Update your CEU Registration Number"}}}</h4>
+                <hr>
+            </div>
+        </div>
+
+        <form action="/profile/ceureg" method="post">
+            <div class="row">
+
+                <div class="row">
+                    <div class="input-field col s12">
+
+                        <input id="ceuReg" name="ceuReg" type="text" {{#if ceuReg}}value="{{ceuReg}}"{{/if}} placeholder="Registration number">
+                        <label for="ceuReg">Registration number</label>
+                        <p>
+                            Please enter your teacher registration number to qualify for CEU-certificates.
+                        </p>
+                        <p>
+                            The registration number is depending on your country or state. You don't need to provide a registrayion if it's not required for your country or state.
+                        </p>
+                    </div>
+                </div>
+
+            <div class="row center-align">
+                <div class="input-field col s12 m10 offset-m1">
+                    <button class="btn waves-effect waves-light"
+                            type="submit">
+                        {{{__ "Save"}}}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -14,10 +14,12 @@ router.use(middlewares.isAuth);
  */
 
 router.route('/')
-  .get(async (req, res, next) => {
+  .get(middlewares.getMyRings, async (req, res, next) => {
     try {
       const profileData = await Controllers.User.getProfileData(req.sessionToken);
+      profileData.ceuReg = await Controllers.User.getCeuReg(req.sessionToken);
       profileData.config = soleConfig;
+      profileData.myRings = req.myRings;
       res.render('profile', profileData);
     } catch (err) {
       err.userMessage = 'Error getting profile data.';
@@ -131,4 +133,31 @@ router.route('/complete')
     }
   });
 
+router.route('/ceureg')
+  .get(async (req, res, next) => {
+    try {
+      const ceuReg = await Controllers.User.getCeuReg(req.sessionToken);
+      res.render('partials/profile/profile-card-ceuReg', {
+        layout: 'default.hbs',
+        ceuReg: ceuReg,
+        config: soleConfig
+      });
+    } catch (err) {
+      err.userMessage = 'Error displaying ceuReg profile page.';
+      err.postToSlack = true;
+      next(err);
+    }
+  })
+  .post(async (req, res, next) => {
+  try {
+    const body = req.body;
+    const ceuReg = req.body.ceuReg;
+    await Controllers.User.updateCeuReg(req.sessionToken, ceuReg);
+    res.redirect('/profile');
+  } catch (err) {
+    err.userMessage = 'Error updating ceu registration number.';
+    err.postToSlack = true;
+    next(err);
+  }
+});
 module.exports = router;
